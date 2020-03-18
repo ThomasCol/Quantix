@@ -2,6 +2,7 @@
 #define _COMPONENT_H_
 
 #include <typeinfo>
+#include "Type.h"
 
 namespace Core::DataStructure
 {
@@ -16,8 +17,8 @@ namespace Core::DataStructure
 	protected:
 		#pragma region Attributes
 		GameObject* _object;
-		bool		_isDestroyed;
-		bool		_isEnable;
+		QXbool		_isDestroyed;
+		QXbool		_isEnable;
 		#pragma endregion Attributes
 
 	public:
@@ -90,7 +91,7 @@ namespace Core::DataStructure
 		 * @return true 
 		 * @return false 
 		 */
-		bool								IsDestroyed() const;
+		QXbool								IsDestroyed() const;
 
 		/**
 		 * @brief Get if the Object is Enable
@@ -98,7 +99,7 @@ namespace Core::DataStructure
 		 * @return true 
 		 * @return false 
 		 */
-		inline bool							IsEnable() const { return _isEnable; };
+		inline QXbool						IsEnable() const { return _isEnable; };
 
 		/**
 		 * @brief Set the Active object

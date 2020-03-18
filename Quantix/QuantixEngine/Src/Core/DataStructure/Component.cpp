@@ -37,7 +37,7 @@ namespace Core::DataStructure
 		_isDestroyed = true;
 	}
 
-	bool		Component::IsDestroyed() const
+	QXbool		Component::IsDestroyed() const
 	{
 		return _isDestroyed;
 	}
