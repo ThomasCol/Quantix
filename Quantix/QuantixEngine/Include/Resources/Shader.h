@@ -89,7 +89,7 @@ namespace Quantix::Resources
 		 * @param file Path to the shader
 		 * @param type Type for the shader, can be Vertex, Fragment, Geometry
 		 */
-		Shader(const QXchar* file, EShaderType type) noexcept;
+		Shader(const QXstring& file, EShaderType type) noexcept;
 
 		/**
 		 * @brief Destroy the Shader object

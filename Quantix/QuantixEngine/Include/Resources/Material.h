@@ -13,8 +13,8 @@ namespace Quantix::Resources
 	private:
 #pragma region Attributes
 
-		ShaderProgram 	_program;
-		Texture			_mainTexture;
+		ShaderProgram* 	_program;
+		Texture*		_mainTexture;
 
 #pragma endregion
 
@@ -31,13 +31,14 @@ namespace Quantix::Resources
 
 #pragma region Constructors
 
+		Material() = default;
 		/**
 		 * @brief Construct a new Material object
 		 * 
 		 * @param vertexShader Vertex shader for the material
 		 * @param fragmentShader Fragment shader for the material
 		 */
-		Material(const QXchar* vertexShader, const QXchar* fragmentShader);
+		Material(ShaderProgram* program);
 
 		/**
 		 * @brief Destroy the Material object
@@ -118,13 +119,6 @@ namespace Quantix::Resources
 		void SetMat4(QXstring location, Math::QXmat4 value);
 		
 		/**
-		 * @brief Set the Main Texture object
-		 * 
-		 * @param file File to load the texture
-		 */
-		void SetMainTexture(const QXchar* file);
-		
-		/**
 		 * @brief Set a texture in the shaders
 		 * 
 		 * @param location Location for the texture to set in the shader
@@ -159,21 +153,32 @@ namespace Quantix::Resources
 #pragma region Inline
 
 		/**
-		 * @brief Get the Main Texture object
-		 * 
-		 * @return const Texture& Main texture reference
-		 */
-		inline const Texture& GetMainTexture() const noexcept { return _mainTexture; }
-
-		/**
 		 * @brief Use material's shader program
 		 */
-		inline void UseShader() { _program.Use(); }
+		inline void UseShader() { _program->Use(); }
 
 		/**
 		 * @brief Unuse material's shader program
 		 */
-		inline void UnuseShader() { _program.Unuse(); }
+		inline void UnuseShader() { _program->Unuse(); }
+
+#pragma endregion
+
+#pragma region Accessor
+
+		/**
+		 * @brief Get the Main Texture object
+		 * 
+		 * @return const Texture& Main texture reference
+		 */
+		inline const Texture* GetMainTexture() const noexcept { return _mainTexture; }
+
+		/**
+		 * @brief Set the Main Texture object
+		 * 
+		 * @param texture new main texture pointer
+		 */
+		inline void SetMainTexture(Texture* texture) noexcept { _mainTexture = texture; };
 
 #pragma endregion
 

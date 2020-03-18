@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "Core/Type.h"
+#include "Resources/Shader.h"
 
 namespace Quantix::Resources
 {
@@ -45,7 +46,7 @@ namespace Quantix::Resources
 		 * @param vertexShader Path to the vertex shader
 		 * @param fragmentShader Path to the Fragment shader
 		 */
-		ShaderProgram(const QXchar* vertexShader, const QXchar* fragmentShader) noexcept;
+		ShaderProgram(Shader* vertexShader, Shader* fragmentShader) noexcept;
 
 		/**
 		 * @brief Destroy the Shader Program object

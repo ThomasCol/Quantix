@@ -1,9 +1,9 @@
-#include "Core/Plateform/Application.h"
+#include "Core/Platform/Application.h"
 
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
 
-namespace Quantix::Core::Plateform
+namespace Quantix::Core::Platform
 {
 	Application::Application(QXuint width, QXuint height):
 		_window{width, height},
@@ -13,7 +13,7 @@ namespace Quantix::Core::Plateform
 
 	void Application::Run()
 	{
-		Core::Components::Mesh* mesh = new Core::Components::Mesh("../QuantixEngine/Media/Mesh/cube.obj",
+		Core::Components::Mesh* mesh = _manager.CreateMesh("../QuantixEngine/Media/Mesh/scifi.obj",
 			"../QuantixEngine/Media/Shader/vertexShader.vert", "../QuantixEngine/Media/Shader/fragmentShader.frag");
 
 		std::vector<Core::Components::Mesh*> meshes;

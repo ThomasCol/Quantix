@@ -22,7 +22,6 @@ namespace Quantix::Core::Render
 		}
 
 		glViewport(0, 0, width, height);
-		glEnable(GL_CULL_FACE);
 
 		resizeCallback = ResizeCallback;
 	}
@@ -31,10 +30,11 @@ namespace Quantix::Core::Render
 
 #pragma region Functions
 
-	void Renderer::Draw(std::vector<Core::Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Plateform::AppInfo& info)
+	void Renderer::Draw(std::vector<Core::Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info)
 	{
 		glClearColor(0.0f, 0.0f, 0.0f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_CULL_FACE);
 
 		for (QXint i = 0; i < mesh.size(); ++i)
 		{

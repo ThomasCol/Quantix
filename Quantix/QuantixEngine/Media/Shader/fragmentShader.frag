@@ -72,7 +72,7 @@ void main()
 			output += calculateSpotLight(lightArray[i], lightDir, norm);
 	}
 
-		color = vec4(output, 1.0) * texture(material.texture, UV);
+		color = vec4(output, 1.0) * vec4(1.0);
 }
 
 vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm)

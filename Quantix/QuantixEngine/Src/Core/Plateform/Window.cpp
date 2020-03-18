@@ -1,8 +1,8 @@
-#include "Core/Plateform/Window.h"
+#include "Core/Platform/Window.h"
 
 #include <stdexcept>
 
-namespace Quantix::Core::Plateform
+namespace Quantix::Core::Platform
 {
 #pragma region Constructors
 

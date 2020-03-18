@@ -45,7 +45,7 @@ namespace Quantix::Core::Render
 		 * @param lights Lights for the scene
 		 * @param info App info
 		 */
-		void Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light*>& lights, Quantix::Core::Plateform::AppInfo& info);
+		void Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light*>& lights, Quantix::Core::Platform::AppInfo& info);
 
 #pragma endregion
 	};

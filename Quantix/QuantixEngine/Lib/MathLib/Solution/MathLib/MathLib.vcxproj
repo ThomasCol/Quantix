@@ -153,6 +153,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>Include;Include\Geometry;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

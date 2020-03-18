@@ -18,14 +18,14 @@ namespace Quantix::Resources
 		_type {std::move(shader._type)}
 	{}
 
-	Shader::Shader(const QXchar* file, EShaderType type) noexcept :
+	Shader::Shader(const QXstring& file, EShaderType type) noexcept :
 		_id {(QXuint)-1},
 		_type {type}
 	{
 		switch (_type)
 		{
-			case EShaderType::VERTEX: CreateVertexShader(file);	break;
-			case EShaderType::FRAGMENT: CreateFragmentShader(file); break;
+			case EShaderType::VERTEX: CreateVertexShader(file.c_str());	break;
+			case EShaderType::FRAGMENT: CreateFragmentShader(file.c_str()); break;
 		
 			default: break;
 		}

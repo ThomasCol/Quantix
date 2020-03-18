@@ -17,16 +17,13 @@ namespace Quantix::Resources
 		_id {std::move(program._id)}
 	{}
 
-	ShaderProgram::ShaderProgram(const QXchar* vertexShader, const QXchar* fragmentShader) noexcept :
+	ShaderProgram::ShaderProgram(Shader* vertexShader, Shader* fragmentShader) noexcept :
 		_id { (QXuint)-1}
 	{
-		Shader vertex { vertexShader, EShaderType::VERTEX };
-		Shader fragment { fragmentShader, EShaderType::FRAGMENT };
-
 		_id = glCreateProgram();
 
-		glAttachShader(_id, vertex.GetId());
-		glAttachShader(_id, fragment.GetId());
+		glAttachShader(_id, vertexShader->GetId());
+		glAttachShader(_id, fragmentShader->GetId());
 
 		glLinkProgram(_id);
 

@@ -3,13 +3,13 @@
 
 #include <iostream>
 
-#include <Core/Plateform/Application.h>
+#include <Core/Platform/Application.h>
 
 int main()
 {
 	try
 	{
-		Quantix::Core::Plateform::Application app(900, 600);
+		Quantix::Core::Platform::Application app(900, 600);
 		app.Run();
 	}
 	catch (const std::exception& e)

@@ -4,7 +4,7 @@
 #include "Core/Type.h"
 #include "Resources/Model.h"
 #include "Resources/Material.h"
-#include "Core/Plateform/Window.h"
+#include "Core/Platform/Window.h"
 #include "Light.h"
 
 namespace Quantix::Core::Components
@@ -14,8 +14,8 @@ namespace Quantix::Core::Components
 	private:
 #pragma region Attributes
 
-		Resources::Model		_model;
-		Resources::Material		_material;
+		Resources::Model*		_model;
+		Resources::Material*	_material;
 
 #pragma endregion
 		
@@ -29,7 +29,7 @@ namespace Quantix::Core::Components
 		 * @param vertexShader Path to the vertex shader
 		 * @param fragmentShader Path to the fragment shader
 		 */
-		Mesh(const QXchar* objFile, const QXchar* vertexShader, const QXchar* fragmentShader);
+		Mesh(Resources::Model* model, Resources::Material* material);
 
 		/**
 		 * @brief Construct a new Mesh object
@@ -54,12 +54,12 @@ namespace Quantix::Core::Components
 
 #pragma region Functions
 
-		void SendDataToShader(Core::Plateform::AppInfo& info, std::vector<Light*>& light);
+		void SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light);
 		
 #pragma region Accessor
 
-		inline QXuint GetVAO() { return _model.GetVAO(); }
-		inline const std::vector<QXuint>& GetIndices() { return _model.GetIndices(); }
+		inline QXuint GetVAO() { return _model->GetVAO(); }
+		inline const std::vector<QXuint>& GetIndices() { return _model->GetIndices(); }
 
 #pragma endregion
 

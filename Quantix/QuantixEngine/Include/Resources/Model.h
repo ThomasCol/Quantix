@@ -66,7 +66,7 @@ namespace Quantix::Resources
 		 * @param attrib Model attributes
 		 * @param shapes Shapes for the model
 		 */
-		Model(const tinyobj::attrib_t& attrib, const std::vector<tinyobj::shape_t>& shapes);
+		Model(const QXstring& filePath);
 
 		/**
 		 * @brief Destroy the Model object
@@ -76,6 +76,11 @@ namespace Quantix::Resources
 #pragma endregion
 
 #pragma region Functions
+
+		void Load(const QXstring& filePath);
+		QXbool LoadFromCache(const QXstring& filePath);
+		void LoadFromFile(const QXstring& filePath);
+		void SaveToCache(const QXstring& filePath);
 
 #pragma region Operators
 

@@ -6,8 +6,8 @@ namespace Quantix::Resources
 {
 #pragma region Constructors
 
-	Material::Material(const QXchar* vertexShader, const QXchar* fragmentShader) :
-		_program {vertexShader, fragmentShader}
+	Material::Material(ShaderProgram* program) :
+		_program {program}
 	{}
 
 	Material::~Material()
@@ -23,12 +23,13 @@ namespace Quantix::Resources
 		SetFloat3("material.diffuse", diffuse.e);
 		SetFloat3("material.specular", specular.e);
 		SetFloat("material.shininess", shininess);
-		SetUint("material.texture", _mainTexture.GetId());
+		if (_mainTexture != nullptr)
+			SetUint("material.texture", _mainTexture->GetId());
 	}
 
 	void Material::SetFloat(QXstring location, QXfloat value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -38,7 +39,7 @@ namespace Quantix::Resources
 	
 	void Material::SetFloat2(QXstring location, const QXfloat* value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -48,7 +49,7 @@ namespace Quantix::Resources
 	
 	void Material::SetFloat3(QXstring location, const QXfloat* value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -58,7 +59,7 @@ namespace Quantix::Resources
 	
 	void Material::SetFloat4(QXstring location, const QXfloat* value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -68,7 +69,7 @@ namespace Quantix::Resources
 
 	void Material::SetInt(QXstring location, QXint value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -78,7 +79,7 @@ namespace Quantix::Resources
 	
 	void Material::SetInt2(QXstring location, const QXint* value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -87,7 +88,7 @@ namespace Quantix::Resources
 	
 	void Material::SetInt3(QXstring location, const QXint* value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -97,18 +98,12 @@ namespace Quantix::Resources
 		
 	void Material::SetMat4(QXstring location, Math::QXmat4 value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
 
 		glUniformMatrix4fv(location_id, 1, false, value.array);
-	}
-
-	void Material::SetMainTexture(const QXchar* file)
-	{
-		if (file != "")
-			_mainTexture.Load(file);
 	}
 
 	void Material::SetTexture(QXstring location, const Texture& texture)
@@ -118,7 +113,7 @@ namespace Quantix::Resources
 
 	void Material::SetUint(QXstring location, QXuint value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -128,7 +123,7 @@ namespace Quantix::Resources
 	
 	void Material::SetUint2(QXstring location, const QXuint* value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
@@ -138,7 +133,7 @@ namespace Quantix::Resources
 	
 	void Material::SetUint3(QXstring location, const QXuint* value)
 	{
-		QXuint location_id {_program.GetLocation(location)};
+		QXuint location_id {_program->GetLocation(location)};
 
 		if (location_id == -1)
 			return;
