@@ -187,6 +187,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lib\Glad\src\glad.c" />
+    <ClCompile Include="Src\Core\DataStructure\Component.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="Src\Core\Plateform\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\DataStructure\Component.h" />
     <ClInclude Include="Include\Core\Plateform\AppInfo.h" />
     <ClInclude Include="Include\Core\Plateform\Application.h" />
     <ClInclude Include="Include\Core\DLLHeader.h" />
