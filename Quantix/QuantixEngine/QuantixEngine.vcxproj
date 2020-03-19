@@ -188,6 +188,9 @@
   <ItemGroup>
     <ClCompile Include="Lib\Glad\src\glad.c" />
     <ClCompile Include="Src\Core\DataStructure\Component.cpp" />
+    <ClCompile Include="Src\Core\DataStructure\GameObject.cpp" />
+    <ClCompile Include="Src\Core\DataStructure\GameObject2D.cpp" />
+    <ClCompile Include="Src\Core\DataStructure\GameObject3D.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
@@ -202,6 +205,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\DataStructure\Component.h" />
+    <ClInclude Include="Include\Core\DataStructure\GameObject2D.h" />
+    <ClInclude Include="Include\Core\DataStructure\GameObject3D.h" />
+    <ClInclude Include="Include\Core\DataStructure\GameObject.h" />
     <ClInclude Include="Include\Core\Plateform\AppInfo.h" />
     <ClInclude Include="Include\Core\Plateform\Application.h" />
     <ClInclude Include="Include\Core\DLLHeader.h" />
