@@ -109,8 +109,17 @@ namespace Quantix::Core::Profiling
 		 */
 		int					GetFrameCounter();
 
+		/**
+		 * @brief Set the App Info object
+		 * 
+		 * @param app AppInfo
+		 */
 		inline void			SetAppInfo(Quantix::Core::Plateform::AppInfo app) { _info = app; };
 
+		/**
+		 * @brief Set the Profiling to format the message
+		 * 
+		 */
 		void				SetProfiling();
 
 		/**
