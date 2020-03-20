@@ -2,6 +2,7 @@
 
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
+#include "Core/Profiler/Profiler.h"
 
 namespace Quantix::Core::Plateform
 {
@@ -13,8 +14,11 @@ namespace Quantix::Core::Plateform
 
 	void Application::Run()
 	{
+		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Run");
+		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Mesh");
 		Core::Components::Mesh* mesh = new Core::Components::Mesh("../QuantixEngine/Media/Mesh/cube.obj",
 			"../QuantixEngine/Media/Shader/vertexShader.vert", "../QuantixEngine/Media/Shader/fragmentShader.frag");
+		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Mesh");
 
 		std::vector<Core::Components::Mesh*> meshes;
 		meshes.push_back(mesh);
@@ -49,15 +53,24 @@ namespace Quantix::Core::Plateform
 		lights.push_back(light);
 		lights.push_back(light2);
 		
-		while (!_window.ShouldClose())
+		while (!_window.ShouldClose() && !GetKeyState(VK_SPACE))
 		{
-			_renderer.Draw(meshes, lights, info);
+			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Draw");
+			_renderer.Draw(meshes, lights, info); 
+			Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Draw");
+
+			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Refresh");
 			_window.Refresh(info);
+			Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Refresh");
+			Quantix::Core::Profiling::Profiler::GetInstance()->FrameCounter();
 		}
+
+		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Run");
 		
 		for (int i = 0; i < meshes.size(); ++i)
 			delete meshes[i];
 		for (int i = 0; i < meshes.size(); ++i)
 			delete lights[i];
+		Quantix::Core::Debugger::Logger::GetInstance()->CloseLogger();
 	}
 }

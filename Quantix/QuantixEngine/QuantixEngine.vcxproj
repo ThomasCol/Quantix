@@ -187,9 +187,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lib\Glad\src\glad.c" />
+    <ClCompile Include="Src\Core\Debugger\Assertion.cpp" />
+    <ClCompile Include="Src\Core\Debugger\Logger.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
+    <ClCompile Include="Src\Core\Profiler\Profiler.cpp" />
     <ClCompile Include="Src\Resources\Material.cpp" />
     <ClCompile Include="Src\Core\Components\Mesh.cpp" />
     <ClCompile Include="Src\Resources\Model.cpp" />
@@ -200,11 +203,14 @@
     <ClCompile Include="Src\Core\Plateform\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Debugger\Assertion.h" />
+    <ClInclude Include="Include\Core\Debugger\Logger.h" />
     <ClInclude Include="Include\Core\Plateform\AppInfo.h" />
     <ClInclude Include="Include\Core\Plateform\Application.h" />
     <ClInclude Include="Include\Core\DLLHeader.h" />
     <ClInclude Include="Include\Core\Plateform\Window.h" />
     <ClInclude Include="Include\Core\Components\Light.h" />
+    <ClInclude Include="Include\Core\Profiler\Profiler.h" />
     <ClInclude Include="Include\Resources\Material.h" />
     <ClInclude Include="Include\Core\Components\Mesh.h" />
     <ClInclude Include="Include\Resources\Model.h" />
