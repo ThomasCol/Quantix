@@ -6,16 +6,16 @@
 #include <typeinfo>
 //#include "Transform.h"
 #include "Component.h"
+#include <Vec2.h>
 #include <Vec3.h>
 #include <Mat4.h>
 
 namespace Core::DataStructure
 {
-	class GameObject
+	class GameComponent
 	{
 	protected:
 		#pragma region Attributes
-	//	Transform					_tranform;
 		std::vector<Component*>		_component;
 		std::string					_name;
 		QXint						_layer;
@@ -23,27 +23,14 @@ namespace Core::DataStructure
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
-		GameObject() noexcept;
-		GameObject(const GameObject& object) noexcept;
-		GameObject(GameObject&& object) noexcept;
-		GameObject(std::string name, const QXbool& isStatic = false) noexcept;
-		~GameObject();
+		GameComponent() noexcept;
+		GameComponent(const GameComponent& object) noexcept;
+		GameComponent(GameComponent&& object) noexcept;
+		GameComponent(std::string name, const QXbool& isStatic = false) noexcept;
+		~GameComponent();
 		#pragma endregion Constructors/Destructor
 
 		#pragma region Methods
-		/**
-		 * @brief Add Child to a GameObject
-		 * 
-		 * @param object GameObject Child
-		 */
-		void					AddChild(GameObject* object);
-
-		/**
-		 * @brief Add Child to a GameObject
-		 * 
-		 * @param object const GameObject Child
-		 */
-		void					AddChild(const GameObject* object);
 
 		/**
 		 * @brief Clean Component that are destroyed
@@ -168,93 +155,6 @@ namespace Core::DataStructure
 		 * @return QXint 
 		 */
 		inline QXint			GetLayer() const { return _layer; };
-
-		/**
-		 * @brief Set the Global Position object
-		 * 
-		 * @param pos QXvec3
-		 */
-		void					SetGlobalPosition(Math::QXvec3 pos);
-
-		/**
-		 * @brief Set the Global Rotation object
-		 * 
-		 * @param rot QXvec3
-		 */
-		void					SetGlobalRotation(Math::QXvec3 rot);
-
-		/**
-		 * @brief Get the Global Position object
-		 * 
-		 */
-		//void					GetGlobalPosition() const { return _transform.GetGlobalPosition(); };
-
-		/**
-		 * @brief Get the Global Rotation object
-		 * 
-		 */
-		//void					GetGlobalRotation() const { return _transform.GetGlobalRotation(); };
-
-		/**
-		 * @brief Set the Local Position object
-		 * 
-		 * @param pos QXvec3
-		 */
-		void					SetLocalPosition(Math::QXvec3 pos);
-
-		/**
-		 * @brief Set the Local Rotation object
-		 * 
-		 * @param rot QXvec3
-		 */
-		void					SetLocalRotation(Math::QXvec3 rot);
-
-		/**
-		 * @brief Set the Local Scale object
-		 * 
-		 * @param scale QXvec3
-		 */
-		void					SetLocalScale(Math::QXvec3 scale);
-
-		/**
-		 * @brief Get the Local Position object
-		 * 
-		 */
-		//void					GetLocalPosition() const { return _transform.GetLocalPosition(); };
-
-		/**
-		 * @brief Get the Local Rotation object
-		 * 
-		 */
-		//void					GetLocalRotation() const { return _transform.GetLocalRotation(); };
-
-		/**
-		 * @brief Get the Local Scale object
-		 * 
-		 */
-		//void					GetLocalScale() const { return _transform.GetLocalScale(); };
-
-		/**
-		 * @brief Set the Transform object
-		 * 
-		 * @param mat QXmat4
-		 */
-		void					SetTransform(const Math::QXmat4& mat);
-
-		/**
-		 * @brief Set the Transform object
-		 * 
-		 * @param pos QXvec3
-		 * @param rot QXvec3
-		 * @param scale QXvec3
-		 */
-		void					SetTransform(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale);
-
-		/**
-		 * @brief Get the Transform object
-		 * 
-		 */
-		//void					GetTransform() const { return _transform; };
 		#pragma endregion Accessors
 		#pragma endregion Methods
 	};
