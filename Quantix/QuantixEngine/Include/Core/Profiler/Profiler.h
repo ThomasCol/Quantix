@@ -114,7 +114,7 @@ namespace Quantix::Core::Profiling
 		 * 
 		 * @param app AppInfo
 		 */
-		inline void			SetAppInfo(Quantix::Core::Plateform::AppInfo app) { _info = app; };
+		inline void			SetAppInfo(Quantix::Core::Plateform::AppInfo app) { _info = &app; };
 
 		/**
 		 * @brief Set the Profiling to format the message
@@ -152,7 +152,7 @@ namespace Quantix::Core::Profiling
 	private:
 		#pragma region Attributes
 		static Profiler*											_instance;
-		Quantix::Core::Plateform::AppInfo							_info;
+		Quantix::Core::Plateform::AppInfo*							_info;
 		std::string													_profiling;
 		std::map<QXstring, Info>									_infoProfiling;
 		QXint														_frameRate;

@@ -89,35 +89,39 @@ namespace Quantix::Core::Profiling
 	{
 		for (std::map<QXstring, Info>::iterator it = _infoProfiling.begin(); it != _infoProfiling.end(); ++it)
 			if (it->second.activate)
-				it->second.timer += _info.deltaTime;
+				it->second.timer += _info->deltaTime;
 	}
 
 	void Profiler::SetProfiling()
 	{
-		typedef std::function<bool(std::pair<QXstring, Info>, std::pair<QXstring, Info>)> Comparator;
+		typedef std::pair<QXstring, Info> pair;
+		// create an empty vector of pairs
+		std::vector<pair> vec;
 
-		// Defining a lambda function to compare two pairs. It will compare two pairs using second field
-		Comparator compFunctor =
-			[](std::pair<QXstring, Info> elem1, std::pair<QXstring, Info> elem2)
+		// copy key-value pairs from the map to the vector
+		std::copy(_infoProfiling.begin(), _infoProfiling.end(),	std::back_inserter<std::vector<pair>>(vec));
+
+		// sort the vector by increasing order of its pair's second value
+		// if second value are equal, order by the pair's first value
+		std::sort(vec.begin(), vec.end(), [](const pair& l, const pair& r) 
 		{
-			return elem1.second.id > elem2.second.id;
-		};
+			if (l.second.id != r.second.id)
+				return l.second.id < r.second.id;
 
-		// Declaring a set that will store the pairs using above comparision logic
-		std::set<std::pair<QXstring, Info>, Comparator> profilingInfo(
-			_infoProfiling.begin(), _infoProfiling.end(), compFunctor);
+			return l.first < r.first;
+		});
 
-		for (std::pair<QXstring, Info> it : _infoProfiling)
+		for (auto const& pair : vec)
 		{
-			_profiling += it.second.msg;
+			_profiling += pair.second.msg;
 			std::ostringstream streamObj;
+
 			// Set Fixed -Point Notation
 			streamObj << std::fixed;
-
 			// Set precision to 2 digits
 			streamObj << std::setprecision(2);
 
-			streamObj << it.second.timer;
+			streamObj << pair.second.timer;
 			QXstring time = "**** Time to process ****: " + streamObj.str() + "seconds\n\n";
 			_profiling += time;
 		}
