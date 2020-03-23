@@ -39,13 +39,22 @@ namespace Quantix::Core::DataStructure
 #pragma endregion
 
 #pragma region Functions
-
+		
+		Material*			CreateDefaultMaterial();
 		Material*			CreateMaterial(const QXstring& filePath);
-		Components::Mesh*	CreateMesh(const QXstring& modelPath, const QXstring& vertexPath, const QXstring& fragmentPath);
+		Components::Mesh*	CreateMesh(const QXstring& modelPath, const QXstring& materialPath = "");
 		Model*				CreateModel(const QXstring& filePath);
 		Shader*				CreateShader(const QXstring& filePath, EShaderType type);
 		ShaderProgram*		CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath);
 		Texture*			CreateTexture(const QXstring& filePath);
+
+		Material*			LoadMaterial(const QXstring& filePath);
+		void				LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
+		QXbool				LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
+		void				LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
+
+		void				SaveMaterialToCache(const QXstring& filePath, const Material* mat);
+		void				SaveModelToCache(const QXstring& filePath, Model* model);
 
 #pragma endregion
 	};

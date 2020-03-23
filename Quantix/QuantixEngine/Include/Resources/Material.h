@@ -173,12 +173,14 @@ namespace Quantix::Resources
 		 */
 		inline const Texture* GetMainTexture() const noexcept { return _mainTexture; }
 
+		inline std::vector<QXstring> GetProgramPath() const { return _program->GetPath(); }
+
 		/**
 		 * @brief Set the Main Texture object
 		 * 
 		 * @param texture new main texture pointer
 		 */
-		inline void SetMainTexture(Texture* texture) noexcept { _mainTexture = texture; };
+		inline void SetMainTexture(Texture* texture) noexcept { _mainTexture = texture; }
 
 #pragma endregion
 

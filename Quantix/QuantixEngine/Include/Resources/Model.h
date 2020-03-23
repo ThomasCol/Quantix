@@ -2,7 +2,6 @@
 #define __MODEL_H__
 
 #include <vector>
-#include <tiny_obj_loader.h>
 #include <Vec2.h>
 #include <Vec3.h>
 
@@ -66,21 +65,14 @@ namespace Quantix::Resources
 		 * @param attrib Model attributes
 		 * @param shapes Shapes for the model
 		 */
-		Model(const QXstring& filePath);
+		Model(const std::vector<Vertex>& vertices, const std::vector<QXuint> indices);
 
 		/**
 		 * @brief Destroy the Model object
 		 */
-		~Model();
+		~Model() = default;
 
 #pragma endregion
-
-#pragma region Functions
-
-		void Load(const QXstring& filePath);
-		QXbool LoadFromCache(const QXstring& filePath);
-		void LoadFromFile(const QXstring& filePath);
-		void SaveToCache(const QXstring& filePath);
 
 #pragma region Operators
 
@@ -109,6 +101,13 @@ namespace Quantix::Resources
 		 * @return const std::vector<QXuint>& Indices array reference
 		 */
 		inline const std::vector<QXuint>& GetIndices() { return _indices; }
+
+		/**
+		 * @brief Get the Indices array
+		 *
+		 * @return const std::vector<QXuint>& Indices array reference
+		 */
+		inline const std::vector<Vertex>& GetVertices() { return _vertices; }
 
 #pragma endregion
 

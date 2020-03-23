@@ -13,9 +13,11 @@ namespace Quantix::Resources
 	private:
 #pragma region Attributes
 
-		QXuint _id;
+		QXuint									_id;
 
-		std::unordered_map<QXstring, QXuint> _locations;
+		std::vector<QXstring>					_shadersPath;
+
+		std::unordered_map<QXstring, QXuint>	_locations;
 
 #pragma endregion
 	public:
@@ -76,6 +78,10 @@ namespace Quantix::Resources
 		 * @return QXuint Location ID
 		 */
 		QXuint GetLocation(QXstring location) noexcept;
+
+		inline void AddShaderPath(const QXstring& path) { _shadersPath.push_back(path); }
+
+		inline std::vector<QXstring> GetPath() { return _shadersPath; }
 
 #pragma endregion
 
