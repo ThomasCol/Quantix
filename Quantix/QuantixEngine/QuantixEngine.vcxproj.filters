@@ -98,5 +98,8 @@
     <ClCompile Include="Src\Core\DataStructures\ResourcesManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Core\TinyobjImplementation.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

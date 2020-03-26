@@ -191,6 +191,7 @@
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
+    <ClCompile Include="Src\Core\TinyobjImplementation.cpp" />
     <ClCompile Include="Src\Resources\Material.cpp" />
     <ClCompile Include="Src\Core\Components\Mesh.cpp" />
     <ClCompile Include="Src\Resources\Model.cpp" />

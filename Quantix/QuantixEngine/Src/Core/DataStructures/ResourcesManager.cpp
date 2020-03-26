@@ -1,9 +1,5 @@
 #include "Core/DataStructures/ResourcesManager.h"
 
-#define TINYOBJLOADER_IMPLEMENTATION
-
-#include <tiny_obj_loader.h>
-
 namespace Quantix::Core::DataStructure
 {
 #pragma region Constructors
@@ -181,6 +177,27 @@ namespace Quantix::Core::DataStructure
 		material->SetMainTexture(CreateTexture(texture_path));
 
 		return material;
+	}
+
+	Material* ResourcesManager::LoadMaterial(tinyobj::material_t& material)
+	{
+		Material* mat = new Material;
+
+		mat->ambient.x = material.ambient[0];
+		mat->ambient.y = material.ambient[1];
+		mat->ambient.z = material.ambient[2];
+
+		mat->diffuse.x = material.diffuse[0];
+		mat->diffuse.y = material.diffuse[1];
+		mat->diffuse.z = material.diffuse[2];
+
+		mat->specular.x = material.specular[0];
+		mat->specular.y = material.specular[1];
+		mat->specular.z = material.specular[2];
+
+		mat->shininess = material.shininess;
+
+		return mat;
 	}
 
 	void ResourcesManager::LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices)

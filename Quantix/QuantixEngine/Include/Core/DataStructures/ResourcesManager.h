@@ -2,6 +2,7 @@
 #define __RESPURCESMANAGER_H__
 
 #include <unordered_map>
+#include <tiny_obj_loader.h>
 
 #include "Type.h"
 #include "Resources/Model.h"
@@ -27,6 +28,21 @@ namespace Quantix::Core::DataStructure
 		std::unordered_map<QXstring, Texture*>			_textures;
 
 #pragma endregion
+
+#pragma region Functions
+
+		Material*			CreateDefaultMaterial();
+
+		Material*			LoadMaterial(const QXstring& filePath);
+		Material*			LoadMaterial(tinyobj::material_t& material);
+		void				LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
+		QXbool				LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
+		void				LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
+
+		void				SaveMaterialToCache(const QXstring& filePath, const Material* mat);
+		void				SaveModelToCache(const QXstring& filePath, Model* model);
+
+#pragma endregion
 		
 	public:
 #pragma region Constructors
@@ -40,7 +56,6 @@ namespace Quantix::Core::DataStructure
 
 #pragma region Functions
 		
-		Material*			CreateDefaultMaterial();
 		Material*			CreateMaterial(const QXstring& filePath);
 		Components::Mesh*	CreateMesh(const QXstring& modelPath, const QXstring& materialPath = "");
 		Model*				CreateModel(const QXstring& filePath);
@@ -48,13 +63,6 @@ namespace Quantix::Core::DataStructure
 		ShaderProgram*		CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath);
 		Texture*			CreateTexture(const QXstring& filePath);
 
-		Material*			LoadMaterial(const QXstring& filePath);
-		void				LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
-		QXbool				LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
-		void				LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
-
-		void				SaveMaterialToCache(const QXstring& filePath, const Material* mat);
-		void				SaveModelToCache(const QXstring& filePath, Model* model);
 
 #pragma endregion
 	};
