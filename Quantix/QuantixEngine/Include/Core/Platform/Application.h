@@ -13,9 +13,6 @@ namespace Quantix::Core::Platform
 	private:
 #pragma region Attributes
 
-		Window				_window;
-		Render::Renderer 	_renderer;
-		DataStructure::ResourcesManager _manager;
 		
 
 #pragma endregion
@@ -24,6 +21,9 @@ namespace Quantix::Core::Platform
 #pragma region Attributes
 
 		AppInfo info;
+		Window							window;
+		Render::Renderer 				renderer;
+		DataStructure::ResourcesManager manager;
 
 #pragma endregion
 
