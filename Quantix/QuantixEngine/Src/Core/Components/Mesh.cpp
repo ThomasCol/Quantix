@@ -26,9 +26,9 @@ namespace Quantix::Core::Components
 		_material->SetMat4("view", view);
 		_material->SetFloat3("viewPos", pos.e);
 
-		QXuint size = (lights.size() <= 10 ? lights.size() : 10);
+		QXsizei size = (lights.size() <= 10 ? lights.size() : 10);
 
-		for (QXuint i = 0; i < size; ++i)
+		for (QXsizei i = 0; i < size; ++i)
 		{
 			std::string lightName{ "lightArray[" + std::to_string(i) + "]." };
 			_material->SetFloat3(lightName + "ambient", lights[i]->ambient.e);

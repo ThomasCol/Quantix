@@ -13,8 +13,8 @@ namespace Quantix::Resources
 	private:
 #pragma region Attributes
 
-		ShaderProgram* 	_program;
-		Texture*		_mainTexture;
+		ShaderProgram* 	_program = nullptr;
+		Texture*		_mainTexture = nullptr;
 
 #pragma endregion
 
@@ -25,7 +25,7 @@ namespace Quantix::Resources
 		Math::QXvec3	diffuse;
 		Math::QXvec3	specular;
 
-		QXfloat			shininess;
+		QXfloat			shininess = 0;
 
 #pragma endregion
 

@@ -33,8 +33,8 @@ namespace Quantix::Core::Platform
 		light->constant = 0.5f;
 		light->linear = 0.09f;
 		light->quadratic = 0.032f;
-		light->cutOff = cos(0.70);
-		light->outerCutOff = cos(0.76);
+		light->cutOff = cos(0.70f);
+		light->outerCutOff = cos(0.76f);
 		light->type = Core::Components::ELightType::SPOT;
 
 		Core::Components::Light* light2 = new Core::Components::Light;
@@ -46,8 +46,8 @@ namespace Quantix::Core::Platform
 		light2->constant = 0.5f;
 		light2->linear = 0.09f;
 		light2->quadratic = 0.032f;
-		light2->cutOff = cos(0.70);
-		light2->outerCutOff = cos(0.76);
+		light2->cutOff = cos(0.70f);
+		light2->outerCutOff = cos(0.76f);
 		light2->type = Core::Components::ELightType::POINT;
 
 		std::vector<Core::Components::Light*> lights;

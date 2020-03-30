@@ -1,4 +1,4 @@
-#include "Core/DataStructures/ResourcesManager.h"
+#include "Core/DataStructure/ResourcesManager.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -35,10 +35,10 @@ namespace Quantix::Core::DataStructure
 	Material* ResourcesManager::CreateDefaultMaterial()
 	{
 		Material* material = new Material(CreateShaderProgram("../QuantixEngine/Media/Shader/vertexShader.vert", "../QuantixEngine/Media/Shader/fragmentShader.frag"));
-		material->diffuse = { 0.5, 0.5, 0.5 };
-		material->specular = { 1, 1, 1 };
-		material->ambient = { 0.2, 0.2, 0.2 };
-		material->shininess = 32;
+		material->diffuse = { 0.5f, 0.5f, 0.5f };
+		material->specular = { 1.f, 1.f, 1.f };
+		material->ambient = { 0.2f, 0.2f, 0.2f };
+		material->shininess = 32.f;
 
 		QXstring path = "../QuantixEngine/Media/Material/DefaultMaterial";
 		QXstring tmp_path;
@@ -268,25 +268,25 @@ namespace Quantix::Core::DataStructure
 				Vertex vertex = {};
 
 				vertex.position = {
-					attrib.vertices[3 * index.vertex_index + 0],
-					attrib.vertices[3 * index.vertex_index + 1],
-					attrib.vertices[3 * index.vertex_index + 2]
+					attrib.vertices[3 * (QXsizei)index.vertex_index + 0],
+					attrib.vertices[3 * (QXsizei)index.vertex_index + 1],
+					attrib.vertices[3 * (QXsizei)index.vertex_index + 2]
 				};
 
 				if (has_tex_coords)
 				{
 					vertex.uv = {
-						attrib.texcoords[2 * index.texcoord_index + 0],
-						attrib.texcoords[2 * index.texcoord_index + 1]
+						attrib.texcoords[2 * (QXsizei)index.texcoord_index + 0],
+						attrib.texcoords[2 * (QXsizei)index.texcoord_index + 1]
 					};
 				}
 
 				if (has_normals)
 				{
 					vertex.normal = {
-						attrib.normals[3 * index.normal_index + 0],
-						attrib.normals[3 * index.normal_index + 1],
-						attrib.normals[3 * index.normal_index + 2]
+						attrib.normals[3 * (QXsizei)index.normal_index + 0],
+						attrib.normals[3 * (QXsizei)index.normal_index + 1],
+						attrib.normals[3 * (QXsizei)index.normal_index + 2]
 					};
 				}
 

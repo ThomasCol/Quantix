@@ -187,7 +187,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lib\Glad\src\glad.c" />
-    <ClCompile Include="Src\Core\DataStructures\ResourcesManager.cpp" />
+    <ClCompile Include="Src\Core\DataStructure\Component.cpp" />
+    <ClCompile Include="Src\Core\DataStructure\GameComponent.cpp" />
+    <ClCompile Include="Src\Core\DataStructure\GameObject2D.cpp" />
+    <ClCompile Include="Src\Core\DataStructure\GameObject3D.cpp" />
+    <ClCompile Include="Src\Core\DataStructure\ResourcesManager.cpp" />
     <ClCompile Include="Src\Core\Components\Camera.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
@@ -206,12 +210,16 @@
     <ClCompile Include="Src\Core\Plateform\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\Core\DataStructures\ResourcesManager.h" />
+    <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
+    <ClInclude Include="Include\Core\DataStructure\ResourcesManager.h" />
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
     <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Components\Camera.h" />
     <ClInclude Include="Include\Core\Debugger\Assertion.h" />
     <ClInclude Include="Include\Core\Debugger\Logger.h" />
+    <ClInclude Include="Include\Core\DataStructure\Component.h" />
+    <ClInclude Include="Include\Core\DataStructure\GameObject2D.h" />
+    <ClInclude Include="Include\Core\DataStructure\GameObject3D.h" />
     <ClInclude Include="Include\Core\DLLHeader.h" />
     <ClInclude Include="Include\Core\Platform\Window.h" />
     <ClInclude Include="Include\Core\Components\Light.h" />

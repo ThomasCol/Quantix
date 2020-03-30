@@ -4,7 +4,7 @@
 #include "Core/Render/Renderer.h"
 #include "Core/Platform/Window.h"
 #include "Core/Platform/AppInfo.h"
-#include "Core/DataStructures/ResourcesManager.h"
+#include "Core/DataStructure/ResourcesManager.h"
 
 namespace Quantix::Core::Platform
 {
