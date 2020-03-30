@@ -13,7 +13,7 @@ namespace Quantix::Core::Platform
 
 	void Application::Run()
 	{
-		Core::Components::Mesh* mesh = _manager.CreateMesh("../QuantixEngine/Media/Mesh/scifi.obj", "../QuantixEngine/Media/Material/DefaultMaterial0.mat");
+		Core::Components::Mesh* mesh = _manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
 
 		std::vector<Core::Components::Mesh*> meshes;
 		meshes.push_back(mesh);

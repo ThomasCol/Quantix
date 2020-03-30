@@ -39,6 +39,7 @@ namespace Quantix::Core::DataStructure
 		material->specular = { 1, 1, 1 };
 		material->ambient = { 0.2, 0.2, 0.2 };
 		material->shininess = 32;
+		material->SetMainTexture(CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 
 		QXstring path = "../QuantixEngine/Media/Material/DefaultMaterial";
 		QXstring tmp_path;
@@ -175,6 +176,8 @@ namespace Quantix::Core::DataStructure
 		fread(texture_path.data(), sizeof(QXchar), char_count, file);
 
 		material->SetMainTexture(CreateTexture(texture_path));
+
+		fclose(file);
 
 		return material;
 	}

@@ -35,6 +35,7 @@ namespace Quantix::Core::Render
 		glClearColor(0.0f, 0.0f, 0.0f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
 
 		for (QXint i = 0; i < mesh.size(); ++i)
 		{

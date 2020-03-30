@@ -29,6 +29,7 @@ namespace Quantix::Resources
 
 		int	width, height, channel = 0;
 
+		stbi_set_flip_vertically_on_load(true);
 		/* load image */
 		_image = stbi_load(file, &width, &height, &channel, 0);
 
