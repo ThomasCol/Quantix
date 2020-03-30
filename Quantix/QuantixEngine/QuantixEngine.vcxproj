@@ -198,6 +198,7 @@
     <ClCompile Include="Src\Resources\ShaderProgram.cpp" />
     <ClCompile Include="Src\Resources\Texture.cpp" />
     <ClCompile Include="Src\Core\Plateform\Window.cpp" />
+    <ClCompile Include="Src\Physic\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Plateform\AppInfo.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Include\Resources\Texture.h" />
     <ClInclude Include="Include\Core\Type.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
+    <ClInclude Include="Include\Physic\Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
