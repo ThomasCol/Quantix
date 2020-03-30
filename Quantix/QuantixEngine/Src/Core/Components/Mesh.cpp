@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "MathDefines.h"
+#include "Core/Profiler/Profiler.h"
 
 namespace Quantix::Core::Components
 {
@@ -25,7 +26,7 @@ namespace Quantix::Core::Components
 		_material->SetMat4("view", view);
 		_material->SetFloat3("viewPos", pos.e);
 
-		QXuint size = lights.size() <= 10 ? lights.size() : 10;
+		QXuint size = (lights.size() <= 10 ? lights.size() : 10);
 
 		for (QXuint i = 0; i < size; ++i)
 		{

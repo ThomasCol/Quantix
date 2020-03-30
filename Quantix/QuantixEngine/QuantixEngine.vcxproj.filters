@@ -60,6 +60,15 @@
     <ClInclude Include="Include\Core\Components\Camera.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Profiler\Profiler.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Debugger\Assertion.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Debugger\Logger.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lib\Glad\src\glad.c">
@@ -98,6 +107,13 @@
     <ClCompile Include="Src\Core\Plateform\Window.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Core\Profiler\Profiler.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\Debugger\Assertion.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\Debugger\Logger.cpp">
     <ClCompile Include="Src\Core\DataStructures\ResourcesManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>

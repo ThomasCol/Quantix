@@ -1,9 +1,8 @@
 #include "Core/Platform/Application.h"
 
-#include <Windows.h>
-
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
+#include "Core/Profiler/Profiler.h"
 
 
 namespace Quantix::Core::Platform
@@ -16,9 +15,11 @@ namespace Quantix::Core::Platform
 
 	void Application::Run()
 	{
+		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Run");
+		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Mesh");
 		Core::Components::Mesh* mesh = _manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-
 		mesh->GetMaterial()->SetMainTexture(_manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
+		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Mesh");
 
 		std::vector<Core::Components::Mesh*> meshes;
 		meshes.push_back(mesh);
@@ -53,15 +54,24 @@ namespace Quantix::Core::Platform
 		lights.push_back(light);
 		lights.push_back(light2);
 		
-		while (!_window.ShouldClose())
+		while (!_window.ShouldClose() && !GetKeyState(VK_SPACE))
 		{
-			_renderer.Draw(meshes, lights, info);
+			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Draw");
+			_renderer.Draw(meshes, lights, info); 
+			Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Draw");
+
+			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Refresh");
 			_window.Refresh(info);
+			Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Refresh");
+			Quantix::Core::Profiling::Profiler::GetInstance()->FrameCounter();
 		}
+
+		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Run");
 		
 		for (int i = 0; i < meshes.size(); ++i)
 			delete meshes[i];
 		for (int i = 0; i < meshes.size(); ++i)
 			delete lights[i];
+		Quantix::Core::Debugger::Logger::GetInstance()->CloseLogger();
 	}
 }

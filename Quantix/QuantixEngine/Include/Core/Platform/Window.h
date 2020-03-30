@@ -96,6 +96,8 @@ namespace Quantix::Core::Platform
 		 */
 		inline std::function<void(QXuint, QXuint)>&	GetResizeCallback() { return _resizeCallback; }
 
+		inline GLFWwindow* GetWindow() const { return _window; };
+
 #pragma endregion
 
 #pragma endregion
