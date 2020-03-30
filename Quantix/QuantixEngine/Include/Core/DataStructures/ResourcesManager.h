@@ -26,6 +26,7 @@ namespace Quantix::Core::DataStructure
 		std::unordered_map<QXstring, Shader*>			_shaders;
 		std::unordered_map<QXstring, ShaderProgram*>	_programs;
 		std::unordered_map<QXstring, Texture*>			_textures;
+		std::unordered_map<QXstring, Components::Mesh*>	_meshes;
 
 #pragma endregion
 
@@ -63,6 +64,8 @@ namespace Quantix::Core::DataStructure
 		ShaderProgram*		CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath);
 		Texture*			CreateTexture(const QXstring& filePath);
 
+		void				DeleteMaterial(const QXstring& filePath);
+		void				DeleteTexture(const QXstring& filePath);
 
 #pragma endregion
 	};

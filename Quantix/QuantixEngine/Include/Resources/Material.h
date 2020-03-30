@@ -32,6 +32,7 @@ namespace Quantix::Resources
 #pragma region Constructors
 
 		Material() = default;
+
 		/**
 		 * @brief Construct a new Material object
 		 * 

@@ -13,7 +13,7 @@ namespace Quantix::Core::Components
 	void Mesh::SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& lights)
 	{
 		Math::QXmat4 trs {Math::QXmat4::CreateTRSMatrix({0, 0, -1.f}, {0, (QXfloat)info.currentTime, 0}, { 1, 1, 1 })};
-		Math::QXmat4 proj {Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.001f, 10000.f, 80.f)};
+		Math::QXmat4 proj {Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f)};
 		Math::QXvec3 pos = { 0, 7, 10 };
 		Math::QXvec3 dir = { 0, -1, -1 };
 		Math::QXmat4 view {Math::QXmat4::CreateLookAtMatrix(pos, pos + dir, Math::QXvec3::up)};

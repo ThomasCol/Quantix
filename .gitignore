@@ -365,6 +365,4 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/visualstudio,visualstudiocode
 
-!VulkanTutorial/VulkanTutorial/Librairies/*
-
-!HotReload/TestHotReload/LivePP/*
+*.quantix

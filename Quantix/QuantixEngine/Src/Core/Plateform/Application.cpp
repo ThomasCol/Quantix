@@ -1,7 +1,10 @@
 #include "Core/Platform/Application.h"
 
+#include <Windows.h>
+
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
+
 
 namespace Quantix::Core::Platform
 {
@@ -14,6 +17,8 @@ namespace Quantix::Core::Platform
 	void Application::Run()
 	{
 		Core::Components::Mesh* mesh = _manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
+
+		mesh->GetMaterial()->SetMainTexture(_manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 
 		std::vector<Core::Components::Mesh*> meshes;
 		meshes.push_back(mesh);

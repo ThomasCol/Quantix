@@ -27,6 +27,7 @@ struct Material
 	vec3	specular;
 
 	float	shininess;
+	bool	textured;
 	sampler2D	texture;
 };
 
@@ -72,7 +73,10 @@ void main()
 			output += calculateSpotLight(lightArray[i], lightDir, norm);
 	}
 
+	if (material.textured)
 		color = vec4(output, 1.0) * texture(material.texture, UV);
+	else
+		color = vec4(output, 1.0);
 }
 
 vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm)

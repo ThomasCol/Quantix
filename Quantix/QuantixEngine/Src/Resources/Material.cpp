@@ -7,7 +7,8 @@ namespace Quantix::Resources
 #pragma region Constructors
 
 	Material::Material(ShaderProgram* program) :
-		_program {program}
+		_program {program},
+		_mainTexture {nullptr}
 	{}
 
 	Material::~Material()
@@ -24,7 +25,13 @@ namespace Quantix::Resources
 		SetFloat3("material.specular", specular.e);
 		SetFloat("material.shininess", shininess);
 		if (_mainTexture != nullptr)
+		{
+			SetInt("material.textured", 1);
 			SetUint("material.texture", _mainTexture->GetId());
+			return;
+		}
+
+		SetInt("material.textured", 0);
 	}
 
 	void Material::SetFloat(QXstring location, QXfloat value)

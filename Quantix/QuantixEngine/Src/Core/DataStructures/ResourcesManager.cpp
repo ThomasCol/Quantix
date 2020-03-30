@@ -39,7 +39,6 @@ namespace Quantix::Core::DataStructure
 		material->specular = { 1, 1, 1 };
 		material->ambient = { 0.2, 0.2, 0.2 };
 		material->shininess = 32;
-		material->SetMainTexture(CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 
 		QXstring path = "../QuantixEngine/Media/Material/DefaultMaterial";
 		QXstring tmp_path;
@@ -71,7 +70,7 @@ namespace Quantix::Core::DataStructure
 			return CreateDefaultMaterial();
 
 		auto it = _materials.find(filePath);
-		if (it != _materials.end())
+		if (it != _materials.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
@@ -81,7 +80,17 @@ namespace Quantix::Core::DataStructure
 
 	Components::Mesh* ResourcesManager::CreateMesh(const QXstring& modelPath, const QXstring& materialPath)
 	{
+
+		QXstring key = modelPath + materialPath;
+
+		if (_meshes[key] != nullptr)
+		{
+			return _meshes[key];
+		}
+
 		Components::Mesh* mesh = new Components::Mesh(CreateModel(modelPath), CreateMaterial(materialPath));
+
+		_meshes[key] = mesh;
 
 		return mesh;
 	}
@@ -89,7 +98,7 @@ namespace Quantix::Core::DataStructure
 	Model* ResourcesManager::CreateModel(const QXstring& filePath)
 	{
 		auto it = _models.find(filePath);
-		if (it != _models.end())
+		if (it != _models.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
@@ -105,7 +114,7 @@ namespace Quantix::Core::DataStructure
 	ShaderProgram* ResourcesManager::CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath)
 	{
 		auto it = _programs.find(vertexPath + fragmentPath);
-		if (it != _programs.end())
+		if (it != _programs.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
@@ -120,7 +129,7 @@ namespace Quantix::Core::DataStructure
 	Shader* ResourcesManager::CreateShader(const QXstring& filePath, EShaderType type)
 	{
 		auto it = _shaders.find(filePath);
-		if (it != _shaders.end())
+		if (it != _shaders.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
@@ -133,7 +142,7 @@ namespace Quantix::Core::DataStructure
 	Texture* ResourcesManager::CreateTexture(const QXstring& filePath)
 	{
 		auto it = _textures.find(filePath);
-		if (it != _textures.end())
+		if (it != _textures.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
@@ -345,6 +354,52 @@ namespace Quantix::Core::DataStructure
 		fwrite(model->GetIndices().data(), sizeof(QXuint), index_count, file);
 
 		fclose(file);
+	}
+
+	void ResourcesManager::DeleteMaterial(const QXstring& filePath)
+	{
+		Material* material = _materials[filePath];
+
+		if (material == nullptr)
+			return;
+
+		Components::Mesh* mesh;
+
+		for (auto it = _meshes.begin(); it != _meshes.end(); ++it)
+		{
+			mesh = it->second;
+			if (mesh->GetMaterial() == material)
+			{
+				mesh->SetMaterial(nullptr);
+				break;
+			}
+		}
+
+		delete material;
+		_materials[filePath] = nullptr;
+	}
+
+	void ResourcesManager::DeleteTexture(const QXstring& filePath)
+	{
+		Texture* texture = _textures[filePath];
+
+		if (texture == nullptr)
+			return;
+
+		Material* mat;
+
+		for (auto it = _materials.begin(); it != _materials.end(); ++it)
+		{
+			mat = it->second;
+			if (mat->GetMainTexture() == texture)
+			{
+				mat->SetMainTexture(nullptr);
+				break;
+			}
+		}
+
+		delete texture;
+		_textures[filePath] = nullptr;
 	}
 
 #pragma endregion

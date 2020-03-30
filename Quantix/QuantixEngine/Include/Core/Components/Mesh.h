@@ -60,6 +60,8 @@ namespace Quantix::Core::Components
 
 		inline QXuint GetVAO() { return _model->GetVAO(); }
 		inline const std::vector<QXuint>& GetIndices() { return _model->GetIndices(); }
+		inline Resources::Material* GetMaterial() { return _material; }
+		inline void SetMaterial(Resources::Material* material) { _material = material; }
 
 #pragma endregion
 
