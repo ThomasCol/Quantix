@@ -188,6 +188,7 @@
   <ItemGroup>
     <ClCompile Include="Lib\Glad\src\glad.c" />
     <ClCompile Include="Src\Core\DataStructures\ResourcesManager.cpp" />
+    <ClCompile Include="Src\Core\Components\Camera.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Include\Core\DataStructures\ResourcesManager.h" />
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
     <ClInclude Include="Include\Core\Platform\Application.h" />
+    <ClInclude Include="Include\Core\Components\Camera.h" />
     <ClInclude Include="Include\Core\DLLHeader.h" />
     <ClInclude Include="Include\Core\Platform\Window.h" />
     <ClInclude Include="Include\Core\Components\Light.h" />
