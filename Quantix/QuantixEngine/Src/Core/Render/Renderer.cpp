@@ -14,7 +14,8 @@ namespace Quantix::Core::Render
 
 #pragma region Coonstructors
 
-	Renderer::Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback)
+	Renderer::Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback) :
+		_mainBuffer {}
 	{
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -24,14 +25,55 @@ namespace Quantix::Core::Render
 		glViewport(0, 0, width, height);
 
 		resizeCallback = ResizeCallback;
+
+		CreateFrameBuffer(width, height);
 	}
 
 #pragma endregion
 
 #pragma region Functions
 
-	void Renderer::Draw(std::vector<Core::Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info)
+	void Renderer::CreateFrameBuffer(QXuint width, QXuint height)
 	{
+		QXint previous_framebuffer;
+        glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_framebuffer);
+
+        // Create Framebuffer that will hold 1 color attachement
+		QXuint FBO;
+        glGenFramebuffers(1, &FBO);
+        glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+        // Create texture that will be used as color attachment
+		QXuint texture;
+        glGenTextures(1, &texture);
+        
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+
+        QXuint draw_attachments = GL_COLOR_ATTACHMENT0;
+        glDrawBuffers(1, &draw_attachments);
+
+        GLenum framebuffer_status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (framebuffer_status != GL_FRAMEBUFFER_COMPLETE)
+        {
+            fprintf(stderr, "demo_bloom::framebuffer failed to complete (0x%x)\n", framebuffer_status);
+        }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
+
+        _mainBuffer.FBO = FBO;
+        _mainBuffer.texture = texture;
+	}
+
+	QXuint Renderer::Draw(std::vector<Core::Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
+
 		glClearColor(0.0f, 0.0f, 0.0f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE);
@@ -47,6 +89,10 @@ namespace Quantix::Core::Render
 
 			glBindVertexArray(0);
 		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		return _mainBuffer.texture;
 	}
 
 #pragma endregion
