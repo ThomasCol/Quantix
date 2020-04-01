@@ -190,6 +190,7 @@
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
+    <ClCompile Include="Src\Physic\Transform2D.cpp" />
     <ClCompile Include="Src\Resources\Material.cpp" />
     <ClCompile Include="Src\Core\Components\Mesh.cpp" />
     <ClCompile Include="Src\Resources\Model.cpp" />
@@ -198,7 +199,7 @@
     <ClCompile Include="Src\Resources\ShaderProgram.cpp" />
     <ClCompile Include="Src\Resources\Texture.cpp" />
     <ClCompile Include="Src\Core\Plateform\Window.cpp" />
-    <ClCompile Include="Src\Physic\Transform.cpp" />
+    <ClCompile Include="Src\Physic\Transform3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Plateform\AppInfo.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Include\Core\DLLHeader.h" />
     <ClInclude Include="Include\Core\Plateform\Window.h" />
     <ClInclude Include="Include\Core\Components\Light.h" />
+    <ClInclude Include="Include\Physic\Transform2D.h" />
     <ClInclude Include="Include\Resources\Material.h" />
     <ClInclude Include="Include\Core\Components\Mesh.h" />
     <ClInclude Include="Include\Resources\Model.h" />
@@ -214,7 +216,7 @@
     <ClInclude Include="Include\Resources\Texture.h" />
     <ClInclude Include="Include\Core\Type.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
-    <ClInclude Include="Include\Physic\Transform.h" />
+    <ClInclude Include="Include\Physic\Transform3D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
