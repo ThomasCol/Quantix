@@ -3,6 +3,7 @@
 
 #include <Vec3.h>
 
+#include "Core/DLLHeader.h"
 #include "Core/Type.h"
 
 namespace Quantix::Core::Components
@@ -16,7 +17,7 @@ namespace Quantix::Core::Components
 		COUNT
 	};
 
-	struct Light
+	struct QUANTIX_API Light
 	{
 #pragma region Attributes
 

@@ -1,9 +1,8 @@
 #include "Core/Render/Renderer.h"
 
+#include <glad/glad.h>
+
 #include <stdexcept>
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-#include <functional>
 
 namespace Quantix::Core::Render
 {
@@ -12,16 +11,11 @@ namespace Quantix::Core::Render
 		glViewport(0, 0, width, height);
 	}
 
-#pragma region Coonstructors
+#pragma region Constructors
 
 	Renderer::Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback) :
 		_mainBuffer {}
 	{
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			throw std::runtime_error("Failed to init openGL");
-		}
-
 		glViewport(0, 0, width, height);
 
 		resizeCallback = ResizeCallback;

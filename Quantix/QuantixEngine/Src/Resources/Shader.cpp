@@ -68,7 +68,6 @@ namespace Quantix::Resources
 	void Shader::CreateVertexShader(const QXchar* file) noexcept
 	{
 		QXstring code = ReadFile(file);
-
 		_id = glCreateShader(GL_VERTEX_SHADER);
 		const char* str = code.c_str();
 		glShaderSource(_id, 1, &str, nullptr);

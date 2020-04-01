@@ -2,23 +2,35 @@
 
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
-#include "Core/Profiler/Profiler.h"
-
 
 namespace Quantix::Core::Platform
 {
-	Application::Application(QXuint width, QXuint height):
-		_window{width, height},
-		_renderer {width, height, _window.GetResizeCallback()},
+	//window{width, height},
+		//renderer{ width, height, window.GetResizeCallback() },
+	/*Application::Application(QXuint width, QXuint height) :
 		info {width, height}
-	{}
+	{
+	}*/
+
+/*	Application::Application(QXstring name, QXuint width, QXuint height) :
+		//window{ name, width, height },
+		//renderer{ width, height, window.GetResizeCallback() },
+		info{ width, height }
+	{
+	}*/
+
+	Application::Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback) :
+		renderer{ width, height, resizeCallback },
+		info{ width, height }
+	{
+	}
 
 	void Application::Run()
 	{
-		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Run");
+		/*Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Run");
 		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Mesh");
-		Core::Components::Mesh* mesh = _manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-		mesh->GetMaterial()->SetMainTexture(_manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
+		Core::Components::Mesh* mesh = manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
+		mesh->GetMaterial()->SetMainTexture(manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Mesh");
 
 		std::vector<Core::Components::Mesh*> meshes;
@@ -54,24 +66,23 @@ namespace Quantix::Core::Platform
 		lights.push_back(light);
 		lights.push_back(light2);
 		
-		while (!_window.ShouldClose() && !GetKeyState(VK_SPACE))
+		while (!window.ShouldClose() && !GetKeyState(VK_SPACE))
 		{
 			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Draw");
-			_renderer.Draw(meshes, lights, info); 
+			renderer.Draw(meshes, lights, info); 
 			Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Draw");
 
 			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Refresh");
-			_window.Refresh(info);
+			window.Refresh(info);
 			Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Refresh");
 			Quantix::Core::Profiling::Profiler::GetInstance()->FrameCounter();
-		}
+		}*/
 
-		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Run");
+		//Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Run");
 		
-		for (int i = 0; i < meshes.size(); ++i)
+	/*	for (int i = 0; i < meshes.size(); ++i)
 			delete meshes[i];
 		for (int i = 0; i < meshes.size(); ++i)
-			delete lights[i];
-		Quantix::Core::Debugger::Logger::GetInstance()->CloseLogger();
+			delete lights[i];*/
 	}
 }

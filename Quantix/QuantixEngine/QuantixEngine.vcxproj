@@ -111,7 +111,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;RENDERER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);QUANTIX_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;RENDERER_EXPORTS;_WINDOWS;_USRDLL;GLAD_GLAPI_EXPORT;GLAD_GLAPI_EXPORT_BUILD;%(PreprocessorDefinitions);QUANTIX_EXPORTS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -164,7 +164,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;RENDERER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);QUANTIX_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;RENDERER_EXPORTS;_WINDOWS;_USRDLL;GLAD_GLAPI_EXPORT;GLAD_GLAPI_EXPORT_BUILD;%(PreprocessorDefinitions);QUANTIX_EXPORTS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -193,9 +193,10 @@
     <ClCompile Include="Src\Core\DataStructure\GameObject3D.cpp" />
     <ClCompile Include="Src\Core\DataStructure\ResourcesManager.cpp" />
     <ClCompile Include="Src\Core\Components\Camera.cpp" />
-    <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
+    <ClCompile Include="Src\Core\Plateform\Application.cpp" />
+    <ClCompile Include="Src\Core\Render\Renderer.cpp" />
     <ClCompile Include="Src\Core\TinyobjImplementation.cpp" />
     <ClCompile Include="Src\Core\Debugger\Assertion.cpp" />
     <ClCompile Include="Src\Core\Debugger\Logger.cpp" />
@@ -203,17 +204,14 @@
     <ClCompile Include="Src\Resources\Material.cpp" />
     <ClCompile Include="Src\Core\Components\Mesh.cpp" />
     <ClCompile Include="Src\Resources\Model.cpp" />
-    <ClCompile Include="Src\Core\Render\Renderer.cpp" />
     <ClCompile Include="Src\Resources\Shader.cpp" />
     <ClCompile Include="Src\Resources\ShaderProgram.cpp" />
     <ClCompile Include="Src\Resources\Texture.cpp" />
-    <ClCompile Include="Src\Core\Plateform\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
     <ClInclude Include="Include\Core\DataStructure\ResourcesManager.h" />
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
-    <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Components\Camera.h" />
     <ClInclude Include="Include\Core\Debugger\Assertion.h" />
     <ClInclude Include="Include\Core\Debugger\Logger.h" />
@@ -221,9 +219,10 @@
     <ClInclude Include="Include\Core\DataStructure\GameObject2D.h" />
     <ClInclude Include="Include\Core\DataStructure\GameObject3D.h" />
     <ClInclude Include="Include\Core\DLLHeader.h" />
-    <ClInclude Include="Include\Core\Platform\Window.h" />
     <ClInclude Include="Include\Core\Components\Light.h" />
+    <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Profiler\Profiler.h" />
+    <ClInclude Include="Include\Core\Render\Renderer.h" />
     <ClInclude Include="Include\Resources\Material.h" />
     <ClInclude Include="Include\Core\Components\Mesh.h" />
     <ClInclude Include="Include\Resources\Model.h" />
@@ -231,7 +230,6 @@
     <ClInclude Include="Include\Resources\ShaderProgram.h" />
     <ClInclude Include="Include\Resources\Texture.h" />
     <ClInclude Include="Include\Core\Type.h" />
-    <ClInclude Include="Include\Core\Render\Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

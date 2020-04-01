@@ -4,12 +4,12 @@
 #include "Core/Type.h"
 #include "Resources/Model.h"
 #include "Resources/Material.h"
-#include "Core/Platform/Window.h"
+#include "Core/Platform/AppInfo.h"
 #include "Light.h"
 
 namespace Quantix::Core::Components
 {
-	class Mesh
+	class QUANTIX_API Mesh
 	{
 	private:
 #pragma region Attributes

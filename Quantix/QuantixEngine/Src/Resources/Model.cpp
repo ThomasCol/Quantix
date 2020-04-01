@@ -1,9 +1,9 @@
 #include "Resources/Model.h"
 
+#include <glad/glad.h>
 #include <unordered_map>
 #include <cstdint>
 #include <iostream>
-#include <glad/glad.h>
 
 namespace Quantix::Resources
 {

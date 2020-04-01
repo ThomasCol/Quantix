@@ -2,7 +2,6 @@
 #define __APPLICATION_H__
 
 #include "Core/Render/Renderer.h"
-#include "Core/Platform/Window.h"
 #include "Core/Platform/AppInfo.h"
 #include "Core/DataStructure/ResourcesManager.h"
 
@@ -20,8 +19,8 @@ namespace Quantix::Core::Platform
 	public:
 #pragma region Attributes
 
-		AppInfo info;
-		Window							window;
+		AppInfo							info;
+		//Window							window;
 		Render::Renderer 				renderer;
 		DataStructure::ResourcesManager manager;
 
@@ -29,13 +28,18 @@ namespace Quantix::Core::Platform
 
 #pragma region Constructors
 
+		Application() = default;
+
 		/**
 		 * @brief Construct a new Application object
 		 * 
 		 * @param width Width of the window
 		 * @param height Height of the window
 		 */
-		Application(QXuint width, QXuint height);
+		//Application(QXuint width, QXuint height);
+
+		//Application(QXstring name, QXuint width, QXuint height);
+		Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback);
 
 		/**
 		 * @brief Destroy the Application object
@@ -45,7 +49,6 @@ namespace Quantix::Core::Platform
 #pragma endregion
 
 #pragma region Functions
-
 		/**
 		 * @brief Run Application
 		 */

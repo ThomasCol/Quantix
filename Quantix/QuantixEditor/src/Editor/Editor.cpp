@@ -1,0 +1,204 @@
+#include "Editor.h"
+#include <iostream>
+#include "Logger.h"
+#include "Profiler.h"
+#include "stb_image.h"
+
+
+Editor::Editor(QXuint width, QXuint height) :
+	_win{width, height},
+	_docker{},
+	_folder{},
+	_menuBar{},
+	_hierarchy{},
+	_init{ false },
+	_flagsEditor{}
+{
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontFromFileTTF("media/Font/Roboto-Medium.otf", 20.0f);
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+   // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;           // Enable Docking
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+
+	// Setup Platform/Renderer bindings
+	ImGui_ImplGlfw_InitForOpenGL(_win.GetWindow(), true);
+	ImGui_ImplOpenGL3_Init("#version 330");
+
+	GLFWimage icon;
+	icon.pixels = stbi_load("media/IconEditor/logo_1.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
+
+	glfwSetWindowIcon(_win.GetWindow(), 1, &icon);
+
+	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight(), _win.GetResizeCallback());
+}
+
+Editor::~Editor()
+{
+	// Cleanup
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+}
+
+bool Editor::Init()
+{
+	// Start the Dear ImGui frame
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+
+	if (!_init)
+	{
+		ImGui::GetStyle().WindowRounding = 0.f;
+		_flagsEditor = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse;
+		ImGui::Begin("Quantix Editor", NULL, _flagsEditor);
+
+		_docker.Init();
+		ImGui::DockSpace(_docker.GetIDDockspace(), ImVec2(0, 0), ImGuiDockNodeFlags_NoTabBar);
+
+		ImGui::End();
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		_init = true;
+
+		return false;
+	}
+	return true;
+}
+
+void Editor::Update(QXuint FBO)
+{
+	_fbo = FBO;
+	static int i = 0;
+	ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(viewport->Pos);
+	ImGui::SetNextWindowSize(viewport->Size);
+	ImGui::SetNextWindowViewport(viewport->ID);
+
+	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(1, 1, 1, 1));
+	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 1, 1, 1));
+
+	ImGui::Begin("Editor", NULL, _flagsEditor);
+
+	if (i == 0)
+		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Editor");
+
+	DrawMenuBar();
+	ImGui::DockSpace(_docker.GetIDDockspace(), ImVec2(0, 0), ImGuiDockNodeFlags_NoTabBar);
+
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
+
+	Quantix::Core::Profiling::Profiler::GetInstance()->SetMessage("Editor", "Draw Editor\n");
+
+	for (unsigned int i{ 0 }; i < _docker.GetWindowsEditor().size(); i++)
+		Draw(_docker.GetWindowsEditor()[i], flags);
+
+	if (i == 0)
+	{
+		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Editor");
+		i++;
+	}
+	ImGui::End();
+
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void Editor::Draw(std::string name, ImGuiWindowFlags flags)
+{
+	if (name == "Console")
+		DrawConsole(name, flags);
+	else if (name == "Explorer")
+		DrawExplorer(name, flags);
+	else if (name == "Scene")
+		DrawScene(name, flags);
+	else if (name == "Hierarchy")
+		DrawHierarchy(name, flags);
+	else if (name == "Inspector")
+		DrawInspector(name, flags);
+}
+
+void Editor::DrawMenuBar()
+{
+	static int i = 0;
+	if (i == 0)
+	{
+		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
+		i++;
+	}
+	_menuBar.Update(_object);
+}
+
+void Editor::DrawHierarchy(std::string name, ImGuiWindowFlags flags)
+{
+	_hierarchy.Update(name, flags, _object);
+}
+
+void Editor::DrawScene(std::string name, ImGuiWindowFlags flags)
+{
+	static int i = 0;
+	ImGui::Begin(name.c_str(), NULL, flags);
+	{
+		if (i == 0)
+		{
+			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");
+			i++;
+		}
+		ImGui::Image((ImTextureID)(size_t)_fbo, ImGui::GetWindowSize(), { 0.f, 1.f }, { 1.f, 0.f });
+	}
+	ImGui::End();
+}
+
+void Editor::DrawConsole(std::string name, ImGuiWindowFlags flags)
+{
+	ImGui::Begin(name.c_str(), NULL, flags);
+	{
+		ImGui::BeginTabBar("GPU Infos");
+		static bool ShowDemoWindow = false;
+		// Display GPU infos
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Checkbox("Demo window", &ShowDemoWindow);
+
+		if (ImGui::CollapsingHeader("System info"))
+		{
+			ImGui::Text("GL_VERSION: %s", glGetString(GL_VERSION));
+			ImGui::Text("GL_RENDERER: %s", glGetString(GL_RENDERER));
+			ImGui::Text("GL_SHADING_LANGUAGE_VERSION: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		}
+		
+		if (ShowDemoWindow)
+			ImGui::ShowDemoWindow(&ShowDemoWindow);
+		ImGui::EndTabBar();
+
+		ImGui::BeginTabBar("Logger");
+		Quantix::Core::Debugger::Logger::GetInstance()->PrintLog();
+		ImGui::EndTabBar();
+	}
+	ImGui::End();
+}
+
+
+
+void Editor::DrawExplorer(std::string name, ImGuiWindowFlags flags)
+{
+	_explorer.Update(_app->manager, name, flags);
+}
+
+void Editor::DrawInspector(std::string name, ImGuiWindowFlags flags)
+{
+	ImGui::Begin(name.c_str(), NULL, flags);
+	{
+		if (_hierarchy.GetInspector() != nullptr)
+			_hierarchy.GetInspector()->Update();
+	}
+	ImGui::End();
+}

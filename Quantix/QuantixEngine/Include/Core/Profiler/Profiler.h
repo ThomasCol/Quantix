@@ -4,11 +4,6 @@
 #include "Core/Platform/AppInfo.h"
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include <ctime>
-#include <Windows.h>
-#include <timeapi.h>
-
-#pragma comment( lib, "winmm.lib") 
 
 #define BEGIN_PROFILING "\t\t**********************************************\n \
 \t\t************** BEGIN PROFILING ***************\n \

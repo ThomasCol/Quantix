@@ -1,12 +1,11 @@
 #ifndef __RENDERER_H__
 #define __RENDERER_H__
 
-#include <glad/glad.h>
 
-#include "Core/DLLHeader.h"
 #include "Core/Type.h"
 #include "Core/Components/Mesh.h"
 #include "Core/Components/Light.h"
+#include "../../../QuantixEditor/include/Window.h"
 
 namespace Quantix::Core::Render
 {
@@ -33,7 +32,6 @@ namespace Quantix::Core::Render
 
 	public:
 #pragma region Constructors
-
 		/**
 		 * @brief Construct a new Renderer object
 		 * 
@@ -51,7 +49,6 @@ namespace Quantix::Core::Render
 #pragma endregion
 
 #pragma region Functions
-
 		/**
 		 * @brief 
 		 * 

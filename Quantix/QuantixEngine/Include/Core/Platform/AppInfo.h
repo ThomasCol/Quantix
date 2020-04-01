@@ -2,10 +2,11 @@
 #define __APPINFO_H__
 
 #include "Core/Type.h"
+#include "Core/DLLHeader.h"
 
 namespace Quantix::Core::Platform
 {
-	struct AppInfo
+	struct QUANTIX_API AppInfo
 	{
 #pragma region Attributes
 

@@ -16,7 +16,7 @@ namespace Quantix::Core::DataStructure
 {
 	using namespace Resources;
 
-	class ResourcesManager
+	class QUANTIX_API ResourcesManager
 	{
 	private:
 #pragma region Attributes

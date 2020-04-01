@@ -2,13 +2,14 @@
 #define __TEXTURE_H__
 
 #include "Core/Type.h"
+#include "Core/DLLHeader.h"
 
 #define RGB 3
 #define RGBA 4
 
 namespace Quantix::Resources
 {
-	class Texture
+	class QUANTIX_API Texture
 	{
 	private:
 #pragma region Attributes

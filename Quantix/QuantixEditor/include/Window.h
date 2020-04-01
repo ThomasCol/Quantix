@@ -1,17 +1,18 @@
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
 
+#include "glad/glad.h"
+
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <functional>
 
-#include "Core/Type.h"
-#include "Core/DLLHeader.h"
-#include "Core/Platform/AppInfo.h"
+#include <Core/Type.h>
+#include <Core/Platform/AppInfo.h>
 
 namespace Quantix::Core::Platform
 {
-	class QUANTIX_API Window
+	class Window
 	{
 	private:
 #pragma region Attributes
@@ -38,7 +39,6 @@ namespace Quantix::Core::Platform
 
 	public:
 #pragma region Contructors
-
 		/**
 		 * @brief Construct a new Window object
 		 * 
@@ -46,6 +46,8 @@ namespace Quantix::Core::Platform
 		 * @param height Height of the window
 		 */
 		Window(QXuint width, QXuint height);
+
+		Window(QXstring name, QXuint width, QXuint height);
 
 		/**
 		 * @brief Destroy the Window object
@@ -55,7 +57,6 @@ namespace Quantix::Core::Platform
 #pragma endregion
 
 #pragma region Functions
-
 		/**
 		 * @brief Refresh the window
 		 * 
@@ -73,8 +74,6 @@ namespace Quantix::Core::Platform
 
 
 #pragma region Accessors
-
-
 		/**
 		 * @brief Get the height of the window
 		 * 
