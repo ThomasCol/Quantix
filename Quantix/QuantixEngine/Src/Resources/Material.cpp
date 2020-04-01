@@ -28,6 +28,7 @@ namespace Quantix::Resources
 		{
 			SetInt("material.textured", 1);
 			SetUint("material.texture", _mainTexture->GetId());
+			glActiveTexture(GL_TEXTURE0 + _mainTexture->GetId());
 			return;
 		}
 

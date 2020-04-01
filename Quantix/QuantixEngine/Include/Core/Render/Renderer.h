@@ -18,6 +18,7 @@ namespace Quantix::Core::Render
 		{
 			QXuint FBO = 0;
 			QXuint texture = 0;
+			QXuint depthStencilRenderbuffer = 0;
 		};
 
 		Framebuffer	_mainBuffer;
