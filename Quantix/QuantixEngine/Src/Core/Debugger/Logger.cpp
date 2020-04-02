@@ -89,6 +89,19 @@ namespace Quantix::Core::Debugger
 			}*/
 	}
 
+	void Logger::SendMessage(TypeLog type, QXstring message)
+	{
+		switch (type)
+		{
+		case Quantix::Core::Debugger::TypeLog::INFOS: _instance->SetInfos(message); break;
+		case Quantix::Core::Debugger::TypeLog::WARNING:  _instance->SetWarning(message); break;
+		case Quantix::Core::Debugger::TypeLog::ERROR: _instance->SetError(message); break;
+
+		default:
+			break;
+		}
+	}
+
 	void Logger::CloseLogger()
 	{
 		QXstring cmd = "mkdir " + fs::current_path().string() + "\\Log";

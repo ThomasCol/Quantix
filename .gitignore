@@ -365,4 +365,6 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/visualstudio,visualstudiocode
 
+Quantix/QuantixEngine/Lib/*
+
 *.quantix

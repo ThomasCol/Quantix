@@ -22,6 +22,9 @@
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\Render\Renderer.cpp" />
     <ClCompile Include="Lib\Glad\src\glad.c" />
+    <ClCompile Include="Src\Core\Render\RenderContext.cpp" />
+    <ClCompile Include="Src\Core\Render\CommandPool.cpp" />
+    <ClCompile Include="Src\Core\Render\CommandBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -45,5 +48,9 @@
     <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
     <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
+    <ClInclude Include="Include\Core\Render\RenderContext.h" />
+    <ClInclude Include="Include\Core\Render\CommandPool.h" />
+    <ClInclude Include="Include\Core\Render\QueueFamilyIndices.h" />
+    <ClInclude Include="Include\Core\Render\CommandBuffer.h" />
   </ItemGroup>
 </Project>

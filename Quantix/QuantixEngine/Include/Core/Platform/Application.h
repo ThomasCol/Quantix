@@ -1,6 +1,8 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
+#include <GLFW/glfw3.h>
+
 #include "Core/Render/Renderer.h"
 #include "Core/Platform/AppInfo.h"
 #include "Core/DataStructure/ResourcesManager.h"
@@ -20,7 +22,6 @@ namespace Quantix::Core::Platform
 #pragma region Attributes
 
 		AppInfo							info;
-		//Window							window;
 		Render::Renderer 				renderer;
 		DataStructure::ResourcesManager manager;
 
@@ -39,7 +40,7 @@ namespace Quantix::Core::Platform
 		//Application(QXuint width, QXuint height);
 
 		//Application(QXstring name, QXuint width, QXuint height);
-		Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback);
+		Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback, GLFWwindow* window);
 
 		/**
 		 * @brief Destroy the Application object

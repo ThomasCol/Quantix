@@ -80,6 +80,8 @@ namespace Quantix::Core::Debugger
 		 */
 		void			PrintLog();
 
+		void			SendMessage(TypeLog type, QXstring message);
+
 		/**
 		 * @brief Close the Logger and create a log file with all log
 		 * 
@@ -132,3 +134,5 @@ namespace Quantix::Core::Debugger
 		#pragma endregion Attributes
 	};
 }
+
+#define LOG(severity, message) Quantix::Core::Debugger::Logger::GetInstance()->Quantix::Core::Debugger::Logger::SendMessage(Quantix::Core::Debugger::TypeLog::severity, message);

@@ -89,17 +89,17 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;RENDERER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);QUANTIX_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);QUANTIX_EXPORTS;GLFW_INCLUDE_VULKAN</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)\Lib\Vulkan\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib;$(ProjectDir)\Lib\Shaderc\Lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib;$(ProjectDir)\Lib\Shaderc\Lib;$(ProjectDir)\Lib\Vulkan\Lib32</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
@@ -111,11 +111,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;RENDERER_EXPORTS;_WINDOWS;_USRDLL;GLAD_GLAPI_EXPORT;GLAD_GLAPI_EXPORT_BUILD;%(PreprocessorDefinitions);QUANTIX_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;GLAD_GLAPI_EXPORT;GLAD_GLAPI_EXPORT_BUILD;%(PreprocessorDefinitions);QUANTIX_EXPORTS;GLFW_INCLUDE_VULKAN</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)\Lib\Vulkan\Include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -123,8 +123,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Debug_x64;$(ProjectDir)\Lib\MathLib\Lib\Debug_x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Debug_x64;$(ProjectDir)\Lib\MathLib\Lib\Debug_x64;$(ProjectDir)\Lib\Vulkan\Lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;MathLib.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
@@ -138,11 +138,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;RENDERER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);QUANTIX_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);QUANTIX_EXPORTS;GLFW_INCLUDE_VULKAN</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)\Lib\Vulkan\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,7 +150,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib;$(ProjectDir)\Lib\Shaderc\Lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib;$(ProjectDir)\Lib\Shaderc\Lib;$(ProjectDir)\Lib\Vulkan\Lib32</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
@@ -164,11 +164,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;RENDERER_EXPORTS;_WINDOWS;_USRDLL;GLAD_GLAPI_EXPORT;GLAD_GLAPI_EXPORT_BUILD;%(PreprocessorDefinitions);QUANTIX_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;GLAD_GLAPI_EXPORT;GLAD_GLAPI_EXPORT_BUILD;%(PreprocessorDefinitions);QUANTIX_EXPORTS;GLFW_INCLUDE_VULKAN</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)\Lib\Vulkan\Include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
@@ -178,8 +178,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Win64\Release;$(ProjectDir)\Lib\MathLib\Lib\Release_x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Win64\Release;$(ProjectDir)\Lib\MathLib\Lib\Release_x64;$(ProjectDir)\Lib\Vulkan\Lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;MathLib.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
@@ -196,6 +196,9 @@
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
+    <ClCompile Include="Src\Core\Render\CommandBuffer.cpp" />
+    <ClCompile Include="Src\Core\Render\CommandPool.cpp" />
+    <ClCompile Include="Src\Core\Render\RenderContext.cpp" />
     <ClCompile Include="Src\Core\Render\Renderer.cpp" />
     <ClCompile Include="Src\Core\TinyobjImplementation.cpp" />
     <ClCompile Include="Src\Core\Debugger\Assertion.cpp" />
@@ -222,6 +225,10 @@
     <ClInclude Include="Include\Core\Components\Light.h" />
     <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Profiler\Profiler.h" />
+    <ClInclude Include="Include\Core\Render\CommandBuffer.h" />
+    <ClInclude Include="Include\Core\Render\CommandPool.h" />
+    <ClInclude Include="Include\Core\Render\QueueFamilyIndices.h" />
+    <ClInclude Include="Include\Core\Render\RenderContext.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
     <ClInclude Include="Include\Resources\Material.h" />
     <ClInclude Include="Include\Core\Components\Mesh.h" />

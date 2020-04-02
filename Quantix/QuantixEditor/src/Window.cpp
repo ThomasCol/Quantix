@@ -25,14 +25,6 @@ namespace Quantix::Core::Platform
 		glfwSetWindowUserPointer(_window, this);
 		glfwMakeContextCurrent(_window);
 		glfwSetWindowSizeCallback(_window, Resize);
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))//gladLoadGL())
-		{
-			throw std::runtime_error("Failed to init openGL");
-		}
-
-		printf("GL_VERSION: %s\n", glGetString(GL_VERSION));
-		printf("GL_VENDOR: %s\n", glGetString(GL_VENDOR));
-		printf("GL_RENDERER: %s\n", glGetString(GL_RENDERER));
 	}
 
 	Window::Window(QXstring name, QXuint width, QXuint height) :

@@ -1,11 +1,12 @@
 #ifndef __RENDERER_H__
 #define __RENDERER_H__
 
+#include <functional>
 
 #include "Core/Type.h"
 #include "Core/Components/Mesh.h"
 #include "Core/Components/Light.h"
-#include "../../../QuantixEditor/include/Window.h"
+#include "RenderContext.h"
 
 namespace Quantix::Core::Render
 {
@@ -14,20 +15,29 @@ namespace Quantix::Core::Render
 	private:
 #pragma region Attributes
 
-		struct Framebuffer
-		{
-			QXuint FBO = 0;
-			QXuint texture = 0;
-			QXuint depthStencilRenderbuffer = 0;
-		};
+		RenderContext					_context;
+		VkSwapchainKHR					_swapChain;
+		std::vector<VkImage>			_swapChainImages;
+		VkFormat						_swapChainImageFormat;
+		VkExtent2D						_swapChainExtent;
+		std::vector<VkImageView>		_swapChainImageViews;
 
-		Framebuffer	_mainBuffer;
+		struct SwapChainSupportDetails
+		{
+			VkSurfaceCapabilitiesKHR capabilities;
+			std::vector<VkSurfaceFormatKHR> formats;
+			std::vector<VkPresentModeKHR> presentModes;
+		};
 
 #pragma endregion
 
 #pragma region Functions
 
-		void CreateFrameBuffer(QXuint width, QXuint height);
+		void					CreateSwapChain(GLFWwindow* window);
+		SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device);
+		VkSurfaceFormatKHR		ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+		VkPresentModeKHR		ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+		VkExtent2D				ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities, GLFWwindow* window);
 
 #pragma endregion
 
@@ -40,7 +50,7 @@ namespace Quantix::Core::Render
 		 * @param height Window width
 		 * @param resizeCallback Window callback for resize
 		 */
-		Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback);
+		Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback, GLFWwindow* window);
 
 		/**
 		 * @brief Destroy the Renderer object

@@ -4,7 +4,6 @@
 #include "Profiler.h"
 #include "stb_image.h"
 
-
 Editor::Editor(QXuint width, QXuint height) :
 	_win{width, height},
 	_docker{},
@@ -27,15 +26,15 @@ Editor::Editor(QXuint width, QXuint height) :
 	ImGui::StyleColorsDark();
 
 	// Setup Platform/Renderer bindings
-	ImGui_ImplGlfw_InitForOpenGL(_win.GetWindow(), true);
-	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui_ImplGlfw_InitForVulkan(_win.GetWindow(), true);
+	ImGui_ImplVulkan_InitInfo init_info {};
 
 	GLFWimage icon;
 	icon.pixels = stbi_load("media/IconEditor/logo_1.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
 
 	glfwSetWindowIcon(_win.GetWindow(), 1, &icon);
 
-	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight(), _win.GetResizeCallback());
+	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight(), _win.GetResizeCallback(), _win.GetWindow());
 }
 
 Editor::~Editor()

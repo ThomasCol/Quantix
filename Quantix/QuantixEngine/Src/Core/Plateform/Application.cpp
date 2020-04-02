@@ -19,8 +19,8 @@ namespace Quantix::Core::Platform
 	{
 	}*/
 
-	Application::Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback) :
-		renderer{ width, height, resizeCallback },
+	Application::Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback, GLFWwindow* window) :
+		renderer{ width, height, resizeCallback, window },
 		info{ width, height }
 	{
 	}
