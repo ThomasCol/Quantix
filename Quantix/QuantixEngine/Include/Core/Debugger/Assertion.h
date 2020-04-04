@@ -34,7 +34,7 @@ namespace Quantix::Core::Debugger
 /* Macro to call asserts */
 #else
 #define ASSERT(condition)\
-	Debug::Assert(condition, __FILE__, __LINE__)
+	Quantix::Core::Debugger::Assert(condition, __FILE__, __LINE__)
 #define STATICASSERT(condition)\
-	Debug::StaticAssert(condition, __FILE__, __LINE__)
+	Quantix::Core::Debugger::StaticAssert(condition, __FILE__, __LINE__)
 #endif

@@ -6,6 +6,12 @@ Inspector::Inspector(Node node) :
 {
 }
 
+/*Inspector::Inspector(Core::DataStructure::GameComponent* gc) :
+	_gc{ gc },
+	_enable{ true }
+{
+}*/
+
 void Inspector::Update()
 {
 	if (_enable)

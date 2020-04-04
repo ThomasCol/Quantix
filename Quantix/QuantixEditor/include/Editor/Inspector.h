@@ -9,23 +9,26 @@
 
 #include <Type.h>
 #include <Node.h>
+#include <Core/DataStructure/GameObject3D.h>
 
 class Inspector
 {
 public:
 	Inspector() = default;
 	Inspector(Node node);
-	//Inspector(GameComponent gc);
+	//Inspector(Core::DataStructure::GameComponent* gc);
 	Inspector(const Inspector& inspector) = default;
 	Inspector(Inspector&& inspector) = default;
 	~Inspector() = default;
 
 	inline void	SetEnable(bool enable) { _enable = enable; };
+	inline void SetNode(Node node) { _node = node; };
 
 	void		Update();
 private:
-	Node		_node;
-	QXbool		_enable;
+	Node								_node;
+	//Core::DataStructure::GameComponent*	_gc;
+	QXbool								_enable;
 
 };
 

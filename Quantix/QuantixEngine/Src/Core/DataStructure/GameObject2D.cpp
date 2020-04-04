@@ -8,6 +8,11 @@ namespace Core::DataStructure
 	{
 	}
 
+	GameObject2D::GameObject2D(std::string name) noexcept :
+		GameComponent(name)
+	{
+	}
+
 	GameObject2D::GameObject2D(const GameObject2D& g2d) noexcept :
 		GameComponent(g2d)//,
 			//_transform{ g2d._transform }

@@ -3,22 +3,23 @@
 
 #include <typeinfo>
 #include "Type.h"
+#include "Core/DLLHeader.h"
 
 namespace Core::DataStructure
 {
-	class GameObject;
+	class GameComponent;
 
 	/**
 	 * @brief Component Class
 	 * 
 	 */
-	class Component
+	class QUANTIX_API Component
 	{
 	protected:
 		#pragma region Attributes
-		GameObject* _object;
-		QXbool		_isDestroyed;
-		QXbool		_isEnable;
+		GameComponent*	 _object;
+		QXbool			_isDestroyed;
+		QXbool			_isEnable;
 		#pragma endregion Attributes
 
 	public:
@@ -48,7 +49,7 @@ namespace Core::DataStructure
 		 * 
 		 * @param obj GameObject
 		 */
-		Component(GameObject* obj);
+		Component(GameComponent* obj);
 
 		/**
 		 * @brief Destroy the Component object
@@ -83,7 +84,7 @@ namespace Core::DataStructure
 		 * 
 		 * @return GameObject* 
 		 */
-		GameObject*							GetObject();
+		GameComponent*						GetObject();
 
 		/**
 		 * @brief Get if the Object is Alive

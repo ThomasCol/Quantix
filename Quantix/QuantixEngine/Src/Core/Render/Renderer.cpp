@@ -73,6 +73,7 @@ namespace Quantix::Core::Render
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 
+
 		for (QXint i = 0; i < mesh.size(); ++i)
 		{
 			mesh[i]->SendDataToShader(info, lights);

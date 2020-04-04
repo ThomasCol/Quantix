@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;GLAD_GLAPI_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)include\GLFW;$(ProjectDir)include\KHR;$(ProjectDir)include\ImGui;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)externals;$(ProjectDir)externals\GLFW;$(ProjectDir)externals\KHR;$(ProjectDir)externals\imgui;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
@@ -169,14 +169,13 @@
     <ClCompile Include="..\QuantixEngine\Src\Core\Debugger\Assertion.cpp" />
     <ClCompile Include="..\QuantixEngine\Src\Core\Debugger\Logger.cpp" />
     <ClCompile Include="..\QuantixEngine\Src\Core\Profiler\Profiler.cpp" />
-    <ClCompile Include="externals\imgui\imgui.cpp" />
-    <ClCompile Include="externals\imgui\imgui_demo.cpp" />
-    <ClCompile Include="externals\imgui\imgui_draw.cpp" />
-    <ClCompile Include="externals\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="externals\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="externals\imgui\src\imgui.cpp" />
+    <ClCompile Include="externals\imgui\src\imgui_demo.cpp" />
+    <ClCompile Include="externals\imgui\src\imgui_draw.cpp" />
+    <ClCompile Include="externals\imgui\src\imgui_impl_glfw.cpp" />
+    <ClCompile Include="externals\imgui\src\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="externals\imgui\src\imgui_widgets.cpp" />
     <ClCompile Include="externals\stb_image.cpp" />
-    <ClCompile Include="externals\tiny_obj_loader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\Docking\Docker.cpp" />
     <ClCompile Include="src\Editor\Editor.cpp" />
@@ -192,6 +191,7 @@
     <ClInclude Include="..\QuantixEngine\Include\Core\Debugger\Logger.h" />
     <ClInclude Include="..\QuantixEngine\Include\Core\Profiler\Profiler.h" />
     <ClInclude Include="..\QuantixEngine\Lib\Glad\include\glad\glad.h" />
+    <ClInclude Include="externals\stb_image.h" />
     <ClInclude Include="include\Docking\Docker.h" />
     <ClInclude Include="include\Editor\Editor.h" />
     <ClInclude Include="include\Editor\Explorer.h" />
@@ -200,8 +200,6 @@
     <ClInclude Include="include\Editor\Inspector.h" />
     <ClInclude Include="include\Editor\MenuBar.h" />
     <ClInclude Include="include\Editor\Node.h" />
-    <ClInclude Include="include\stb_image.h" />
-    <ClInclude Include="include\tiny_obj_loader.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

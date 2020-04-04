@@ -73,47 +73,43 @@ namespace Quantix::Core::Debugger
 		#pragma region Constructors/Destructor
 
 		#pragma region Methods
-
-		/**
-		 * @brief Print all Log
-		 * 
-		 */
-		void			PrintLog();
-
 		/**
 		 * @brief Close the Logger and create a log file with all log
 		 * 
 		 */
-		void			CloseLogger();
+		void						CloseLogger();
 
 		#pragma region Accessors
+
+		inline std::vector<Data>	GetData() const { return _data; };
+
 		/**
 		 * @brief Set the Infos object
 		 * 
 		 * @param msg String
 		 */
-		void			SetInfos(const QXstring& msg);
+		void						SetInfo(const QXstring& msg);
 
 		/**
 		 * @brief Set the Warning object
 		 * 
 		 * @param msg String
 		 */
-		void			SetWarning(const QXstring& msg);
+		void						SetWarning(const QXstring& msg);
 
 		/**
 		 * @brief Set the Error object
 		 * 
 		 * @param msg String
 		 */
-		void			SetError(const QXstring& msg);
+		void						SetError(const QXstring& msg);
 
 		/**
 		 * @brief Set the Profiling object
 		 * 
 		 * @param msg String
 		 */
-		void			SetProfiling(const QXstring& msg);
+		void						SetProfiling(const QXstring& msg);
 		#pragma endregion Accessors
 
 		#pragma region Static
@@ -122,7 +118,7 @@ namespace Quantix::Core::Debugger
 		 * 
 		 * @return Logger* 
 		 */
-		static Logger*	GetInstance();
+		static Logger*				GetInstance();
 		#pragma endregion Static
 		#pragma endregion Methods
 	private:

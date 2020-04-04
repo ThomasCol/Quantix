@@ -24,27 +24,6 @@
     <ClCompile Include="externals\stb_image.cpp">
       <Filter>Fichiers sources\Ext</Filter>
     </ClCompile>
-    <ClCompile Include="externals\tiny_obj_loader.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\imgui\imgui.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_demo.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_draw.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_impl_glfw.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_widgets.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
-    </ClCompile>
     <ClCompile Include="src\Docking\Docker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -78,14 +57,26 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="externals\imgui\src\imgui.cpp">
+      <Filter>Fichiers sources\Ext</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imgui\src\imgui_demo.cpp">
+      <Filter>Fichiers sources\Ext</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imgui\src\imgui_draw.cpp">
+      <Filter>Fichiers sources\Ext</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imgui\src\imgui_impl_glfw.cpp">
+      <Filter>Fichiers sources\Ext</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imgui\src\imgui_impl_opengl3.cpp">
+      <Filter>Fichiers sources\Ext</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imgui\src\imgui_widgets.cpp">
+      <Filter>Fichiers sources\Ext</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\stb_image.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tiny_obj_loader.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Editor\Editor.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -123,6 +114,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="..\QuantixEngine\Lib\Glad\include\glad\glad.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\stb_image.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

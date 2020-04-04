@@ -1,4 +1,3 @@
-//#include <imgui.h>
 #include <ctime>
 #include <chrono>
 
@@ -49,7 +48,7 @@ namespace Quantix::Core::Debugger
 		//delete m_instance;
 	}
 
-	void Logger::SetInfos(const QXstring& msg)
+	void Logger::SetInfo(const QXstring& msg)
 	{
 		Data d = { std::string("[INFOS] ") + __TIME__ + std::string(": ") + msg, TypeLog::INFOS };
 		_data.push_back(d);
@@ -71,22 +70,6 @@ namespace Quantix::Core::Debugger
 	{
 		Data d = { __TIME__ + std::string(":\n") + msg, TypeLog::PROFILING };
 		_data.push_back(d);
-	}
-
-	void Logger::PrintLog()
-	{
-		/*	ImGuiStyle& style = ImGui::GetStyle();
-			for (unsigned int i = 0; i < _data.size(); i++)
-			{
-				if (_data[i]._type == TypeLog::INFOS)
-					ImGui::TextColored(ImVec4(52 / 255.f, 152 / 255.f, 219 / 255.f, 1), "Info: %s\n", _data[i]._message.c_str());
-				else if (_data[i]._type == TypeLog::WARNING)
-					ImGui::TextColored(ImVec4(241 / 255.f, 196 / 255.f, 15 / 255.f, 1), "Warning: %s\n", _data[i]._message.c_str());
-				else if (_data[i]._type == TypeLog::ERROR)
-					ImGui::TextColored(ImVec4(231 / 255.f, 76 / 255.f, 60 / 255.f, 1), "Error: %s\n", _data[i]._message.c_str());
-				else if (_data[i]._type == TypeLog::PROFILING)
-					ImGui::TextColored(ImVec4(39 / 255.f, 174 / 255.f, 96 / 255.f, 1), "%s\n", _data[i]._message.c_str());
-			}*/
 	}
 
 	void Logger::CloseLogger()

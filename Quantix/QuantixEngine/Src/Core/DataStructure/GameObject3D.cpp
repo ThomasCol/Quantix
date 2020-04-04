@@ -2,10 +2,8 @@
 
 namespace Core::DataStructure
 {
-
-	GameObject3D::GameObject3D() noexcept :
-		GameComponent()//,
-		//_transform{ Transform3D() }
+	GameObject3D::GameObject3D(std::string name) noexcept :
+		GameComponent(name)
 	{
 	}
 
@@ -63,5 +61,15 @@ namespace Core::DataStructure
 	void	GameObject3D::SetTransform(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale)
 	{
 		//_transform.SetTransform(pos, rot, scale);
+	}
+	GameObject3D& GameObject3D::operator=(const GameObject3D& object)
+	{
+		_component = object._component;
+		_name = object._name;
+		_layer = object._layer;
+		_isStatic = object._isStatic;
+		_isActive = object._isActive;
+
+		return *this;
 	}
 }

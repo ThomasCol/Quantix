@@ -1,5 +1,5 @@
 #include "Core/DataStructure/Component.h"
-//#include "GameObject.hpp"
+#include "Core/DataStructure/GameComponent.h"
 
 namespace Core::DataStructure
 {
@@ -21,13 +21,13 @@ namespace Core::DataStructure
 		_isEnable{ std::move(comp._isEnable) }
 	{}
 
-	Component::Component(GameObject* obj) :
+	Component::Component(GameComponent* obj) :
 		_object{ obj },
 		_isDestroyed{ false },
 		_isEnable{ true }
 	{}
 
-	GameObject* Component::GetObject()
+	GameComponent* Component::GetObject()
 	{
 		return _object;
 	}

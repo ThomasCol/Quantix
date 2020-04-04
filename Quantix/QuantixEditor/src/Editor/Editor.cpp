@@ -31,7 +31,7 @@ Editor::Editor(QXuint width, QXuint height) :
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	GLFWimage icon;
-	icon.pixels = stbi_load("media/IconEditor/logo_1.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
+	icon.pixels = stbi_load("media/IconEditor/logo_6_1.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
 
 	glfwSetWindowIcon(_win.GetWindow(), 1, &icon);
 
@@ -136,11 +136,13 @@ void Editor::DrawMenuBar()
 		i++;
 	}
 	_menuBar.Update(_object);
+	//_menuBar.Update(_gameComponent);
 }
 
 void Editor::DrawHierarchy(std::string name, ImGuiWindowFlags flags)
 {
 	_hierarchy.Update(name, flags, _object);
+	//_hierarchy.Update(name, flags, _gameComponent);
 }
 
 void Editor::DrawScene(std::string name, ImGuiWindowFlags flags)
@@ -156,6 +158,22 @@ void Editor::DrawScene(std::string name, ImGuiWindowFlags flags)
 		ImGui::Image((ImTextureID)(size_t)_fbo, ImGui::GetWindowSize(), { 0.f, 1.f }, { 1.f, 0.f });
 	}
 	ImGui::End();
+}
+
+void Editor::PrintLog()
+{
+	ImGuiStyle& style = ImGui::GetStyle();
+	for (unsigned int i = 0; i < Quantix::Core::Debugger::Logger::GetInstance()->GetData().size(); i++)
+	{
+		if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::INFOS)
+			ImGui::TextColored(ImVec4(52 / 255.f, 152 / 255.f, 219 / 255.f, 1), "Info: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::WARNING)
+			ImGui::TextColored(ImVec4(241 / 255.f, 196 / 255.f, 15 / 255.f, 1), "Warning: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::ERROR)
+			ImGui::TextColored(ImVec4(231 / 255.f, 76 / 255.f, 60 / 255.f, 1), "Error: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::PROFILING)
+			ImGui::TextColored(ImVec4(39 / 255.f, 174 / 255.f, 96 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+	}
 }
 
 void Editor::DrawConsole(std::string name, ImGuiWindowFlags flags)
@@ -180,7 +198,7 @@ void Editor::DrawConsole(std::string name, ImGuiWindowFlags flags)
 		ImGui::EndTabBar();
 
 		ImGui::BeginTabBar("Logger");
-		Quantix::Core::Debugger::Logger::GetInstance()->PrintLog();
+		PrintLog();
 		ImGui::EndTabBar();
 	}
 	ImGui::End();

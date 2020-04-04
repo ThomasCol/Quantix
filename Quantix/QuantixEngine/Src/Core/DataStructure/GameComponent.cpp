@@ -3,10 +3,10 @@
 namespace Core::DataStructure
 {
 	GameComponent::GameComponent(const GameComponent& object) noexcept :
-		//_transform{ new Transform(*object._transorm) },
 		_name{ object._name },
 		_layer{ object._layer },
-		_isStatic{ object._isStatic }
+		_isStatic{ object._isStatic },
+		_isActive{ object._isActive }
 	{
 		for (size_t i = 0; i < object._component.size(); i++)
 		{
@@ -16,17 +16,18 @@ namespace Core::DataStructure
 
 	GameComponent::GameComponent(GameComponent&& object) noexcept :
 		_component{ std::move(object._component) },
-		//_transform{ std::move(object._transform },
 		_name{ std::move(object._name) },
 		_layer{ std::move(object._layer) },
-		_isStatic{ std::move(object._isStatic) }
+		_isStatic{ std::move(object._isStatic) },
+		_isActive{ std::move(object._isActive) }
 	{
 	}
 
 	GameComponent::GameComponent(std::string name, const QXbool& isStatic) noexcept :
 		_name{ name },
 		_layer{ 0 },
-		_isStatic{ isStatic }
+		_isStatic{ isStatic },
+		_isActive{ false }
 	{
 	}
 
@@ -53,5 +54,16 @@ namespace Core::DataStructure
 				_component.erase(_component.begin() + i--);
 			}
 		}
+	}
+
+	GameComponent& GameComponent::operator=(const GameComponent& gc)
+	{
+		_component = gc._component;
+		_name = gc._name;
+		_layer = gc._layer;
+		_isStatic = gc._isStatic;
+		_isActive = gc._isActive;
+
+		return *this;
 	}
 }

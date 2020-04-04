@@ -4,9 +4,6 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 
-//#define _WIN64
-//#include <fileapi.h>
-
 #include "Explorer.h"
 #include "Profiler.h"
 

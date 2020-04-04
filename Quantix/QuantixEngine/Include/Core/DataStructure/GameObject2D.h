@@ -10,7 +10,7 @@ namespace Core::DataStructure
 	 * @brief class GameObject2D
 	 * 
 	 */
-	class GameObject2D : GameComponent
+	class GameObject2D : public GameComponent
 	{
 	protected:
 		#pragma region Attributes
@@ -19,6 +19,7 @@ namespace Core::DataStructure
 	public:
 		#pragma region Constructors/Destructor
 		GameObject2D() noexcept;
+		GameObject2D(std::string name) noexcept;
 		GameObject2D(const GameObject2D& g2d) noexcept;
 		GameObject2D(GameObject2D&& g2d) noexcept;
 		~GameObject2D();

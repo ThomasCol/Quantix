@@ -1,6 +1,8 @@
 #ifndef _MENUBAR_H_
 #define _MENUBAR_H_
 
+#include <Core/DataStructure/GameObject3D.h>
+
 #include <vector>
 #include <string>
 #include <Node.h>
@@ -18,11 +20,17 @@ public:
 	void CreateObject(bool* selection, std::vector<std::string> objectName, std::vector<Node>& object);
 	void CreateShapeObject(bool* selection, std::vector<std::string> objectName, std::vector<Node>& object);
 	void CreateLightObject(bool* selection, std::vector<std::string> objectName, std::vector<Node>& object);
+	/*void Update(std::vector<Core::DataStructure::GameComponent*>& object);
+	void CreateGameObject(std::string name, std::vector<Core::DataStructure::GameComponent*>& object, bool& selection);
+	void CreateObject(bool* selection, std::vector<std::string> objectName, std::vector<Core::DataStructure::GameComponent*>& object);
+	void CreateShapeObject(bool* selection, std::vector<std::string> objectName, std::vector<Core::DataStructure::GameComponent*>& object);
+	void CreateLightObject(bool* selection, std::vector<std::string> objectName, std::vector<Core::DataStructure::GameComponent*>& object);*/
 
 	void FileButton();
 	void EditButton();
 	void AssetButton();
 	void GameObjectButton(std::vector<Node>& object);
+	//void GameObjectButton(std::vector<Core::DataStructure::GameComponent*>& object);
 
 private:
 

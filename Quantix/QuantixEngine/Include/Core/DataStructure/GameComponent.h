@@ -8,12 +8,13 @@
 #include <Vec3.h>
 #include <Mat4.h>
 
+#include "Core/DLLHeader.h"
 //#include "Transform.h"
 #include "Component.h"
 
 namespace Core::DataStructure
 {
-	class GameComponent
+	class QUANTIX_API GameComponent
 	{
 	protected:
 		#pragma region Attributes
@@ -21,6 +22,7 @@ namespace Core::DataStructure
 		std::string					_name;
 		QXint						_layer;
 		QXbool						_isStatic;
+		QXbool						_isActive;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -129,6 +131,12 @@ namespace Core::DataStructure
 		#pragma endregion Template
 
 		#pragma region Accessors
+		inline void				SetIsActive(QXbool IsActive) { _isActive = IsActive; };
+
+		inline QXbool			GetIsActive() const { return _isActive; };
+
+		inline QXstring			GetName() const { return _name; };
+
 		/**
 		 * @brief Set the Is Static object
 		 * 
@@ -157,6 +165,7 @@ namespace Core::DataStructure
 		 */
 		inline QXint			GetLayer() const { return _layer; };
 		#pragma endregion Accessors
+		GameComponent&			operator=(const GameComponent& gc);
 		#pragma endregion Methods
 	};
 }

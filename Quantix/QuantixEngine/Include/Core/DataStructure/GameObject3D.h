@@ -10,7 +10,7 @@ namespace Core::DataStructure
 	 * @brief class GameObject3D
 	 * 
 	 */
-	class GameObject3D : GameComponent
+	class QUANTIX_API GameObject3D : public GameComponent
 	{
 	protected:
 		#pragma region Attributes
@@ -18,7 +18,8 @@ namespace Core::DataStructure
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
-		GameObject3D() noexcept;
+		GameObject3D() = default;
+		GameObject3D(std::string name) noexcept;
 		GameObject3D(const GameObject3D& g3d) noexcept;
 		GameObject3D(GameObject3D&& g3d) noexcept;
 		~GameObject3D();
@@ -126,6 +127,7 @@ namespace Core::DataStructure
 		 */
 		//Transform3D			GetTransform() const { return _transform; };
 		#pragma endregion Accessors
+		GameObject3D&			operator=(const GameObject3D& object);
 		#pragma endregion Methods
 	};
 }
