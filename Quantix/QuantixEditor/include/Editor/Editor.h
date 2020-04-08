@@ -22,19 +22,21 @@ public:
 	Editor(Editor&& editor) = default;
 	~Editor();
 
-	bool												Init();
+	QXbool												Init();
 	void												Update(QXuint FBO);
 
-	void												Draw(std::string name, ImGuiWindowFlags flags);
+	void												Draw(QXstring name, ImGuiWindowFlags flags);
 	void												DrawMenuBar();
-	void												DrawHierarchy(std::string name, ImGuiWindowFlags flags);
-	void												DrawScene(std::string name, ImGuiWindowFlags flags);
+	void												DrawHierarchy(QXstring name, ImGuiWindowFlags flags);
+	void												Simulation();
+	void												DrawSimulation();
+	void												DrawScene(QXstring name, ImGuiWindowFlags flags);
 
 	void												PrintLog();
 
-	void												DrawConsole(std::string name, ImGuiWindowFlags flags);
-	void												DrawExplorer(std::string name, ImGuiWindowFlags flags);
-	void												DrawInspector(std::string name, ImGuiWindowFlags flags);
+	void												DrawConsole(QXstring name, ImGuiWindowFlags flags);
+	void												DrawExplorer(QXstring name, ImGuiWindowFlags flags);
+	void												DrawInspector(QXstring name, ImGuiWindowFlags flags);
 
 	inline Quantix::Core::Platform::Window&				GetWin() { return _win; };
 	inline Quantix::Core::Platform::Application*		GetApp() const { return _app; };
@@ -49,10 +51,12 @@ private:
 	Hierarchy											_hierarchy;
 	Explorer											_explorer;
 
+	std::vector<Quantix::Resources::Texture*>			_simImg;
+	std::vector<QXbool>									_simState;
 	std::vector<Node>									_object;
 	//std::vector<Core::DataStructure::GameComponent*>	_gameComponent;
 	QXuint												_fbo;
-	bool												_init;
+	QXbool												_init;
 	ImGuiWindowFlags									_flagsEditor;
 };
 

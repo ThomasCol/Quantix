@@ -7,7 +7,7 @@
 #include "Hierarchy.h"
 #include "Logger.h"
 
-void Hierarchy::SetSelectable(std::vector<Node>& nodeGlobal, std::vector<Node>& node, int i)
+void Hierarchy::SetSelectable(std::vector<Node>& nodeGlobal, std::vector<Node>& node, QXint i)
 {
 	node[i].state = !node[i].state;
 	if (_inspector == nullptr)
@@ -20,8 +20,8 @@ void Hierarchy::SetSelectable(std::vector<Node>& nodeGlobal, std::vector<Node>& 
 
 void Hierarchy::DrawObject(std::vector<Node>& nodeGlobal, std::vector<Node>& node)
 {
-	static int j = 0;
-	for (unsigned int i{ 0 }; i < node.size(); i++)
+	static QXint j = 0;
+	for (QXuint i{ 0 }; i < node.size(); i++)
 	{
 		if (j == 0)
 		{
@@ -37,7 +37,7 @@ void Hierarchy::DrawObject(std::vector<Node>& nodeGlobal, std::vector<Node>& nod
 		}
 		else
 		{
-			bool isOpen = ImGui::TreeNodeEx(&node[i], ImGuiTreeNodeFlags_Selected, node[i].name.c_str());
+			QXbool isOpen = ImGui::TreeNodeEx(&node[i], ImGuiTreeNodeFlags_Selected, node[i].name.c_str());
 			if (ImGui::IsItemClicked(0))
 				SetSelectable(nodeGlobal, node, i);
 			if (isOpen)
@@ -52,7 +52,7 @@ void Hierarchy::DrawObject(std::vector<Node>& nodeGlobal, std::vector<Node>& nod
 	PopUpMenu(node);
 }
 
-void Hierarchy::Update(std::string name, ImGuiWindowFlags flags, std::vector<Node>& node)
+void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, std::vector<Node>& node)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
@@ -61,9 +61,9 @@ void Hierarchy::Update(std::string name, ImGuiWindowFlags flags, std::vector<Nod
 	ImGui::End();
 }
 
-void Hierarchy::CreateChild(bool& select, std::vector<Node>& nodes)
+void Hierarchy::CreateChild(QXbool& select, std::vector<Node>& nodes)
 {
-	for (unsigned int i = 0; i < nodes.size(); i++)
+	for (QXuint i = 0; i < nodes.size(); i++)
 	{
 		if (nodes[i].child.size() != 0)
 			CreateChild(select, nodes[i].child);
@@ -83,15 +83,15 @@ void Hierarchy::CreateChild(bool& select, std::vector<Node>& nodes)
 
 void Hierarchy::MenuRename(std::vector<Node>& nodes)
 {
-	for (unsigned int i = 0; i < nodes.size(); i++)
+	for (QXuint i = 0; i < nodes.size(); i++)
 	{
 		if (nodes[i].child.size() != 0)
 			MenuRename(nodes[i].child);
 
 		if (&nodes[i] == _selected)
 		{
-			std::string name;
-			char currName[64];
+			QXstring name;
+			QXchar currName[64];
 
 			memcpy(currName, nodes[i].name.c_str(), nodes[i].name.size() + 1);
 			if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
@@ -105,9 +105,9 @@ void Hierarchy::MenuRename(std::vector<Node>& nodes)
 	}
 }
 
-void Hierarchy::MenuItem(bool* selection, std::vector<std::string> itemMenu, std::vector<Node>& nodes)
+void Hierarchy::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Node>& nodes)
 {
-	for (unsigned int i{ 0 }; i < itemMenu.size(); i++)
+	for (QXuint i{ 0 }; i < itemMenu.size(); i++)
 	{
 		if (selection[i])
 		{
@@ -125,7 +125,7 @@ void Hierarchy::PopUpMenuItem(std::vector<Node>& nodes, Node& node)
 			_selected = &node;
 		else
 		{ 
-			static bool selection[1] = { false };
+			static QXbool selection[1] = { false };
 			ImGui::Selectable("Create Child", &selection[0]);
 			MenuRename(nodes);
 			MenuItem(selection, { "Create Child" }, nodes);
@@ -134,7 +134,7 @@ void Hierarchy::PopUpMenuItem(std::vector<Node>& nodes, Node& node)
 	}
 }
 
-void Hierarchy::CreateEmptyObject(bool& selection, std::vector<Node>& node)
+void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<Node>& node)
 {
 	if (selection)
 	{
@@ -146,9 +146,9 @@ void Hierarchy::CreateEmptyObject(bool& selection, std::vector<Node>& node)
 	}
 }
 
-void Hierarchy::CreateItem(bool* selection, std::vector<std::string> itemMenu, std::vector<Node>& node)
+void Hierarchy::CreateItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Node>& node)
 {
-	for (unsigned int i{ 0 }; i < itemMenu.size(); i++)
+	for (QXuint i{ 0 }; i < itemMenu.size(); i++)
 	{
 		if (selection[i])
 		{
@@ -162,7 +162,7 @@ void Hierarchy::PopUpMenu(std::vector<Node>& node)
 {
 	if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
 	{
-		static bool selection[1] = { false };
+		static QXbool selection[1] = { false };
 		ImGui::Selectable("Create Empty", &selection[0]);
 		CreateItem(selection, {"Create Empty"}, node);
 		ImGui::EndPopup();
@@ -171,7 +171,7 @@ void Hierarchy::PopUpMenu(std::vector<Node>& node)
 
 void Hierarchy::DesactivatePrevInspector(std::vector<Node>& nodes, Node& node)
 {
-	for (unsigned int i{ 0 }; i < nodes.size(); i++)
+	for (QXuint i{ 0 }; i < nodes.size(); i++)
 	{
 		if (nodes[i].child.size() > 0)
 			DesactivatePrevInspector(nodes[i].child, node);

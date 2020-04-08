@@ -11,6 +11,8 @@
 #include <Node.h>
 #include <Core/DataStructure/GameObject3D.h>
 
+#include "Type.h"
+
 class Inspector
 {
 public:
@@ -21,7 +23,7 @@ public:
 	Inspector(Inspector&& inspector) = default;
 	~Inspector() = default;
 
-	inline void	SetEnable(bool enable) { _enable = enable; };
+	inline void	SetEnable(QXbool enable) { _enable = enable; };
 	inline void SetNode(Node node) { _node = node; };
 
 	void		Update();

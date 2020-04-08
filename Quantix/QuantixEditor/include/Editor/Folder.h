@@ -8,6 +8,8 @@
 #include <Core/Platform/Application.h>
 #include <Resources/Texture.h>
 
+#include "Type.h"
+
 namespace fs = std::filesystem;
 
 class Folder
@@ -19,12 +21,12 @@ public:
 	Folder(Folder&& folder) = default;
 	~Folder() = default;
 
-	inline std::vector<std::string>		GetFolder() const { return _folder; };
-	inline std::vector<std::string>		GetFile() const { return _file; };
-	inline std::vector<std::string>		GetImg() const { return _imgFile; };
+	inline std::vector<QXstring>		GetFolder() const { return _folder; };
+	inline std::vector<QXstring>		GetFile() const { return _file; };
+	inline std::vector<QXstring>		GetImg() const { return _imgFile; };
 
 	inline ImVec2						GetSizeFile() const { return _sizeFile; };
-	inline int							GetSizeFolder() const { return _sizeFolder; };
+	inline QXint						GetSizeFolder() const { return _sizeFolder; };
 
 	inline QXuint						GetIDFolder() const { return _folderGLu->GetId(); };
 	inline QXuint						GetIDCPP() const { return _cppGLu->GetId();
@@ -41,12 +43,12 @@ public:
 	Folder&								operator=(const Folder& folder);
 
 private:
-	std::vector<std::string>		_folder;
-	std::vector<std::string>		_file;
-	std::vector<std::string>		_imgFile;
+	std::vector<QXstring>			_folder;
+	std::vector<QXstring>			_file;
+	std::vector<QXstring>			_imgFile;
 
 	ImVec2							_sizeFile;
-	int								_sizeFolder;
+	QXint							_sizeFolder;
 
 	Quantix::Resources::Texture*	_folderGLu;
 	Quantix::Resources::Texture*	_cppGLu;

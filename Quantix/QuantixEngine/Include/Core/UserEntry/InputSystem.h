@@ -4,11 +4,13 @@
 #include <vector>
 #include <unordered_map>
 
+#include "Core/DLLHeader.h"
+
 #include "GLFW/glfw3.h"
 
 namespace Quantix::Core::UserEntry
 {
-	enum class EButtonType
+	enum class QUANTIX_API EButtonType
 	{
 		KEYBOARD,
 		GAMEPAD
@@ -24,7 +26,7 @@ namespace Quantix::Core::UserEntry
 
 #pragma region TypeOfKeys
 
-	enum EKey
+	enum QUANTIX_API EKey
 	{
 		QTX_KEY_SPACE = GLFW_KEY_SPACE,
 		QTX_KEY_APOSTROPHE = GLFW_KEY_APOSTROPHE,
@@ -147,7 +149,7 @@ namespace Quantix::Core::UserEntry
 		QTX_KEY_MENU = GLFW_KEY_MENU
 	};
 
-	enum EMouseButton
+	enum QUANTIX_API EMouseButton
 	{
 		QTX_MOUSE_BUTTON_1 = GLFW_MOUSE_BUTTON_1,
 		QTX_MOUSE_BUTTON_2 = GLFW_MOUSE_BUTTON_2,
@@ -159,7 +161,7 @@ namespace Quantix::Core::UserEntry
 		QTX_MOUSE_BUTTON_8 = GLFW_MOUSE_BUTTON_8
 	};
 
-	enum EGamepadButton
+	enum QUANTIX_API EGamepadButton
 	{
 		QTX_GAMEPAD_BUTTON_A = GLFW_GAMEPAD_BUTTON_A,
 		QTX_GAMEPAD_BUTTON_B = GLFW_GAMEPAD_BUTTON_B,
@@ -178,7 +180,7 @@ namespace Quantix::Core::UserEntry
 		QTX_GAMEPAD_BUTTON_DPAD_LEFT = GLFW_GAMEPAD_BUTTON_DPAD_LEFT
 	};
 
-	enum EGamepadAxis
+	enum QUANTIX_API EGamepadAxis
 	{
 		QTX_GAMEPAD_AXIS_LEFT_X = GLFW_GAMEPAD_AXIS_LEFT_X,
 		QTX_GAMEPAD_AXIS_LEFT_Y = GLFW_GAMEPAD_AXIS_LEFT_Y,
@@ -199,7 +201,7 @@ namespace Quantix::Core::UserEntry
 		unsigned int	_index = -1;
 
 		//Methods
-		virtual void React(int action) = 0;
+		virtual void		React(int action) = 0;
 	};
 
 	struct MouseMvmt : public Input
@@ -211,8 +213,8 @@ namespace Quantix::Core::UserEntry
 
 		//Callback
 		//TODO: Add definitions
-		void Update(double xPos, double yPos);
-		void React(int action) override;
+		void				Update(double xPos, double yPos);
+		//void				React(int action) override;
 	};
 
 	struct Button : public Input
@@ -225,16 +227,16 @@ namespace Quantix::Core::UserEntry
 		unsigned int	_index;
 
 		//Callback
-		void Update(int key, int action);
-		void React(int action) override;
+		void				Update(int key, int action);
+		void				React(int action) override;
 
 		//Constructor & Destructor
 		Button(EKey scancode, ETriggerType triggerType);
 		//Button(EGamepadButton scancode, ETriggerType triggerType);
 
 		//Operators
-		bool operator==(const Button& k) const;
-		bool operator!=(const Button& k) const;
+		bool				operator==(const Button& k) const;
+		bool				operator!=(const Button& k) const;
 	};
 
 	struct KeyPack
@@ -247,18 +249,18 @@ namespace Quantix::Core::UserEntry
 		bool IsValid() const;
 	};
 
-	class InputMgr
+	class QUANTIX_API InputMgr
 	{
 	private:
 		//Attribute
 		std::vector<KeyPack>	_packs;
-		MouseMvmt				_mouseMvmt;
+		//MouseMvmt				_mouseMvmt;
 		std::vector<Joystick>	_joysticks;
 
-		static InputMgr* instance;
+		static InputMgr*		instance;
 
 		//Methods
-		bool	IsKeyAlreadyInPack(unsigned int indexOfPack, const Button& key);
+		bool				IsKeyAlreadyInPack(unsigned int indexOfPack, const Button& key);
 
 	public:
 		//Constructor & Destructor
@@ -266,11 +268,11 @@ namespace Quantix::Core::UserEntry
 		~InputMgr() = default;
 
 		//Methods
-		int		AddPack(const KeyPack& pack);
-		void	SuppPack(unsigned int indexOfPack);
-		int		AddKeyToPack(unsigned int indexOfPack, const Button& key);
-		void	SuppKeyFromPack(unsigned int indexOfPack, unsigned int indexOfKey);
-		void	CheckKeys(int key, int action);
+		int					AddPack(const KeyPack& pack);
+		void				SuppPack(unsigned int indexOfPack);
+		int					AddKeyToPack(unsigned int indexOfPack, const Button& key);
+		void				SuppKeyFromPack(unsigned int indexOfPack, unsigned int indexOfKey);
+		void				CheckKeys(int key, int action);
 
 		//TODO: Add GetMousePos Method
 
@@ -284,8 +286,8 @@ namespace Quantix::Core::UserEntry
 		float	GetJoysticksAxis(const Joystick& joystick, EGamepadAxis axis);*/
 
 		//Getter
-		static InputMgr* GetInstance();
-		const KeyPack& GetPack(unsigned int index);
+		static InputMgr*	GetInstance();
+		const KeyPack&		GetPack(unsigned int index);
 	};
 }
 

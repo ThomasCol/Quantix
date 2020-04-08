@@ -11,33 +11,33 @@ public:
 	Explorer();
 	~Explorer() = default;
 
-	int							InitFormatFolder();
+	QXint						InitFormatFolder();
 	
-	void						CheckRootFolder(int& index);
-	void						ModifyFolder(std::string name);
-	void						OpenSoftware(std::string name);
-	void						PushId(QXuint img, std::string name, int& index);
+	void						CheckRootFolder(QXint& index);
+	void						ModifyFolder(QXstring name);
+	void						OpenSoftware(QXstring name);
+	void						PushId(QXuint img, QXstring name, QXint& index);
 
-	void						DrawFolder(int& index);
-	void						DrawFile(int& index);
-	void						DrawImg(int& index);
-	void						DrawRepository(int& index);
+	void						DrawFolder(QXint& index);
+	void						DrawFile(QXint& index);
+	void						DrawImg(QXint& index);
+	void						DrawRepository(QXint& index);
 
-	void						MenuRename(std::string file);
-	void						MenuItem(bool* selection, std::vector<std::string> itemMenu, std::string file);
+	void						MenuRename(QXstring file);
+	void						MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, QXstring file);
 
-	void						PopUpMenuItem(std::string& itemFile);
+	void						PopUpMenuItem(QXstring& itemFile);
 	void						PopUpMenu();
 
-	void						CreateItemFolder(std::string item);
-	void						CreateItemFile(std::string item);
-	void						CreateItem(std::vector<std::string> itemMenu);
+	void						CreateItemFolder(QXstring item);
+	void						CreateItemFile(QXstring item);
+	void						CreateItem(std::vector<QXstring> itemMenu);
 
-	void						Update(Quantix::Core::DataStructure::ResourcesManager& cache, std::string name, ImGuiWindowFlags flags);
+	void						Update(Quantix::Core::DataStructure::ResourcesManager& cache, QXstring name, ImGuiWindowFlags flags);
 
 private:
 	Folder						_folder;
-	std::string					_path;
+	QXstring					_path;
 };
 
 #endif // !_EXPLORER_H_

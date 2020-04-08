@@ -9,7 +9,7 @@
 
 #include <Windows.h>
 
-static void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr)
+static void findAndReplaceAll(QXstring& data, QXstring toSearch, QXstring replaceStr)
 {
 	// Get the first occurrence
 	size_t pos = data.find(toSearch);
@@ -32,7 +32,7 @@ Explorer::Explorer() :
 
 int Explorer::InitFormatFolder()
 {
-	static int folderSize = _folder.GetSizeFolder();
+	static QXint folderSize = _folder.GetSizeFolder();
 	ImGui::SliderInt("Size", &folderSize, 1, 100);
 
 	_folder.SetSizeFolder(folderSize);
@@ -43,8 +43,8 @@ int Explorer::InitFormatFolder()
 
 	_folder.SetSizeFile(size);
 
-	int lines = 8;
-	int columns{ (int)(ImGui::GetContentRegionAvail().x / size.x) };
+	QXint lines = 8;
+	QXint columns{ (QXint)(ImGui::GetContentRegionAvail().x / size.x) };
 
 	if (columns < 1)
 		columns = 1;
@@ -54,11 +54,11 @@ int Explorer::InitFormatFolder()
 }
 
 
-void Explorer::CheckRootFolder(int& index)
+void Explorer::CheckRootFolder(QXint& index)
 {
 	if (_path != "./" && index == 0)
 	{
-		std::string name = "..";
+		QXstring name = "..";
 		PushId(_folder.GetIDFolder(), name, index);
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			ModifyFolder(name);
@@ -67,7 +67,7 @@ void Explorer::CheckRootFolder(int& index)
 	}
 }
 
-void	Explorer::ModifyFolder(std::string name)
+void	Explorer::ModifyFolder(QXstring name)
 {
 	if (name != "")
 	{
@@ -87,25 +87,25 @@ void	Explorer::ModifyFolder(std::string name)
 	}
 }
 
-void	Explorer::OpenSoftware(std::string name)
+void	Explorer::OpenSoftware(QXstring name)
 {
-	std::string filePath;
+	QXstring filePath;
 	if (_path == "./")
 		filePath = _path + name;
 	else
 		filePath = _path + "/" + name;
 	std::size_t found = filePath.find("./");
-	if (found != std::string::npos)
+	if (found != QXstring::npos)
 		filePath.erase(found, 2);
 	findAndReplaceAll(filePath, "/", "\\");
 	filePath = (fs::current_path() / filePath).string();
 
-	std::string cmd = "openwith " + filePath;
+	QXstring cmd = "openwith " + filePath;
 	std::cout << cmd << std::endl;
 	system(cmd.c_str());
 }
 
-void Explorer::PushId(QXuint img, std::string name, int& index)
+void Explorer::PushId(QXuint img, QXstring name, QXint& index)
 {
 	ImGui::PushID(index);
 	ImGui::BeginGroup();
@@ -117,11 +117,11 @@ void Explorer::PushId(QXuint img, std::string name, int& index)
 	ImGui::PopID();
 }
 
-void Explorer::DrawFolder(int& index)
+void Explorer::DrawFolder(QXint& index)
 {
 	for (int i = 0; i < _folder.GetFolder().size(); i++)
 	{
-		std::string name = _folder.GetFolder()[i];
+		QXstring name = _folder.GetFolder()[i];
 		PushId(_folder.GetIDFolder(), name, index);
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			ModifyFolder(name);
@@ -130,11 +130,11 @@ void Explorer::DrawFolder(int& index)
 	}
 }
 
-void Explorer::DrawFile(int& index)
+void Explorer::DrawFile(QXint& index)
 {
-	for (int i = 0; i < _folder.GetFile().size(); i++)
+	for (QXint i = 0; i < _folder.GetFile().size(); i++)
 	{
-		std::string name = _folder.GetFile()[i];
+		QXstring name = _folder.GetFile()[i];
 
 		if (name.find(".cpp") != std::string::npos)
 			PushId(_folder.GetIDCPP(), name, index);
@@ -154,11 +154,11 @@ void Explorer::DrawFile(int& index)
 	}
 }
 
-void Explorer::DrawImg(int& index)
+void Explorer::DrawImg(QXint& index)
 {
 	for (int i = 0; i < _folder.GetImg().size(); i++)
 	{
-		std::string name = _folder.GetImg()[i];
+		QXstring name = _folder.GetImg()[i];
 		PushId(_folder.GetIDImg(), name, index);
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			OpenSoftware(name);
@@ -167,7 +167,7 @@ void Explorer::DrawImg(int& index)
 	}
 }
 
-void Explorer::DrawRepository(int& index)
+void Explorer::DrawRepository(QXint& index)
 {
 	DrawFolder(index);
 	DrawFile(index);
@@ -175,10 +175,10 @@ void Explorer::DrawRepository(int& index)
 }
 
 
-void Explorer::MenuRename(std::string file)
+void Explorer::MenuRename(QXstring file)
 {
-	std::string name;
-	char currName[64];
+	QXstring name;
+	QXchar currName[64];
 
 	memcpy(currName, file.c_str(), file.size() + 1);
 	if (ImGui::BeginMenu("Rename"))
@@ -193,9 +193,9 @@ void Explorer::MenuRename(std::string file)
 	}
 }
 
-void Explorer::MenuItem(bool* selection, std::vector<std::string> itemMenu, std::string file)
+void Explorer::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, QXstring file)
 {
-	for (unsigned int i{ 0 }; i < itemMenu.size(); i++)
+	for (QXuint i{ 0 }; i < itemMenu.size(); i++)
 	{
 		if (selection[i])
 		{
@@ -216,11 +216,11 @@ void Explorer::MenuItem(bool* selection, std::vector<std::string> itemMenu, std:
 	}
 }
 
-void Explorer::PopUpMenuItem(std::string& itemFile)
+void Explorer::PopUpMenuItem(QXstring& itemFile)
 {
 	if (ImGui::BeginPopupContextItem("Context Item"))
 	{
-		static bool selection[2] = { false, false };
+		static QXbool selection[2] = { false, false };
 		ImGui::Selectable("Open", &selection[0]);
 		MenuRename(itemFile);
 		ImGui::Selectable("Delete", &selection[1]);
@@ -230,9 +230,9 @@ void Explorer::PopUpMenuItem(std::string& itemFile)
 	}
 }
 
-void Explorer::CreateItemFolder(std::string item)
+void Explorer::CreateItemFolder(QXstring item)
 {
-	char currName[64];
+	QXchar currName[64];
 
 	memset(currName, 0, 64);
 	if (ImGui::BeginMenu(item.c_str()))
@@ -247,9 +247,9 @@ void Explorer::CreateItemFolder(std::string item)
 	}
 }
 
-void Explorer::CreateItemFile(std::string item)
+void Explorer::CreateItemFile(QXstring item)
 {
-	char currName[64];
+	QXchar currName[64];
 
 	memset(currName, 0, 64);
 	if (ImGui::BeginMenu(item.c_str()))
@@ -265,7 +265,7 @@ void Explorer::CreateItemFile(std::string item)
 	}
 }
 
-void Explorer::CreateItem(std::vector<std::string> itemMenu)
+void Explorer::CreateItem(std::vector<QXstring> itemMenu)
 {
 	CreateItemFolder(itemMenu[0]);
 	CreateItemFile(itemMenu[1]);
@@ -285,14 +285,14 @@ void Explorer::PopUpMenu()
 	}
 }
 
-void Explorer::Update(Quantix::Core::DataStructure::ResourcesManager& cache, std::string name, ImGuiWindowFlags flags)
+void Explorer::Update(Quantix::Core::DataStructure::ResourcesManager& cache, QXstring name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		_folder = Folder(cache, _path);
 
-		int rowCol = InitFormatFolder();
-		int i = 0;
+		QXint rowCol = InitFormatFolder();
+		QXint i = 0;
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 		CheckRootFolder(i);
