@@ -57,7 +57,7 @@ namespace Quantix::Core::Render
 		 * @param lights Lights for the scene
 		 * @param info App info
 		 */
-		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light*>& lights, Quantix::Core::Platform::AppInfo& info);
+		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light*>& lights, Quantix::Core::Platform::AppInfo& info, Components::Camera* cam);
 
 #pragma endregion
 	};

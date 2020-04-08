@@ -4,10 +4,11 @@
 #include <Vec3.h>
 #include <Mat4.h>
 //#include "Component.h"
+#include "Core/DLLHeader.h"
 
-namespace Core::Components
+namespace Quantix::Core::Components
 {
-	class Camera //: public virtual Core::DataStructure::Component
+	class QUANTIX_API Camera //: public virtual Core::DataStructure::Component
 	{
 	private:
 		#pragma region Attributes
@@ -15,6 +16,8 @@ namespace Core::Components
 		Math::QXvec3	_pos;
 		Math::QXvec3	_dir;
 		Math::QXvec3	_angle;
+
+		Math::QXmat4	_lookAt;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -74,7 +77,7 @@ namespace Core::Components
 		 * @param pos Vector
 		 * @return Math::QXmat4 LookAtMatrix of the Camera
 		 */
-		Math::QXmat4					UpdateLookAt(Math::QXvec3 pos);
+		void							UpdateLookAt(Math::QXvec3 pos);
 
 		/**
 		 * @brief Change the view of the Camera
@@ -93,6 +96,14 @@ namespace Core::Components
 		 * @param rotate Math::QxVec3
 		 */
 		void							Rotate(Math::QXvec3 rotate);
+
+		#pragma	region Accessor
+
+		inline Math::QXmat4 GetLookAt() { return _lookAt; }
+
+		inline Math::QXvec3 GetPos() { return _pos; }
+		
+		#pragma	endregion
 		#pragma endregion Methods
 	};
 }

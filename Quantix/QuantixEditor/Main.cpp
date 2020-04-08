@@ -7,9 +7,7 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_internal.h>
 
-//#include <Core/Platform/Application.h>
-
-#include <Resources/ShaderProgram.h>
+#include <Core/Components/Camera.h>
 
 #include <Editor.h>
 #include <Profiler.h>
@@ -31,6 +29,8 @@ int main()
 
 		std::vector<Quantix::Core::Components::Mesh*> meshes;
 		meshes.push_back(mesh);
+
+		Quantix::Core::Components::Camera* cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 
 		Quantix::Core::Components::Light* light = new Quantix::Core::Components::Light;
 		light->ambient = { 0.5f, 0.5f, 0.5f };
@@ -62,6 +62,8 @@ int main()
 		lights.push_back(light);
 		lights.push_back(light2);
 
+
+
 		while (!editor->GetWin().ShouldClose())
 		{
 			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Draw");
@@ -76,7 +78,7 @@ int main()
 			if (editor->Init())
 			{
 				//Editor Update
-				editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info));
+				editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, cam));
 			}
 			editor->GetWin().Refresh(editor->GetApp()->info);
 		}
@@ -84,6 +86,7 @@ int main()
 			delete meshes[i];
 		for (int i = 0; i < meshes.size(); ++i)
 			delete lights[i];
+		delete cam;
 	}
 	catch (const std::exception& e)
 	{

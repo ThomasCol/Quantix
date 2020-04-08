@@ -74,7 +74,7 @@ namespace Quantix::Core::Render
 		_mainBuffer.depthStencilRenderbuffer = depth_stencil_renderbuffer;
 	}
 
-	QXuint Renderer::Draw(std::vector<Core::Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info)
+	QXuint Renderer::Draw(std::vector<Core::Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
 
@@ -86,7 +86,7 @@ namespace Quantix::Core::Render
 
 		for (QXint i = 0; i < mesh.size(); ++i)
 		{
-			mesh[i]->SendDataToShader(info, lights);
+			mesh[i]->SendDataToShader(info, lights, cam);
 
 			glBindVertexArray(mesh[i]->GetVAO());
 
