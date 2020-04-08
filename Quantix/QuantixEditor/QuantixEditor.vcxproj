@@ -152,7 +152,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;GLAD_GLAPI_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)include\glad;$(ProjectDir)include\GLFW;$(ProjectDir)include\KHR;$(ProjectDir)include\ImGui;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)externals;$(ProjectDir)externals\GLFW;$(ProjectDir)externals\KHR;$(ProjectDir)externals\imgui;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
@@ -161,7 +161,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>QuantixEngine.lib;MathLib.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QuantixEngine.lib;MathLib.lib;glfw3dll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)QuantixEngine\Lib\GLFW\lib-vc2019;$(SolutionDir)QuantixEngine\Lib\MathLib\Lib\Release_x64;$(SolutionDir)QuantixEngine\Lib\SPIRV-Cross\Lib\Win64\Release</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

@@ -48,9 +48,9 @@ void MenuBar::Update(std::vector<Node>& object)
 //	i++;
 //}
 
-void MenuBar::CreateGameObject(std::string name, std::vector<Node>& object, bool& selection)
+void MenuBar::CreateGameObject(QXstring name, std::vector<Node>& object, QXbool& selection)
 {
-	static unsigned int i = 0;
+	static QXuint i = 0;
 	if (i == 0)
 		object.push_back({ {}, "GameObject", i, false });
 	else
@@ -77,10 +77,10 @@ void MenuBar::CreateGameObject(std::string name, std::vector<Node>& object, bool
 //	}
 //}
 
-void MenuBar::CreateObject(bool* selection, std::vector<std::string> objectName, std::vector<Node>& object)
+void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Node>& object)
 {
-	static unsigned int j[2] = { 0, 0 };
-	for (unsigned int i{ 0 }; i < objectName.size(); i++)
+	static QXuint j[2] = { 0, 0 };
+	for (QXuint i{ 0 }; i < objectName.size(); i++)
 	{
 		if (selection[i])
 		{
@@ -113,10 +113,10 @@ void MenuBar::CreateObject(bool* selection, std::vector<std::string> objectName,
 //	}
 //}
 
-void MenuBar::CreateShapeObject(bool* selection, std::vector<std::string> objectName, std::vector<Node>& object)
+void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Node>& object)
 {
-	static unsigned int j[2] = { 0, 0 };
-	for (unsigned int i{ 0 }; i < objectName.size(); i++)
+	static QXuint j[2] = { 0, 0 };
+	for (QXuint i{ 0 }; i < objectName.size(); i++)
 	{
 		if (selection[i])
 		{
@@ -149,10 +149,10 @@ void MenuBar::CreateShapeObject(bool* selection, std::vector<std::string> object
 //	}
 //}
 
-void MenuBar::CreateLightObject(bool* selection, std::vector<std::string> objectName, std::vector<Node>& object)
+void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Node>& object)
 {
-	static unsigned int j[2] = { 0, 0 };
-	for (unsigned int i{ 0 }; i < objectName.size(); i++)
+	static QXuint j[2] = { 0, 0 };
+	for (QXuint i{ 0 }; i < objectName.size(); i++)
 	{
 		if (selection[i])
 		{
@@ -183,7 +183,7 @@ void MenuBar::EditButton()
 {
 	if (ImGui::BeginMenu("Edit"))
 	{
-		static bool selection[2] = { false, false };
+		static QXbool selection[2] = { false, false };
 		ImGui::Selectable("Project Settings", &selection[0]);
 		ImGui::Selectable("Preferences", &selection[1]);
 		ImGui::EndMenu();
@@ -196,12 +196,12 @@ void MenuBar::AssetButton()
 	{
 		if (ImGui::BeginMenu("Create"))
 		{
-			static bool selection[2] = { false, false };
+			static QXbool selection[2] = { false, false };
 			ImGui::Selectable("Material", &selection[0]);
 			ImGui::Selectable("Shader", &selection[1]);
 			ImGui::EndMenu();
 		}
-		static bool selection[2] = { false, false };
+		static QXbool selection[2] = { false, false };
 		ImGui::Selectable("Show in Explorer", &selection[0]);
 		ImGui::Selectable("Import Asset", &selection[1]);
 		ImGui::EndMenu();
@@ -240,16 +240,16 @@ void MenuBar::AssetButton()
 
 void MenuBar::GameObjectButton(std::vector<Node>& object)
 {
-	static int id = 0;
+	static QXint id = 0;
 	if (ImGui::BeginMenu("GameObject"))
 	{
-		static bool selection = { false };
+		static QXbool selection = { false };
 		ImGui::Selectable("Create Empty", &selection);
 		if (selection)
 			CreateGameObject("GameObject", object, selection);
 		if (ImGui::BeginMenu("3D Object"))
 		{
-			static bool selection[2] = { false, false };
+			static QXbool selection[2] = { false, false };
 			ImGui::Selectable("Cube", &selection[0]);
 			ImGui::Selectable("Sphere", &selection[1]);
 			CreateShapeObject(selection, { "Cube", "Sphere" }, object);
@@ -257,7 +257,7 @@ void MenuBar::GameObjectButton(std::vector<Node>& object)
 		}
 		if (ImGui::BeginMenu("Light"))
 		{
-			static bool selection[3] = { false, false, false };
+			static QXbool selection[3] = { false, false, false };
 			ImGui::Selectable("Spot Light", &selection[0]);
 			ImGui::Selectable("Point Light", &selection[1]);
 			ImGui::Selectable("Directional Light", &selection[2]);

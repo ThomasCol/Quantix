@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "Type.h"
+
 
 class Docker
 {
@@ -20,13 +22,13 @@ public:
 
 	void								Init();
 
-	std::string							CreateWindowEditorDock(std::string name, ImGuiID& id);
+	QXstring							CreateWindowEditorDock(std::string name, ImGuiID& id);
 
 	inline std::vector<std::string>		GetWindowsEditor() const { return _winEditor; };
 	inline ImGuiID						GetIDDockspace() const { return _idDocker; };
 
 private:
-	std::vector<std::string>			_winEditor;
+	std::vector<QXstring>				_winEditor;
 	ImGuiID								_idDocker;
 };
 

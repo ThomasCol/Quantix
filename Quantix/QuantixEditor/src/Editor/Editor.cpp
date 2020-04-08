@@ -36,6 +36,11 @@ Editor::Editor(QXuint width, QXuint height) :
 	glfwSetWindowIcon(_win.GetWindow(), 1, &icon);
 
 	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight(), _win.GetResizeCallback());
+
+	_simImg.push_back(_app->manager.CreateTexture("media/IconEditor/Play.png"));
+	_simImg.push_back(_app->manager.CreateTexture("media/IconEditor/Pause.png"));
+	_simState.push_back(false);
+	_simState.push_back(false);
 }
 
 Editor::~Editor()
@@ -57,7 +62,9 @@ bool Editor::Init()
 	{
 		ImGui::GetStyle().WindowRounding = 0.f;
 		_flagsEditor = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse;
-		ImGui::Begin("Quantix Editor", NULL, _flagsEditor);
+		ImGui::Begin("Quantix Editor", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
+
+		DrawSimulation();
 
 		_docker.Init();
 		ImGui::DockSpace(_docker.GetIDDockspace(), ImVec2(0, 0), ImGuiDockNodeFlags_NoTabBar);
@@ -75,7 +82,7 @@ bool Editor::Init()
 void Editor::Update(QXuint FBO)
 {
 	_fbo = FBO;
-	static int i = 0;
+	static QXint i = 0;
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
@@ -83,20 +90,20 @@ void Editor::Update(QXuint FBO)
 
 	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(1, 1, 1, 1));
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 1, 1, 1));
-
 	ImGui::Begin("Editor", NULL, _flagsEditor);
 
 	if (i == 0)
 		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Editor");
 
 	DrawMenuBar();
+	DrawSimulation();
 	ImGui::DockSpace(_docker.GetIDDockspace(), ImVec2(0, 0), ImGuiDockNodeFlags_NoTabBar);
 
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
 
 	Quantix::Core::Profiling::Profiler::GetInstance()->SetMessage("Editor", "Draw Editor\n");
 
-	for (unsigned int i{ 0 }; i < _docker.GetWindowsEditor().size(); i++)
+	for (QXuint i{ 0 }; i < _docker.GetWindowsEditor().size(); i++)
 		Draw(_docker.GetWindowsEditor()[i], flags);
 
 	if (i == 0)
@@ -113,7 +120,7 @@ void Editor::Update(QXuint FBO)
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Editor::Draw(std::string name, ImGuiWindowFlags flags)
+void Editor::Draw(QXstring name, ImGuiWindowFlags flags)
 {
 	if (name == "Console")
 		DrawConsole(name, flags);
@@ -129,7 +136,7 @@ void Editor::Draw(std::string name, ImGuiWindowFlags flags)
 
 void Editor::DrawMenuBar()
 {
-	static int i = 0;
+	static QXint i = 0;
 	if (i == 0)
 	{
 		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
@@ -139,15 +146,44 @@ void Editor::DrawMenuBar()
 	//_menuBar.Update(_gameComponent);
 }
 
-void Editor::DrawHierarchy(std::string name, ImGuiWindowFlags flags)
+void Editor::DrawHierarchy(QXstring name, ImGuiWindowFlags flags)
 {
 	_hierarchy.Update(name, flags, _object);
 	//_hierarchy.Update(name, flags, _gameComponent);
 }
 
-void Editor::DrawScene(std::string name, ImGuiWindowFlags flags)
+void Editor::Simulation()
 {
-	static int i = 0;
+	QXint pos = -20;
+	for (QXuint i{ 0 }; i < _simImg.size(); i++)
+	{
+		QXbool state = _simState[i];
+		if (!_simState[i])
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 1, 1));
+		else
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(44 / 255, 62 / 255, 80 / 255, 1));
+		ImGui::SetCursorPos(ImVec2(ImGui::GetWindowSize().x / 2 + pos, 0));
+		if (ImGui::ImageButton((ImTextureID)_simImg[i]->GetId(), ImVec2(25, 25)))
+			_simState[i] = !_simState[i];
+		ImGui::PopStyleColor();
+
+		pos *= -1;
+	}
+}
+
+void Editor::DrawSimulation()
+{
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
+	ImGui::BeginChild(ImGui::GetID("Editor"), ImVec2(0, 35), false, flags);
+	Simulation();
+	ImGui::EndChild();
+
+}
+
+void Editor::DrawScene(QXstring name, ImGuiWindowFlags flags)
+{
+	static QXint i = 0;
+
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		if (i == 0)
@@ -163,7 +199,7 @@ void Editor::DrawScene(std::string name, ImGuiWindowFlags flags)
 void Editor::PrintLog()
 {
 	ImGuiStyle& style = ImGui::GetStyle();
-	for (unsigned int i = 0; i < Quantix::Core::Debugger::Logger::GetInstance()->GetData().size(); i++)
+	for (QXuint i = 0; i < Quantix::Core::Debugger::Logger::GetInstance()->GetData().size(); i++)
 	{
 		if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::INFOS)
 			ImGui::TextColored(ImVec4(52 / 255.f, 152 / 255.f, 219 / 255.f, 1), "Info: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
@@ -176,12 +212,12 @@ void Editor::PrintLog()
 	}
 }
 
-void Editor::DrawConsole(std::string name, ImGuiWindowFlags flags)
+void Editor::DrawConsole(QXstring name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		ImGui::BeginTabBar("GPU Infos");
-		static bool ShowDemoWindow = false;
+		static QXbool ShowDemoWindow = false;
 		// Display GPU infos
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Checkbox("Demo window", &ShowDemoWindow);
@@ -204,14 +240,12 @@ void Editor::DrawConsole(std::string name, ImGuiWindowFlags flags)
 	ImGui::End();
 }
 
-
-
-void Editor::DrawExplorer(std::string name, ImGuiWindowFlags flags)
+void Editor::DrawExplorer(QXstring name, ImGuiWindowFlags flags)
 {
 	_explorer.Update(_app->manager, name, flags);
 }
 
-void Editor::DrawInspector(std::string name, ImGuiWindowFlags flags)
+void Editor::DrawInspector(QXstring name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{

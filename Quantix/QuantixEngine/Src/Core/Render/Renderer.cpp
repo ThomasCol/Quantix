@@ -49,6 +49,15 @@ namespace Quantix::Core::Render
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
+		QXuint depth_stencil_renderbuffer;
+		glGenRenderbuffers(1, &depth_stencil_renderbuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, depth_stencil_renderbuffer);
+		glObjectLabel(GL_RENDERBUFFER, depth_stencil_renderbuffer, -1, "DepthStencilRenderbuffer");
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+
+		// Setup attachements
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_stencil_renderbuffer);
+
         QXuint draw_attachments = GL_COLOR_ATTACHMENT0;
         glDrawBuffers(1, &draw_attachments);
 
@@ -62,6 +71,7 @@ namespace Quantix::Core::Render
 
         _mainBuffer.FBO = FBO;
         _mainBuffer.texture = texture;
+		_mainBuffer.depthStencilRenderbuffer = depth_stencil_renderbuffer;
 	}
 
 	QXuint Renderer::Draw(std::vector<Core::Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info)
