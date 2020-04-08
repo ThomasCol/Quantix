@@ -6,6 +6,7 @@
 #include "Resources/Material.h"
 #include "Core/Platform/AppInfo.h"
 #include "Light.h"
+#include "Camera.h"
 
 namespace Quantix::Core::Components
 {
@@ -54,7 +55,7 @@ namespace Quantix::Core::Components
 
 #pragma region Functions
 
-		void SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light);
+		void SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light, Components::Camera* cam);
 		
 #pragma region Accessor
 

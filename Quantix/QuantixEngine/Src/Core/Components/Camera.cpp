@@ -1,7 +1,7 @@
 #include "Core/Components/Camera.h"
 #include "MathDefines.h"
 
-namespace Core::Components
+namespace Quantix::Core::Components
 {
 	Camera::Camera():
 		_pos(Math::QXvec3(0,0,0)), _dir(Math::QXvec3(0, 0, 1)), _up(Math::QXvec3(0, 1, 0)), _angle(Math::QXvec3(0, 0, 0))
@@ -9,7 +9,11 @@ namespace Core::Components
 	}
 
 	Camera::Camera(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up) :
-					_pos(pos), _dir(dir), _up(up), _angle(Math::QXvec3(0, 0, 0))
+		_pos(pos),
+		_dir(dir),
+		_up(up),
+		_angle(Math::QXvec3(0, 0, 0)),
+		_lookAt { Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up) }
 	{
 	}
 
@@ -29,10 +33,10 @@ namespace Core::Components
 		_angle = Math::QXvec3(0, 0, 0);
 	}
 
-	Math::QXmat4	Camera::UpdateLookAt(Math::QXvec3 pos)
+	void	Camera::UpdateLookAt(Math::QXvec3 pos)
 	{
 		_pos = pos;
-		return Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up);
+		_lookAt = Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up);
 	}
 
 	void			Camera::ChangeView(int posX, int posY, int width, int height, double frameTime)
