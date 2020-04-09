@@ -101,7 +101,13 @@ namespace Quantix::Core::Components
 
 		inline Math::QXmat4 GetLookAt() { return _lookAt; }
 
+		inline void			SetPos(Math::QXvec3 pos) { _pos = pos; }
+
 		inline Math::QXvec3 GetPos() { return _pos; }
+
+		inline Math::QXvec3 GetDir() { return _dir; }
+
+		inline Math::QXvec3 GetUp() { return _up; }
 		
 		#pragma	endregion
 		#pragma endregion Methods

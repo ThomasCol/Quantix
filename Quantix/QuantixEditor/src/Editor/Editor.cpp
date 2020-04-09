@@ -11,9 +11,10 @@ Editor::Editor(QXuint width, QXuint height) :
 	_folder{},
 	_menuBar{},
 	_hierarchy{},
-	_init{ false },
 	_flagsEditor{}
 {
+	_mouseInput = new MouseTest({false, 0.0f, 0.0f, 0.0f, 0.0f});
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -51,36 +52,40 @@ Editor::~Editor()
 	ImGui::DestroyContext();
 }
 
-bool Editor::Init()
+void Editor::Init()
+{
+	InitImGui();
+
+	ImGui::GetStyle().WindowRounding = 0.f;
+	_flagsEditor = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse;
+	ImGui::Begin("Quantix Editor", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
+
+	DrawSimulation();
+
+	_docker.Init();
+	ImGui::DockSpace(_docker.GetIDDockspace(), ImVec2(0, 0), ImGuiDockNodeFlags_NoTabBar);
+
+	ImGui::End();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void Editor::InitImGui()
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
-	if (!_init)
-	{
-		ImGui::GetStyle().WindowRounding = 0.f;
-		_flagsEditor = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse;
-		ImGui::Begin("Quantix Editor", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
-
-		DrawSimulation();
-
-		_docker.Init();
-		ImGui::DockSpace(_docker.GetIDDockspace(), ImVec2(0, 0), ImGuiDockNodeFlags_NoTabBar);
-
-		ImGui::End();
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		_init = true;
-
-		return false;
-	}
-	return true;
+	// Disabling mouse for ImGui if mouse is captured by the app (it must be done here)
+	if (_mouseInput->MouseCaptured)
+		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
 }
 
 void Editor::Update(QXuint FBO)
 {
+	InitImGui();
+
 	_fbo = FBO;
 	static QXint i = 0;
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -183,7 +188,6 @@ void Editor::DrawSimulation()
 void Editor::DrawScene(QXstring name, ImGuiWindowFlags flags)
 {
 	static QXint i = 0;
-
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		if (i == 0)

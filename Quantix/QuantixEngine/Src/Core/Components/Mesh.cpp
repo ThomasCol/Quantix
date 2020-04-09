@@ -13,8 +13,8 @@ namespace Quantix::Core::Components
 
 	void Mesh::SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& lights, Components::Camera* cam)
 	{
-		Math::QXmat4 trs {Math::QXmat4::CreateTRSMatrix({0, 0, -1.f}, {0, (QXfloat)info.currentTime, 0}, { 1, 1, 1 })};
-		Math::QXmat4 proj {Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f)};
+		Math::QXmat4 trs {Math::QXmat4::CreateTRSMatrix({0, 0, -1.f}, {0, 0.f * (QXfloat)info.currentTime, 0}, { 1, 1, 1 })};
+		Math::QXmat4 proj {Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 50.f)};
 		Math::QXmat4 view {cam->GetLookAt()};
 
 		_material->UseShader();
