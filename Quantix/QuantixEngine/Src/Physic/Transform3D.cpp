@@ -35,22 +35,22 @@ namespace Quantix::Physic
 
 	#pragma region Getters&Setters
 
-	const Math::QXvec3& Transform3D::GetPosition()
+	Math::QXvec3 Transform3D::GetPosition() const
 	{
 		return _position;
 	}
 
-	const Math::QXvec3& Transform3D::GetRotation()
+	Math::QXvec3 Transform3D::GetRotation() const
 	{
 		return _rotation;
 	}
 
-	const Math::QXvec3& Transform3D::GetScale()
+	Math::QXvec3 Transform3D::GetScale() const
 	{
 		return _scale;
 	}
 
-	const Math::QXmat4& Transform3D::GetTRS()
+	Math::QXmat4 Transform3D::GetTRS() const
 	{
 		return _trs;
 	}

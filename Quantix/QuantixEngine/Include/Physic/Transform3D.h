@@ -88,49 +88,49 @@ namespace Quantix::Physic
 			 *
 			 * @return const Math::QXvec3& Current Position
 			 */
-			const Math::QXvec3& GetPosition();
+			Math::QXvec3	GetPosition() const;
 
 			/**
 			 * @brief Get the rotation of the current transform
 			 *
 			 * @return const Math::QXvec3& Current Rotation
 			 */
-			const Math::QXvec3& GetRotation();
+			Math::QXvec3	GetRotation() const;
 
 			/**
 			 * @brief Get the scale of the current transform
 			 *
 			 * @return const Math::QXvec3& Current Scale
 			 */
-			const Math::QXvec3& GetScale();
+			Math::QXvec3	GetScale() const;
 
 			/**
 			 * @brief Get the trs of the current transform
 			 *
 			 * @return const Math::QXmat4& Current TRS
 			 */
-			const Math::QXmat4&	GetTRS();
+			Math::QXmat4	GetTRS() const;
 
 			/**
 			 * @brief Set the position of the current transform
 			 *
 			 * @param newPos the new position of the current transform
 			 */
-			void	SetPosition(const Math::QXvec3& newPos);
+			void			SetPosition(const Math::QXvec3& newPos);
 
 			/**
 			 * @brief Set the rotation of the current transform
 			 *
 			 * @param newPos the new rotation of the current transform
 			 */
-			void	SetRotation(const Math::QXvec3& newRot);
+			void			SetRotation(const Math::QXvec3& newRot);
 
 			/**
 			 * @brief Set the scale of the current transform
 			 *
 			 * @param newPos the new scale of the current transform
 			 */
-			void	SetScale(const Math::QXvec3& newSca);
+			void			SetScale(const Math::QXvec3& newSca);
 
 		#pragma endregion
 
@@ -141,42 +141,42 @@ namespace Quantix::Physic
 			 *
 			 * @param trsParent The parent TRS to convert its own trs in global
 			 */
-			void	Update(const Math::QXmat4& trsParent) const;
+			void			Update(const Math::QXmat4& trsParent) const;
 
 			/**
 			 * @brief Translate the current transform
 			 *
 			 * @param pos The position that it will go further
 			 */
-			void	Translate(const Math::QXvec3& pos);
+			void			Translate(const Math::QXvec3& pos);
 
 			/**
 			 * @brief Rotate the current transform
 			 *
 			 * @param rot The rotation that it will turn further
 			 */
-			void	Rotate(const Math::QXvec3& rot);
+			void			Rotate(const Math::QXvec3& rot);
 
 			/**
 			 * @brief Scale the current transform
 			 *
 			 * @param sca The scale that it will be further
 			 */
-			void	Scale(const Math::QXvec3& sca);
+			void			Scale(const Math::QXvec3& sca);
 
 			/**
 			 * @brief Add a child to the current transform
 			 *
 			 * @param child The 3D transform child to add to the current transform
 			 */
-			void	AddChild(const Transform3D& child);
+			void			AddChild(const Transform3D& child);
 
 			/**
 			 * @brief Add a child by rvalue to the current transform
 			 *
 			 * @param child The 3D transform child to add by rvalue to the current transform
 			 */
-			void	AddChild(Transform3D&& child);
+			void			AddChild(Transform3D&& child);
 
 		#pragma endregion
 
@@ -188,7 +188,7 @@ namespace Quantix::Physic
 			 * @param t Transform to copy
 			 * @return Transform3D& Reference to the current model
 			 */
-			Transform3D& operator=(const Transform3D& t);
+			Transform3D&	operator=(const Transform3D& t);
 
 			/**
 			 * @brief Operator = for 3D transforms
@@ -196,7 +196,7 @@ namespace Quantix::Physic
 			 * @param t Transform to copy
 			 * @return Transform3D& Reference to the current model
 			 */
-			Transform3D& operator=(Transform3D&& t);
+			Transform3D&	operator=(Transform3D&& t);
 
 		#pragma endregion
 
