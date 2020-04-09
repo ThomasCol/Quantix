@@ -13,6 +13,15 @@
 
 namespace fs = std::filesystem;
 
+struct MouseTest
+{
+	bool	MouseCaptured;
+	float	DeltaMouseX;
+	float	DeltaMouseY;
+	float	MouseX;
+	float	MouseY;
+};
+
 class Editor
 {
 public:
@@ -22,7 +31,8 @@ public:
 	Editor(Editor&& editor) = default;
 	~Editor();
 
-	QXbool												Init();
+	void												Init();
+	void												InitImGui();
 	void												Update(QXuint FBO);
 
 	void												Draw(QXstring name, ImGuiWindowFlags flags);
@@ -42,6 +52,7 @@ public:
 	inline Quantix::Core::Platform::Application*		GetApp() const { return _app; };
 
 
+	MouseTest*											_mouseInput;
 private:
 	Quantix::Core::Platform::Window						_win;
 	Quantix::Core::Platform::Application*				_app;
@@ -55,8 +66,8 @@ private:
 	std::vector<QXbool>									_simState;
 	std::vector<Node>									_object;
 	//std::vector<Core::DataStructure::GameComponent*>	_gameComponent;
+
 	QXuint												_fbo;
-	QXbool												_init;
 	ImGuiWindowFlags									_flagsEditor;
 };
 

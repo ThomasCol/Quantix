@@ -35,6 +35,30 @@ namespace Quantix::Core::UserEntry
 	{
 		switch (_triggerType)
 		{
+		case ETriggerType::DOWN:
+		{
+			if (action == GLFW_PRESS)
+			{
+				std::cout << "Key/Button " << _scancode << " pressed" << std::endl;
+				_isValid = true;
+			}
+			else if (action == GLFW_RELEASE)
+				_isValid = false;
+		}
+		break;
+
+		case ETriggerType::UP:
+		{
+			if (action == GLFW_PRESS)
+			{
+				std::cout << "Key/Button " << _scancode << " pressed" << std::endl;
+				_isValid = false;
+			}
+			else 
+				_isValid = true;
+		}
+		break;
+
 		case ETriggerType::PRESSED:
 		{
 			if (action == GLFW_PRESS)

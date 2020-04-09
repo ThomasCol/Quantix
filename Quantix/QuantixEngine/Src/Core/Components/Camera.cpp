@@ -46,7 +46,7 @@ namespace Quantix::Core::Components
 
 		Math::QXvec3	rotDir{ (float)-y, (float)-x, 0.f };
 
-		Rotate(rotDir * (float)frameTime * 0.05f);//SENSIBILITY);
+		Rotate(rotDir * (float)frameTime * 0.005f);//SENSIBILITY);
 	}
 
 	void			Camera::Rotate(Math::QXvec3 rotate)
