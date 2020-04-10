@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "DLLHeader.h"
+
 typedef char				QXchar;
 typedef char16_t			QXchar16;
 typedef char32_t        	QXchar32;

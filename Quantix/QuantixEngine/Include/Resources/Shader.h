@@ -16,7 +16,7 @@ namespace Quantix::Resources
 		COUNT
 	};
 
-	class Shader
+	class QUANTIX_API Shader
 	{
 	private:
 #pragma region Attributes

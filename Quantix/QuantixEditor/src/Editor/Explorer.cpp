@@ -7,8 +7,6 @@
 #include "Explorer.h"
 #include "Profiler.h"
 
-#include <Windows.h>
-
 static void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr)
 {
 	// Get the first occurrence

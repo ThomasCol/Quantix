@@ -5,10 +5,11 @@
 
 #include "ShaderProgram.h"
 #include "Texture.h"
+#include "Core/Components/Light.h"
 
 namespace Quantix::Resources
 {
-	class Material
+	class QUANTIX_API Material
 	{
 	private:
 #pragma region Attributes
@@ -26,6 +27,8 @@ namespace Quantix::Resources
 		Math::QXvec3	specular;
 
 		QXfloat			shininess = 0;
+
+		QXbool			isTransparent = false;
 
 #pragma endregion
 
@@ -110,6 +113,8 @@ namespace Quantix::Resources
 		 * @param value Value to send
 		 */
 		void SetInt3(QXstring location, const QXint* value);
+
+		void SetLightArray(std::vector<Core::Components::Light*> & light);
 		
 		/**
 		 * @brief Set a mat4 in a shader
@@ -172,9 +177,11 @@ namespace Quantix::Resources
 		 * 
 		 * @return const Texture& Main texture reference
 		 */
-		inline const Texture* GetMainTexture() const noexcept { return _mainTexture; }
+		inline const Texture*			GetMainTexture() const noexcept { return _mainTexture; }
 
-		inline std::vector<QXstring> GetProgramPath() const { return _program->GetPath(); }
+		inline std::vector<QXstring>	GetProgramPath() const { return _program->GetPath(); }
+
+		inline ShaderProgram*		GetShaderProgram() { return _program; }
 
 		/**
 		 * @brief Set the Main Texture object

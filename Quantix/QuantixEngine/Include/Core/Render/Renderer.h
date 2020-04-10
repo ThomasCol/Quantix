@@ -29,6 +29,8 @@ namespace Quantix::Core::Render
 
 		void CreateFrameBuffer(QXuint width, QXuint height);
 
+		void BindShader(Resources::Material* material, Core::Platform::AppInfo& info, Components::Camera* cam, std::vector<Core::Components::Light*>& lights);
+
 #pragma endregion
 
 	public:

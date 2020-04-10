@@ -36,9 +36,9 @@ namespace Quantix::Resources
 		if (_image == nullptr)
 			return;
 
-		if (channel == RGB)
+		if (channel == RGB_CHANNEL)
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, _image);
-		else if (channel == RGBA)
+		else if (channel == RGBA_CHANNEL)
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _image);
 
 		/* set parameter */

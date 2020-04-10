@@ -49,7 +49,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param camera Camera
 		 */
-		Camera(Camera&& camera) = default;
+		Camera(Camera&& camera) noexcept = default;
 
 		/**
 		 * @brief Destroy the Camera object

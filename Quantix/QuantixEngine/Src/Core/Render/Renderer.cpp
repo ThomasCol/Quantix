@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 
 #include <stdexcept>
+#include <array>
 
 namespace Quantix::Core::Render
 {
@@ -74,8 +75,29 @@ namespace Quantix::Core::Render
 		_mainBuffer.depthStencilRenderbuffer = depth_stencil_renderbuffer;
 	}
 
-	QXuint Renderer::Draw(std::vector<Core::Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
+	void Renderer::BindShader(Resources::Material* material, Core::Platform::AppInfo& info, Components::Camera* cam, std::vector<Core::Components::Light*>& lights)
 	{
+		Math::QXmat4 proj{ Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f) };
+		Math::QXmat4 view{ cam->GetLookAt() };
+
+		material->UseShader();
+
+		material->SetMat4("proj", proj);
+		material->SetMat4("view", view);
+		material->SetFloat3("viewPos", cam->GetPos().e);
+
+		material->SetLightArray(lights);
+	}
+
+	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
+	{
+		std::sort(mesh.begin(), mesh.end(), [](const Components::Mesh* a, const Components::Mesh* b) {
+			return a->key < b->key;
+		});
+
+		QXbyte last_shader_id = -1;
+		QXbyte last_texture_id = -1;
+
 		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.f);
@@ -83,10 +105,31 @@ namespace Quantix::Core::Render
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 
+		Resources::Material* material;
 
-		for (QXint i = 0; i < mesh.size(); ++i)
+		for (QXuint i = 0; i < mesh.size(); i++)
 		{
-			mesh[i]->SendDataToShader(info, lights, cam);
+			material = mesh[i]->GetMaterial();
+
+			if (mesh[i]->shaderID != last_shader_id)
+			{
+				BindShader(material, info, cam, lights);
+				last_shader_id = mesh[i]->shaderID;
+			}
+
+			if (mesh[i]->textureID != last_texture_id)
+			{
+				material->SendData();
+				last_texture_id = mesh[i]->textureID;
+			}
+
+			Math::QXmat4 trs;
+			if (i)
+				trs = { Math::QXmat4::CreateTRSMatrix({0, 0, 0.f}, {0, (QXfloat)info.currentTime, 0}, { 1, 1, 1 }) };
+			else
+				trs = { Math::QXmat4::CreateTRSMatrix({0, 0, -1.f}, {0, (QXfloat)info.currentTime, 0}, { 1, 1, 1 }) };
+
+			material->SetMat4("TRS", trs);
 
 			glBindVertexArray(mesh[i]->GetVAO());
 
@@ -94,6 +137,8 @@ namespace Quantix::Core::Render
 
 			glBindVertexArray(0);
 		}
+
+		glActiveTexture(0);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

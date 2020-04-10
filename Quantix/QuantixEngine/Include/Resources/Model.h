@@ -26,7 +26,7 @@ namespace Quantix::Resources
 		}
 	};
 
-	class Model
+	class QUANTIX_API Model
 	{
 	private:
 #pragma region Attributes

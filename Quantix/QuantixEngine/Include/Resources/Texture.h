@@ -4,8 +4,8 @@
 #include "Core/Type.h"
 #include "Core/DLLHeader.h"
 
-#define RGB 3
-#define RGBA 4
+#define RGB_CHANNEL 3
+#define RGBA_CHANNEL 4
 
 namespace Quantix::Resources
 {
