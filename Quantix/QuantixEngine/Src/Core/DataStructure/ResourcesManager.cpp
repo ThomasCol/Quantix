@@ -40,9 +40,9 @@ namespace Quantix::Core::DataStructure
 		material->ambient = { 0.2f, 0.2f, 0.2f };
 		material->shininess = 32.f;
 
-		QXstring path = "../QuantixEngine/Media/Material/DefaultMaterial";
-		QXstring tmp_path;
-
+		QXstring	path = "../QuantixEngine/Media/Material/DefaultMaterial";
+		QXstring	tmp_path;
+		bool		not_found = true;
 
 		if (_materials.size() == 0)
 		{
@@ -57,8 +57,15 @@ namespace Quantix::Core::DataStructure
 			if (_materials.find(tmp_path) == _materials.end())
 			{
 				_materials[tmp_path] = material;
+				not_found = false;
 				break;
 			}
+		}
+
+		if (not_found)
+		{
+			tmp_path = path + std::to_string(_materials.size()) + ".mat";
+			_materials[tmp_path] = material;
 		}
 
 		return material;
@@ -83,15 +90,13 @@ namespace Quantix::Core::DataStructure
 
 		QXstring key = modelPath + materialPath;
 
-		if (_meshes[key] != nullptr)
-		{
-			return _meshes[key];
-		}
-
 		Components::Mesh* mesh = new Components::Mesh(CreateModel(modelPath), CreateMaterial(materialPath));
 
 		_meshes[key] = mesh;
 
+		mesh->shaderID = mesh->GetMaterial()->GetShaderProgram()->GetID();
+		
+			
 		return mesh;
 	}
 

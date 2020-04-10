@@ -95,8 +95,9 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)externals;$(ProjectDir)externals\GLFW;$(ProjectDir)externals\KHR;$(ProjectDir)externals\imgui;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,6 +116,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,6 +136,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,6 +160,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)externals;$(ProjectDir)externals\GLFW;$(ProjectDir)externals\KHR;$(ProjectDir)externals\imgui;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

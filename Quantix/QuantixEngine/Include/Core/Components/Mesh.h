@@ -21,6 +21,18 @@ namespace Quantix::Core::Components
 #pragma endregion
 		
 	public:
+
+		union
+		{
+			struct
+			{
+				QXuint32	shaderID : 8;
+				QXuint32	textureID : 8;
+				QXuint32	transparent : 1;
+			};
+
+			QXuint32 key;
+		};
 #pragma region Constructors
 
 		/**
@@ -54,8 +66,6 @@ namespace Quantix::Core::Components
 #pragma endregion
 
 #pragma region Functions
-
-		void SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light, Components::Camera* cam);
 		
 #pragma region Accessor
 
@@ -63,6 +73,13 @@ namespace Quantix::Core::Components
 		inline const std::vector<QXuint>& GetIndices() { return _model->GetIndices(); }
 		inline Resources::Material* GetMaterial() { return _material; }
 		inline void SetMaterial(Resources::Material* material) { _material = material; }
+
+		/**
+		 * @brief Set the Main Texture object
+		 *
+		 * @param texture new main texture pointer
+		 */
+		inline void SetMaterialMainTexture(Resources::Texture* texture) noexcept { _material->SetMainTexture(texture); textureID = texture->GetId(); }
 
 #pragma endregion
 

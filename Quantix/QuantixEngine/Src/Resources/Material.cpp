@@ -103,6 +103,29 @@ namespace Quantix::Resources
 
 		glUniform1iv(location_id, 3, value);
 	}
+
+	void Material::SetLightArray(std::vector<Core::Components::Light*>& lights)
+	{
+		QXsizei size = (lights.size() <= 10 ? lights.size() : 10);
+
+		for (QXsizei i = 0; i < size; ++i)
+		{
+			std::string lightName{ "lightArray[" + std::to_string(i) + "]." };
+			SetFloat3(lightName + "ambient", lights[i]->ambient.e);
+			SetFloat3(lightName + "diffuse", lights[i]->diffuse.e);
+			SetFloat3(lightName + "specular", lights[i]->specular.e);
+			SetFloat3(lightName + "direction", lights[i]->direction.e);
+			SetFloat3(lightName + "position", lights[i]->position.e);
+
+			SetFloat(lightName + "constant", lights[i]->constant);
+			SetFloat(lightName + "linear", lights[i]->linear);
+			SetFloat(lightName + "quadratic", lights[i]->quadratic);
+			SetFloat(lightName + "cutOff", lights[i]->cutOff);
+			SetFloat(lightName + "outerCutOff", lights[i]->outerCutOff);
+
+			SetInt(lightName + "type", (QXint)lights[i]->type);
+		}
+	}
 		
 	void Material::SetMat4(QXstring location, Math::QXmat4 value)
 	{

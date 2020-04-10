@@ -8,7 +8,7 @@
 
 namespace Quantix::Resources
 {
-	class ShaderProgram
+	class QUANTIX_API ShaderProgram
 	{
 	private:
 #pragma region Attributes
@@ -82,6 +82,8 @@ namespace Quantix::Resources
 		inline void AddShaderPath(const QXstring& path) { _shadersPath.push_back(path); }
 
 		inline std::vector<QXstring> GetPath() { return _shadersPath; }
+
+		inline QXuint GetID() { return _id; }
 
 #pragma endregion
 

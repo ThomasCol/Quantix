@@ -7,9 +7,7 @@
 #include "Explorer.h"
 #include "Profiler.h"
 
-#include <Windows.h>
-
-static void findAndReplaceAll(QXstring& data, QXstring toSearch, QXstring replaceStr)
+static void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr)
 {
 	// Get the first occurrence
 	size_t pos = data.find(toSearch);

@@ -93,7 +93,7 @@ void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Mesh*>& me
 	Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Run");
 	Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Mesh");
 	Quantix::Core::Components::Mesh* mesh = editor->GetApp()->manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-	mesh->GetMaterial()->SetMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
+	mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 	Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Mesh");
 
 	meshes.push_back(mesh);
