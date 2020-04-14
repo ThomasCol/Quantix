@@ -1,9 +1,10 @@
 #ifndef _EDITOR_H_
 #define _EDITOR_H_
 
-#include <Core/Platform/Application.h>
+#include <rttr/library.h>
 #include <map>
 #include <cstdlib>
+#include <Core/Platform/Application.h>
 
 #include "Window.h"
 #include "Docker.h"
@@ -50,12 +51,16 @@ public:
 
 	inline Quantix::Core::Platform::Window&				GetWin() { return _win; };
 	inline Quantix::Core::Platform::Application*		GetApp() const { return _app; };
+	inline void											SetObject(Quantix::Physic::Transform3D* object) { _graph3D = object; };
 
 
 	MouseTest*											_mouseInput;
 private:
 	Quantix::Core::Platform::Window						_win;
 	Quantix::Core::Platform::Application*				_app;
+	rttr::library										_lib;
+	Quantix::Physic::Transform3D*						_graph3D;
+
 	Docker												_docker;
 	Folder												_folder;
 	MenuBar												_menuBar;

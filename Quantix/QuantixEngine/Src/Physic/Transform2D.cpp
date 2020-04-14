@@ -38,22 +38,22 @@ namespace Quantix::Physic
 
 	#pragma region Getters&Setters
 
-		Math::QXvec2 Transform2D::GetPosition() const
+		const Math::QXvec2& Transform2D::GetPosition()
 		{
 			return _position;
 		}
 
-		QXfloat Transform2D::GetRotationAngle() const
+		const QXfloat& Transform2D::GetRotationAngle()
 		{
 			return _rotationAngle;
 		}
 
-		Math::QXvec2 Transform2D::GetScale() const
+		const Math::QXvec2& Transform2D::GetScale()
 		{
 			return _scale;
 		}
 
-		Math::QXmat4 Transform2D::GetTRS() const
+		const Math::QXmat4& Transform2D::GetTRS()
 		{
 			return _trs;
 		}

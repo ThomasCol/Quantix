@@ -1,0 +1,51 @@
+(function initKameleoon() {
+    var kameleoonIframeURL = '/nav/extra/proxy?key=kameleoon_iframe';
+    var kameleoonIframeOrigin = window.location.origin;
+    var kameleoonLoadingTimeout = 1000;
+    var kameleoonS = document.getElementsByTagName('script')[0];
+    var kameleoonCc = '* { visibility: hidden !important; background-image: none !important; }';
+    var kameleoonStn = document.createElement('style');
+    var iframeNode = document.createElement('iframe');
+
+    function kameleoonProcessMessageEvent(event) {
+        if (kameleoonIframeOrigin === event.origin) {
+            window.removeEventListener('message', kameleoonProcessMessageEvent);
+            window.kameleoonExternalIFrameLoaded = true;
+            if (window.Kameleoon) {
+                eval(event.data);
+                Kameleoon.Analyst.load();
+            } else {
+                window.kameleoonExternalIFrameLoadedData = event.data;
+            }
+        }
+    }
+
+    if (!document.getElementById('kameleoonLoadingStyleSheet') && !window.kameleoonDisplayPageTimeOut) {
+        kameleoonStn.type = 'text/css';
+        kameleoonStn.id = 'kameleoonLoadingStyleSheet';
+        if (kameleoonStn.styleSheet) {
+            kameleoonStn.styleSheet.cssText = kameleoonCc;
+        } else {
+            kameleoonStn.appendChild(document.createTextNode(kameleoonCc));
+        }
+        kameleoonS.parentNode.insertBefore(kameleoonStn, kameleoonS);
+        window.kameleoonDisplayPage = function() {
+            if (kameleoonStn.parentNode) {
+                kameleoonStn.parentNode.removeChild(kameleoonStn);
+            }
+        };
+        window.setTimeout(function() {}, 25);
+        window.kameleoonDisplayPageTimeOut = window.setTimeout(window.kameleoonDisplayPage, kameleoonLoadingTimeout);
+    }
+
+    if (location.href.indexOf(kameleoonIframeOrigin) === -1) {
+        if (window.addEventListener) {
+            window.addEventListener('message', kameleoonProcessMessageEvent, false);
+        }
+        iframeNode.src = kameleoonIframeURL;
+        iframeNode.id = 'kameleoonExternalIframe';
+        iframeNode.style =
+            'float: left !important; opacity: 0.0 !important; width: 0px !important; height: 0px !important;';
+        document.head.appendChild(iframeNode);
+    }
+})();

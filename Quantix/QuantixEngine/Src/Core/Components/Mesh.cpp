@@ -3,17 +3,50 @@
 #include <iostream>
 #include "MathDefines.h"
 #include "Core/Profiler/Profiler.h"
+#include "Core/DataStructure/GameObject3D.h"
+
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Core::Components::Mesh>("Mesh")
+	.constructor<>()
+	.constructor<const Quantix::Core::Components::Mesh&>()
+	.constructor<Quantix::Core::Components::Mesh&&>()
+	.constructor<Quantix::Core::DataStructure::GameComponent*>()
+	.method("GetObject", &Quantix::Core::Components::Mesh::GetObject)
+	.method("IsDestroyed", &Quantix::Core::Components::Mesh::IsDestroyed)
+	.method("IsEnable", &Quantix::Core::Components::Mesh::IsEnable)
+	.method("SetActive", &Quantix::Core::Components::Mesh::SetActive)
+	.method("GetMaterial", &Quantix::Core::Components::Mesh::GetMaterial)
+	.method("SetMaterial", &Quantix::Core::Components::Mesh::SetMaterial);
+}
 
 namespace Quantix::Core::Components
 {
+
 	Mesh::Mesh(Resources::Model* model, Resources::Material* material):
 		_model {model},
 		_material {material}
 	{}
 
+	Mesh::Mesh(Core::DataStructure::GameComponent* object): 
+		Quantix::Core::DataStructure::Component(object)
+	{
+	}
+
+	const std::type_info& Mesh::GetType() const
+	{
+		return typeid(*this);
+	}
+
+	Core::DataStructure::Component* Mesh::Copy() const
+	{
+		return new Mesh(*this);
+	}
+
 	void Mesh::SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& lights, Components::Camera* cam)
 	{
-		Math::QXmat4 trs {Math::QXmat4::CreateTRSMatrix({0, 0, -1.f}, {0, 0.f * (QXfloat)info.currentTime, 0}, { 1, 1, 1 })};
+		Quantix::Core::DataStructure::GameObject3D* obj = (Quantix::Core::DataStructure::GameObject3D*)_object;
+		Math::QXmat4 trs{ obj->GetTransform()->GetTRS() };
 		Math::QXmat4 proj {Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 50.f)};
 		Math::QXmat4 view {cam->GetLookAt()};
 

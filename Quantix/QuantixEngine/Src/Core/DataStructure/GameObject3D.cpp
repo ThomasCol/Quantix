@@ -1,9 +1,10 @@
 #include "Core/DataStructure/GameObject3D.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
-	GameObject3D::GameObject3D(std::string name) noexcept :
-		GameComponent(name)
+	GameObject3D::GameObject3D(std::string name, Quantix::Physic::Transform3D* transform) noexcept :
+		GameComponent(name),
+		_transform { transform }
 	{
 	}
 
@@ -35,27 +36,28 @@ namespace Core::DataStructure
 
 	void	GameObject3D::SetLocalPosition(Math::QXvec3 pos)
 	{
-		_transform.SetPosition(pos);
+		_transform->SetPosition(pos);
 	}
 
 	void	GameObject3D::SetLocalRotation(Math::QXvec3 rot)
 	{
-		_transform.SetRotation(rot);
+		_transform->SetRotation(rot);
 	}
 
 	void	GameObject3D::SetLocalScale(Math::QXvec3 scale)
 	{
-		_transform.SetScale(scale);
+		_transform->SetScale(scale);
 	}
 
 	void	GameObject3D::SetTransform(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale)
 	{
-		_transform.SetPosition(pos);
-		_transform.SetRotation(rot);
-		_transform.SetScale(scale);
+		_transform->SetPosition(pos);
+		_transform->SetRotation(rot);
+		_transform->SetScale(scale);
 	}
 	GameObject3D& GameObject3D::operator=(const GameObject3D& object)
 	{
+		_transform = object._transform;
 		_component = object._component;
 		_name = object._name;
 		_layer = object._layer;

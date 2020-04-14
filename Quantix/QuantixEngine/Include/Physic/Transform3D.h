@@ -4,22 +4,30 @@
 #include <vector>
 #include <Vec3.h>
 #include <Mat4.h>
+#include "Core/DLLHeader.h"
+
+namespace Quantix::Core::DataStructure
+{
+	class GameObject3D;
+}
 
 namespace Quantix::Physic
 {
-	class Transform3D
+	class QUANTIX_API Transform3D
 	{
 		private:
 
 		#pragma region Attributes
 			
-			Math::QXvec3				_position;
-			Math::QXvec3				_rotation;
-			Math::QXvec3				_scale;
+			Math::QXvec3								_position;
+			Math::QXvec3								_rotation;
+			Math::QXvec3								_scale;
 
-			Math::QXmat4				_trs;
+			Math::QXmat4								_trs;
 
-			std::vector<Transform3D>	_childs;
+			std::vector<Transform3D*>					_childs;
+
+			Quantix::Core::DataStructure::GameObject3D* _gameObject;
 
 		#pragma endregion
 			
@@ -88,50 +96,55 @@ namespace Quantix::Physic
 			 *
 			 * @return const Math::QXvec3& Current Position
 			 */
-			Math::QXvec3	GetPosition() const;
+			const Math::QXvec3&								GetPosition();
 
 			/**
 			 * @brief Get the rotation of the current transform
 			 *
 			 * @return const Math::QXvec3& Current Rotation
 			 */
-			Math::QXvec3	GetRotation() const;
+			const Math::QXvec3&								GetRotation();
 
 			/**
 			 * @brief Get the scale of the current transform
 			 *
 			 * @return const Math::QXvec3& Current Scale
 			 */
-			Math::QXvec3	GetScale() const;
+			const Math::QXvec3&								GetScale();
 
 			/**
 			 * @brief Get the trs of the current transform
 			 *
 			 * @return const Math::QXmat4& Current TRS
 			 */
-			Math::QXmat4	GetTRS() const;
+			const Math::QXmat4&								GetTRS();
 
 			/**
 			 * @brief Set the position of the current transform
 			 *
 			 * @param newPos the new position of the current transform
 			 */
-			void			SetPosition(const Math::QXvec3& newPos);
+			void										SetPosition(const Math::QXvec3& newPos);
 
 			/**
 			 * @brief Set the rotation of the current transform
 			 *
 			 * @param newPos the new rotation of the current transform
 			 */
-			void			SetRotation(const Math::QXvec3& newRot);
+			void										SetRotation(const Math::QXvec3& newRot);
 
 			/**
 			 * @brief Set the scale of the current transform
 			 *
 			 * @param newPos the new scale of the current transform
 			 */
-			void			SetScale(const Math::QXvec3& newSca);
+			void										SetScale(const Math::QXvec3& newSca);
+			
+			void										SetObject(Core::DataStructure::GameObject3D* object) { _gameObject = object; };
 
+			inline Core::DataStructure::GameObject3D*	GetObject() const { return _gameObject; };
+
+			inline std::vector<Transform3D*>&			GetChild() { return _childs; };
 		#pragma endregion
 
 		#pragma region Functions
@@ -141,42 +154,42 @@ namespace Quantix::Physic
 			 *
 			 * @param trsParent The parent TRS to convert its own trs in global
 			 */
-			void			Update(const Math::QXmat4& trsParent) const;
+			void										Update(const Math::QXmat4& trsParent) const;
 
 			/**
 			 * @brief Translate the current transform
 			 *
 			 * @param pos The position that it will go further
 			 */
-			void			Translate(const Math::QXvec3& pos);
+			void										Translate(const Math::QXvec3& pos);
 
 			/**
 			 * @brief Rotate the current transform
 			 *
 			 * @param rot The rotation that it will turn further
 			 */
-			void			Rotate(const Math::QXvec3& rot);
+			void										Rotate(const Math::QXvec3& rot);
 
 			/**
 			 * @brief Scale the current transform
 			 *
 			 * @param sca The scale that it will be further
 			 */
-			void			Scale(const Math::QXvec3& sca);
+			void										Scale(const Math::QXvec3& sca);
 
 			/**
 			 * @brief Add a child to the current transform
 			 *
 			 * @param child The 3D transform child to add to the current transform
 			 */
-			void			AddChild(const Transform3D& child);
+			void										AddChild(Transform3D* child);
 
 			/**
 			 * @brief Add a child by rvalue to the current transform
 			 *
 			 * @param child The 3D transform child to add by rvalue to the current transform
 			 */
-			void			AddChild(Transform3D&& child);
+			void										AddChild(Transform3D&& child);
 
 		#pragma endregion
 
@@ -188,7 +201,7 @@ namespace Quantix::Physic
 			 * @param t Transform to copy
 			 * @return Transform3D& Reference to the current model
 			 */
-			Transform3D&	operator=(const Transform3D& t);
+			Transform3D&								operator=(const Transform3D& t);
 
 			/**
 			 * @brief Operator = for 3D transforms
@@ -196,7 +209,7 @@ namespace Quantix::Physic
 			 * @param t Transform to copy
 			 * @return Transform3D& Reference to the current model
 			 */
-			Transform3D&	operator=(Transform3D&& t);
+			Transform3D&								operator=(Transform3D&& t);
 
 		#pragma endregion
 

@@ -3,12 +3,14 @@
 
 #include <Vec3.h>
 #include <Mat4.h>
-//#include "Component.h"
+#include <rttrEnabled.h>
+
+#include "Core/DataStructure/Component.h"
 #include "Core/DLLHeader.h"
 
 namespace Quantix::Core::Components
 {
-	class QUANTIX_API Camera //: public virtual Core::DataStructure::Component
+	class QUANTIX_API Camera : public virtual Core::DataStructure::Component
 	{
 	private:
 		#pragma region Attributes
@@ -67,9 +69,10 @@ namespace Quantix::Core::Components
 		 * @param up Vector
 		 */
 		void							Init(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up);
-		//const std::type_info&			GetType() const override;
-		//Core::DataStructure:Component*	Copy() const override;
-		//inline void						Destroy() override {};
+		
+		const std::type_info&			GetType() const override;
+		Core::DataStructure::Component* Copy() const override;
+		inline void						Destroy() override {};
 
 		/**
 		 * @brief Update the LookAtMatrix of the Camera
@@ -111,6 +114,8 @@ namespace Quantix::Core::Components
 		
 		#pragma	endregion
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION(Core::DataStructure::Component)
 	};
 }
 

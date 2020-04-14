@@ -1,7 +1,7 @@
 #include "Core/DataStructure/Component.h"
 #include "Core/DataStructure/GameComponent.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	Component::Component() :
 		_object{ nullptr },

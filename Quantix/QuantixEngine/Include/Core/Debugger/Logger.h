@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include "Core/Type.h"
+#include "Core/DLLHeader.h"
 
 
 namespace fs = std::filesystem;
@@ -16,7 +17,7 @@ namespace Quantix::Core::Debugger
 	 * @brief enum class TypeLog
 	 * 
 	 */
-	enum class TypeLog
+	enum class QUANTIX_API TypeLog
 	{
 		INFOS,
 		WARNING,
@@ -29,7 +30,7 @@ namespace Quantix::Core::Debugger
 	 * @brief struct Data for each Log
 	 * 
 	 */
-	struct Data
+	struct QUANTIX_API Data
 	{
 		#pragma region Attributes
 		QXstring		_message;
@@ -41,7 +42,7 @@ namespace Quantix::Core::Debugger
 	 * @brief class Logger
 	 * 
 	 */
-	class Logger
+	class QUANTIX_API Logger
 	{
 	public:
 		#pragma region Constructors/Destructor
@@ -77,39 +78,39 @@ namespace Quantix::Core::Debugger
 		 * @brief Close the Logger and create a log file with all log
 		 * 
 		 */
-		void						CloseLogger();
+		void							CloseLogger();
 
 		#pragma region Accessors
 
-		inline std::vector<Data>	GetData() const { return _data; };
+		inline const std::vector<Data>&	GetData() { return _data; };
 
 		/**
 		 * @brief Set the Infos object
 		 * 
 		 * @param msg String
 		 */
-		void						SetInfo(const QXstring& msg);
+		void							SetInfo(const QXstring& msg);
 
 		/**
 		 * @brief Set the Warning object
 		 * 
 		 * @param msg String
 		 */
-		void						SetWarning(const QXstring& msg);
+		void							SetWarning(const QXstring& msg);
 
 		/**
 		 * @brief Set the Error object
 		 * 
 		 * @param msg String
 		 */
-		void						SetError(const QXstring& msg);
+		void							SetError(const QXstring& msg);
 
 		/**
 		 * @brief Set the Profiling object
 		 * 
 		 * @param msg String
 		 */
-		void						SetProfiling(const QXstring& msg);
+		void							SetProfiling(const QXstring& msg);
 		#pragma endregion Accessors
 
 		#pragma region Static
@@ -118,7 +119,7 @@ namespace Quantix::Core::Debugger
 		 * 
 		 * @return Logger* 
 		 */
-		static Logger*				GetInstance();
+		static Logger*					GetInstance();
 		#pragma endregion Static
 		#pragma endregion Methods
 	private:

@@ -1,18 +1,22 @@
 #include "Editor.h"
 #include <iostream>
-#include "Logger.h"
-#include "Profiler.h"
+#include <Core/Profiler/Profiler.h>
 #include "stb_image.h"
 
 
 Editor::Editor(QXuint width, QXuint height) :
-	_win{width, height},
+	_win{ width, height },
+	_lib{"QuantixEngine"},
 	_docker{},
 	_folder{},
 	_menuBar{},
 	_hierarchy{},
 	_flagsEditor{}
 {
+	_lib.load();
+	if (!_lib.is_loaded())
+		std::cout << _lib.get_error_string() << std::endl;
+
 	_mouseInput = new MouseTest({false, 0.0f, 0.0f, 0.0f, 0.0f});
 
 	// Setup Dear ImGui context
@@ -50,6 +54,9 @@ Editor::~Editor()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+
+	//unload lib rttr
+	_lib.unload();
 }
 
 void Editor::Init()
@@ -98,7 +105,7 @@ void Editor::Update(QXuint FBO)
 	ImGui::Begin("Editor", NULL, _flagsEditor);
 
 	if (i == 0)
-		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Editor");
+		START_PROFILING("Editor");
 
 	DrawMenuBar();
 	DrawSimulation();
@@ -113,7 +120,7 @@ void Editor::Update(QXuint FBO)
 
 	if (i == 0)
 	{
-		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Editor");
+		STOP_PROFILING("Editor");
 		i++;
 	}
 	ImGui::End();
@@ -153,8 +160,8 @@ void Editor::DrawMenuBar()
 
 void Editor::DrawHierarchy(QXstring name, ImGuiWindowFlags flags)
 {
-	_hierarchy.Update(name, flags, _object);
-	//_hierarchy.Update(name, flags, _gameComponent);
+	//_hierarchy.Update(name, flags, _object);
+	_hierarchy.Update(name, flags, _graph3D->GetChild());
 }
 
 void Editor::Simulation()
@@ -206,11 +213,11 @@ void Editor::PrintLog()
 	for (QXuint i = 0; i < Quantix::Core::Debugger::Logger::GetInstance()->GetData().size(); i++)
 	{
 		if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::INFOS)
-			ImGui::TextColored(ImVec4(52 / 255.f, 152 / 255.f, 219 / 255.f, 1), "Info: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+			ImGui::TextColored(ImVec4(52 / 255.f, 152 / 255.f, 219 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::WARNING)
-			ImGui::TextColored(ImVec4(241 / 255.f, 196 / 255.f, 15 / 255.f, 1), "Warning: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+			ImGui::TextColored(ImVec4(241 / 255.f, 196 / 255.f, 15 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::ERROR)
-			ImGui::TextColored(ImVec4(231 / 255.f, 76 / 255.f, 60 / 255.f, 1), "Error: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+			ImGui::TextColored(ImVec4(231 / 255.f, 76 / 255.f, 60 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::PROFILING)
 			ImGui::TextColored(ImVec4(39 / 255.f, 174 / 255.f, 96 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 	}

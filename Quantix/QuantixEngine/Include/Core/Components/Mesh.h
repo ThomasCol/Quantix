@@ -1,16 +1,21 @@
 #ifndef __MESH_H__
 #define __MESH_H__
 
+#include <rttr/registration.h>
+#include <rttrEnabled.h>
+
+
 #include "Core/Type.h"
 #include "Resources/Model.h"
 #include "Resources/Material.h"
 #include "Core/Platform/AppInfo.h"
 #include "Light.h"
 #include "Camera.h"
+#include "Core/DataStructure/Component.h"
 
 namespace Quantix::Core::Components
 {
-	class QUANTIX_API Mesh
+	class QUANTIX_API Mesh : public virtual Core::DataStructure::Component
 	{
 	private:
 #pragma region Attributes
@@ -46,6 +51,8 @@ namespace Quantix::Core::Components
 		 */
 		Mesh(Mesh&& mesh) = default;
 
+		Mesh(Core::DataStructure::GameComponent* object);
+
 		/**
 		 * @brief Destroy the Mesh object
 		 */
@@ -56,9 +63,14 @@ namespace Quantix::Core::Components
 #pragma region Functions
 
 		void SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light, Components::Camera* cam);
+
+		const std::type_info&			GetType() const override;
+		Core::DataStructure::Component*	Copy() const override;
+		inline void						Destroy() override {};
 		
 #pragma region Accessor
 
+		inline void	 SetModel(Resources::Model* model) { _model = model; };
 		inline QXuint GetVAO() { return _model->GetVAO(); }
 		inline const std::vector<QXuint>& GetIndices() { return _model->GetIndices(); }
 		inline Resources::Material* GetMaterial() { return _material; }
@@ -67,6 +79,8 @@ namespace Quantix::Core::Components
 #pragma endregion
 
 #pragma endregion
+
+		CLASS_REGISTRATION(Core::DataStructure::Component)
 	};
 }
 

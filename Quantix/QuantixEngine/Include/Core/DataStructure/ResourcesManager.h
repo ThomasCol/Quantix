@@ -58,7 +58,7 @@ namespace Quantix::Core::DataStructure
 #pragma region Functions
 		
 		Material*			CreateMaterial(const QXstring& filePath);
-		Components::Mesh*	CreateMesh(const QXstring& modelPath, const QXstring& materialPath = "");
+		Components::Mesh*	CreateMesh(Components::Mesh* mesh, const QXstring& modelPath, const QXstring& materialPath = "");
 		Model*				CreateModel(const QXstring& filePath);
 		Shader*				CreateShader(const QXstring& filePath, EShaderType type);
 		ShaderProgram*		CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath);

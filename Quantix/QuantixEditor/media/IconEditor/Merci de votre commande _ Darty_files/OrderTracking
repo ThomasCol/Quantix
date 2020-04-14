@@ -1,0 +1,415 @@
+// Configuration
+var TRACKING_PAGE = 'https://tracking.channelsight.com/api/tracking/v2/';
+var ORDER_COOKIE_LIFE = 30; // in days
+var ORDER_COOKIE = 'channelsight_transaction';
+
+// Initialisation
+var ChannelSight = ChannelSight || {};
+ChannelSight.Internal = ChannelSight.Internal || {};
+
+// version: 2.0.0
+ChannelSight.Version = "2.0.0";
+ChannelSight.IsActive = false;
+ChannelSight.TopDomain = '';
+ChannelSight.DecimalSeparator = '.';
+ChannelSight.Data = ChannelSight.Data || {};
+ChannelSight.Data.IsTest = "false";
+ChannelSight.Data.order = ChannelSight.Data.order || {};
+ChannelSight.Data.products = ChannelSight.Data.products || [];
+
+
+ChannelSight.trackOrder = function (order) {
+	if (!ChannelSight.IsActive) {
+		ChannelSight.Internal.log("[ChannelSight.TrackOrder] Order tracking failed - ChannelSight is inactive");
+		return;
+	}
+
+	var tmpId = ChannelSight.Data.order.TransactionID;
+	var log = "[ChannelSight.TrackOrder] Tracking a new order. Current data: " + JSON.stringify(ChannelSight.Data);
+	ChannelSight.Data.order = order;
+	ChannelSight.Data.order.TransactionID = tmpId;
+
+	var dataStr = JSON.stringify(ChannelSight.Data);
+	ChannelSight.Internal.log(log + ". New data (with new order):" + dataStr);
+	ChannelSight.Internal.setCookie(ORDER_COOKIE, dataStr, ORDER_COOKIE_LIFE);
+};
+
+ChannelSight.trackProducts = function (products) {
+	ChannelSight.Internal.log("[ChannelSight.TrackProducts] Tracking a list of products: " + JSON.stringify(products));
+
+	for (var j = 0; j < products.length; j++) {
+		ChannelSight.trackProduct(products[j]);
+	}
+};
+
+ChannelSight.trackProduct = function (product) {
+	if (!ChannelSight.IsActive) {
+		ChannelSight.Internal.log("[ChannelSight.TrackProduct] Product tracking failed - ChannelSight is inactive");
+		return;
+	}
+
+	// Quick fix. Change Sku member to ProductCode
+	if (!('ProductCode' in product)) {
+		if ('SKU' in product) {
+			ChannelSight.Internal.log("[ChannelSight.TrackProduct] Converted SKU to ProductCode: " + JSON.stringify(product));
+			product.ProductCode = product.SKU;
+		}
+		else if ('Sku' in product) {
+			ChannelSight.Internal.log("[ChannelSight.TrackProduct] Converted Sku to ProductCode: " + JSON.stringify(product));
+			product.ProductCode = product.Sku;
+		}
+	}
+
+	// Temporary actions - these should be parsed (if need be) and added to a new field, named Currency.
+	//var data = ChannelSight.Internal.startTracking();
+
+	var log = "[ChannelSight.TrackProduct] Tracking a new product. Current data: " + JSON.stringify(ChannelSight.Data);
+	ChannelSight.Data.products.push(product);
+
+	var dataStr = JSON.stringify(ChannelSight.Data);
+	ChannelSight.Internal.log(log + ". New data (with new order):" + dataStr);
+	ChannelSight.Internal.setCookie(ORDER_COOKIE, dataStr, ORDER_COOKIE_LIFE);
+};
+
+
+ChannelSight.finalizeOrder = function () {
+	if (!ChannelSight.IsActive) {
+		ChannelSight.Internal.log("[ChannelSight.FinalizeOrder] Order finalisation failed - ChannelSight is inactive");
+		return;
+	}
+
+	ChannelSight.Internal.log("[ChannelSight.FinalizeOrder] Cleaning up order.");
+	ChannelSight.Data.order.OrderTotal = ChannelSight.Internal.parseNumber(ChannelSight.Data.order.OrderTotal);
+	ChannelSight.Data.order.ShipCost = ChannelSight.Internal.parseNumber(ChannelSight.Data.order.ShipCost);
+	ChannelSight.Data.order.Tax = ChannelSight.Internal.parseNumber(ChannelSight.Data.order.Tax);
+
+	for (var i = 0; i < ChannelSight.Data.products.length; i++) {
+		ChannelSight.Data.products[i].TransactionID = ChannelSight.Data.order.TransactionID;
+		ChannelSight.Data.products[i].Price = ChannelSight.Internal.parseNumber(ChannelSight.Data.products[i].Price);
+		ChannelSight.Data.products[i].Quantity = ChannelSight.Internal.parseNumber(ChannelSight.Data.products[i].Quantity);
+	}
+
+	ChannelSight.Internal.log("[ChannelSight.FinalizeOrder] Final order that will be sent to ChannelSight: " + JSON.stringify(ChannelSight.Data));
+
+
+
+	var url = TRACKING_PAGE + 'OrderRegister?id=' + ChannelSight.Data.order.TransactionID + '&data=' + encodeURIComponent(JSON.stringify(ChannelSight.Data)) + "&test=" + ChannelSight.Data.IsTest;
+	ChannelSight.Internal.generateDataImage(url);
+	ChannelSight.clearOrder();
+	ChannelSight.clearProducts();
+};
+
+
+ChannelSight.initTracking = function () {
+	if (!ChannelSight.IsActive) {
+		ChannelSight.Internal.log("[ChannelSight.AutoViewProduct] Automatic viewed product URL autoexecute script failed - ChannelSight is inactive");
+		return;
+	}
+
+	ChannelSight.Internal.log("[ChannelSight.AutoViewProduct] Registering a Viewed Product URL");
+	var url = TRACKING_PAGE + 'UrlRegister?id=' + ChannelSight.Data.order.TransactionID + '&url=' + encodeURIComponent(document.location) + "&referrer=" + encodeURIComponent(document.referrer) + "&test=" + ChannelSight.Data.IsTest;
+	ChannelSight.Internal.generateDataImage(url);
+};
+
+
+ChannelSight.clearOrder = function () {
+	if (!ChannelSight.IsActive) {
+		ChannelSight.Internal.log("[ChannelSight.ClearOrder] Order sweep failed - ChannelSight is inactive");
+		return;
+	}
+
+	ChannelSight.Internal.deleteCookie(ORDER_COOKIE);
+	ChannelSight.Data.order = {};
+	ChannelSight.Internal.log("[ChannelSight.ClearOrder] Removed all order details. Current data: " + JSON.stringify(ChannelSight.Data));
+};
+
+
+ChannelSight.clearProducts = function () {
+	if (!ChannelSight.IsActive) {
+		ChannelSight.Internal.log("[ChannelSight.ClearProducts] Product sweep failed - ChannelSight is inactive");
+		return;
+	}
+
+	ChannelSight.Internal.log("[ChannelSight.ClearProducts] Attempting to remove all product details");
+	if (ChannelSight.Data.products == null) return;
+
+	ChannelSight.Data.products = [];
+
+	ChannelSight.Internal.log("[ChannelSight.ClearProducts] Removed all product details. Current data:" + JSON.stringify(ChannelSight.Data));
+	var dataStr = JSON.stringify(ChannelSight.Data);
+	ChannelSight.Internal.setCookie(ORDER_COOKIE, dataStr, ORDER_COOKIE_LIFE);
+};
+
+
+ChannelSight.generateGuid = function () {
+	var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+
+	ChannelSight.Internal.log("[ChannelSight.Internal] Generating a new GUID: " + guid);
+	return guid;
+};
+
+
+// Internal methods
+ChannelSight.Internal.parseNumber = function (number) {
+	if (number == null) return null;
+
+	ChannelSight.Internal.log("[ChannelSight.Internal] Attempting to parse a number: " + number);
+	if (ChannelSight.DecimalSeparator == ',') {
+		number = ('' + number).replace(/\./gim, "{%_intermediate_decimal_value_%}");
+		number = number.replace(/,/gim, ".");
+		number = number.replace(/\{\%_intermediate_decimal_value_\%\}/gim, ",");
+	}
+
+	var im = parseFloat(number);
+
+	if (isNaN(im))
+		im = 0;
+
+	ChannelSight.Internal.log("[ChannelSight.Internal] Parsed " + number + " to " + im);
+	return im;
+};
+
+
+
+ChannelSight.Internal.setCookie = function (name, value, expires, path, domain, secure) {
+	var tmpDomain = ChannelSight.TopDomain == null && ChannelSight.TopDomain !== "" ? ChannelSight.TopDomain : null;
+
+	var today = new Date();
+	today.setTime(today.getTime());
+	if (expires)
+		expires = expires * 1000 * 60 * 60 * 24;
+	var expiresDate = new Date(today.getTime() + (expires));
+
+
+	ChannelSight.Internal.deleteCookie(name, path, domain);
+	var ck = name + '=' + escape(value) +
+        ((expires) ? ';expires=' + expiresDate.toGMTString() : '') +
+        ((path) ? ';path=' + path : ';path=/') +
+		(tmpDomain != null ? ';domain=.' + tmpDomain : "") +
+        ((secure) ? ';secure' : '');
+
+	ChannelSight.Internal.log("[ChannelSight.Internal] Attempting to create a cookie: " + ck);
+	document.cookie = ck;
+};
+
+
+ChannelSight.Internal.getCookie = function (name) {
+	ChannelSight.Internal.log("[ChannelSight.Internal] Attempting to read a cookie: " + name);
+	var start = document.cookie.indexOf(name + "=");
+	var len = start + name.length + 1;
+
+	if ((!start) && (name != document.cookie.substring(0, name.length))) return null;
+
+	if (start == -1) return null;
+	var end = document.cookie.indexOf(';', len);
+	if (end == -1) end = document.cookie.length;
+
+	var result = unescape(document.cookie.substring(len, end));
+
+	ChannelSight.Internal.log("[ChannelSight.Internal] Cookie data found: " + result);
+	return result;
+};
+
+
+ChannelSight.Internal.deleteCookie = function (name, path) {
+	var tmpDomain = ChannelSight.TopDomain == null && ChannelSight.TopDomain !== "" ? ChannelSight.TopDomain : null;
+
+	if (ChannelSight.Internal.getCookie(name)) {
+		var ck = name + '=' +
+			((path) ? ';path=' + path : '') +
+			(tmpDomain != null ? ';domain=.' + tmpDomain : "") +
+			';expires=Thu, 01-Jan-1970 00:00:01 GMT';
+
+		ChannelSight.Internal.log("[ChannelSight.Internal] Attempting to delete a cookie: " + name);
+		document.cookie = ck;
+		ChannelSight.Internal.log("[ChannelSight.Internal] Deleting cookie by assignment: " + ck);
+	}
+};
+
+
+ChannelSight.Internal.log = function (message) {
+	if (typeof console !== "undefined")
+		console.log(message);
+};
+
+
+ChannelSight.Internal.startTracking = function (activeTransactionId) {
+	ChannelSight.Internal.log("[ChannelSight.Internal] Attempting to initialise the tracking process. Attempting to read any values that might exist in the cookie.");
+	var cookieData = ChannelSight.Internal.getCookie(ORDER_COOKIE);
+	if (cookieData != null) {
+		ChannelSight.Internal.log("[ChannelSight.Internal] Cookie found, attempting to parse.");
+		var tmpdata = JSON.parse(cookieData);
+
+		if (tmpdata == null) {
+			// No cookie
+			ChannelSight.Data = { order: {}, products: [] };
+			ChannelSight.Internal.log("[ChannelSight.Internal] Cookie not parseable - not restoring any value.");
+		} else {
+			ChannelSight.Internal.log("[ChannelSight.Internal] Cookie parseable. Deciding what to do next. Cookie is " + JSON.stringify(tmpdata));
+
+			// Cookie found, check for incompleteness
+			if (tmpdata != null && tmpdata.order != null) {
+				ChannelSight.Internal.log("[ChannelSight.Internal] Found an order - attempting to use it.");
+				ChannelSight.Data.order = tmpdata.order;
+			}
+
+			if (tmpdata != null && tmpdata.products != null) {
+				ChannelSight.Internal.log("[ChannelSight.Internal] Found products - attempting to use it.");
+				ChannelSight.Data.products = tmpdata.products;
+			}
+		}
+	}
+
+	ChannelSight.Internal.log("[ChannelSight.Internal] Attempting to register the provided transaction ID: " + activeTransactionId);
+	ChannelSight.Internal.log("[ChannelSight.Internal] Current Data: " + JSON.stringify(ChannelSight.Data));
+	if (activeTransactionId != null && activeTransactionId != "")
+		ChannelSight.Data.order.TransactionID = activeTransactionId;
+
+
+	ChannelSight.Internal.setCookie(ORDER_COOKIE, JSON.stringify(ChannelSight.Data), ORDER_COOKIE_LIFE);
+};
+
+
+ChannelSight.Internal.processAutomaticOrder = function () {
+	if (!ChannelSight.IsActive) {
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Automatic order processing autoexecute script failed - ChannelSight is inactive");
+		return;
+	}
+
+	// Akways attempt to use the object literal approach first.
+	if (typeof CS_Order !== "undefined") {
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Using the object literal order autoexecute approach. Attempting to track the order");
+		ChannelSight.trackOrder(CS_Order);
+
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Checking for any defined products");
+		if (typeof CS_Products !== "undefined" && CS_Products instanceof Array) {
+			ChannelSight.Internal.log("[ChannelSight.AutoOrder] Ready to start tracking products");
+			ChannelSight.trackProducts(CS_Products);
+		}
+
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Ready to start finalising the order");
+		ChannelSight.finalizeOrder();
+	} else if (typeof CS_Order_OrderTotal !== "undefined" && typeof CS_Products_Name !== "undefined" && CS_Products_Name instanceof Array) {
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Using the naked variables order autoexecute approach. Attempting to parse the order");
+
+		var order = {
+			TransactionID: ChannelSight.Data.order.TransactionID,
+			Affiliation: typeof CS_Order_Affiliation !== "undefined" ? CS_Order_Affiliation : null,
+			OrderTotal: CS_Order_OrderTotal,
+			ShipCost: typeof CS_Order_ShipCost !== "undefined" ? CS_Order_ShipCost : null,
+			Tax: typeof CS_Order_Tax !== "undefined" ? CS_Order_Tax : null,
+			Currency: typeof CS_Order_Currency !== "undefined" ? CS_Order_Currency : null,
+		};
+
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Parsed order: " + JSON.stringify(order));
+
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Attempting to parse the products.");
+		var products = [];
+		for (var i = 0; i < CS_Products_Name.length; i++) {
+			var name = CS_Products_Name[i];
+			var sku = typeof CS_Products_SKU !== "undefined" && CS_Products_SKU instanceof Array && typeof CS_Products_SKU[i] !== "undefined" ? CS_Products_SKU[i] : null;
+			var category = typeof CS_Products_Category !== "undefined" && CS_Products_Category instanceof Array && typeof CS_Products_Category[i] !== "undefined" ? CS_Products_Category[i] : null;
+			var price = typeof CS_Products_Price !== "undefined" && CS_Products_Price instanceof Array && typeof CS_Products_Price[i] !== "undefined" ? CS_Products_Price[i] : null;
+            var quantity = typeof CS_Products_Quantity !== "undefined" && CS_Products_Quantity instanceof Array && typeof CS_Products_Quantity[i] !== "undefined" ? CS_Products_Quantity[i] : null;
+
+			var product = {
+				TransactionID: ChannelSight.Data.order.TransactionID,
+				Name: name,
+				ProductCode: sku,
+				Category: category,
+				Price: price,
+				Quantity: quantity
+			};
+
+			ChannelSight.Internal.log("[ChannelSight.AutoOrder] Parsed product: " + JSON.stringify(product));
+			products.push(product);
+		}
+
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Attempting to track the order");
+		ChannelSight.trackOrder(order);
+
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] Attempting to track the products");
+		ChannelSight.trackProducts(products);
+
+		ChannelSight.Internal.log("[ChannelSight.AutoOrder] ATtempting to finalise the order");
+		ChannelSight.finalizeOrder();
+	}
+};
+
+
+ChannelSight.Internal.generateDataImage = function (url) {
+	var img = document.createElement('img');
+	img.setAttribute('id', 'ChannelSightProductTracking');
+	img.setAttribute('src', url);
+	img.setAttribute('style', 'display: none; visibility: hidden;');
+	img.setAttribute('alt', '');
+
+	ChannelSight.Internal.log("[ChannelSight.Internal] Generated data image tag with URL " + url);
+	document.body.appendChild(img);
+};
+
+ChannelSight.Internal.getParameterByName = function (name) {
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		results = regex.exec(location.search);
+	var final = results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+
+	ChannelSight.Internal.log("[ChannelSight.Internal] Parameter " + name + " had value " + final);
+	return final;
+};
+
+
+// Don't alter the following line, it'll be populated by the tracking server.
+ChannelSight.AutoExecute = function () {
+    ChannelSight.Internal.processAutomaticOrder();
+};
+
+
+// Application execution
+(function () {
+	var cookieTID = null;
+
+	try {
+		ChannelSight.Internal.log("[ChannelSight.Init] Checking for an existing cookie");
+		var parsedCookie = JSON.parse(ChannelSight.Internal.getCookie(ORDER_COOKIE));
+
+		ChannelSight.Internal.log("[ChannelSight.Init] Cookie found (if any): " + JSON.stringify(parsedCookie));
+		if (parsedCookie != null && parsedCookie.order != null && parsedCookie.order.TransactionID != null) {
+			cookieTID = parsedCookie.order.TransactionID;
+			ChannelSight.Internal.log("[ChannelSight.Init] Cookie acceptable, setting the transaction ID to the value of the cookie");
+		}
+	} catch (e) { }
+
+	ChannelSight.Internal.log("[ChannelSight.Init] Checking the query string for a transaction ID");
+	var newTID = ChannelSight.Internal.getParameterByName("cstrackid");
+
+	ChannelSight.Internal.log("[ChannelSight.Init] Query string parameter for the transaction ID was: " + newTID);
+	var transactionId = newTID != null && newTID != "" ? newTID : cookieTID;
+	ChannelSight.Internal.log("[ChannelSight.Init] Final transaction ID: " + transactionId);
+
+	if (transactionId != null && transactionId.length > 0) {
+
+		ChannelSight.Internal.log("[ChannelSight.Init] Attempting tracking initialisation");
+		ChannelSight.Internal.startTracking(transactionId);
+		ChannelSight.IsActive = true;
+		try {
+			ChannelSight.Internal.log("[ChannelSight.Init] Checking for autoexecution of the rest of the script");
+			if (typeof ChannelSight.AutoExecute !== "undefined") {
+				ChannelSight.Internal.log("[ChannelSight.Init] Autoexecutable script ready to run");
+				ChannelSight.AutoExecute();
+			} else {
+				ChannelSight.Internal.log("[ChannelSight.Init] No autoexecutable script found");
+			}
+		} catch (e) {
+			ChannelSight.Internal.log("[ChannelSight] An unhandled exception has occurred during the execution of ChannelSight scripts: " + e);
+		}
+
+		return;
+	} else {
+		ChannelSight.Internal.log("[ChannelSight.Init] Error: No valid transaction ID (cstrackid) was found - halting execution");
+	}
+})();
+

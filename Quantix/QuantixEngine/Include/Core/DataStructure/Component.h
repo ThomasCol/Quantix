@@ -5,7 +5,7 @@
 #include "Type.h"
 #include "Core/DLLHeader.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	class GameComponent;
 
@@ -17,7 +17,7 @@ namespace Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		GameComponent*	 _object;
+		GameComponent*	_object;
 		QXbool			_isDestroyed;
 		QXbool			_isEnable;
 		#pragma endregion Attributes

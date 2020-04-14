@@ -1,40 +1,45 @@
 #include "Inspector.h"
 
-Inspector::Inspector(Node node) :
+/*Inspector::Inspector(Node node) :
 	_node { node },
 	_enable { true }
 {
-}
+}*/
 
-/*Inspector::Inspector(Core::DataStructure::GameComponent* gc) :
-	_gc{ gc },
+Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
+	_transform{ transform },
 	_enable{ true }
 {
-}*/
+}
 
 void Inspector::Update()
 {
 	if (_enable)
 	{
-		ImGui::Text("Name: %s", _node.name.c_str());
+		ImGui::Text("Name: %s", _transform->GetObject()->GetName().c_str());
 
 		if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_Framed))
 		{
-			static float	pos[3] = { 0, 0, 0 };
-			static float	rot[3] = { 0, 0, 0 };
-			static float	scale[3] = { 1, 1, 1 };
-			ImGui::DragFloat3("Position", pos, -3000.f, 3000.f);
-			ImGui::DragFloat3("Rotation", rot, -3000.f, 3000.f);
-			ImGui::DragFloat3("Scale", scale, 0.f, 100.f);
+			static Math::QXvec3	pos = _transform->GetPosition();
+			static Math::QXvec3	rot = _transform->GetRotation();
+			static Math::QXvec3	scale = _transform->GetScale();
+			ImGui::DragFloat3("Position", pos.e, -3000.f, 3000.f);
+			ImGui::DragFloat3("Rotation", rot.e, -3000.f, 3000.f);
+			ImGui::DragFloat3("Scale", scale.e, 0.f, 100.f);
+
+			_transform->SetPosition(pos);
+			_transform->SetRotation(rot);
+			_transform->SetScale(scale);
+
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNodeEx("Component", ImGuiTreeNodeFlags_Framed))
+		/*rttr::type t = rttr::type::get(_transform->GetObject()->GetComp());
+		if (ImGui::TreeNodeEx(QXstring(t.get_name()).c_str(), ImGuiTreeNodeFlags_Framed))
 		{
-			ImGui::Text("Component1");
-			ImGui::Text("Component2");
-			ImGui::Text("Component3");
+			rttr::method meth = rttr::type::get(_transform->GetObject()->GetComp()[0]).get_method("GetMaterial");
+			ImGui::ColorEdit3("ambient", meth.invoke(_transform->GetObject()->GetComp()[0]).get_value())
 			ImGui::TreePop();
-		}
+		}*/
 	}
 }

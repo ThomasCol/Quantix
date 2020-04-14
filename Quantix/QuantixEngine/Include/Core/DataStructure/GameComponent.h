@@ -11,7 +11,7 @@
 #include "Core/DLLHeader.h"
 #include "Component.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	class QUANTIX_API GameComponent
 	{
@@ -22,6 +22,7 @@ namespace Core::DataStructure
 		QXint						_layer;
 		QXbool						_isStatic;
 		QXbool						_isActive;
+		QXbool						_toRender;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -88,6 +89,11 @@ namespace Core::DataStructure
 					vecT.push_back(comp);
 			}
 			return vecT;
+		}
+
+		inline std::vector<Component*>	GetComp()
+		{
+			return _component;
 		}
 
 		/**

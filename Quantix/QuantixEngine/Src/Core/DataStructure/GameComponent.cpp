@@ -1,12 +1,13 @@
 #include "Core\DataStructure\GameComponent.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	GameComponent::GameComponent(const GameComponent& object) noexcept :
 		_name{ object._name },
 		_layer{ object._layer },
 		_isStatic{ object._isStatic },
-		_isActive{ object._isActive }
+		_isActive{ object._isActive },
+		_toRender{ false }
 	{
 		for (size_t i = 0; i < object._component.size(); i++)
 		{
@@ -19,7 +20,8 @@ namespace Core::DataStructure
 		_name{ std::move(object._name) },
 		_layer{ std::move(object._layer) },
 		_isStatic{ std::move(object._isStatic) },
-		_isActive{ std::move(object._isActive) }
+		_isActive{ std::move(object._isActive) },
+		_toRender{ std::move(object._toRender) }
 	{
 	}
 
@@ -63,6 +65,7 @@ namespace Core::DataStructure
 		_layer = gc._layer;
 		_isStatic = gc._isStatic;
 		_isActive = gc._isActive;
+		_toRender = gc._toRender;
 
 		return *this;
 	}

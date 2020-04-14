@@ -1,10 +1,10 @@
 #include "Core/DataStructure/GameObject2D.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	GameObject2D::GameObject2D() noexcept :
 		GameComponent(),
-		_transform{ Quantix::Physic::Transform2D() }
+		_transform{ new Quantix::Physic::Transform2D() }
 	{
 	}
 
@@ -41,23 +41,23 @@ namespace Core::DataStructure
 
 	void	GameObject2D::SetLocalPosition(Math::QXvec2 pos)
 	{
-		_transform.SetPosition(pos);
+		_transform->SetPosition(pos);
 	}
 
 	void	GameObject2D::SetLocalRotation(QXfloat rot)
 	{
-		_transform.SetRotationAngle(rot);
+		_transform->SetRotationAngle(rot);
 	}
 
 	void	GameObject2D::SetLocalScale(Math::QXvec2 scale)
 	{
-		_transform.SetScale(scale);
+		_transform->SetScale(scale);
 	}
 
 	void	GameObject2D::SetTransform(const Math::QXvec2& pos, const QXfloat rot, const Math::QXvec2& scale)
 	{
-		_transform.SetPosition(pos);
-		_transform.SetRotationAngle(rot);
-		_transform.SetScale(scale);
+		_transform->SetPosition(pos);
+		_transform->SetRotationAngle(rot);
+		_transform->SetScale(scale);
 	}
 }

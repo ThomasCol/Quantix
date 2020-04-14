@@ -1,6 +1,26 @@
 #include "Core/Components/Camera.h"
 #include "MathDefines.h"
 
+#define SENSIBILITY 0.0025
+
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Core::Components::Camera>("Camera")
+	.constructor<>()
+	.constructor<const Quantix::Core::Components::Camera&>()
+	.constructor<Quantix::Core::Components::Camera&&>()
+	.constructor<Quantix::Core::DataStructure::GameComponent*>()
+	.method("GetObject", &Quantix::Core::Components::Camera::GetObject)
+	.method("IsDestroyed", &Quantix::Core::Components::Camera::IsDestroyed)
+	.method("IsEnable", &Quantix::Core::Components::Camera::IsEnable)
+	.method("SetActive", &Quantix::Core::Components::Camera::SetActive)
+	.method("GetLookAt", &Quantix::Core::Components::Camera::GetLookAt)
+	.method("SetPos", &Quantix::Core::Components::Camera::SetPos)
+	.method("GetPos", &Quantix::Core::Components::Camera::GetPos)
+	.method("GetDir", &Quantix::Core::Components::Camera::GetDir)
+	.method("GetUp", &Quantix::Core::Components::Camera::GetUp);
+}
+
 namespace Quantix::Core::Components
 {
 	Camera::Camera():
@@ -46,7 +66,7 @@ namespace Quantix::Core::Components
 
 		Math::QXvec3	rotDir{ (float)-y, (float)-x, 0.f };
 
-		Rotate(rotDir * (float)frameTime * 0.005f);//SENSIBILITY);
+		Rotate(rotDir * (float)frameTime * SENSIBILITY);
 	}
 
 	void			Camera::Rotate(Math::QXvec3 rotate)

@@ -1,0 +1,13 @@
+/* #1124681390 */
+_oEa.pmdenyall = 0;
+_oEa.website("darty");if (_oEa.isdef(typeof _oEa.uidset )) {_oEa.uidset("IvzV043IL7fM8XCbKD9bmPg98DHAFTKYc_VLTSQOb2uYAZWAJs17.w--");}var _EaCP = {"cgip" : _oEa.hcgi,"ref":"95351373","amount":"608.99","type":"mixte","payment":"compte paypal","tp":{"":""}};
+_oEa.dcrun = function() {
+_oEa.xpathdc = {};
+if (_oEa.pmdenyall) { return; }
+};
+_oEa.mtrun = function() {
+_oEa.xpathmt = {};
+if (_oEa.pmdenyall) { return; }
+};
+_oEa.mtdcrun = function() {_oEa.mtrun();_oEa.dcrun();};_oEa.mtdcrun();_oEa.websiteend();
+ /* end !config */

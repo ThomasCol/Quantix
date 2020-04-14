@@ -1,9 +1,9 @@
 #pragma once
 
+#include <GLFW/glfw3.h>
+
 #include "Core/Debugger/Logger.h"
 #include "Core/Platform/AppInfo.h"
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
 
 #define BEGIN_PROFILING "\t\t**********************************************\n \
 \t\t************** BEGIN PROFILING ***************\n \
@@ -34,7 +34,7 @@ namespace Quantix::Core::Profiling
 	 * @brief class Profiler
 	 * 
 	 */
-	class Profiler
+	class QUANTIX_API Profiler
 	{
 	public:
 		#pragma region Constructors/Destructor
@@ -78,7 +78,7 @@ namespace Quantix::Core::Profiling
 		 * 
 		 * @param type String name of the type of profiling
 		 */
-		void				StartProfiling(QXstring type);
+		void				StartProfiling(const QXstring& type);
 
 
 		/**
@@ -86,15 +86,7 @@ namespace Quantix::Core::Profiling
 		 * 
 		 * @param type String name of the type of profiling
 		 */
-		void				StopProfiling(QXstring type);
-
-		/**
-		 * @brief Update the timer of all profiling already started
-		 * 
-		 * @param deltaTime float frameTime Value for add to all timer
-		 */
-		void				Update(QXfloat deltaTime);
-
+		void				StopProfiling(const QXstring& type);
 
 		#pragma region Accessors
 		/**
@@ -103,13 +95,6 @@ namespace Quantix::Core::Profiling
 		 * @return int of the fps
 		 */
 		int					GetFrameCounter();
-
-		/**
-		 * @brief Set the App Info object
-		 * 
-		 * @param app AppInfo
-		 */
-		inline void			SetAppInfo(Quantix::Core::Platform::AppInfo app) { _info = &app; };
 
 		/**
 		 * @brief Set the Profiling to format the message
@@ -123,7 +108,7 @@ namespace Quantix::Core::Profiling
 		 * @param type String of the type of profiling
 		 * @param msg String message
 		 */
-		void				SetMessage(QXstring type, QXstring msg);
+		void				SetMessage(const QXstring& type, const QXstring& msg);
 		
 		/**
 		 * @brief Get the Activate object
@@ -147,7 +132,6 @@ namespace Quantix::Core::Profiling
 	private:
 		#pragma region Attributes
 		static Profiler*											_instance;
-		Quantix::Core::Platform::AppInfo*							_info;
 		std::string													_profiling;
 		std::map<QXstring, Info>									_infoProfiling;
 		QXint														_frameRate;
@@ -155,3 +139,6 @@ namespace Quantix::Core::Profiling
 		#pragma endregion Attributes
 	};
 }
+
+#define START_PROFILING(name) Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling(name)
+#define STOP_PROFILING(name) Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling(name)
