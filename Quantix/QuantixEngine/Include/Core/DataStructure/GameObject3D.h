@@ -20,7 +20,7 @@ namespace Quantix::Core::DataStructure
 	public:
 		#pragma region Constructors/Destructor
 		GameObject3D() = default;
-		GameObject3D(std::string name, Quantix::Physic::Transform3D* transform = new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1))) noexcept;
+		GameObject3D(const QXstring&, Quantix::Physic::Transform3D* transform = new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1))) noexcept;
 		GameObject3D(const GameObject3D& g3d) noexcept;
 		GameObject3D(GameObject3D&& g3d) noexcept;
 		~GameObject3D();
@@ -101,7 +101,7 @@ namespace Quantix::Core::DataStructure
 		 * @param rot QXvec3
 		 * @param scale QXvec3
 		 */
-		void									SetTransform(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale);
+		void									SetTransformValue(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale);
 
 		inline void								SetTransform(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 
@@ -113,6 +113,8 @@ namespace Quantix::Core::DataStructure
 		#pragma endregion Accessors
 		GameObject3D&							operator=(const GameObject3D& object);
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION(GameComponent);
 	};
 }
 

@@ -7,13 +7,14 @@ RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::Components::Camera>("Camera")
 	.constructor<>()
+	.constructor<const Math::QXvec3&, const Math::QXvec3&, const Math::QXvec3&>()
+	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const Quantix::Core::Components::Camera&>()
 	.constructor<Quantix::Core::Components::Camera&&>()
-	.constructor<Quantix::Core::DataStructure::GameComponent*>()
-	.method("GetObject", &Quantix::Core::Components::Camera::GetObject)
-	.method("IsDestroyed", &Quantix::Core::Components::Camera::IsDestroyed)
-	.method("IsEnable", &Quantix::Core::Components::Camera::IsEnable)
-	.method("SetActive", &Quantix::Core::Components::Camera::SetActive)
+	.method("Init", &Quantix::Core::Components::Camera::Init)
+	.method("UpdateLookAt", &Quantix::Core::Components::Camera::UpdateLookAt)
+	.method("ChangeView", &Quantix::Core::Components::Camera::ChangeView)
+	.method("Rotate", &Quantix::Core::Components::Camera::Rotate)
 	.method("GetLookAt", &Quantix::Core::Components::Camera::GetLookAt)
 	.method("SetPos", &Quantix::Core::Components::Camera::SetPos)
 	.method("GetPos", &Quantix::Core::Components::Camera::GetPos)
@@ -28,12 +29,17 @@ namespace Quantix::Core::Components
 	{
 	}
 
-	Camera::Camera(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up) :
+	Camera::Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up) :
 		_pos(pos),
 		_dir(dir),
 		_up(up),
 		_angle(Math::QXvec3(0, 0, 0)),
 		_lookAt { Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up) }
+	{
+	}
+
+	Camera::Camera(Core::DataStructure::GameComponent* object) :
+		Quantix::Core::DataStructure::Component(object)
 	{
 	}
 
@@ -44,6 +50,15 @@ namespace Quantix::Core::Components
 		_up = camera._up;
 		_angle = camera._angle;
 	}
+
+	Camera::Camera(Camera&& camera):
+		Component(camera),
+		_up{ std::move(camera._up) },
+		_pos{ std::move(camera._pos) },
+		_dir{ std::move(camera._dir) },
+		_angle{ std::move(camera._angle) },
+		_lookAt{ std::move(camera._lookAt) }
+	{}
 
 	void			Camera::Init(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up)
 	{

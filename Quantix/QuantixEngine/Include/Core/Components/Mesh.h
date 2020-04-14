@@ -1,10 +1,6 @@
 #ifndef __MESH_H__
 #define __MESH_H__
 
-#include <rttr/registration.h>
-#include <rttrEnabled.h>
-
-
 #include "Core/Type.h"
 #include "Resources/Model.h"
 #include "Resources/Material.h"

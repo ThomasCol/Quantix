@@ -66,7 +66,9 @@ namespace Quantix::Core::DataStructure
 			const std::type_info& type = typeid(T&);
 			for (Component* comp : _component)
 			{
-				if (comp->GetType() == type)
+				rttr::type t = rttr::type::get(comp);
+
+				if (rttr::type::get<T>() == t)
 					return dynamic_cast<T*>(comp);
 			}
 			return nullptr;
@@ -172,6 +174,8 @@ namespace Quantix::Core::DataStructure
 		#pragma endregion Accessors
 		GameComponent&			operator=(const GameComponent& gc);
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION();
 	};
 }
 

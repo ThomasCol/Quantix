@@ -19,7 +19,7 @@ namespace Quantix::Core::DataStructure
 	public:
 		#pragma region Constructors/Destructor
 		GameObject2D() noexcept;
-		GameObject2D(std::string name) noexcept;
+		GameObject2D(const QXstring& name) noexcept;
 		GameObject2D(const GameObject2D& g2d) noexcept;
 		GameObject2D(GameObject2D&& g2d) noexcept;
 		~GameObject2D();
@@ -115,6 +115,8 @@ namespace Quantix::Core::DataStructure
 		Quantix::Physic::Transform2D*				GetTransform() const { return _transform; };
 		#pragma endregion Accessors
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION(GameComponent);
 	};
 }
 

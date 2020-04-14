@@ -3,7 +3,6 @@
 
 #include <Vec3.h>
 #include <Mat4.h>
-#include <rttrEnabled.h>
 
 #include "Core/DataStructure/Component.h"
 #include "Core/DLLHeader.h"
@@ -36,8 +35,9 @@ namespace Quantix::Core::Components
 		 * @param dir Vector
 		 * @param up Vector
 		 */
-		Camera(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up);
-		//Camera(Core::DataStructure::GameObject* object);
+		Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up);
+		
+		Camera(Core::DataStructure::GameComponent* object);
 
 		/**
 		 * @brief Construct a new Camera object by copy 
@@ -51,13 +51,13 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param camera Camera
 		 */
-		Camera(Camera&& camera) = default;
+		Camera(Camera&& camera);
 
 		/**
 		 * @brief Destroy the Camera object
 		 * 
 		 */
-		~Camera() {};
+		~Camera() = default;
 		#pragma endregion Constructors/Destructor
 
 		#pragma region Methods

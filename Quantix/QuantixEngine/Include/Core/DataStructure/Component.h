@@ -2,6 +2,7 @@
 #define _COMPONENT_H_
 
 #include <typeinfo>
+#include <rttrEnabled.h>
 #include "Type.h"
 #include "Core/DLLHeader.h"
 
@@ -118,6 +119,8 @@ namespace Quantix::Core::DataStructure
 		inline virtual void					Destroy() {};
 		#pragma endregion Inline
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION();
 	};
 }
 

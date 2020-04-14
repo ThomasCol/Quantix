@@ -1,5 +1,7 @@
 #include "Inspector.h"
 
+#include <rttr/registration>
+
 /*Inspector::Inspector(Node node) :
 	_node { node },
 	_enable { true }
@@ -41,5 +43,13 @@ void Inspector::Update()
 			ImGui::ColorEdit3("ambient", meth.invoke(_transform->GetObject()->GetComp()[0]).get_value())
 			ImGui::TreePop();
 		}*/
+
+		rttr::type t = rttr::type::get(_transform->GetObject()->GetComp()[0]);
+		if (ImGui::TreeNodeEx(t.get_name().to_string().c_str(), ImGuiTreeNodeFlags_Framed))
+		{
+			/*rttr::method meth = rttr::type::get(_transform->GetObject()->GetComp()[0]).get_method("GetMaterial");
+			ImGui::ColorEdit3("ambient", meth.invoke(_transform->GetObject()->GetComp()[0]).get_value())
+				ImGui::TreePop();*/
+		};
 	}
 }

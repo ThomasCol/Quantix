@@ -1,8 +1,27 @@
 #include "Core/DataStructure/GameObject3D.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Core::DataStructure::GameObject3D>("GameObject3D")
+	.constructor<>()
+	.constructor<const QXstring&, Quantix::Physic::Transform3D*>()
+	.constructor<const Quantix::Core::DataStructure::GameObject3D&>()
+	.constructor<Quantix::Core::DataStructure::GameObject3D&&>()
+	.method("SetGlobalPosition", &Quantix::Core::DataStructure::GameObject3D::SetGlobalPosition)
+	.method("SetGlobalRotation", &Quantix::Core::DataStructure::GameObject3D::SetGlobalRotation)
+	.method("SetLocalPosition", &Quantix::Core::DataStructure::GameObject3D::SetLocalPosition)
+	.method("SetLocalRotation", &Quantix::Core::DataStructure::GameObject3D::SetLocalRotation)
+	.method("SetLocalScale", &Quantix::Core::DataStructure::GameObject3D::SetLocalScale)
+	.method("GetLocalPosition", &Quantix::Core::DataStructure::GameObject3D::GetLocalPosition)
+	.method("GetLocalRotation", &Quantix::Core::DataStructure::GameObject3D::GetLocalRotation)
+	.method("GetLocalScale", &Quantix::Core::DataStructure::GameObject3D::GetLocalScale)
+	.method("SetTransform", &Quantix::Core::DataStructure::GameObject3D::SetTransform)
+	.method("GetTransform", &Quantix::Core::DataStructure::GameObject3D::GetTransform);
+}
+
 namespace Quantix::Core::DataStructure
 {
-	GameObject3D::GameObject3D(std::string name, Quantix::Physic::Transform3D* transform) noexcept :
+	GameObject3D::GameObject3D(const QXstring& name, Quantix::Physic::Transform3D* transform) noexcept :
 		GameComponent(name),
 		_transform { transform }
 	{
@@ -49,7 +68,7 @@ namespace Quantix::Core::DataStructure
 		_transform->SetScale(scale);
 	}
 
-	void	GameObject3D::SetTransform(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale)
+	void	GameObject3D::SetTransformValue(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale)
 	{
 		_transform->SetPosition(pos);
 		_transform->SetRotation(rot);
