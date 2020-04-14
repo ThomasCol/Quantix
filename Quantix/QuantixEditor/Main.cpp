@@ -90,11 +90,10 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 
 void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Mesh*>& meshes, std::vector<Quantix::Core::Components::Light*>& lights)
 {
-	Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Run");
-	Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Mesh");
+	START_PROFILING("Mesh");
 	Quantix::Core::Components::Mesh* mesh = editor->GetApp()->manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
 	mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
-	Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Mesh");
+	STOP_PROFILING("Mesh");
 
 	meshes.push_back(mesh);
 
@@ -175,13 +174,11 @@ int main()
 				}
 			}
 
-			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Draw");
 			//Editor Update
 			editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, cam));
-			Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Draw");
-			Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Refresh");
+			START_PROFILING("Refresh");
 			editor->GetWin().Refresh(editor->GetApp()->info);
-			Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Refresh");
+			STOP_PROFILING("Refresh");
 			CameraUpdate(editor, cam);
 			Quantix::Core::Profiling::Profiler::GetInstance()->FrameCounter();
 		}

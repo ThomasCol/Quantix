@@ -14,7 +14,7 @@ namespace Quantix::Core::Debugger
 	 * @param file 
 	 * @param line 
 	 */
-	void 	StaticAssert(QXbool condition, QXstring file, QXint line);
+	void QUANTIX_API 	StaticAssert(QXbool condition, QXstring file, QXint line);
 
 	/**
 	 * @brief Assert send an alert
@@ -23,7 +23,7 @@ namespace Quantix::Core::Debugger
 	 * @param file 
 	 * @param line 
 	 */
-	void 	Assert(QXbool condition, QXstring file, QXint line);
+	void QUANTIX_API	Assert(QXbool condition, QXstring file, QXint line);
 	#pragma endregion Functions
 }
 

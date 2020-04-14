@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "Core/Debugger/Logger.h"
+
 namespace Quantix::Resources
 {
 #pragma region Constructors
@@ -61,7 +63,7 @@ namespace Quantix::Resources
 		if (!success)
 		{
 			glGetShaderInfoLog(_id, 512, NULL, info_log);
-			std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << info_log << std::endl;
+			LOG(ERROR, QXstring("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n") + info_log);
 		}
 	}
 
@@ -79,7 +81,7 @@ namespace Quantix::Resources
 		if (!success)
 		{
 			glGetShaderInfoLog(_id, 512, NULL, info_log);
-			std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << info_log << std::endl;
+			LOG(ERROR, QXstring("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") + info_log);
 		}
 	}
 

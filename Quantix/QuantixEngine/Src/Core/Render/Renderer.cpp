@@ -1,9 +1,10 @@
 #include "Core/Render/Renderer.h"
 
 #include <glad/glad.h>
-
 #include <stdexcept>
 #include <array>
+
+#include "Core/Profiler/Profiler.h"
 
 namespace Quantix::Core::Render
 {
@@ -91,6 +92,8 @@ namespace Quantix::Core::Render
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
 	{
+		START_PROFILING("draw");
+
 		std::sort(mesh.begin(), mesh.end(), [](const Components::Mesh* a, const Components::Mesh* b) {
 			return a->key < b->key;
 		});
@@ -123,11 +126,7 @@ namespace Quantix::Core::Render
 				last_texture_id = mesh[i]->textureID;
 			}
 
-			Math::QXmat4 trs;
-			if (i)
-				trs = { Math::QXmat4::CreateTRSMatrix({0, 0, 0.f}, {0, (QXfloat)info.currentTime, 0}, { 1, 1, 1 }) };
-			else
-				trs = { Math::QXmat4::CreateTRSMatrix({0, 0, -1.f}, {0, (QXfloat)info.currentTime, 0}, { 1, 1, 1 }) };
+			Math::QXmat4 trs { Math::QXmat4::CreateTRSMatrix({0, 0, 0.f}, {0, 0, 0}, { 1, 1, 1 }) };
 
 			material->SetMat4("TRS", trs);
 
@@ -141,6 +140,24 @@ namespace Quantix::Core::Render
 		glActiveTexture(0);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		STOP_PROFILING("draw");
+
+		/*for (QXuint i = 0; i < mesh.size(); ++i)
+		{
+			material = mesh[i]->GetMaterial();
+			BindShader(material, info, cam, lights);
+			material->SendData();
+			Math::QXmat4 trs{ Math::QXmat4::CreateTRSMatrix({0, 0, 0.f}, {0, 0, 0}, { 1, 1, 1 }) };
+
+			material->SetMat4("TRS", trs);
+
+			glBindVertexArray(mesh[i]->GetVAO());
+
+			glDrawElements(GL_TRIANGLES, (GLsizei)mesh[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
+
+			glBindVertexArray(0);
+		}*/
 
 		return _mainBuffer.texture;
 	}

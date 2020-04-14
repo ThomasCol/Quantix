@@ -1,5 +1,7 @@
 #include "Core/DataStructure/ResourcesManager.h"
 
+#include "Core/Debugger/Logger.h"
+
 namespace Quantix::Core::DataStructure
 {
 #pragma region Constructors
@@ -257,7 +259,7 @@ namespace Quantix::Core::DataStructure
 
 		if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, filePath.c_str()))
 		{
-			std::cout << warn + err << std::endl;
+			LOG(ERROR, warn + err);
 			return;
 		}
 

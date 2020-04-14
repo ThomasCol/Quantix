@@ -23,6 +23,9 @@ namespace Quantix::Core::Render
 
 		Framebuffer	_mainBuffer;
 
+		QXuint		_viewPeojMatrixUBO = 0;
+		QXuint		_lightUBO = 0;
+
 #pragma endregion
 
 #pragma region Functions

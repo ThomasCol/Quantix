@@ -1,4 +1,4 @@
-#version 330 core
+#version 420 core
 
 /* light struct for all lights */
 struct Light
@@ -29,6 +29,11 @@ struct Material
 	float	shininess;
 	bool	textured;
 	sampler2D	texture;
+};
+
+layout (std140, binding = 1) uniform lights
+{
+	Light light;
 };
 
 uniform Material	material;

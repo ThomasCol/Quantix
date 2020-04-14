@@ -43,7 +43,7 @@ namespace Quantix::Core::Profiling
 		return _frameRate;
 	}
 
-	void Profiler::StartProfiling(QXstring type)
+	void Profiler::StartProfiling(const QXstring& type)
 	{
 		if (!_activate)
 		{
@@ -55,13 +55,13 @@ namespace Quantix::Core::Profiling
 		currId++;
 	}
 
-	void Profiler::SetMessage(QXstring type, QXstring msg)
+	void Profiler::SetMessage(const QXstring& type, const QXstring& msg)
 	{
 		if (_infoProfiling[type].activate)
 			_infoProfiling[type].msg += msg;
 	}
 
-	void Profiler::StopProfiling(QXstring type)
+	void Profiler::StopProfiling(const QXstring& type)
 	{
 		_infoProfiling[type].activate = false;
 		for (std::map<QXstring, Info>::iterator it = _infoProfiling.begin(); it != _infoProfiling.end(); ++it)
@@ -83,13 +83,6 @@ namespace Quantix::Core::Profiling
 		Quantix::Core::Debugger::Logger::GetInstance()->SetProfiling(_profiling);
 		_profiling = "";
 		_infoProfiling.clear();
-	}
-
-	void Profiler::Update(QXfloat deltaTime)
-	{
-		for (std::map<QXstring, Info>::iterator it = _infoProfiling.begin(); it != _infoProfiling.end(); ++it)
-			if (it->second.activate)
-				it->second.timer += _info->deltaTime;
 	}
 
 	void Profiler::SetProfiling()

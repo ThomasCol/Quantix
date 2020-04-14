@@ -4,7 +4,6 @@
 #include "Profiler.h"
 #include "stb_image.h"
 
-
 Editor::Editor(QXuint width, QXuint height) :
 	_win{width, height},
 	_docker{},

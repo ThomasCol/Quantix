@@ -2,6 +2,12 @@
 
 #include <stdexcept>
 
+extern "C"
+{
+	__declspec(dllexport) int NvOptimusEnablement = 1;
+	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+
 namespace Quantix::Core::Platform
 {
 #pragma region Constructors
@@ -25,7 +31,8 @@ namespace Quantix::Core::Platform
 		glfwSetWindowUserPointer(_window, this);
 		glfwMakeContextCurrent(_window);
 		glfwSetWindowSizeCallback(_window, Resize);
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))//gladLoadGL())
+
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			throw std::runtime_error("Failed to init openGL");
 		}

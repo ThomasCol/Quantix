@@ -173,9 +173,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\QuantixEngine\Src\Core\Debugger\Assertion.cpp" />
-    <ClCompile Include="..\QuantixEngine\Src\Core\Debugger\Logger.cpp" />
-    <ClCompile Include="..\QuantixEngine\Src\Core\Profiler\Profiler.cpp" />
     <ClCompile Include="externals\imgui\src\imgui.cpp" />
     <ClCompile Include="externals\imgui\src\imgui_demo.cpp" />
     <ClCompile Include="externals\imgui\src\imgui_draw.cpp" />
@@ -194,9 +191,6 @@
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\QuantixEngine\Include\Core\Debugger\Assertion.h" />
-    <ClInclude Include="..\QuantixEngine\Include\Core\Debugger\Logger.h" />
-    <ClInclude Include="..\QuantixEngine\Include\Core\Profiler\Profiler.h" />
     <ClInclude Include="..\QuantixEngine\Lib\Glad\include\glad\glad.h" />
     <ClInclude Include="externals\stb_image.h" />
     <ClInclude Include="include\Docking\Docker.h" />

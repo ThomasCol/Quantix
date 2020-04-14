@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Resources/Shader.h"
+#include "Core/Debugger/Logger.h"
 
 namespace Quantix::Resources
 {
@@ -33,8 +34,12 @@ namespace Quantix::Resources
 		if (!success)
 		{
 			glGetShaderInfoLog(_id, 512, NULL, info_log);
-			std::cout << "ERROR::SHADER::PROGRAM::LINK_FAILED\n" << info_log << std::endl;
+			LOG(ERROR, QXstring("ERROR::SHADER::PROGRAM::LINK_FAILED") + info_log);
 		}
+
+		/*glGenBuffers(1, &_lightUniformBuffer);
+		glBindBuffer(GL_UNIFORM_BUFFER, _lightUniformBuffer);
+		glBufferData(GL_UNIFORM_BUFFER, 10 * sizeof(), &Lights[0], GL_DYNAMIC_DRAW);*/
 	}
 
 	ShaderProgram::~ShaderProgram() noexcept
