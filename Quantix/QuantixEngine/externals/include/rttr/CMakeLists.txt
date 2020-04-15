@@ -46,7 +46,7 @@ if (${BUILD_RTTR_DYNAMIC})
     target_compile_definitions(rttr_core PRIVATE RTTR_DLL_EXPORTS)
     target_compile_definitions(rttr_core PUBLIC RTTR_DLL)
 
-    
+
 
     set_target_properties(rttr_core PROPERTIES
                           VERSION ${RTTR_VERSION} SOVERSION ${RTTR_VERSION}

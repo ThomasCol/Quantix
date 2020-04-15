@@ -11,6 +11,8 @@
 #include <Node.h>
 #include <Core/DataStructure/GameObject3D.h>
 
+#include <rttr/registration.h>
+
 #include "Type.h"
 
 class Inspector
@@ -28,6 +30,8 @@ public:
 	inline void SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 
 	void		Update();
+	void		InspectVariable(rttr::instance inst, rttr::type t);
+
 private:
 	Node								_node;
 	Quantix::Physic::Transform3D*		_transform;

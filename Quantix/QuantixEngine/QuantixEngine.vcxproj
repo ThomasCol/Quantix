@@ -221,6 +221,7 @@
     <ClInclude Include="externals\rttrEnabled.h" />
     <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
     <ClInclude Include="Include\Core\DataStructure\ResourcesManager.h" />
+    <ClInclude Include="Include\Core\MathHeader.h" />
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
     <ClInclude Include="Include\Core\Components\Camera.h" />
     <ClInclude Include="Include\Core\Debugger\Assertion.h" />
