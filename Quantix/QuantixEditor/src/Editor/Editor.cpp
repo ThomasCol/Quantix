@@ -104,8 +104,7 @@ void Editor::Update(QXuint FBO)
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 1, 1, 1));
 	ImGui::Begin("Editor", NULL, _flagsEditor);
 
-	if (i == 0)
-		START_PROFILING("Editor");
+	START_PROFILING("Editor");
 
 	DrawMenuBar();
 	DrawSimulation();
@@ -113,16 +112,10 @@ void Editor::Update(QXuint FBO)
 
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
 
-	Quantix::Core::Profiling::Profiler::GetInstance()->SetMessage("Editor", "Draw Editor\n");
-
 	for (QXuint i{ 0 }; i < _docker.GetWindowsEditor().size(); i++)
 		Draw(_docker.GetWindowsEditor()[i], flags);
 
-	if (i == 0)
-	{
-		STOP_PROFILING("Editor");
-		i++;
-	}
+	STOP_PROFILING("Editor");
 	ImGui::End();
 
 	ImGui::PopStyleColor();

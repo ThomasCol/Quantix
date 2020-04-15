@@ -18,11 +18,13 @@
 
 #define SPEED (0.1f)
 
+QXuint indexPackD;
 QXuint indexPackE;
 QXuint indexPackF;
 QXuint indexPackB;
 QXuint indexPackL;
 QXuint indexPackR;
+QXbool state = false;
 
 // Update platform IO from glfw
 void PlatformUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
@@ -129,6 +131,7 @@ void InitScene(Editor* editor, Quantix::Core::DataStructure::GameObject3D* objec
 
 void InitPack()
 {
+	indexPackD = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_F1, Quantix::Core::UserEntry::ETriggerType::PRESSED);
 	indexPackE = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_ESCAPE, Quantix::Core::UserEntry::ETriggerType::PRESSED);
 	indexPackF = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_W, Quantix::Core::UserEntry::ETriggerType::DOWN);
 	indexPackB = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_S, Quantix::Core::UserEntry::ETriggerType::DOWN);
@@ -136,67 +139,85 @@ void InitPack()
 	indexPackR = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_D, Quantix::Core::UserEntry::ETriggerType::DOWN);
 }
 
+void	DebugMode()
+{
+	if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackD).IsValid())
+	{
+		if (!state)
+			ACTIVATE_PROFILING(!GETSTATE_PROFILING());
+		state = true;
+	}
+	if (!Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackD).IsValid())
+		state = false;
+}
+
+void Init(Editor* editor, Quantix::Physic::Transform3D* graph, Quantix::Core::DataStructure::GameObject3D* gameObject, std::vector<Quantix::Core::Components::Light*>& lights)
+{
+	glfwSetWindowUserPointer(editor->GetWin().GetWindow(), editor->_mouseInput);
+
+	//Init Pack Input Manager
+	InitPack();
+
+	//Init Callback
+	glfwSetKeyCallback(editor->GetWin().GetWindow(), IsTriggered);
+	glfwSetMouseButtonCallback(editor->GetWin().GetWindow(), MouseButtonCallback);
+
+	graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
+	gameObject->SetTransform(graph->GetChild()[0]);
+	gameObject->AddComponent<Quantix::Core::Components::Mesh>();
+	graph->GetChild()[0]->SetObject(gameObject);
+
+	//Init Scene
+	InitScene(editor, gameObject, lights);
+	editor->SetObject(graph);
+
+	//Init Editor
+	editor->Init();
+}
+
+void Update(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, std::vector<Quantix::Core::Components::Light*>& lights, Quantix::Core::Components::Camera* cam)
+{
+	std::vector<Quantix::Core::Components::Mesh*>	meshes;
+	Quantix::Core::Components::Mesh*				mesh = object->GetComponent<Quantix::Core::Components::Mesh>();
+
+	meshes.push_back(mesh);
+
+	if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackE).IsValid())
+	{
+		if (editor->_mouseInput->MouseCaptured)
+		{
+			glfwSetInputMode(editor->GetWin().GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			editor->_mouseInput->MouseCaptured = false;
+		}
+	}
+	DebugMode();
+
+	START_PROFILING("Draw");
+	//Editor Update
+	editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, cam));
+	STOP_PROFILING("Draw");
+	START_PROFILING("Refresh");
+	editor->GetWin().Refresh(editor->GetApp()->info);
+	STOP_PROFILING("Refresh");
+	CameraUpdate(editor, cam);
+}
+
 int main()
 {
 	try
 	{
 		Editor*											editor = new Editor(1280, 920);
-
-		glfwSetWindowUserPointer(editor->GetWin().GetWindow(), editor->_mouseInput);
-
-		//Init Pack Input Manager
-		InitPack();
-
-		//Init Callback
-		glfwSetKeyCallback(editor->GetWin().GetWindow(), IsTriggered);
-		glfwSetMouseButtonCallback(editor->GetWin().GetWindow(), MouseButtonCallback);
-
 		//Init Camera
-		Quantix::Core::Components::Camera* cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
-
-		std::vector<Quantix::Core::Components::Light*>	lights;
-
+		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 		Quantix::Physic::Transform3D*					graph = new Quantix::Physic::Transform3D(Math::QXvec3(0,0,0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1));
 		Quantix::Core::DataStructure::GameObject3D*		gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh", graph);
-		
-		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
-		gameObject->SetTransform(graph->GetChild()[0]);
-		gameObject->AddComponent<Quantix::Core::Components::Mesh>();
-		graph->GetChild()[0]->SetObject(gameObject);
+		std::vector<Quantix::Core::Components::Light*>	lights;
 
-		//Init Scene
-		InitScene(editor, gameObject, lights);
-		editor->SetObject(graph);
-
-		//Init Editor
-		editor->Init();
+		Init(editor, graph, gameObject, lights);
 
 		while (!editor->GetWin().ShouldClose())
-		{
-			std::vector<Quantix::Core::Components::Mesh*>	meshes;
-			Quantix::Core::Components::Mesh*				mesh = gameObject->GetComponent<Quantix::Core::Components::Mesh>();
+			Update(editor, gameObject, lights, cam);
 
-			meshes.push_back(mesh);
-
-			if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackE).IsValid())
-			{
-				if (editor->_mouseInput->MouseCaptured)
-				{
-					glfwSetInputMode(editor->GetWin().GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-					editor->_mouseInput->MouseCaptured = false;
-				}
-			}
-
-			START_PROFILING("Draw");
-			//Editor Update
-			editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, cam));
-			STOP_PROFILING("Draw");
-			START_PROFILING("Refresh");
-			editor->GetWin().Refresh(editor->GetApp()->info);
-			STOP_PROFILING("Refresh");
-			CameraUpdate(editor, cam);
-			Quantix::Core::Profiling::Profiler::GetInstance()->FrameCounter();
-		}
 		for (int i = 0; i < lights.size(); ++i)
 			delete lights[i];
 		delete cam;

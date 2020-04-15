@@ -5,12 +5,12 @@
 #include "Core/Debugger/Logger.h"
 #include "Core/Platform/AppInfo.h"
 
-#define BEGIN_PROFILING "\t\t**********************************************\n \
-\t\t************** BEGIN PROFILING ***************\n \
+#define BEGIN_PROFILING "\t\t**********************************************\n\
+\t\t************ BEGIN PROFILING ***************\n\
 \t\t**********************************************\n\n"
 
-#define END_PROFILING "\t\t**********************************************\n \
-\t\t*************** END PROFILING ****************\n \
+#define END_PROFILING "\t\t**********************************************\n\
+\t\t************* END PROFILING ****************\n\
 \t\t**********************************************\n\n"
 
 namespace Quantix::Core::Profiling
@@ -68,12 +68,6 @@ namespace Quantix::Core::Profiling
 		
 		#pragma region Methods
 		/**
-		 * @brief Calculate a counter of FPS
-		 * 
-		 */
-		void				FrameCounter();
-
-		/**
 		 * @brief Begin a specific profiling
 		 * 
 		 * @param type String name of the type of profiling
@@ -90,13 +84,6 @@ namespace Quantix::Core::Profiling
 
 		#pragma region Accessors
 		/**
-		 * @brief Get the FPS
-		 * 
-		 * @return int of the fps
-		 */
-		int					GetFrameCounter();
-
-		/**
 		 * @brief Set the Profiling to format the message
 		 * 
 		 */
@@ -109,6 +96,9 @@ namespace Quantix::Core::Profiling
 		 * @param msg String message
 		 */
 		void				SetMessage(const QXstring& type, const QXstring& msg);
+
+
+		void				SetActivate(bool activate) { _activate = activate; std::cout << _activate << std::endl; };
 		
 		/**
 		 * @brief Get the Activate object
@@ -134,7 +124,7 @@ namespace Quantix::Core::Profiling
 		static Profiler*											_instance;
 		std::string													_profiling;
 		std::map<QXstring, Info>									_infoProfiling;
-		QXint														_frameRate;
+		QXbool														_activateFirst;
 		QXbool														_activate;
 		#pragma endregion Attributes
 	};
@@ -142,3 +132,5 @@ namespace Quantix::Core::Profiling
 
 #define START_PROFILING(name) Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling(name)
 #define STOP_PROFILING(name) Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling(name)
+#define ACTIVATE_PROFILING(state) Quantix::Core::Profiling::Profiler::GetInstance()->SetActivate(state)
+#define GETSTATE_PROFILING() Quantix::Core::Profiling::Profiler::GetInstance()->GetActivate()

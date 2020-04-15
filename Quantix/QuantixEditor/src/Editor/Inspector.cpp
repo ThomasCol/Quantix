@@ -2,12 +2,6 @@
 
 #include <rttr/registration>
 
-/*Inspector::Inspector(Node node) :
-	_node { node },
-	_enable { true }
-{
-}*/
-
 Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
 	_transform{ transform },
 	_enable{ true }
@@ -48,8 +42,8 @@ void Inspector::Update()
 		if (ImGui::TreeNodeEx(t.get_name().to_string().c_str(), ImGuiTreeNodeFlags_Framed))
 		{
 			/*rttr::method meth = rttr::type::get(_transform->GetObject()->GetComp()[0]).get_method("GetMaterial");
-			ImGui::ColorEdit3("ambient", meth.invoke(_transform->GetObject()->GetComp()[0]).get_value())
-				ImGui::TreePop();*/
+			ImGui::ColorEdit3("ambient", meth.invoke(_transform->GetObject()->GetComp()[0]).get_value())*/
+			ImGui::TreePop();
 		};
 	}
 }

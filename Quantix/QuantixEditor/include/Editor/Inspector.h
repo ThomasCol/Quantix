@@ -17,19 +17,16 @@ class Inspector
 {
 public:
 	Inspector() = default;
-	//Inspector(Node node);
 	Inspector(Quantix::Physic::Transform3D* transform);
 	Inspector(const Inspector& inspector) = default;
 	Inspector(Inspector&& inspector) = default;
 	~Inspector() = default;
 
 	inline void	SetEnable(QXbool enable) { _enable = enable; };
-	//inline void SetNode(Node node) { _node = node; };
 	inline void SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 
 	void		Update();
 private:
-	Node								_node;
 	Quantix::Physic::Transform3D*		_transform;
 	QXbool								_enable;
 
