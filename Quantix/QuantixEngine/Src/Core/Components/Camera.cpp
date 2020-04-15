@@ -1,4 +1,5 @@
 #include "Core/Components/Camera.h"
+#include "Core/DataStructure/GameComponent.h"
 #include "MathDefines.h"
 
 #define SENSIBILITY 0.0025

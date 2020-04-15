@@ -132,7 +132,7 @@ void Editor::Update(QXuint FBO)
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Editor::Draw(QXstring name, ImGuiWindowFlags flags)
+void Editor::Draw(const QXstring& name, ImGuiWindowFlags flags)
 {
 	if (name == "Console")
 		DrawConsole(name, flags);
@@ -158,7 +158,7 @@ void Editor::DrawMenuBar()
 	//_menuBar.Update(_gameComponent);
 }
 
-void Editor::DrawHierarchy(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 {
 	//_hierarchy.Update(name, flags, _object);
 	_hierarchy.Update(name, flags, _graph3D->GetChild());
@@ -192,7 +192,7 @@ void Editor::DrawSimulation()
 
 }
 
-void Editor::DrawScene(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 {
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
@@ -223,7 +223,7 @@ void Editor::PrintLog()
 	}
 }
 
-void Editor::DrawConsole(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawConsole(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
@@ -239,7 +239,7 @@ void Editor::DrawConsole(QXstring name, ImGuiWindowFlags flags)
 			ImGui::Text("GL_RENDERER: %s", glGetString(GL_RENDERER));
 			ImGui::Text("GL_SHADING_LANGUAGE_VERSION: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 		}
-		
+
 		if (ShowDemoWindow)
 			ImGui::ShowDemoWindow(&ShowDemoWindow);
 		ImGui::EndTabBar();
@@ -251,12 +251,12 @@ void Editor::DrawConsole(QXstring name, ImGuiWindowFlags flags)
 	ImGui::End();
 }
 
-void Editor::DrawExplorer(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawExplorer(const QXstring& name, ImGuiWindowFlags flags)
 {
 	_explorer.Update(_app->manager, name, flags);
 }
 
-void Editor::DrawInspector(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{

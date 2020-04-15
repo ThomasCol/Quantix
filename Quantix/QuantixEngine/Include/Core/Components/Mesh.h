@@ -59,10 +59,6 @@ namespace Quantix::Core::Components
 #pragma region Functions
 
 		void SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light, Components::Camera* cam);
-
-		const std::type_info&			GetType() const override;
-		Core::DataStructure::Component*	Copy() const override;
-		inline void						Destroy() override {};
 		
 #pragma region Accessor
 

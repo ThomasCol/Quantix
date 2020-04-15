@@ -11,7 +11,7 @@ namespace Quantix::Core::DataStructure
 	{
 		for (size_t i = 0; i < object._component.size(); i++)
 		{
-			_component.push_back(object._component[i]->Copy());
+			_component.push_back(object._component[i]);
 		}
 	}
 
@@ -39,7 +39,7 @@ namespace Quantix::Core::DataStructure
 		{
 			if (_component[i] != nullptr)
 			{
-				_component[i]->Destroy();
+				//_component[i]->Destroy();
 				delete _component[i];
 			}
 		}
@@ -51,7 +51,7 @@ namespace Quantix::Core::DataStructure
 		{
 			if (_component[i]->IsDestroyed())
 			{
-				_component[i]->Destroy();
+				//_component[i]->Destroy();
 				delete _component[i];
 				_component.erase(_component.begin() + i--);
 			}

@@ -2,21 +2,22 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Core::DataStructure::GameObject2D>("GameObject2D")
+	using namespace Quantix::Core::DataStructure;
+	rttr::registration::class_<GameObject2D>("GameObject2D")
 	.constructor<>()
-	.constructor<const QXstring&>()
-	.constructor<const Quantix::Core::DataStructure::GameObject2D&>()
-	.constructor<Quantix::Core::DataStructure::GameObject2D&&>()
-	.method("SetGlobalPosition", &Quantix::Core::DataStructure::GameObject2D::SetGlobalPosition)
-	.method("SetGlobalRotation", &Quantix::Core::DataStructure::GameObject2D::SetGlobalRotation)
-	.method("SetLocalPosition", &Quantix::Core::DataStructure::GameObject2D::SetLocalPosition)
-	.method("SetLocalRotation", &Quantix::Core::DataStructure::GameObject2D::SetLocalRotation)
-	.method("SetLocalScale", &Quantix::Core::DataStructure::GameObject2D::SetLocalScale)
-	.method("GetLocalPosition", &Quantix::Core::DataStructure::GameObject2D::GetLocalPosition)
-	.method("GetLocalRotation", &Quantix::Core::DataStructure::GameObject2D::GetLocalRotation)
-	.method("GetLocalScale", &Quantix::Core::DataStructure::GameObject2D::GetLocalScale)
-	.method("SetTransform", &Quantix::Core::DataStructure::GameObject2D::SetTransform)
-	.method("GetTransform", &Quantix::Core::DataStructure::GameObject2D::GetTransform);
+	.constructor<const QXstring&, Quantix::Physic::Transform2D*>()
+	.constructor<const GameObject2D&>()
+	.constructor<GameObject2D&&>()
+	.method("SetGlobalPosition", &GameObject2D::SetGlobalPosition)
+	.method("SetGlobalRotation", &GameObject2D::SetGlobalRotation)
+	.method("SetLocalPosition", &GameObject2D::SetLocalPosition)
+	.method("SetLocalRotation", &GameObject2D::SetLocalRotation)
+	.method("SetLocalScale", &GameObject2D::SetLocalScale)
+	.method("GetLocalPosition", &GameObject2D::GetLocalPosition)
+	.method("GetLocalRotation", &GameObject2D::GetLocalRotation)
+	.method("GetLocalScale", &GameObject2D::GetLocalScale)
+	.method("SetTransform", &GameObject2D::SetTransform)
+	.method("GetTransform", &GameObject2D::GetTransform);
 }
 
 namespace Quantix::Core::DataStructure
@@ -27,8 +28,9 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
-	GameObject2D::GameObject2D(const QXstring& name) noexcept :
-		GameComponent(name)
+	GameObject2D::GameObject2D(const QXstring& name, Quantix::Physic::Transform2D* transform) noexcept :
+		GameComponent(name),
+		_transform { transform }
 	{
 	}
 

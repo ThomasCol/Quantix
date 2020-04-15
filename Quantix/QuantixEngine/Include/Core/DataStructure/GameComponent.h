@@ -63,10 +63,9 @@ namespace Quantix::Core::DataStructure
 		template<typename T>
 		inline T*				GetComponent()
 		{
-			const std::type_info& type = typeid(T&);
 			for (Component* comp : _component)
 			{
-				rttr::type t = rttr::type::get(comp);
+				rttr::type t = comp->get_type();
 
 				if (rttr::type::get<T>() == t)
 					return dynamic_cast<T*>(comp);
@@ -80,7 +79,7 @@ namespace Quantix::Core::DataStructure
 		 * @tparam T type of the Component
 		 * @return std::vector<T*> components of that type
 		 */
-		template<typename T>
+		/*template<typename T>
 		inline std::vector<T*>	GetComponents()
 		{
 			std::vector<T*>			vecT;
@@ -91,7 +90,7 @@ namespace Quantix::Core::DataStructure
 					vecT.push_back(comp);
 			}
 			return vecT;
-		}
+		}*/
 
 		inline std::vector<Component*>	GetComp()
 		{
@@ -122,7 +121,7 @@ namespace Quantix::Core::DataStructure
 		 * 
 		 * @tparam T type of component you want to remove
 		 */
-		template<typename T>
+		/*template<typename T>
 		inline void				RemoveComponents()
 		{
 			const std::type_info& type{ typeid(T&) };
@@ -134,7 +133,7 @@ namespace Quantix::Core::DataStructure
 					_component[i]->EraseEndOfFrame();
 				}
 			}
-		}
+		}*/
 		#pragma endregion Template
 
 		#pragma region Accessors

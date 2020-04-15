@@ -51,5 +51,6 @@
     <ClInclude Include="Include\Core\UserEntry\InputSystem.h" />
     <ClInclude Include="Include\Physic\Transform2D.h" />
     <ClInclude Include="Include\Physic\Transform3D.h" />
+    <ClInclude Include="externals\rttrEnabled.h" />
   </ItemGroup>
 </Project>

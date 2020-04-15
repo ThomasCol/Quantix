@@ -12,10 +12,6 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<const Quantix::Core::Components::Mesh&>()
 	.constructor<Quantix::Core::Components::Mesh&&>()
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
-	.method("GetObject", &Quantix::Core::Components::Mesh::GetObject)
-	.method("IsDestroyed", &Quantix::Core::Components::Mesh::IsDestroyed)
-	.method("IsEnable", &Quantix::Core::Components::Mesh::IsEnable)
-	.method("SetActive", &Quantix::Core::Components::Mesh::SetActive)
 	.method("GetMaterial", &Quantix::Core::Components::Mesh::GetMaterial)
 	.method("SetMaterial", &Quantix::Core::Components::Mesh::SetMaterial);
 }
@@ -31,16 +27,6 @@ namespace Quantix::Core::Components
 	Mesh::Mesh(Core::DataStructure::GameComponent* object): 
 		Quantix::Core::DataStructure::Component(object)
 	{
-	}
-
-	const std::type_info& Mesh::GetType() const
-	{
-		return typeid(*this);
-	}
-
-	Core::DataStructure::Component* Mesh::Copy() const
-	{
-		return new Mesh(*this);
 	}
 
 	void Mesh::SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& lights, Components::Camera* cam)

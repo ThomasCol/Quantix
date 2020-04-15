@@ -29,8 +29,7 @@ public:
 	inline QXint						GetSizeFolder() const { return _sizeFolder; };
 
 	inline QXuint						GetIDFolder() const { return _folderGLu->GetId(); };
-	inline QXuint						GetIDCPP() const { return _cppGLu->GetId();
-	};
+	inline QXuint						GetIDCPP() const { return _cppGLu->GetId();	};
 	inline QXuint						GetIDH() const { return _hGLu->GetId(); };
 	inline QXuint						GetIDSLN() const { return _slnGLu->GetId(); };
 	inline QXuint						GetIDVCXPROJ() const { return _vcxprojGLu->GetId(); };
@@ -50,13 +49,13 @@ private:
 	ImVec2							_sizeFile;
 	QXint							_sizeFolder;
 
-	Quantix::Resources::Texture*	_folderGLu;
-	Quantix::Resources::Texture*	_cppGLu;
-	Quantix::Resources::Texture*	_hGLu;
-	Quantix::Resources::Texture*	_slnGLu;
-	Quantix::Resources::Texture*	_vcxprojGLu;
-	Quantix::Resources::Texture*	_fileGLu;
-	Quantix::Resources::Texture*	_imgFileGLu;
+	Quantix::Resources::Texture*	_folderGLu{ nullptr };
+	Quantix::Resources::Texture*	_cppGLu{ nullptr };
+	Quantix::Resources::Texture*	_hGLu{ nullptr };
+	Quantix::Resources::Texture*	_slnGLu{ nullptr };
+	Quantix::Resources::Texture*	_vcxprojGLu{ nullptr };
+	Quantix::Resources::Texture*	_fileGLu{ nullptr };
+	Quantix::Resources::Texture*	_imgFileGLu{ nullptr };
 };
 
 #endif // !_FOLDER_H_

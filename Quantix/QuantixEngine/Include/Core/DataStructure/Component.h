@@ -65,7 +65,7 @@ namespace Quantix::Core::DataStructure
 		 * 
 		 * @return Component* 
 		 */
-		virtual Component*					Copy() const = 0;
+	//	virtual Component*					Copy() const = 0;
 
 		/**
 		 * @brief 
@@ -78,7 +78,7 @@ namespace Quantix::Core::DataStructure
 		 * 
 		 * @return const std::type_info& 
 		 */
-		virtual const std::type_info&		GetType() const = 0;
+	//	virtual const std::type_info&		GetType() const = 0;
 
 		/**
 		 * @brief Get the Object object
@@ -116,7 +116,7 @@ namespace Quantix::Core::DataStructure
 		 * @brief virtual Method for Destroy the Component
 		 * 
 		 */
-		inline virtual void					Destroy() {};
+		//inline virtual void					Destroy() {};
 		#pragma endregion Inline
 		#pragma endregion Methods
 
