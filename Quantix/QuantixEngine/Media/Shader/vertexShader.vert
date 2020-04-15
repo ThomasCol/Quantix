@@ -1,4 +1,4 @@
-#version 330 core
+#version 420 core
 
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 uv;
@@ -10,8 +10,12 @@ out vec3 fragPos;
 out vec3 viewPos;
 
 uniform mat4 TRS;
-uniform mat4 view;
-uniform mat4 proj;
+
+layout (std140, binding = 0) uniform ViewProj
+{
+	mat4 view;
+	mat4 proj;
+};
 
 void 	main()
 {

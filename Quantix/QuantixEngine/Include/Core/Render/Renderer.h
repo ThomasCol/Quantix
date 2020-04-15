@@ -23,7 +23,7 @@ namespace Quantix::Core::Render
 
 		Framebuffer	_mainBuffer;
 
-		QXuint		_viewPeojMatrixUBO = 0;
+		QXuint		_viewProjMatrixUBO = 0;
 		QXuint		_lightUBO = 0;
 
 #pragma endregion
@@ -32,7 +32,7 @@ namespace Quantix::Core::Render
 
 		void CreateFrameBuffer(QXuint width, QXuint height);
 
-		void BindShader(Resources::Material* material, Core::Platform::AppInfo& info, Components::Camera* cam, std::vector<Core::Components::Light*>& lights);
+		void BindShader(Resources::Material* material, Core::Platform::AppInfo& info, Components::Camera* cam, std::vector<Core::Components::Light>& lights);
 
 #pragma endregion
 
@@ -62,7 +62,7 @@ namespace Quantix::Core::Render
 		 * @param lights Lights for the scene
 		 * @param info App info
 		 */
-		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light*>& lights, Quantix::Core::Platform::AppInfo& info, Components::Camera* cam);
+		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light>& lights, Quantix::Core::Platform::AppInfo& info, Components::Camera* cam);
 
 #pragma endregion
 	};

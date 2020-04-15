@@ -23,6 +23,19 @@ namespace Quantix::Core::Render
 		resizeCallback = ResizeCallback;
 
 		CreateFrameBuffer(width, height);
+
+		glGenBuffers(1, &_viewProjMatrixUBO);
+		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
+		glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(Math::QXmat4), nullptr, GL_STATIC_DRAW);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		
+		glGenBuffers(1, &_lightUBO);
+		glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
+		glBufferData(GL_UNIFORM_BUFFER, 10 * sizeof(Core::Components::Light) + sizeof(QXuint), nullptr, GL_STATIC_DRAW);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _viewProjMatrixUBO);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightUBO);
 	}
 
 #pragma endregion
@@ -76,21 +89,16 @@ namespace Quantix::Core::Render
 		_mainBuffer.depthStencilRenderbuffer = depth_stencil_renderbuffer;
 	}
 
-	void Renderer::BindShader(Resources::Material* material, Core::Platform::AppInfo& info, Components::Camera* cam, std::vector<Core::Components::Light*>& lights)
+	void Renderer::BindShader(Resources::Material* material, Core::Platform::AppInfo& info, Components::Camera* cam, std::vector<Core::Components::Light>& lights)
 	{
-		Math::QXmat4 proj{ Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f) };
-		Math::QXmat4 view{ cam->GetLookAt() };
-
 		material->UseShader();
 
-		material->SetMat4("proj", proj);
-		material->SetMat4("view", view);
 		material->SetFloat3("viewPos", cam->GetPos().e);
 
-		material->SetLightArray(lights);
+		//material->SetLightArray(lights);
 	}
 
-	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
+	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
 	{
 		START_PROFILING("draw");
 
@@ -100,6 +108,7 @@ namespace Quantix::Core::Render
 
 		QXbyte last_shader_id = -1;
 		QXbyte last_texture_id = -1;
+		QXuint	light_size = lights.size();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
 
@@ -107,6 +116,19 @@ namespace Quantix::Core::Render
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
+
+		Math::QXmat4 proj{ Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f) };
+		Math::QXmat4 view{ cam->GetLookAt() };
+
+		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), view.array);
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), proj.array);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+		glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 4, light_size * sizeof(Core::Components::Light), &lights[0]);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 		Resources::Material* material;
 

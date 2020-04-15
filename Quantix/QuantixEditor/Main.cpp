@@ -88,7 +88,7 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 	}
 }
 
-void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Mesh*>& meshes, std::vector<Quantix::Core::Components::Light*>& lights)
+void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Mesh*>& meshes, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	START_PROFILING("Mesh");
 	Quantix::Core::Components::Mesh* mesh = editor->GetApp()->manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
@@ -97,31 +97,31 @@ void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Mesh*>& me
 
 	meshes.push_back(mesh);
 
-	Quantix::Core::Components::Light* light = new Quantix::Core::Components::Light;
-	light->ambient = { 0.5f, 0.5f, 0.5f };
-	light->diffuse = { 0.7f, 0.7f, 0.7f };
-	light->specular = { 1.0f, 1.0f, 1.0f };
-	light->position = { 0.0f, 0.0f, 10.f };
-	light->direction = { 0.0f, 0.0f, -1.f };
-	light->constant = 0.5f;
-	light->linear = 0.09f;
-	light->quadratic = 0.032f;
-	light->cutOff = cos(0.70f);
-	light->outerCutOff = cos(0.76f);
-	light->type = Quantix::Core::Components::ELightType::SPOT;
+	Quantix::Core::Components::Light light {};
+	light.direction = { 0.f, 0.0f, -1.f };
+	light.position = { .0f, .0f, 10.f };
+	light.ambient = { .5f, .5f, .5f };
+	light.diffuse = { .7f, .7f, .7f };
+	light.specular = { 1.0f, 1.0f, 1.0f };
+	light.constant = .50f;
+	light.linear = .09f;
+	light.quadratic = .032f;
+	light.cutOff = cos(0.70f);
+	light.outerCutOff = cos(0.76f);
+	light.type = Quantix::Core::Components::ELightType::SPOT;
 
-	Quantix::Core::Components::Light* light2 = new Quantix::Core::Components::Light;
-	light2->ambient = { 0.5f, 0.5f, 0.5f };
-	light2->diffuse = { 0.7f, 0.7f, 0.7f };
-	light2->specular = { 1.0f, 1.0f, 1.0f };
-	light2->position = { 0.0f, 12.f, 5.f };
-	light2->direction = { 0.0f, 0.0f, -1.f };
-	light2->constant = 0.5f;
-	light2->linear = 0.09f;
-	light2->quadratic = 0.032f;
-	light2->cutOff = cos(0.70f);
-	light2->outerCutOff = cos(0.76f);
-	light2->type = Quantix::Core::Components::ELightType::POINT;
+	Quantix::Core::Components::Light light2 {};
+	light2.ambient = { 0.5f, 0.5f, 0.5f };
+	light2.diffuse = { 0.7f, 0.7f, 0.7f };
+	light2.specular = { 1.0f, 1.0f, 1.0f };
+	light2.position = { 0.0f, 12.f, 5.f };
+	light2.direction = { 0.0f, 0.0f, -1.f };
+	light2.constant = 0.5f;
+	light2.linear = 0.09f;
+	light2.quadratic = 0.032f;
+	light2.cutOff = cos(0.70f);
+	light2.outerCutOff = cos(0.76f);
+	light2.type = Quantix::Core::Components::ELightType::POINT;
 
 	lights.push_back(light);
 	lights.push_back(light2);
@@ -155,7 +155,7 @@ int main()
 		Quantix::Core::Components::Camera* cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 
 		std::vector<Quantix::Core::Components::Mesh*> meshes;
-		std::vector<Quantix::Core::Components::Light*> lights;
+		std::vector<Quantix::Core::Components::Light> lights;
 
 		//Init Scene
 		InitScene(editor, meshes, lights);
@@ -184,8 +184,6 @@ int main()
 		}
 		for (int i = 0; i < meshes.size(); ++i)
 			delete meshes[i];
-		for (int i = 0; i < meshes.size(); ++i)
-			delete lights[i];
 		delete cam;
 	}
 	catch (const std::exception& e)
