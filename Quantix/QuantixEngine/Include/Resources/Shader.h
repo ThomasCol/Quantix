@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "Core/Type.h"
+#include <Type.h>
 
 namespace Quantix::Resources
 {

@@ -5,7 +5,7 @@
 #include <Vec2.h>
 #include <Vec3.h>
 
-#include "Core/Type.h"
+#include <Type.h>
 
 namespace Quantix::Resources
 {

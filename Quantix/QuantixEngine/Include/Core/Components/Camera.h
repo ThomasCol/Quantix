@@ -62,6 +62,8 @@ namespace Quantix::Core::Components
 		#pragma endregion Constructors/Destructor
 
 		#pragma region Methods
+		Camera* Copy() const override;
+
 		/**
 		 * @brief Init the camera component
 		 * 
@@ -99,20 +101,24 @@ namespace Quantix::Core::Components
 
 		#pragma	region Accessor
 
-		inline Math::QXmat4 GetLookAt() { return _lookAt; }
+		inline Math::QXmat4				GetLookAt() { return _lookAt; }
 
-		inline void			SetPos(Math::QXvec3 pos) { _pos = pos; }
+		inline void						SetPos(Math::QXvec3 pos) { _pos = pos; }
 
-		inline Math::QXvec3 GetPos() { return _pos; }
+		inline Math::QXvec3				GetPos() { return _pos; }
 
-		inline Math::QXvec3 GetDir() { return _dir; }
+		inline void						SetDir(Math::QXvec3 dir) { _dir = dir; }
 
-		inline Math::QXvec3 GetUp() { return _up; }
+		inline Math::QXvec3				GetDir() { return _dir; }
+
+		inline void						SetUp(Math::QXvec3 up) { _up = up; }
+
+		inline Math::QXvec3				GetUp() { return _up; }
 		
 		#pragma	endregion
 		#pragma endregion Methods
 
-		CLASS_REGISTRATION()
+		CLASS_REGISTRATION(Quantix::Core::DataStructure::Component)
 	};
 }
 

@@ -1,6 +1,13 @@
 #include "Core/DataStructure/Component.h"
 #include "Core/DataStructure/GameComponent.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Core::DataStructure::Component>("Component")
+	.property("Enable", &Quantix::Core::DataStructure::Component::IsEnable, &Quantix::Core::DataStructure::Component::SetActive)
+	.method("Copy", &Quantix::Core::DataStructure::Component::Copy);
+}
+
 namespace Quantix::Core::DataStructure
 {
 	Component::Component() :

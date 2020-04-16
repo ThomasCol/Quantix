@@ -61,4 +61,8 @@ namespace Quantix::Core::Components
 		Component(obj)
 	{
 	}
+	Light* Light::Copy() const
+	{
+		return new Light(*this);
+	}
 }

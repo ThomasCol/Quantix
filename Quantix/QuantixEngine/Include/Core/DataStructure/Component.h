@@ -65,7 +65,7 @@ namespace Quantix::Core::DataStructure
 		 * 
 		 * @return Component* 
 		 */
-	//	virtual Component*					Copy() const = 0;
+		virtual Component*					Copy() const = 0;
 
 		/**
 		 * @brief 

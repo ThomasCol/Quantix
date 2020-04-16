@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <iostream>
 #include <fstream>
-#include "Core/Type.h"
+#include <Type.h>
 #include "Core/DLLHeader.h"
 
 

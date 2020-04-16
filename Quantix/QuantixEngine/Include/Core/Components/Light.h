@@ -5,7 +5,7 @@
 
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
-#include "Core/Type.h"
+#include <Type.h>
 
 namespace Quantix::Core::Components
 {
@@ -80,6 +80,9 @@ namespace Quantix::Core::Components
 		~Light() = default;
 
 #pragma endregion
+
+		Light* Copy() const override;
+
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};
 }

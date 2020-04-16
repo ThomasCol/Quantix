@@ -1,7 +1,7 @@
 #ifndef __MESH_H__
 #define __MESH_H__
 
-#include "Core/Type.h"
+#include <Type.h>
 #include "Resources/Model.h"
 #include "Resources/Material.h"
 #include "Core/Platform/AppInfo.h"
@@ -58,7 +58,9 @@ namespace Quantix::Core::Components
 
 #pragma region Functions
 
-		void SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light, Components::Camera* cam);
+		Mesh*	Copy() const override;
+
+		void	SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light, Components::Camera* cam);
 		
 #pragma region Accessor
 

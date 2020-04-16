@@ -12,15 +12,14 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const Quantix::Core::Components::Camera&>()
 	.constructor<Quantix::Core::Components::Camera&&>()
+	.property("Pos", &Quantix::Core::Components::Camera::GetPos, &Quantix::Core::Components::Camera::SetPos)
+	.property("Up", &Quantix::Core::Components::Camera::GetUp, &Quantix::Core::Components::Camera::SetUp)
+	.property("Dir", &Quantix::Core::Components::Camera::GetDir, &Quantix::Core::Components::Camera::SetDir)
 	.method("Init", &Quantix::Core::Components::Camera::Init)
 	.method("UpdateLookAt", &Quantix::Core::Components::Camera::UpdateLookAt)
 	.method("ChangeView", &Quantix::Core::Components::Camera::ChangeView)
 	.method("Rotate", &Quantix::Core::Components::Camera::Rotate)
-	.method("GetLookAt", &Quantix::Core::Components::Camera::GetLookAt)
-	.method("SetPos", &Quantix::Core::Components::Camera::SetPos)
-	.method("GetPos", &Quantix::Core::Components::Camera::GetPos)
-	.method("GetDir", &Quantix::Core::Components::Camera::GetDir)
-	.method("GetUp", &Quantix::Core::Components::Camera::GetUp);
+	.method("GetLookAt", &Quantix::Core::Components::Camera::GetLookAt);
 }
 
 namespace Quantix::Core::Components
@@ -60,6 +59,11 @@ namespace Quantix::Core::Components
 		_angle{ std::move(camera._angle) },
 		_lookAt{ std::move(camera._lookAt) }
 	{}
+
+	Camera* Camera::Copy() const
+	{
+		return new Camera(*this);
+	}
 
 	void			Camera::Init(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up)
 	{

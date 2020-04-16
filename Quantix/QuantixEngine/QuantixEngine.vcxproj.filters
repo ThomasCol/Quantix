@@ -43,7 +43,6 @@
     <ClInclude Include="Include\Resources\Shader.h" />
     <ClInclude Include="Include\Resources\ShaderProgram.h" />
     <ClInclude Include="Include\Resources\Texture.h" />
-    <ClInclude Include="Include\Core\Type.h" />
     <ClInclude Include="Include\Core\DataStructure\ResourcesManager.h" />
     <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
     <ClInclude Include="Include\Core\Platform\Application.h" />
@@ -52,5 +51,6 @@
     <ClInclude Include="Include\Physic\Transform2D.h" />
     <ClInclude Include="Include\Physic\Transform3D.h" />
     <ClInclude Include="externals\rttrEnabled.h" />
+    <ClInclude Include="Include\Core\MathHeader.h" />
   </ItemGroup>
 </Project>

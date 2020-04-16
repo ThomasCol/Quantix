@@ -162,7 +162,6 @@ void Init(Editor* editor, Quantix::Physic::Transform3D* graph, Quantix::Core::Da
 	glfwSetKeyCallback(editor->GetWin().GetWindow(), IsTriggered);
 	glfwSetMouseButtonCallback(editor->GetWin().GetWindow(), MouseButtonCallback);
 
-	graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
 	gameObject->SetTransform(graph->GetChild()[0]);
 	gameObject->AddComponent<Quantix::Core::Components::Mesh>();
 	graph->GetChild()[0]->SetObject(gameObject);
@@ -206,11 +205,14 @@ int main()
 {
 	try
 	{
-		Editor*											editor = new Editor(1280, 920);
+		Editor*											editor = new Editor(1440, 920);
 		//Init Camera
 		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 		Quantix::Physic::Transform3D*					graph = new Quantix::Physic::Transform3D(Math::QXvec3(0,0,0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1));
-		Quantix::Core::DataStructure::GameObject3D*		gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh", graph);
+
+		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
+
+		Quantix::Core::DataStructure::GameObject3D*		gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh1", graph->GetChild()[0]);
 		std::vector<Quantix::Core::Components::Light*>	lights;
 
 		Init(editor, graph, gameObject, lights);

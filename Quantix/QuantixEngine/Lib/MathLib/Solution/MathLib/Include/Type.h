@@ -1,20 +1,29 @@
-#pragma once
+#ifndef __TYPE_H__
+#define __TYPE_H__
 
-#include <cstdint>
 #include <string>
-#include <vector>
 
-typedef uint32_t QXuint;
-typedef int32_t QXint;
-typedef short QXshort;
+typedef char				QXchar;
+typedef char16_t			QXchar16;
+typedef char32_t        	QXchar32;
+typedef wchar_t				QXwchar;
+typedef unsigned char		QXbyte;
+typedef unsigned char		QXuchar;
+typedef int					QXint;
+typedef int		        	QXint32;
+typedef long long       	QXint64;
+typedef unsigned int    	QXuint;
+typedef unsigned int    	QXuint32;
+typedef unsigned long long	QXuint64;
+typedef unsigned long long	QXsizei;
+typedef bool            	QXbool;
+typedef float           	QXfloat;
+typedef double          	QXdouble;
+typedef std::string			QXstring;
 
-typedef float QXfloat;
-typedef double QXdouble;
-typedef long double QXlongdouble;
+#define QX_FALSE 0
+#define QX_TRUE 1
 
-typedef uint64_t QXuint64;
-typedef int64_t QXint64;
 
-typedef std::string QXstring;
+#endif // __TYPE_H__
 
-typedef bool QXbool;

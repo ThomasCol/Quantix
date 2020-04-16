@@ -2,6 +2,17 @@
 
 #include<glad/glad.h>
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Resources::Material>("Material")
+	.constructor<>()
+	.constructor<Quantix::Resources::ShaderProgram*>()
+	.property("ambient", &Quantix::Resources::Material::ambient)
+	.property("diffuse", &Quantix::Resources::Material::diffuse)
+	.property("specular", &Quantix::Resources::Material::specular)
+	.property("shininess", &Quantix::Resources::Material::shininess);
+}
+
 namespace Quantix::Resources
 {
 #pragma region Constructors

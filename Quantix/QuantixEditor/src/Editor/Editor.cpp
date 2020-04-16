@@ -154,7 +154,7 @@ void Editor::DrawMenuBar()
 void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 {
 	//_hierarchy.Update(name, flags, _object);
-	_hierarchy.Update(name, flags, _graph3D->GetChild());
+	_hierarchy.Update(name, flags, _graph3D);
 }
 
 void Editor::Simulation()

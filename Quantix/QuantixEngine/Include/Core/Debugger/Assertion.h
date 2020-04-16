@@ -2,7 +2,7 @@
 
 #include <string>
 #include <exception>
-#include "Core/Type.h"
+#include <Type.h>
 #include "Core/DLLHeader.h"
 
 namespace Quantix::Core::Debugger

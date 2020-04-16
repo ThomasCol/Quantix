@@ -54,6 +54,11 @@ namespace Quantix::Core::DataStructure
 			_component.push_back(comp);
 		}
 
+		inline void				AddComponent(Quantix::Core::DataStructure::Component* comp)
+		{
+			_component.push_back(comp);
+		}
+
 		/**
 		 * @brief Get the Component object
 		 * 
@@ -92,7 +97,7 @@ namespace Quantix::Core::DataStructure
 			return vecT;
 		}*/
 
-		inline std::vector<Component*>	GetComp()
+		inline const std::vector<Component*>&	GetComp()
 		{
 			return _component;
 		}

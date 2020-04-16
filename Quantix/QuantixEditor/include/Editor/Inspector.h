@@ -11,6 +11,8 @@
 #include <Node.h>
 #include <Core/DataStructure/GameObject3D.h>
 
+#include <rttr/registration.h>
+
 #include "Type.h"
 
 class Inspector
@@ -26,6 +28,11 @@ public:
 	inline void SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 
 	void		Update();
+	void		ShowComponent();
+	void		AddComponent();
+	void		GetInstance(rttr::instance inst, rttr::type t);
+	void		DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type);
+
 private:
 	Quantix::Physic::Transform3D*		_transform;
 	QXbool								_enable;
