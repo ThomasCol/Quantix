@@ -197,6 +197,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lib\Glad\src\glad.c" />
+    <ClCompile Include="Src\Core\Components\Collider.cpp" />
     <ClCompile Include="Src\Core\DataStructure\Component.cpp" />
     <ClCompile Include="Src\Core\DataStructure\GameComponent.cpp" />
     <ClCompile Include="Src\Core\DataStructure\GameObject2D.cpp" />
@@ -225,6 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\rttrEnabled.h" />
+    <ClInclude Include="Include\Core\Components\Collider.h" />
     <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
     <ClInclude Include="Include\Core\DataStructure\ResourcesManager.h" />
     <ClInclude Include="Include\Core\DataStructure\SceneManager.h" />

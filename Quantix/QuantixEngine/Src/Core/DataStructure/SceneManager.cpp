@@ -1,4 +1,5 @@
 #include "../Include/Core/DataStructure/SceneManager.h"
+#include "Core/DataStructure/ResourcesManager.h"
 
 namespace Quantix::Core::DataStructure
 {

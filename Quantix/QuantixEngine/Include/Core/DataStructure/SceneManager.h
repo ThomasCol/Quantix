@@ -1,10 +1,13 @@
 #ifndef __SCENEMANAGER_H__
 #define __SCENEMANAGER_H__
 
-#include "Core/DataStructure/ResourcesManager.h"
+#include <map>
+
+#include "Type.h"
 
 namespace Quantix::Core::DataStructure
 {
+	class ResourcesManager;
 
 	class SceneManager
 	{

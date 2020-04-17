@@ -13,6 +13,7 @@
 #include "Resources/Scene.h"
 #include "Core/Components/Mesh.h"
 
+
 namespace Quantix::Core::DataStructure
 {
 	using namespace Resources;
