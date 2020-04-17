@@ -29,6 +29,7 @@
     <ClCompile Include="Src\Core\DataStructure\SceneManager.cpp" />
     <ClCompile Include="Src\Core\Components\Collider.cpp" />
     <ClCompile Include="Src\Core\Components\CubeCollider.cpp" />
+    <ClCompile Include="Src\Core\Components\SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -60,5 +61,6 @@
     <ClInclude Include="Include\Core\DataStructure\SceneManager.h" />
     <ClInclude Include="Include\Core\Components\Collider.h" />
     <ClInclude Include="Include\Core\Components\CubeCollider.h" />
+    <ClInclude Include="Include\Core\Components\SphereCollider.h" />
   </ItemGroup>
 </Project>
