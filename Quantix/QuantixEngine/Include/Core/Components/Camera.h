@@ -52,7 +52,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param camera Camera
 		 */
-		Camera(Camera&& camera);
+		Camera(Camera&& camera) noexcept;
 
 		/**
 		 * @brief Destroy the Camera object

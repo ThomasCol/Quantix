@@ -51,7 +51,7 @@ namespace Quantix::Core::Components
 		_angle = camera._angle;
 	}
 
-	Camera::Camera(Camera&& camera):
+	Camera::Camera(Camera&& camera) noexcept :
 		Component(camera),
 		_up{ std::move(camera._up) },
 		_pos{ std::move(camera._pos) },

@@ -1,6 +1,19 @@
 #include "Core/Components/Collider.h"
 #include "Core/DataStructure/GameComponent.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	using namespace Quantix::Core::Components;
+	rttr::registration::class_<Quantix::Core::Components::ICollider>("Collider")
+	.enumeration<Quantix::Core::Components::EPhysXType>("EPhysXType")
+		(rttr::value("Default", Quantix::Core::Components::EPhysXType::DEFAULT),
+		rttr::value("Directional", Quantix::Core::Components::EPhysXType::STATIC),
+		rttr::value("Point", Quantix::Core::Components::EPhysXType::DYNAMIC),
+		rttr::value("Spot", Quantix::Core::Components::EPhysXType::COUNT))
+	.property("idShape", &Quantix::Core::Components::ICollider::idShape)
+	.property("type", &Quantix::Core::Components::ICollider::type);
+}
+
 namespace Quantix::Core::Components
 {
 	ICollider::ICollider(DataStructure::GameComponent* par) noexcept:
@@ -9,28 +22,28 @@ namespace Quantix::Core::Components
 
 	ICollider::ICollider(const ICollider& col) noexcept :
 		Core::DataStructure::Component(col),
-		_idShape {col._idShape},
-		_type	{col._type}
+		idShape {col.idShape},
+		type	{col.type}
 	{}
 
 	ICollider::ICollider(ICollider&& col) noexcept :
 		Core::DataStructure::Component(col),
-		_idShape{ std::move(col._idShape) },
-		_type{ std::move(col._type) }
+		idShape{ std::move(col.idShape) },
+		type{ std::move(col.type) }
 	{}
 
 	ICollider& ICollider::operator=(const ICollider& other) noexcept
 	{
-		_idShape = other._idShape;
-		_type = other._type;
+		idShape = other.idShape;
+		type = other.type;
 
 		return *this;
 	}
 
 	ICollider& ICollider::operator=(ICollider&& other) noexcept
 	{
-		_idShape = std::move(other._idShape);
-		_type = std::move(other._type);
+		idShape = std::move(other.idShape);
+		type = std::move(other.type);
 
 		return *this;
 	}

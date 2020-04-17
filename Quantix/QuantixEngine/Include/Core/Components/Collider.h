@@ -20,21 +20,18 @@ namespace Quantix::Core::Components
 		COUNT
 	};
 
-
-	class QUANTIX_API ICollider : public Core::DataStructure::Component
+	struct QUANTIX_API ICollider : public Core::DataStructure::Component
 	{
-	protected:
 #pragma region Attributes
 
-		QXint _idShape { -1 };
-		EPhysXType _type { EPhysXType::DEFAULT };
+		QXint idShape { -1 };
+		EPhysXType type { EPhysXType::DEFAULT };
 
 #pragma endregion
 
-	public:
 #pragma region Constructors
 		ICollider() = delete;
-		explicit ICollider(DataStructure::GameComponent* par) noexcept;
+		ICollider(DataStructure::GameComponent* par) noexcept;
 		ICollider(const ICollider& col) noexcept;
 		ICollider(ICollider&& col) noexcept;
 		virtual ~ICollider() = default;
@@ -50,7 +47,7 @@ namespace Quantix::Core::Components
 #pragma endregion
 
 #pragma endregion
-
+		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};
 }
 
