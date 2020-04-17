@@ -2,9 +2,9 @@
 #define __SCENE_H__
 
 #include "Physic/Transform3D.h"
-#include "DataStructure/GameComponent.h"
+#include "../Core/DataStructure/GameComponent.h"
 
-namespace Quantix::Core
+namespace Quantix::Resources
 {
 	class Scene
 	{
@@ -12,9 +12,9 @@ namespace Quantix::Core
 
 			#pragma region Attributes
 
-			std::string			_name;
+			QXstring			_name;
 			Physic::Transform3D	_world;
-			unsigned int		_id;
+			QXuint		_id;
 
 			#pragma endregion
 
@@ -28,7 +28,7 @@ namespace Quantix::Core
 			 */
 			Scene() = default;
 
-			Scene(const std::string& name, const Physic::Transform3D& world, const unsigned int& id) noexcept;
+			Scene(const QXstring& name, const Physic::Transform3D& world, const QXuint& id) noexcept;
 
 			/**
 			 * @brief Construct a new Scene object by copy
@@ -68,7 +68,9 @@ namespace Quantix::Core
 			 */
 			void	Update();
 
-			void Rename(const std::string& str) noexcept;
+			void Reset()noexcept;
+
+			void Rename(const QXstring& str) noexcept;
 
 			#pragma endregion
 
@@ -94,7 +96,10 @@ namespace Quantix::Core
 
 			#pragma region Accessors
 
-			const std::string& GetName() noexcept { return _name; }
+			const QXstring& GetName() noexcept { return _name; }
+
+			const QXuint& GetID()const noexcept { return _id; }
+			QXuint& GetID() noexcept { return _id; }
 
 			#pragma endregion
 

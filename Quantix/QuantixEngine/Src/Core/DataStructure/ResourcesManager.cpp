@@ -165,6 +165,25 @@ namespace Quantix::Core::DataStructure
 		return texture;
 	}
 
+	Scene* ResourcesManager::CreateScene(const QXstring& filepath)
+	{
+		if (filepath == "")
+			return CreateDefaultScene();
+
+		auto it = _scenes.find(filepath);
+		if (it != _scenes.end() && it->second != nullptr)
+		{
+			return it->second;
+		}
+
+		return LoadScene(filepath);
+	}
+
+	Scene* ResourcesManager::CreateDefaultScene() noexcept
+	{
+		return new Scene();
+	}
+
 	Material* ResourcesManager::LoadMaterial(const QXstring& filePath)
 	{
 		FILE* file;
@@ -311,6 +330,11 @@ namespace Quantix::Core::DataStructure
 				indices.push_back(uniqueVertices[vertex]);
 			}
 		}
+	}
+
+	Scene* ResourcesManager::LoadScene(const QXstring& filePath) noexcept
+	{
+		return new Scene();
 	}
 
 	void ResourcesManager::SaveMaterialToCache(const QXstring& filePath, const Material* material)

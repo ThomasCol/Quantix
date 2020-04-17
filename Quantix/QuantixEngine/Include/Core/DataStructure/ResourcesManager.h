@@ -10,6 +10,7 @@
 #include "Resources/ShaderProgram.h"
 #include "Resources/Texture.h"
 #include "Resources/Material.h"
+#include "Resources/Scene.h"
 #include "Core/Components/Mesh.h"
 
 namespace Quantix::Core::DataStructure
@@ -27,19 +28,21 @@ namespace Quantix::Core::DataStructure
 		std::unordered_map<QXstring, ShaderProgram*>	_programs;
 		std::unordered_map<QXstring, Texture*>			_textures;
 		std::unordered_map<QXstring, Components::Mesh*>	_meshes;
-
+		std::unordered_map<QXstring, Scene*>			_scenes;
+			
 #pragma endregion
 
 #pragma region Functions
 
 		Material*			CreateDefaultMaterial();
+		Scene*				CreateDefaultScene() noexcept;
 
 		Material*			LoadMaterial(const QXstring& filePath);
 		Material*			LoadMaterial(tinyobj::material_t& material);
 		void				LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
 		QXbool				LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
 		void				LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices);
-
+		Scene*				LoadScene(const QXstring& filePath) noexcept;
 		void				SaveMaterialToCache(const QXstring& filePath, const Material* mat);
 		void				SaveModelToCache(const QXstring& filePath, Model* model);
 
@@ -63,6 +66,7 @@ namespace Quantix::Core::DataStructure
 		Shader*				CreateShader(const QXstring& filePath, EShaderType type);
 		ShaderProgram*		CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath);
 		Texture*			CreateTexture(const QXstring& filePath);
+		Scene*				CreateScene(const QXstring& filePath);
 
 		void				DeleteMaterial(const QXstring& filePath);
 		void				DeleteTexture(const QXstring& filePath);

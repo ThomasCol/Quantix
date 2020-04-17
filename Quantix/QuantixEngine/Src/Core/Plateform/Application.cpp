@@ -21,7 +21,9 @@ namespace Quantix::Core::Platform
 
 	Application::Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback) :
 		renderer{ width, height, resizeCallback },
-		info{ width, height }
+		info{ width, height },
+		sceneManager {DataStructure::SceneManager()},
+		scene {new Resources::Scene()}
 	{
 	}
 

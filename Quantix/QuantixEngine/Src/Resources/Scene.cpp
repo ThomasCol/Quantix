@@ -1,22 +1,26 @@
-#include "Core/Scene.h"
+#include "Resources/Scene.h"
 #include "Mat4.h"
 
-namespace Quantix::Core
+namespace Quantix::Resources
 {
 	#pragma region Constructors&Destructor
 
-	Scene::Scene(const std::string& name, const Physic::Transform3D& world, const unsigned int& id) :
+	Scene::Scene(const QXstring& name, const Physic::Transform3D& world, const QXuint& id) noexcept :
 		_name{ name },
 		_world {world},
 		_id {id}
 	{}
 
 	Scene::Scene(const Scene& copy) noexcept :
-		_name {copy._name}, _world {copy._world}, _id {copy._id}
+		_name {copy._name}, 
+		_world {copy._world}, 
+		_id {copy._id}
 	{}
 
 	Scene::Scene(Scene&& copy) noexcept :
-		_name { std::move(copy._name) }, _world{ std::move(copy._world) }, _id{ std::move(copy._id) }
+		_name { std::move(copy._name) }, 
+		_world{ std::move(copy._world) }, 
+		_id{ std::move(copy._id) }
 	{}
 
 	#pragma endregion
@@ -30,12 +34,18 @@ namespace Quantix::Core
 
 	void	Scene::Update()
 	{
+		// TODO pas complet update mesh et update gameobject
 		_world.Update(Math::QXmat4::Identity());
 	}
 
-	void Scene::Rename(const std::string& str) noexcept
+	void Scene::Rename(const QXstring& str) noexcept
 	{
 		_name = str;
+	}
+
+	void Scene::Reset() noexcept
+	{
+		// TODO
 	}
 
 	#pragma endregion

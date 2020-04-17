@@ -4,6 +4,8 @@
 #include "Core/Render/Renderer.h"
 #include "Core/Platform/AppInfo.h"
 #include "Core/DataStructure/ResourcesManager.h"
+#include "Core/DataStructure/SceneManager.h"
+#include "Resources/Scene.h"
 
 namespace Quantix::Core::Platform
 {
@@ -20,9 +22,12 @@ namespace Quantix::Core::Platform
 #pragma region Attributes
 
 		AppInfo							info;
-		//Window							window;
+		//Window						window;
 		Render::Renderer 				renderer;
 		DataStructure::ResourcesManager manager;
+		DataStructure::SceneManager		sceneManager;
+		Resources::Scene*				scene;
+		
 
 #pragma endregion
 
