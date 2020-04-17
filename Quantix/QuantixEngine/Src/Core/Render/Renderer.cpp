@@ -107,7 +107,9 @@ namespace Quantix::Core::Render
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 
-		Resources::Material* material;
+		Resources::Material*						material;
+		Math::QXmat4								trs;
+		Quantix::Core::DataStructure::GameObject3D* obj;
 
 		for (QXuint i = 0; i < mesh.size(); i++)
 		{
@@ -127,7 +129,7 @@ namespace Quantix::Core::Render
 				last_texture_id = mesh[i]->textureID;
 			}
 
-			Quantix::Core::DataStructure::GameObject3D* obj = (Quantix::Core::DataStructure::GameObject3D*)mesh[i]->GetObject();
+			obj = (Quantix::Core::DataStructure::GameObject3D*)mesh[i]->GetObject();
 
 			Math::QXmat4 trs = { obj->GetTransform()->GetTRS() };
 

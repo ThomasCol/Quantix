@@ -113,7 +113,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>Include;Include\Geometry;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -172,7 +172,6 @@
     <ClCompile Include="Src\Geometry\Quad.cpp" />
     <ClCompile Include="Src\Geometry\Segment.cpp" />
     <ClCompile Include="Src\Geometry\Sphere.cpp" />
-    <ClCompile Include="Src\Main.cpp" />
     <ClCompile Include="Src\Mat.cpp" />
     <ClCompile Include="Src\Mat4.cpp" />
     <ClCompile Include="Src\Maths.cpp" />
