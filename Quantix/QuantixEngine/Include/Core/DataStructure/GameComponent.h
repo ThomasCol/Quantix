@@ -10,6 +10,7 @@
 
 #include "Core/DLLHeader.h"
 #include "Component.h"
+#include "Core/Components/Mesh.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -102,13 +103,26 @@ namespace Quantix::Core::DataStructure
 			return _component;
 		}
 
+		inline void				RemoveComponent(Component* component)
+		{
+			for (auto it{_component.begin()}; it != _component.end(); ++it)
+			{
+				if ((*it) == component)
+				{
+					(*it)->EraseEndOfFrame();
+					_component.erase(it);
+					delete (*it);
+					return;
+				}
+			}
+		}
 		/**
 		 * @brief Remove component
 		 * 
 		 * @tparam T Component
 		 * @param component Component you want to remove
 		 */
-		template<typename T>
+		/*template<typename T>
 		inline void				RemoveComponent(T* component)
 		{
 			for (auto it{ _component.begin() }; it != _component.end(); ++it)
@@ -119,7 +133,7 @@ namespace Quantix::Core::DataStructure
 					return;
 				}
 			}
-		}
+		}*/
 
 		/**
 		 * @brief Remove multiple components
@@ -148,6 +162,8 @@ namespace Quantix::Core::DataStructure
 
 		inline QXstring			GetName() const { return _name; };
 
+		inline void				SetName(QXstring name) { _name = name; };
+
 		/**
 		 * @brief Set the Is Static object
 		 * 
@@ -175,6 +191,21 @@ namespace Quantix::Core::DataStructure
 		 * @return QXint 
 		 */
 		inline QXint			GetLayer() const { return _layer; };
+
+
+		/**
+		 * @brief Set the Render object
+		 *
+		 * @param layer QXbool
+		 */
+		inline void				SetRender(QXbool render) { _toRender = render; };
+
+		/**
+		 * @brief Get the Render object
+		 *
+		 * @return QXbool
+		 */
+		inline QXbool			GetRender() const { return _toRender; };
 		#pragma endregion Accessors
 		GameComponent&			operator=(const GameComponent& gc);
 		#pragma endregion Methods

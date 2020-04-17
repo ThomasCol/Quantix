@@ -1,8 +1,24 @@
 #include "Editor.h"
 #include <iostream>
+#include <Core/UserEntry/InputSystem.h>
 #include <Core/Profiler/Profiler.h>
 #include "stb_image.h"
 
+void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	Quantix::Core::UserEntry::InputMgr::GetInstance()->CheckKeys(key, action);
+}
+
+void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
+{
+	MouseTest* mouseInput = (MouseTest*)glfwGetWindowUserPointer(Window);
+
+	if (Button == GLFW_MOUSE_BUTTON_RIGHT && Action == GLFW_PRESS)
+	{
+		mouseInput->MouseCaptured = true;
+		glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+}
 
 Editor::Editor(QXuint width, QXuint height) :
 	_win{ width, height },
@@ -16,6 +32,10 @@ Editor::Editor(QXuint width, QXuint height) :
 	_lib.load();
 	if (!_lib.is_loaded())
 		std::cout << _lib.get_error_string() << std::endl;
+
+	//Init Callback
+	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
+	//glfwSetMouseButtonCallback(_win.GetWindow(), MouseButtonCallback);
 
 	_mouseInput = new MouseTest({false, 0.0f, 0.0f, 0.0f, 0.0f});
 
@@ -93,6 +113,10 @@ void Editor::Update(QXuint FBO)
 {
 	InitImGui();
 
+	// Disabling mouse for ImGui if mouse is captured by the app (it must be done here)
+	if (_mouseInput->MouseCaptured)
+		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
+
 	_fbo = FBO;
 	static QXint i = 0;
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -147,8 +171,8 @@ void Editor::DrawMenuBar()
 		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
 		i++;
 	}
-	_menuBar.Update(_object);
-	//_menuBar.Update(_gameComponent);
+	//_menuBar.Update(_object);
+	_menuBar.Update(_graph3D->GetChild());
 }
 
 void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)

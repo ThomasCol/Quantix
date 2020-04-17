@@ -83,16 +83,18 @@ namespace Quantix::Core::Render
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 
-
 		for (QXint i = 0; i < mesh.size(); ++i)
 		{
-			mesh[i]->SendDataToShader(info, lights, cam);
+			if (mesh[i]->IsEnable())
+			{
+				mesh[i]->SendDataToShader(info, lights, cam);
 
-			glBindVertexArray(mesh[i]->GetVAO());
+				glBindVertexArray(mesh[i]->GetVAO());
 
-			glDrawElements(GL_TRIANGLES, (GLsizei)mesh[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
+				glDrawElements(GL_TRIANGLES, (GLsizei)mesh[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
 
-			glBindVertexArray(0);
+				glBindVertexArray(0);
+			}
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

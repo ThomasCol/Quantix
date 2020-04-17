@@ -15,16 +15,22 @@ void Inspector::Update()
 {
 	if (_enable)
 	{
-		ImGui::Text("Name: %s", _transform->GetObject()->GetName().c_str());
+		QXstring name;
+		QXchar currName[64];
+
+		memcpy(currName, _transform->GetObject()->GetName().c_str(), _transform->GetObject()->GetName().size() + 1);
+		ImGui::Text("GameObject: "); ImGui::SameLine();
+		if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
+			_transform->GetObject()->SetName(currName);
 
 		if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_Framed))
 		{
 			static Math::QXvec3	pos = _transform->GetPosition();
 			static Math::QXvec3	rot = _transform->GetRotation();
 			static Math::QXvec3	scale = _transform->GetScale();
-			ImGui::DragFloat3("Position", pos.e, -3000.f, 3000.f);
-			ImGui::DragFloat3("Rotation", rot.e, -3000.f, 3000.f);
-			ImGui::DragFloat3("Scale", scale.e, 0.f, 100.f);
+			ImGui::Text("Position"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Position", pos.e);
+			ImGui::Text("Rotation"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Rotation", rot.e);
+			ImGui::Text("Scale"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Scale", scale.e);
 
 			_transform->SetPosition(pos);
 			_transform->SetRotation(rot);
@@ -35,14 +41,34 @@ void Inspector::Update()
 
 		for (int i = 0; i < _transform->GetObject()->GetComp().size(); i++)
 		{
+			ImGui::PushID(i);
 			auto currentComp = _transform->GetObject()->GetComp()[i];
 
-			rttr::type t = _transform->GetObject()->GetComp()[i]->get_type();
+			if (_transform->GetObject()->GetComp()[i] != nullptr)
+			{
+				rttr::type t = _transform->GetObject()->GetComp()[i]->get_type();
+				GetInstance(currentComp, t);
+			}
 
-			GetInstance(currentComp, t);
+			PopUpMenuItem(_transform->GetObject()->GetComp()[i]);
+			ImGui::PopID(); 
 		}
 
 		AddComponent();
+	}
+}
+
+void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component)
+{
+	if (ImGui::BeginPopupContextItem("Context Item"))
+	{
+		QXbool selection = false;
+		
+		ImGui::Selectable("Remove Component", &selection);
+		if (selection)
+			_transform->GetObject()->RemoveComponent(component);
+
+		ImGui::EndPopup();
 	}
 }
 
@@ -54,7 +80,7 @@ void Inspector::ShowComponent()
 		QXuint i = 0;
 		for (auto it : componentsAvailable)
 		{
-			bool enable = false;
+			QXbool enable = false;
 			ImGui::PushID(i);
 
 			ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
@@ -69,8 +95,13 @@ void Inspector::ShowComponent()
 
 void Inspector::AddComponent()
 {
-	if (ImGui::Button("Add Component"))
+	ImVec2 ButtonSize = ImVec2(150, 0);
+	float size = ImGui::GetWindowContentRegionWidth() / 2;
+	ImGui::SetCursorPos(ImVec2(size - ButtonSize.x / 2.f + 8.f, ImGui::GetCursorPosY()));
+	if (ImGui::Button("Add Component", ButtonSize))
+	{
 		ImGui::OpenPopup("Item Component");
+	}
 	ShowComponent();
 }
 
@@ -112,25 +143,25 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 	else if (type == rttr::type::get<QXfloat>())
 	{
 		QXfloat value = currentProp.get_value(inst).to_float();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::DragFloat("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::DragFloat("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXdouble>())
 	{
 		QXdouble value = currentProp.get_value(inst).to_double();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::InputDouble("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::InputDouble("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXint>())
 	{
 		QXint value = currentProp.get_value(inst).to_int();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::InputInt("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXsizei>())
 	{
 		int value = currentProp.get_value(inst).to_int();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::InputInt("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXstring>())
@@ -150,11 +181,11 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		if ((inst.get_type().get_raw_type() == rttr::type::get<Quantix::Resources::Material*>().get_raw_type())
 			|| (inst.get_type() == rttr::type::get<Quantix::Resources::Material>()))
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::ColorEdit3("", value.e);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::ColorEdit3("", value.e);
 		}
 		else
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::DragFloat3("", value.e);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::DragFloat3("", value.e);
 		}
 		currentProp.set_value(inst, value);
 	}
@@ -164,11 +195,11 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		if ((inst.get_type().get_raw_type() == rttr::type::get<Quantix::Resources::Material*>().get_raw_type())
 			|| (inst.get_type() == rttr::type::get<Quantix::Resources::Material>()))
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::ColorEdit4("", value.e);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::ColorEdit4("", value.e);
 		}
 		else
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::DragFloat4("", value.e);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::DragFloat4("", value.e);
 		}
 		currentProp.set_value(inst, value);
 	}
