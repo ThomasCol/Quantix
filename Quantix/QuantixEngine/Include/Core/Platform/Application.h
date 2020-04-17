@@ -21,13 +21,11 @@ namespace Quantix::Core::Platform
 	public:
 #pragma region Attributes
 
+		DataStructure::ResourcesManager manager;
 		AppInfo							info;
-		//Window						window;
 		Render::Renderer 				renderer;
-		Core::DataStructure::ResourcesManager manager;
 		DataStructure::SceneManager		sceneManager;
 		Resources::Scene*				scene;
-		
 
 #pragma endregion
 
@@ -44,7 +42,7 @@ namespace Quantix::Core::Platform
 		//Application(QXuint width, QXuint height);
 
 		//Application(QXstring name, QXuint width, QXuint height);
-		Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback);
+		Application(QXuint width, QXuint height);
 
 		/**
 		 * @brief Destroy the Application object

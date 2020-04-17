@@ -75,39 +75,39 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 	}
 }
 
-void InitScene(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, std::vector<Quantix::Core::Components::Light*>& lights)
+void InitScene(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	START_PROFILING("Mesh");
 	Quantix::Core::Components::Mesh* mesh = object->GetComponent<Quantix::Core::Components::Mesh>();
 	mesh = editor->GetApp()->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-	mesh->GetMaterial()->SetMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
+	mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 	STOP_PROFILING("Mesh");
 
-	Quantix::Core::Components::Light* light = new Quantix::Core::Components::Light;
-	light->ambient = { 0.5f, 0.5f, 0.5f };
-	light->diffuse = { 0.7f, 0.7f, 0.7f };
-	light->specular = { 1.0f, 1.0f, 1.0f };
-	light->position = { 0.0f, 0.0f, 10.f };
-	light->direction = { 0.0f, 0.0f, -1.f };
-	light->constant = 0.5f;
-	light->linear = 0.09f;
-	light->quadratic = 0.032f;
-	light->cutOff = cos(0.70f);
-	light->outerCutOff = cos(0.76f);
-	light->type = Quantix::Core::Components::ELightType::SPOT;
+	Quantix::Core::Components::Light light;
+	light.ambient = { 0.5f, 0.5f, 0.5f };
+	light.diffuse = { 0.7f, 0.7f, 0.7f };
+	light.specular = { 1.0f, 1.0f, 1.0f };
+	light.position = { 0.0f, 0.0f, 10.f };
+	light.direction = { 0.0f, 0.0f, -1.f };
+	light.constant = 0.5f;
+	light.linear = 0.09f;
+	light.quadratic = 0.032f;
+	light.cutOff = cos(0.70f);
+	light.outerCutOff = cos(0.76f);
+	light.type = Quantix::Core::Components::ELightType::SPOT;
 
-	Quantix::Core::Components::Light* light2 = new Quantix::Core::Components::Light;
-	light2->ambient = { 0.5f, 0.5f, 0.5f };
-	light2->diffuse = { 0.7f, 0.7f, 0.7f };
-	light2->specular = { 1.0f, 1.0f, 1.0f };
-	light2->position = { 0.0f, 12.f, 5.f };
-	light2->direction = { 0.0f, 0.0f, -1.f };
-	light2->constant = 0.5f;
-	light2->linear = 0.09f;
-	light2->quadratic = 0.032f;
-	light2->cutOff = cos(0.70f);
-	light2->outerCutOff = cos(0.76f);
-	light2->type = Quantix::Core::Components::ELightType::POINT;
+	Quantix::Core::Components::Light light2;
+	light2.ambient = { 0.5f, 0.5f, 0.5f };
+	light2.diffuse = { 0.7f, 0.7f, 0.7f };
+	light2.specular = { 1.0f, 1.0f, 1.0f };
+	light2.position = { 0.0f, 12.f, 5.f };
+	light2.direction = { 0.0f, 0.0f, -1.f };
+	light2.constant = 0.5f;
+	light2.linear = 0.09f;
+	light2.quadratic = 0.032f;
+	light2.cutOff = cos(0.70f);
+	light2.outerCutOff = cos(0.76f);
+	light2.type = Quantix::Core::Components::ELightType::POINT;
 
 	lights.push_back(light);
 	lights.push_back(light2);
@@ -135,7 +135,7 @@ void	DebugMode()
 		state = false;
 }
 
-void Init(Editor* editor, Quantix::Physic::Transform3D* graph, Quantix::Core::DataStructure::GameObject3D* gameObject, std::vector<Quantix::Core::Components::Light*>& lights)
+void Init(Editor* editor, Quantix::Physic::Transform3D* graph, Quantix::Core::DataStructure::GameObject3D* gameObject, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	glfwSetWindowUserPointer(editor->GetWin().GetWindow(), editor->_mouseInput);
 
@@ -154,7 +154,7 @@ void Init(Editor* editor, Quantix::Physic::Transform3D* graph, Quantix::Core::Da
 	editor->Init();
 }
 
-void Update(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, std::vector<Quantix::Core::Components::Light*>& lights, Quantix::Core::Components::Camera* cam)
+void Update(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, std::vector<Quantix::Core::Components::Light>& lights, Quantix::Core::Components::Camera* cam)
 {
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
 	Quantix::Core::Components::Mesh*				mesh = object->GetComponent<Quantix::Core::Components::Mesh>();
@@ -193,15 +193,13 @@ int main()
 		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
 
 		Quantix::Core::DataStructure::GameObject3D*		gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh1", graph->GetChild()[0]);
-		std::vector<Quantix::Core::Components::Light*>	lights;
+		std::vector<Quantix::Core::Components::Light>	lights;
 
 		Init(editor, graph, gameObject, lights);
 
 		while (!editor->GetWin().ShouldClose())
 			Update(editor, gameObject, lights, cam);
 
-		for (int i = 0; i < lights.size(); ++i)
-			delete lights[i];
 		delete cam;
 	}
 	catch (const std::exception& e)

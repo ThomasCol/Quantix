@@ -1,8 +1,9 @@
-#version 330 core
+#version 420 core
 
 /* light struct for all lights */
 struct Light
 {
+	float   test[2];
 	vec3	direction;
 	vec3	position;
 
@@ -29,6 +30,12 @@ struct Material
 	float	shininess;
 	bool	textured;
 	sampler2D	texture;
+};
+
+layout (std140, binding = 1) uniform lights
+{
+	uint count;
+	Light light[10];
 };
 
 uniform Material	material;
@@ -60,17 +67,17 @@ void main()
 	vec3	lightDir;
 	vec3	output = vec3(0.0);
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < count; ++i)
 	{
 		/* calculate influence of all lights */
-		if (lightArray[i].type == 1)
-			output += calculateDirectional(lightArray[i], lightDir, norm);
+		if (light[i].type == 1)
+			output += calculateDirectional(light[i], lightDir, norm);
 
-		if (lightArray[i].type == 2)
-			output += calculatePointLight(lightArray[i], lightDir, norm);
+		if (light[i].type == 2)
+			output += calculatePointLight(light[i], lightDir, norm);
 
-		if (lightArray[i].type == 3)
-			output += calculateSpotLight(lightArray[i], lightDir, norm);
+		if (light[i].type == 3)
+			output += calculateSpotLight(light[i], lightDir, norm);
 	}
 
 	if (material.textured)

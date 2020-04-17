@@ -28,6 +28,8 @@
     <ClCompile Include="Src\Resources\Scene.cpp" />
     <ClCompile Include="Src\Core\DataStructure\SceneManager.cpp" />
     <ClCompile Include="Src\Core\Components\Collider.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\PostProcessEffect.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -53,10 +55,12 @@
     <ClInclude Include="Include\Core\UserEntry\InputSystem.h" />
     <ClInclude Include="Include\Physic\Transform2D.h" />
     <ClInclude Include="Include\Physic\Transform3D.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\PostProcessEffect.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\Skybox.h" />
     <ClInclude Include="externals\rttrEnabled.h" />
     <ClInclude Include="Include\Core\MathHeader.h" />
-    <ClInclude Include="Include\Resources\Scene.h" />
     <ClInclude Include="Include\Core\DataStructure\SceneManager.h" />
+    <ClInclude Include="Include\Resources\Scene.h" />
     <ClInclude Include="Include\Core\Components\Collider.h" />
   </ItemGroup>
 </Project>

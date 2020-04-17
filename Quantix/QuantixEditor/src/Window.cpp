@@ -2,6 +2,12 @@
 
 #include <stdexcept>
 
+extern "C"
+{
+	__declspec(dllexport) int NvOptimusEnablement = 1;
+	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+
 namespace Quantix::Core::Platform
 {
 #pragma region Constructors
@@ -22,10 +28,10 @@ namespace Quantix::Core::Platform
 		if (_window == nullptr)
 			throw std::runtime_error("Failed to create Window");
 
-		glfwSetWindowUserPointer(_window, this);
 		glfwMakeContextCurrent(_window);
 		glfwSetWindowSizeCallback(_window, Resize);
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))//gladLoadGL())
+
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			throw std::runtime_error("Failed to init openGL");
 		}
@@ -33,6 +39,10 @@ namespace Quantix::Core::Platform
 		printf("GL_VERSION: %s\n", glGetString(GL_VERSION));
 		printf("GL_VENDOR: %s\n", glGetString(GL_VENDOR));
 		printf("GL_RENDERER: %s\n", glGetString(GL_RENDERER));
+
+		glfwSetWindowUserPointer(_window, this);
+
+		Window* my_window = (Window*)glfwGetWindowUserPointer(_window);
 	}
 
 	Window::Window(QXstring name, QXuint width, QXuint height) :
@@ -51,13 +61,16 @@ namespace Quantix::Core::Platform
 		if (_window == nullptr)
 			throw std::runtime_error("Failed to create Window");
 
-		glfwSetWindowUserPointer(_window, this);
 		glfwMakeContextCurrent(_window);
 		glfwSetWindowSizeCallback(_window, Resize);
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			throw std::runtime_error("Failed to init openGL");
 		}
+		glfwSetWindowUserPointer(_window, this);
+
+		Window* my_window = (Window*)glfwGetWindowUserPointer(_window);
+
 	}
 
 	Window::~Window()
@@ -72,12 +85,13 @@ namespace Quantix::Core::Platform
 
 	void Window::Resize(GLFWwindow* window, QXint width, QXint height)
 	{
+		void * pointer = glfwGetWindowUserPointer(window);
 		Window* my_window = (Window*)glfwGetWindowUserPointer(window);
 		
 		my_window->_width = width;
 		my_window->_height = height;
 
-		my_window->_resizeCallback(width, height);
+		glViewport(0, 0, width, height);
 	}
 
 	void Window::Refresh(AppInfo& info)

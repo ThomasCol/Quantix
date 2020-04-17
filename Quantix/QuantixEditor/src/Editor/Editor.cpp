@@ -3,6 +3,7 @@
 #include <Core/UserEntry/InputSystem.h>
 #include <Core/Profiler/Profiler.h>
 #include "stb_image.h"
+#include "Core/UserEntry/InputSystem.h"
 
 void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -38,6 +39,8 @@ Editor::Editor(QXuint width, QXuint height) :
 	//glfwSetMouseButtonCallback(_win.GetWindow(), MouseButtonCallback);
 
 	_mouseInput = new MouseTest({false, 0.0f, 0.0f, 0.0f, 0.0f});
+	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
+	glfwSetMouseButtonCallback(_win.GetWindow(), MouseButtonCallback);
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -60,7 +63,7 @@ Editor::Editor(QXuint width, QXuint height) :
 
 	glfwSetWindowIcon(_win.GetWindow(), 1, &icon);
 
-	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight(), _win.GetResizeCallback());
+	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight());
 
 	_simImg.push_back(_app->manager.CreateTexture("media/IconEditor/Play.png"));
 	_simImg.push_back(_app->manager.CreateTexture("media/IconEditor/Pause.png"));
@@ -112,6 +115,8 @@ void Editor::InitImGui()
 void Editor::Update(QXuint FBO)
 {
 	InitImGui();
+	if (_mouseInput->MouseCaptured)
+		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
 
 	// Disabling mouse for ImGui if mouse is captured by the app (it must be done here)
 	if (_mouseInput->MouseCaptured)

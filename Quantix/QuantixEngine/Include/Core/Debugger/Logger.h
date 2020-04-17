@@ -82,7 +82,9 @@ namespace Quantix::Core::Debugger
 
 		#pragma region Accessors
 
-		inline const std::vector<Data>&	GetData() { return _data; };
+		inline const std::vector<Data>&	GetData() const { return _data; };
+
+		void							SetMessage(TypeLog type, const QXstring& message);
 
 		/**
 		 * @brief Set the Infos object
@@ -129,3 +131,5 @@ namespace Quantix::Core::Debugger
 		#pragma endregion Attributes
 	};
 }
+
+#define LOG(severity, message) Quantix::Core::Debugger::Logger::GetInstance()->SetMessage(Quantix::Core::Debugger::TypeLog::severity, message)

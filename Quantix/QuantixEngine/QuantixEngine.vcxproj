@@ -120,6 +120,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -208,6 +209,8 @@
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\PostProcessEffect.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\Skybox.cpp" />
     <ClCompile Include="Src\Core\Render\Renderer.cpp" />
     <ClCompile Include="Src\Resources\Scene.cpp" />
     <ClCompile Include="Src\Core\TinyobjImplementation.cpp" />
@@ -242,7 +245,9 @@
     <ClInclude Include="Include\Core\Components\Light.h" />
     <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Profiler\Profiler.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\PostProcessEffect.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\Skybox.h" />
     <ClInclude Include="Include\Resources\Scene.h" />
     <ClInclude Include="Include\Core\UserEntry\InputSystem.h" />
     <ClInclude Include="Include\Physic\Transform2D.h" />

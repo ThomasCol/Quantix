@@ -47,6 +47,17 @@ namespace Quantix::Core::Debugger
 		myfile.close();
 	}
 
+	void Logger::SetMessage(TypeLog type, const QXstring& message)
+	{
+		switch (type)
+		{
+			case Quantix::Core::Debugger::TypeLog::INFOS: _instance->SetInfo(message); break;
+			case Quantix::Core::Debugger::TypeLog::WARNING: _instance->SetWarning(message);  break;
+			case Quantix::Core::Debugger::TypeLog::ERROR: _instance->SetError(message); break;
+			default: break;
+		}
+	}
+
 	void Logger::SetInfo(const QXstring& msg)
 	{
 		Data d = { std::string("[INFOS] ") + __TIME__ + std::string(": ") + msg, TypeLog::INFOS };

@@ -134,3 +134,4 @@ namespace Quantix::Core::Profiling
 #define STOP_PROFILING(name) Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling(name)
 #define ACTIVATE_PROFILING(state) Quantix::Core::Profiling::Profiler::GetInstance()->SetActivate(state)
 #define GETSTATE_PROFILING() Quantix::Core::Profiling::Profiler::GetInstance()->GetActivate()
+#define GETSTATE_PROFILING() Quantix::Core::Profiling::Profiler::GetInstance()->GetActivate()

@@ -71,8 +71,6 @@ namespace Quantix::Core::Components
 #pragma region Functions
 
 		Mesh*	Copy() const override;
-
-		void	SendDataToShader(Core::Platform::AppInfo& info, std::vector<Light*>& light, Components::Camera* cam);
 		
 #pragma region Accessor
 

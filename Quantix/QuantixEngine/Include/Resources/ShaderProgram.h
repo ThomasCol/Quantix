@@ -13,7 +13,9 @@ namespace Quantix::Resources
 	private:
 #pragma region Attributes
 
-		QXuint									_id;
+		QXuint									_id = 0;
+
+		QXuint									_lightUniformBuffer = 0;
 
 		std::vector<QXstring>					_shadersPath;
 
@@ -21,6 +23,12 @@ namespace Quantix::Resources
 
 #pragma endregion
 	public:
+#pragma region Attributes
+
+		QXbool	needLights { true };
+
+#pragma endregion
+
 #pragma region Constructors
 
 		/**

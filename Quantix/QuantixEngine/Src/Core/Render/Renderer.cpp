@@ -1,36 +1,49 @@
 #include "Core/Render/Renderer.h"
 
 #include <glad/glad.h>
-
 #include <stdexcept>
 #include <array>
 
+#include "Core/Profiler/Profiler.h"
+#include "Core/Render/PostProcess/Skybox.h"
+#include "Core/DataStructure/ResourcesManager.h"
 #include "Core/DataStructure/GameObject3D.h"
 
 namespace Quantix::Core::Render
 {
-	void ResizeCallback(QXuint width, QXuint height)
-	{
-		glViewport(0, 0, width, height);
-	}
-
 #pragma region Constructors
 
-	Renderer::Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback) :
+	Renderer::Renderer(QXuint width, QXuint height, DataStructure::ResourcesManager& manager) noexcept :
 		_mainBuffer {}
 	{
+		CreateFrameBuffer(width, height);
+
+		// Create uniform buffers
+		glGenBuffers(1, &_viewProjMatrixUBO);
+		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
+		glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(Math::QXmat4), nullptr, GL_STATIC_DRAW);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		
+		glGenBuffers(1, &_lightUBO);
+		glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
+		glBufferData(GL_UNIFORM_BUFFER, 10 * sizeof(Core::Components::Light) + sizeof(QXuint), nullptr, GL_STATIC_DRAW);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+		// Set buffers binding
+		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _viewProjMatrixUBO);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightUBO);
+
+		InitPostProcessEffects(manager);
+
 		glViewport(0, 0, width, height);
 
-		resizeCallback = ResizeCallback;
-
-		CreateFrameBuffer(width, height);
 	}
 
 #pragma endregion
 
 #pragma region Functions
 
-	void Renderer::CreateFrameBuffer(QXuint width, QXuint height)
+	void Renderer::CreateFrameBuffer(QXuint width, QXuint height) noexcept
 	{
 		QXint previous_framebuffer;
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_framebuffer);
@@ -67,7 +80,7 @@ namespace Quantix::Core::Render
         GLenum framebuffer_status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (framebuffer_status != GL_FRAMEBUFFER_COMPLETE)
         {
-            fprintf(stderr, "demo_bloom::framebuffer failed to complete (0x%x)\n", framebuffer_status);
+            LOG(ERROR, std::string("framebuffer failed to complete (0x%x)\n", framebuffer_status));
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
@@ -77,37 +90,51 @@ namespace Quantix::Core::Render
 		_mainBuffer.depthStencilRenderbuffer = depth_stencil_renderbuffer;
 	}
 
-	void Renderer::BindShader(Resources::Material* material, Core::Platform::AppInfo& info, Components::Camera* cam, std::vector<Core::Components::Light*>& lights)
+	void Renderer::InitPostProcessEffects(DataStructure::ResourcesManager& manager) noexcept
 	{
-		Math::QXmat4 proj{ Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f) };
-		Math::QXmat4 view{ cam->GetLookAt() };
-
-		material->UseShader();
-
-		material->SetMat4("proj", proj);
-		material->SetMat4("view", view);
-		material->SetFloat3("viewPos", cam->GetPos().e);
-
-		material->SetLightArray(lights);
+		// create Skybox effect
+		_effects = new PostProcess::Skybox(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/SkyboxShader.vert", "../QuantixEngine/Media/Shader/SkyboxShader.frag"),
+			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/CubemapShader.vert", "../QuantixEngine/Media/Shader/CubemapShader.frag"),
+			manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj"), manager.CreateHDRTexture("../QuantixEngine/Media/Textures/skybox.hdr"));
 	}
 
-	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light*>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
+	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept
 	{
+		START_PROFILING("draw");
+
 		std::sort(mesh.begin(), mesh.end(), [](const Components::Mesh* a, const Components::Mesh* b) {
 			return a->key < b->key;
 		});
 
 		QXbyte last_shader_id = -1;
 		QXbyte last_texture_id = -1;
+		QXuint	light_size = lights.size();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
 
+		// Clear
 		glClearColor(0.0f, 0.0f, 0.0f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 
-		Resources::Material*						material;
+		// Bind uniform buffer
+		{
+			Math::QXmat4 proj{ Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f) };
+			Math::QXmat4 view{ cam->GetLookAt() };
+
+			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), view.array);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), proj.array);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 2, light_size * sizeof(Core::Components::Light), &lights[0]);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		}
+
+		Resources::Material* material;
 		Math::QXmat4								trs;
 		Quantix::Core::DataStructure::GameObject3D* obj;
 
@@ -117,18 +144,22 @@ namespace Quantix::Core::Render
 				continue;
 			material = mesh[i]->GetMaterial();
 
+			// Compare Meshes key for binding each shader one time
 			if (mesh[i]->shaderID != last_shader_id)
 			{
-				BindShader(material, info, cam, lights);
+				material->UseShader();
+				material->SetFloat3("viewPos", cam->GetPos().e);
 				last_shader_id = mesh[i]->shaderID;
 			}
 
+			// Compare Meshes key for binding each texture once per shader
 			if (mesh[i]->textureID != last_texture_id)
 			{
 				material->SendData();
 				last_texture_id = mesh[i]->textureID;
 			}
 
+			// Draw current mesh
 			obj = (Quantix::Core::DataStructure::GameObject3D*)mesh[i]->GetObject();
 
 			Math::QXmat4 trs = { obj->GetTransform()->GetTRS() };
@@ -143,8 +174,12 @@ namespace Quantix::Core::Render
 		}
 
 		glActiveTexture(0);
+		_effects->Render(info);
+
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		STOP_PROFILING("draw");
 
 		return _mainBuffer.texture;
 	}

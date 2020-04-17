@@ -2,6 +2,7 @@
 #define __LIGHT_H__
 
 #include <Vec3.h>
+#include <Vec2.h>
 
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
@@ -18,26 +19,25 @@ namespace Quantix::Core::Components
 		COUNT
 	};
 
-	struct QUANTIX_API Light : public virtual Quantix::Core::DataStructure::Component
+	struct QUANTIX_API Light : public Quantix::Core::DataStructure::Component
 	{
 #pragma region Attributes
+		QXfloat				_pad0[4] {0};
+		Math::QXvec3		direction; QXfloat _pad1{0};
+		Math::QXvec3		position; QXfloat _pad2{ 0 };
 
-		ELightType			type;
+		Math::QXvec3   		ambient; QXfloat _pad3{ 0 };
+		Math::QXvec3   		diffuse; QXfloat _pad4{ 0 };
+		Math::QXvec3   		specular;
 
-		Math::QXvec3   		ambient;
-        Math::QXvec3   		diffuse;
-        Math::QXvec3   		specular;
-
-		Math::QXvec3		direction;
-		Math::QXvec3		position;
-
-		QXfloat				constant{0};
-		QXfloat				linear{0};
+		QXfloat				constant{ 0 }; 
+		QXfloat				linear{0}; 
 		QXfloat				quadratic{0};
 
 		QXfloat				cutOff{0};
 		QXfloat				outerCutOff{0};
 
+		ELightType			type { ELightType::DEFAULT };
 #pragma endregion
 
 #pragma region Constructors
@@ -45,32 +45,20 @@ namespace Quantix::Core::Components
 		/**
 		 * @brief Construct a new Light object
 		 */
-		Light() noexcept;
-
+		Light() = default;
 		/**
 		 * @brief Construct a new Light object
 		 * 
 		 * @param light Light to copy
 		 */
-		Light(const Light& light) noexcept;
+		Light(const Light& light) = default;
 
 		/**
 		 * @brief Construct a new Light object
 		 * 
 		 * @param light Light to move
 		 */
-		Light(Light&& light) noexcept;
-
-		/**
-		 * @brief Construct a new Light object
-		 * 
-		 * @param ambientValue Vec3 for ambient value
-		 * @param diffuseValue Vec3 for diffuse value
-		 * @param specularValue Vec3 for specular value
-		 * @param lightType Light type value
-		 */
-		Light(Math::QXvec3 ambientValue, Math::QXvec3 diffuseValue, Math::QXvec3 specularValue, ELightType lightType) noexcept;
-
+		Light(Light&& light) = default;
 
 		Light(Core::DataStructure::GameComponent* obj);
 
