@@ -35,6 +35,7 @@
     <ClCompile Include="Src\Core\Components\CubeCollider.cpp" />
     <ClCompile Include="Src\Physic\IPhysicType.cpp" />
     <ClCompile Include="Src\Core\Components\PlaneCollider.cpp" />
+    <ClCompile Include="Src\Core\Components\Rigidbody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -72,5 +73,6 @@
     <ClInclude Include="Include\Core\Components\SphereCollider.h" />
     <ClInclude Include="Include\Physic\IPhysicType.h" />
     <ClInclude Include="Include\Core\Components\PlaneCollider.h" />
+    <ClInclude Include="Include\Core\Components\Rigidbody.h" />
   </ItemGroup>
 </Project>
