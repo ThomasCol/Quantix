@@ -1,4 +1,5 @@
 #include "../Include/Core/DataStructure/SceneManager.h"
+#include "Core/DataStructure/ResourcesManager.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -9,7 +10,7 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
-	Scene* SceneManager::Load(QXuint id, ResourcesManager* manager) noexcept
+	Quantix::Resources::Scene* SceneManager::Load(QXuint id, ResourcesManager* manager) noexcept
 	{
 		if (id != _currentId)
 		{

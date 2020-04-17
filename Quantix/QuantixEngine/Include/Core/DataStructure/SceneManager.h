@@ -1,10 +1,19 @@
 #ifndef __SCENEMANAGER_H__
 #define __SCENEMANAGER_H__
 
-#include "Core/DataStructure/ResourcesManager.h"
+#include <iostream>
+#include <unordered_map>
+
+#include "Type.h"
+
+namespace Quantix::Resources
+{
+	class Scene;
+}
 
 namespace Quantix::Core::DataStructure
 {
+	class ResourcesManager;
 
 	class SceneManager
 	{
@@ -15,8 +24,8 @@ namespace Quantix::Core::DataStructure
 		QXuint _currentId{ 0 };
 		QXuint _nextId{ 0 };
 
-		Scene* _currentScene{ nullptr };
-		Scene* _nextScene{ nullptr };
+		Quantix::Resources::Scene* _currentScene{ nullptr };
+		Quantix::Resources::Scene* _nextScene{ nullptr };
 
 	public:
 #pragma region Constructors
@@ -31,7 +40,7 @@ namespace Quantix::Core::DataStructure
 #pragma region Functions
 
 		void Update(const ResourcesManager& resourcesManager) noexcept;
-		Scene* Load(QXuint id, ResourcesManager* manager) noexcept;
+		Quantix::Resources::Scene* Load(QXuint id, ResourcesManager* manager) noexcept;
 
 #pragma region Operators
 
