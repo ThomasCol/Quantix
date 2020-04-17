@@ -11,7 +11,7 @@
 #include "Core/DLLHeader.h"
 #include "Component.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	class QUANTIX_API GameComponent
 	{

@@ -1,6 +1,6 @@
 #include "Core/DataStructure/GameObject2D.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	GameObject2D::GameObject2D() noexcept :
 		GameComponent(),

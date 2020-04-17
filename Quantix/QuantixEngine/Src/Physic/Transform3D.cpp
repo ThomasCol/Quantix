@@ -8,11 +8,11 @@ namespace Quantix::Physic
 		_position {0.f, 0.f, 0.f}, _rotation {0.f, 0.f, 0.f}, _scale {1.f, 1.f, 1.f}, _trs {}, _childs {}
 	{}
 
-	Transform3D::Transform3D(const Transform3D& t) :
+	Transform3D::Transform3D(const Transform3D& t) noexcept:
 		_position{ t._position }, _rotation{ t._rotation }, _scale{ t._scale }, _trs{ t._trs }, _childs{ t._childs }
 	{}
 
-	Transform3D::Transform3D(Transform3D&& t) :
+	Transform3D::Transform3D(Transform3D&& t) noexcept:
 		_position{ std::move(t._position) }, _rotation{ std::move(t._rotation) }, _scale{ std::move(t._scale) }, 
 		_trs{ std::move(t._trs) }, _childs{ std::move(t._childs) }
 	{}
@@ -122,7 +122,7 @@ namespace Quantix::Physic
 
 	#pragma region Operators
 
-	Transform3D& Transform3D::operator=(const Transform3D& t)
+	Transform3D& Transform3D::operator=(const Transform3D& t) noexcept
 	{
 		_position = t._position;
 		_rotation = t._rotation;
@@ -133,7 +133,7 @@ namespace Quantix::Physic
 		return *this;
 	}
 
-	Transform3D& Transform3D::operator=(Transform3D&& t)
+	Transform3D& Transform3D::operator=(Transform3D&& t) noexcept
 	{
 		_position = std::move(t._position);
 		_rotation = std::move(t._rotation);

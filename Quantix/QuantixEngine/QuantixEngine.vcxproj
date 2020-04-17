@@ -197,6 +197,7 @@
     <ClCompile Include="Src\Core\Components\Light.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\Render\Renderer.cpp" />
+    <ClCompile Include="Src\Core\Scene.cpp" />
     <ClCompile Include="Src\Core\TinyobjImplementation.cpp" />
     <ClCompile Include="Src\Core\Debugger\Assertion.cpp" />
     <ClCompile Include="Src\Core\Debugger\Logger.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Profiler\Profiler.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
+    <ClInclude Include="Include\Core\Scene.h" />
     <ClInclude Include="Include\Core\UserEntry\InputSystem.h" />
     <ClInclude Include="Include\Physic\Transform2D.h" />
     <ClInclude Include="Include\Physic\Transform3D.h" />

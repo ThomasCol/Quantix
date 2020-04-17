@@ -4,7 +4,7 @@
 #include "Core/DataStructure/GameComponent.h"
 #include "Physic/Transform3D.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	/**
 	 * @brief class GameObject3D

@@ -1,6 +1,6 @@
 #include "Core/DataStructure/GameObject3D.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	GameObject3D::GameObject3D(std::string name) noexcept :
 		GameComponent(name)

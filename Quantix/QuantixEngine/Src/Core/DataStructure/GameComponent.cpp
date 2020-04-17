@@ -1,6 +1,6 @@
 #include "Core\DataStructure\GameComponent.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	GameComponent::GameComponent(const GameComponent& object) noexcept :
 		_name{ object._name },

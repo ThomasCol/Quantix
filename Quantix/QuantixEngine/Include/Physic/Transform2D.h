@@ -22,6 +22,8 @@ namespace Quantix::Physic
 
 			std::vector<Transform2D>	_childs;
 
+			//Pointer GameComponent
+
 		#pragma endregion
 
 		#pragma region Functions
@@ -46,14 +48,14 @@ namespace Quantix::Physic
 			 *
 			 * @param copy Copy of the transform
 			 */
-			Transform2D(const Transform2D& copy);
+			Transform2D(const Transform2D& copy) noexcept;
 
 			/**
 			 * @brief Construct a copy by rvalue of the 2D Transform object
 			 *
 			 * @param copy Copy by rvalue of the transform
 			 */
-			Transform2D(Transform2D&& copy);
+			Transform2D(Transform2D&& copy) noexcept;
 
 			/**
 			 * @brief Construct a new 2D Transform object
@@ -187,17 +189,17 @@ namespace Quantix::Physic
 			 * @brief Operator = for 2D transforms
 			 *
 			 * @param t Transform to copy
-			 * @return Transform2D& Reference to the current model
+			 * @return Transform2D& Reference to the current transform
 			 */
-			Transform2D&	operator=(const Transform2D& t);
+			Transform2D&	operator=(const Transform2D& t) noexcept;
 
 			/**
 			 * @brief Operator = for 2D transforms
 			 *
 			 * @param t Transform to copy
-			 * @return Transform2D& Reference to the current model
+			 * @return Transform2D& Reference to the current transform
 			 */
-			Transform2D&	operator=(Transform2D&& t);
+			Transform2D&	operator=(Transform2D&& t) noexcept;
 
 		#pragma endregion
 

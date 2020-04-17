@@ -8,11 +8,11 @@ namespace Quantix::Physic
 			_position{ 0.f, 0.f }, _rotationAngle{ 0.f }, _scale{ 1.f, 1.f }, _trs{}, _childs{}
 		{}
 
-		Transform2D::Transform2D(const Transform2D& t) :
+		Transform2D::Transform2D(const Transform2D& t) noexcept:
 			_position{ t._position }, _rotationAngle{ t._rotationAngle }, _scale{ t._scale }, _trs{ t._trs }, _childs{ t._childs }
 		{}
 
-		Transform2D::Transform2D(Transform2D&& t) :
+		Transform2D::Transform2D(Transform2D&& t) noexcept:
 			_position{ std::move(t._position) }, _rotationAngle{ std::move(t._rotationAngle) }, _scale{ std::move(t._scale) },
 			_trs{ std::move(t._trs) }, _childs{ std::move(t._childs) }
 		{}
@@ -126,7 +126,7 @@ namespace Quantix::Physic
 
 	#pragma region Operators
 
-		Transform2D& Transform2D::operator=(const Transform2D& t)
+		Transform2D& Transform2D::operator=(const Transform2D& t) noexcept
 		{
 			_position = t._position;
 			_rotationAngle = t._rotationAngle;
@@ -137,7 +137,7 @@ namespace Quantix::Physic
 			return *this;
 		}
 
-		Transform2D& Transform2D::operator=(Transform2D&& t)
+		Transform2D& Transform2D::operator=(Transform2D&& t) noexcept
 		{
 			_position = std::move(t._position);
 			_rotationAngle = std::move(t._rotationAngle);

@@ -5,7 +5,7 @@
 #include "Type.h"
 #include "Core/DLLHeader.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	class GameComponent;
 
