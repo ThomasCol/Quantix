@@ -20,7 +20,6 @@ namespace Quantix::Core::Platform
 		GLFWwindow* 						_window;
 		QXuint								_width;
 		QXuint								_height;
-		std::function<void(QXuint, QXuint)>	_resizeCallback;
 
 #pragma endregion
 
@@ -39,6 +38,8 @@ namespace Quantix::Core::Platform
 
 	public:
 #pragma region Contructors
+		Window() = default;
+
 		/**
 		 * @brief Construct a new Window object
 		 * 
@@ -87,13 +88,6 @@ namespace Quantix::Core::Platform
 		 * @return const QXuint& width value
 		 */
 		inline const QXuint& GetWidth() const  { return _width; }
-
-		/**
-		 * @brief Get the Resize Callback object
-		 * 
-		 * @return std::function<void(QXuint, QXuint)>& Return function ptr to bind it
-		 */
-		inline std::function<void(QXuint, QXuint)>&	GetResizeCallback() { return _resizeCallback; }
 
 		inline GLFWwindow* GetWindow() const { return _window; };
 

@@ -10,18 +10,11 @@
 
 namespace Quantix::Core::Render
 {
-	void ResizeCallback(QXuint width, QXuint height)
-	{
-		glViewport(0, 0, width, height);
-	}
-
 #pragma region Constructors
 
-	Renderer::Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback, DataStructure::ResourcesManager& manager) noexcept :
+	Renderer::Renderer(QXuint width, QXuint height, DataStructure::ResourcesManager& manager) noexcept :
 		_mainBuffer {}
 	{
-		resizeCallback = ResizeCallback;
-
 		CreateFrameBuffer(width, height);
 
 		// Create uniform buffers

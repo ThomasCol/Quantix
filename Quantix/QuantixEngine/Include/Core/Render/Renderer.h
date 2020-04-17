@@ -85,7 +85,7 @@ namespace Quantix::Core::Render
 		 * @param resizeCallback Window callback for resize
 		 * @param manager resources manager to instanciate datas
 		 */
-		Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback, DataStructure::ResourcesManager& manager) noexcept;
+		Renderer(QXuint width, QXuint height, DataStructure::ResourcesManager& manager) noexcept;
 
 		/**
 		 * @brief Destroy the Renderer object

@@ -34,7 +34,7 @@ namespace Quantix::Core::DataStructure
 
 #pragma region Functions
 
-	Material* ResourcesManager::CreateDefaultMaterial()
+	Material* ResourcesManager::CreateDefaultMaterial() noexcept
 	{
 		Material* material = new Material(CreateShaderProgram("../QuantixEngine/Media/Shader/vertexShader.vert", "../QuantixEngine/Media/Shader/fragmentShader.frag"));
 		material->diffuse = { 0.5f, 0.5f, 0.5f };
@@ -73,7 +73,7 @@ namespace Quantix::Core::DataStructure
 		return material;
 	}
 
-	Material* ResourcesManager::CreateMaterial(const QXstring& filePath)
+	Material* ResourcesManager::CreateMaterial(const QXstring& filePath) noexcept
 	{
 		if (filePath == "")
 			return CreateDefaultMaterial();
@@ -87,7 +87,7 @@ namespace Quantix::Core::DataStructure
 		return LoadMaterial(filePath);
 	}
 
-	Components::Mesh* ResourcesManager::CreateMesh(const QXstring& modelPath, const QXstring& materialPath)
+	Components::Mesh* ResourcesManager::CreateMesh(const QXstring& modelPath, const QXstring& materialPath) noexcept
 	{
 
 		QXstring key = modelPath + materialPath;
@@ -102,7 +102,7 @@ namespace Quantix::Core::DataStructure
 		return mesh;
 	}
 
-	Model* ResourcesManager::CreateModel(const QXstring& filePath)
+	Model* ResourcesManager::CreateModel(const QXstring& filePath) noexcept
 	{
 		auto it = _models.find(filePath);
 		if (it != _models.end() && it->second != nullptr)
@@ -118,7 +118,7 @@ namespace Quantix::Core::DataStructure
 		return model;
 	}
 
-	ShaderProgram* ResourcesManager::CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath)
+	ShaderProgram* ResourcesManager::CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath) noexcept
 	{
 		auto it = _programs.find(vertexPath + fragmentPath);
 		if (it != _programs.end() && it->second != nullptr)
@@ -133,7 +133,7 @@ namespace Quantix::Core::DataStructure
 		return program;
 	}
 
-	Shader* ResourcesManager::CreateShader(const QXstring& filePath, EShaderType type)
+	Shader* ResourcesManager::CreateShader(const QXstring& filePath, EShaderType type) noexcept
 	{
 		auto it = _shaders.find(filePath);
 		if (it != _shaders.end() && it->second != nullptr)
@@ -146,7 +146,7 @@ namespace Quantix::Core::DataStructure
 		return shader;
 	}
 
-	Texture* ResourcesManager::CreateTexture(const QXstring& filePath)
+	Texture* ResourcesManager::CreateTexture(const QXstring& filePath) noexcept
 	{
 		auto it = _textures.find(filePath);
 		if (it != _textures.end() && it->second != nullptr)
@@ -160,7 +160,7 @@ namespace Quantix::Core::DataStructure
 		return texture;
 	}
 
-	Texture* ResourcesManager::CreateHDRTexture(const QXstring& filePath)
+	Texture* ResourcesManager::CreateHDRTexture(const QXstring& filePath) noexcept
 	{
 		auto it = _textures.find(filePath);
 		if (it != _textures.end() && it->second != nullptr)
@@ -174,7 +174,7 @@ namespace Quantix::Core::DataStructure
 		return texture;
 	}
 
-	Material* ResourcesManager::LoadMaterial(const QXstring& filePath)
+	Material* ResourcesManager::LoadMaterial(const QXstring& filePath) noexcept
 	{
 		FILE* file;
 
@@ -212,13 +212,13 @@ namespace Quantix::Core::DataStructure
 		return material;
 	}
 
-	void ResourcesManager::LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices)
+	void ResourcesManager::LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
 	{
 		if (!LoadModelFromCache(filePath, vertices, indices))
 			LoadModelFromFile(filePath, vertices, indices);
 	}
 
-	QXbool ResourcesManager::LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices)
+	QXbool ResourcesManager::LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
 	{
 		QXstring cache_file = filePath + ".quantix";
 		FILE* file;
@@ -243,7 +243,7 @@ namespace Quantix::Core::DataStructure
 		return true;
 	}
 
-	void ResourcesManager::LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices)
+	void ResourcesManager::LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
 	{
 		tinyobj::attrib_t attrib;
 		std::vector<tinyobj::shape_t> shapes;
@@ -301,7 +301,7 @@ namespace Quantix::Core::DataStructure
 		}
 	}
 
-	void ResourcesManager::SaveMaterialToCache(const QXstring& filePath, const Material* material)
+	void ResourcesManager::SaveMaterialToCache(const QXstring& filePath, const Material* material) noexcept
 	{
 		FILE* file;
 
@@ -337,7 +337,7 @@ namespace Quantix::Core::DataStructure
 		}
 	}
 
-	void ResourcesManager::SaveModelToCache(const QXstring& filePath, Model* model)
+	void ResourcesManager::SaveModelToCache(const QXstring& filePath, Model* model) noexcept
 	{
 		QXstring cache_file = filePath + ".quantix";
 		FILE* file;
@@ -356,7 +356,7 @@ namespace Quantix::Core::DataStructure
 		fclose(file);
 	}
 
-	void ResourcesManager::DeleteMaterial(const QXstring& filePath)
+	void ResourcesManager::DeleteMaterial(const QXstring& filePath) noexcept
 	{
 		Material* material = _materials[filePath];
 
@@ -379,7 +379,7 @@ namespace Quantix::Core::DataStructure
 		_materials[filePath] = nullptr;
 	}
 
-	void ResourcesManager::DeleteTexture(const QXstring& filePath)
+	void ResourcesManager::DeleteTexture(const QXstring& filePath) noexcept
 	{
 		Texture* texture = _textures[filePath];
 
