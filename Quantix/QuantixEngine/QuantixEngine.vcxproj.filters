@@ -25,6 +25,7 @@
     <ClCompile Include="Src\Core\UserEntry\InputSystem.cpp" />
     <ClCompile Include="Src\Physic\Transform2D.cpp" />
     <ClCompile Include="Src\Physic\Transform3D.cpp" />
+    <ClCompile Include="Src\Core\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />

@@ -53,14 +53,14 @@ namespace Quantix::Physic
 			 *
 			 * @param copy Copy of the transform
 			 */
-			Transform3D(const Transform3D& copy);
+			Transform3D(const Transform3D& copy) noexcept;
 
 			/**
 			 * @brief Construct a copy by rvalue of the 3D Transform object
 			 *
 			 * @param copy Copy by rvalue of the transform
 			 */
-			Transform3D(Transform3D&& copy);
+			Transform3D(Transform3D&& copy) noexcept;
 
 			/**
 			 * @brief Construct a new 3D Transform object
@@ -199,17 +199,17 @@ namespace Quantix::Physic
 			 * @brief Operator = for 3D transforms
 			 *
 			 * @param t Transform to copy
-			 * @return Transform3D& Reference to the current model
+			 * @return Transform3D& Reference to the current transform
 			 */
-			Transform3D&								operator=(const Transform3D& t);
+			Transform3D&	operator=(const Transform3D& t) noexcept;
 
 			/**
 			 * @brief Operator = for 3D transforms
 			 *
 			 * @param t Transform to copy
-			 * @return Transform3D& Reference to the current model
+			 * @return Transform3D& Reference to the current transform
 			 */
-			Transform3D&								operator=(Transform3D&& t);
+			Transform3D&	operator=(Transform3D&& t) noexcept;
 
 		#pragma endregion
 

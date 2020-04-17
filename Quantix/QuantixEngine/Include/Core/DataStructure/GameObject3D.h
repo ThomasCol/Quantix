@@ -4,7 +4,6 @@
 #include "Core/DataStructure/GameComponent.h"
 #include "Physic/Transform3D.h"
 
-
 namespace Quantix::Core::DataStructure
 {
 	/**
