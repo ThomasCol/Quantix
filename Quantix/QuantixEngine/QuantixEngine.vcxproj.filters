@@ -30,6 +30,11 @@
     <ClCompile Include="Src\Core\Components\Collider.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\PostProcessEffect.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\Skybox.cpp" />
+    <ClCompile Include="Src\Core\Components\CapsuleCollider.cpp" />
+    <ClCompile Include="Src\Core\Components\SphereCollider.cpp" />
+    <ClCompile Include="Src\Core\Components\CubeCollider.cpp" />
+    <ClCompile Include="Src\Physic\IPhysicType.cpp" />
+    <ClCompile Include="Src\Core\Components\PlaneCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -62,5 +67,10 @@
     <ClInclude Include="Include\Core\DataStructure\SceneManager.h" />
     <ClInclude Include="Include\Resources\Scene.h" />
     <ClInclude Include="Include\Core\Components\Collider.h" />
+    <ClInclude Include="Include\Core\Components\CapsuleCollider.h" />
+    <ClInclude Include="Include\Core\Components\CubeCollider.h" />
+    <ClInclude Include="Include\Core\Components\SphereCollider.h" />
+    <ClInclude Include="Include\Physic\IPhysicType.h" />
+    <ClInclude Include="Include\Core\Components\PlaneCollider.h" />
   </ItemGroup>
 </Project>

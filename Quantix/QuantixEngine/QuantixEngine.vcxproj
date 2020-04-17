@@ -197,6 +197,8 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\PlaneCollider.cpp" />
+    <ClCompile Include="Src\Physic\IPhysicType.cpp" />
     <ClCompile Include="Src\Core\Components\CapsuleCollider.cpp" />
     <ClCompile Include="Src\Core\Components\SphereCollider.cpp" />
     <ClCompile Include="Src\Core\Components\CubeCollider.cpp" />
@@ -264,6 +266,8 @@
     <ClInclude Include="Include\Resources\ShaderProgram.h" />
     <ClInclude Include="Include\Resources\Texture.h" />
     <ClInclude Include="Include\Core\Components\SphereCollider.h" />
+    <ClInclude Include="Include\Physic\IPhysicType.h" />
+    <ClInclude Include="Include\Core\Components\PlaneCollider.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
