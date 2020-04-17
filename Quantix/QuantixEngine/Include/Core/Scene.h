@@ -12,7 +12,7 @@ namespace Quantix::Core
 
 			#pragma region Attributes
 
-			const char*			_name;
+			std::string			_name;
 			Physic::Transform3D	_world;
 			unsigned int		_id;
 
@@ -27,6 +27,8 @@ namespace Quantix::Core
 			 *
 			 */
 			Scene() = default;
+
+			Scene(const std::string& name, const Physic::Transform3D& world, const unsigned int& id) noexcept;
 
 			/**
 			 * @brief Construct a new Scene object by copy
@@ -66,6 +68,8 @@ namespace Quantix::Core
 			 */
 			void	Update();
 
+			void Rename(const std::string& str) noexcept;
+
 			#pragma endregion
 
 			#pragma region Operators
@@ -85,6 +89,12 @@ namespace Quantix::Core
 			 * @return Scene& Reference to the current scene
 			 */
 			Scene& operator=(Scene&& s) noexcept;
+
+			#pragma endregion
+
+			#pragma region Accessors
+
+			const std::string& GetName() noexcept { return _name; }
 
 			#pragma endregion
 

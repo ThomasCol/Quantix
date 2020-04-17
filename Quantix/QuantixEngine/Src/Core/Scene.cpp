@@ -5,6 +5,12 @@ namespace Quantix::Core
 {
 	#pragma region Constructors&Destructor
 
+	Scene::Scene(const std::string& name, const Physic::Transform3D& world, const unsigned int& id) :
+		_name{ name },
+		_world {world},
+		_id {id}
+	{}
+
 	Scene::Scene(const Scene& copy) noexcept :
 		_name {copy._name}, _world {copy._world}, _id {copy._id}
 	{}
@@ -25,6 +31,11 @@ namespace Quantix::Core
 	void	Scene::Update()
 	{
 		_world.Update(Math::QXmat4::Identity());
+	}
+
+	void Scene::Rename(const std::string& str) noexcept
+	{
+		_name = str;
 	}
 
 	#pragma endregion
