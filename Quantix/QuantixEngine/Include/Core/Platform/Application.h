@@ -24,7 +24,7 @@ namespace Quantix::Core::Platform
 		AppInfo							info;
 		//Window						window;
 		Render::Renderer 				renderer;
-		DataStructure::ResourcesManager manager;
+		Core::DataStructure::ResourcesManager manager;
 		DataStructure::SceneManager		sceneManager;
 		Resources::Scene*				scene;
 		
