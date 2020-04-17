@@ -196,6 +196,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\CapsuleCollider.cpp" />
     <ClCompile Include="Src\Core\Components\SphereCollider.cpp" />
     <ClCompile Include="Src\Core\Components\CubeCollider.cpp" />
     <ClCompile Include="Lib\Glad\src\glad.c" />
@@ -227,6 +228,7 @@
     <ClCompile Include="Src\Resources\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Components\CapsuleCollider.h" />
     <ClInclude Include="Include\Core\Components\CubeCollider.h" />
     <ClInclude Include="externals\rttrEnabled.h" />
     <ClInclude Include="Include\Core\Components\Collider.h" />
