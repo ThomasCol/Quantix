@@ -2,10 +2,11 @@
 #define _COMPONENT_H_
 
 #include <typeinfo>
+#include <rttrEnabled.h>
 #include "Type.h"
 #include "Core/DLLHeader.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	class GameComponent;
 
@@ -17,7 +18,7 @@ namespace Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		GameComponent*	 _object;
+		GameComponent*	_object;
 		QXbool			_isDestroyed;
 		QXbool			_isEnable;
 		#pragma endregion Attributes
@@ -77,7 +78,7 @@ namespace Core::DataStructure
 		 * 
 		 * @return const std::type_info& 
 		 */
-		virtual const std::type_info&		GetType() const = 0;
+	//	virtual const std::type_info&		GetType() const = 0;
 
 		/**
 		 * @brief Get the Object object
@@ -115,9 +116,11 @@ namespace Core::DataStructure
 		 * @brief virtual Method for Destroy the Component
 		 * 
 		 */
-		inline virtual void					Destroy() {};
+		//inline virtual void					Destroy() {};
 		#pragma endregion Inline
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION();
 	};
 }
 

@@ -4,7 +4,7 @@
 #include "Core/DataStructure/GameComponent.h"
 #include "Physic/Transform2D.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	/**
 	 * @brief class GameObject2D
@@ -14,12 +14,12 @@ namespace Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		Quantix::Physic::Transform2D		_transform;
+		Quantix::Physic::Transform2D*		_transform;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
 		GameObject2D() noexcept;
-		GameObject2D(std::string name) noexcept;
+		GameObject2D(const QXstring& name, Quantix::Physic::Transform2D* transform) noexcept;
 		GameObject2D(const GameObject2D& g2d) noexcept;
 		GameObject2D(GameObject2D&& g2d) noexcept;
 		~GameObject2D();
@@ -81,21 +81,22 @@ namespace Core::DataStructure
 		 * 
 		 * @return Math::QXvec2 position
 		 */
-		Math::QXvec2								GetLocalPosition() const { return _transform.GetPosition(); };
+		const Math::QXvec2&							GetLocalPosition() const { return _transform->GetPosition();
+		};
 
 		/**
 		 * @brief Get the Local Rotation object
-		 * 
+		 *
 		 * @return QXfloat rotation
 		 */
-		QXfloat										GetLocalRotation() const { return _transform.GetRotationAngle(); };
+		const QXfloat&								GetLocalRotation() const { return _transform->GetRotationAngle(); };
 
 		/**
 		 * @brief Get the Local Scale object
-		 * 
+		 *
 		 * @return Math::QXvec2 scale
 		 */
-		Math::QXvec2								GetLocalScale() const { return _transform.GetScale(); };
+		const Math::QXvec2&							GetLocalScale() const { return _transform->GetScale(); };
 
 		/**
 		 * @brief Set the Transform object
@@ -111,9 +112,11 @@ namespace Core::DataStructure
 		 * 
 		 * @return Transform2D transform
 		 */
-		Quantix::Physic::Transform2D				GetTransform() const { return _transform; };
+		Quantix::Physic::Transform2D*				GetTransform() const { return _transform; };
 		#pragma endregion Accessors
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION(GameComponent);
 	};
 }
 

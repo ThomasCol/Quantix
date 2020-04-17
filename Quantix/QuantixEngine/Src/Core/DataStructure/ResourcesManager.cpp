@@ -85,12 +85,19 @@ namespace Quantix::Core::DataStructure
 		return LoadMaterial(filePath);
 	}
 
-	Components::Mesh* ResourcesManager::CreateMesh(const QXstring& modelPath, const QXstring& materialPath)
+	Components::Mesh* ResourcesManager::CreateMesh(Components::Mesh* mesh, const QXstring& modelPath, const QXstring& materialPath)
 	{
 
 		QXstring key = modelPath + materialPath;
 
-		Components::Mesh* mesh = new Components::Mesh(CreateModel(modelPath), CreateMaterial(materialPath));
+		if (_meshes[key] != nullptr)
+		{
+			return _meshes[key];
+		}
+
+		//mesh = new Components::Mesh(CreateModel(modelPath), CreateMaterial(materialPath));
+		mesh->SetModel(CreateModel(modelPath));
+		mesh->SetMaterial(CreateMaterial(materialPath));
 
 		_meshes[key] = mesh;
 

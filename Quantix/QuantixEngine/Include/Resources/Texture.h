@@ -1,7 +1,7 @@
 #ifndef __TEXTURE_H__
 #define __TEXTURE_H__
 
-#include "Core/Type.h"
+#include <Type.h>
 #include "Core/DLLHeader.h"
 
 #define RGB_CHANNEL 3

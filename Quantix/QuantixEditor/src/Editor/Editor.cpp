@@ -1,18 +1,22 @@
 #include "Editor.h"
 #include <iostream>
-#include "Logger.h"
-#include "Profiler.h"
+#include <Core/Profiler/Profiler.h>
 #include "stb_image.h"
 
 
 Editor::Editor(QXuint width, QXuint height) :
-	_win{width, height},
+	_win{ width, height },
+	_lib{"QuantixEngine"},
 	_docker{},
 	_folder{},
 	_menuBar{},
 	_hierarchy{},
 	_flagsEditor{}
 {
+	_lib.load();
+	if (!_lib.is_loaded())
+		std::cout << _lib.get_error_string() << std::endl;
+
 	_mouseInput = new MouseTest({false, 0.0f, 0.0f, 0.0f, 0.0f});
 
 	// Setup Dear ImGui context
@@ -50,6 +54,9 @@ Editor::~Editor()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+
+	//unload lib rttr
+	_lib.unload();
 }
 
 void Editor::Init()
@@ -97,8 +104,7 @@ void Editor::Update(QXuint FBO)
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 1, 1, 1));
 	ImGui::Begin("Editor", NULL, _flagsEditor);
 
-	if (i == 0)
-		Quantix::Core::Profiling::Profiler::GetInstance()->StartProfiling("Editor");
+	START_PROFILING("Editor");
 
 	DrawMenuBar();
 	DrawSimulation();
@@ -106,16 +112,10 @@ void Editor::Update(QXuint FBO)
 
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
 
-	Quantix::Core::Profiling::Profiler::GetInstance()->SetMessage("Editor", "Draw Editor\n");
-
 	for (QXuint i{ 0 }; i < _docker.GetWindowsEditor().size(); i++)
 		Draw(_docker.GetWindowsEditor()[i], flags);
 
-	if (i == 0)
-	{
-		Quantix::Core::Profiling::Profiler::GetInstance()->StopProfiling("Editor");
-		i++;
-	}
+	STOP_PROFILING("Editor");
 	ImGui::End();
 
 	ImGui::PopStyleColor();
@@ -125,7 +125,7 @@ void Editor::Update(QXuint FBO)
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Editor::Draw(QXstring name, ImGuiWindowFlags flags)
+void Editor::Draw(const QXstring& name, ImGuiWindowFlags flags)
 {
 	if (name == "Console")
 		DrawConsole(name, flags);
@@ -151,10 +151,10 @@ void Editor::DrawMenuBar()
 	//_menuBar.Update(_gameComponent);
 }
 
-void Editor::DrawHierarchy(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 {
-	_hierarchy.Update(name, flags, _object);
-	//_hierarchy.Update(name, flags, _gameComponent);
+	//_hierarchy.Update(name, flags, _object);
+	_hierarchy.Update(name, flags, _graph3D);
 }
 
 void Editor::Simulation()
@@ -185,7 +185,7 @@ void Editor::DrawSimulation()
 
 }
 
-void Editor::DrawScene(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 {
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
@@ -206,17 +206,17 @@ void Editor::PrintLog()
 	for (QXuint i = 0; i < Quantix::Core::Debugger::Logger::GetInstance()->GetData().size(); i++)
 	{
 		if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::INFOS)
-			ImGui::TextColored(ImVec4(52 / 255.f, 152 / 255.f, 219 / 255.f, 1), "Info: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+			ImGui::TextColored(ImVec4(52 / 255.f, 152 / 255.f, 219 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::WARNING)
-			ImGui::TextColored(ImVec4(241 / 255.f, 196 / 255.f, 15 / 255.f, 1), "Warning: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+			ImGui::TextColored(ImVec4(241 / 255.f, 196 / 255.f, 15 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::ERROR)
-			ImGui::TextColored(ImVec4(231 / 255.f, 76 / 255.f, 60 / 255.f, 1), "Error: %s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+			ImGui::TextColored(ImVec4(231 / 255.f, 76 / 255.f, 60 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::PROFILING)
 			ImGui::TextColored(ImVec4(39 / 255.f, 174 / 255.f, 96 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 	}
 }
 
-void Editor::DrawConsole(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawConsole(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
@@ -232,7 +232,7 @@ void Editor::DrawConsole(QXstring name, ImGuiWindowFlags flags)
 			ImGui::Text("GL_RENDERER: %s", glGetString(GL_RENDERER));
 			ImGui::Text("GL_SHADING_LANGUAGE_VERSION: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 		}
-		
+
 		if (ShowDemoWindow)
 			ImGui::ShowDemoWindow(&ShowDemoWindow);
 		ImGui::EndTabBar();
@@ -244,12 +244,12 @@ void Editor::DrawConsole(QXstring name, ImGuiWindowFlags flags)
 	ImGui::End();
 }
 
-void Editor::DrawExplorer(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawExplorer(const QXstring& name, ImGuiWindowFlags flags)
 {
 	_explorer.Update(_app->manager, name, flags);
 }
 
-void Editor::DrawInspector(QXstring name, ImGuiWindowFlags flags)
+void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{

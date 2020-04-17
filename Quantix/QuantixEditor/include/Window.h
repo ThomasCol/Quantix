@@ -7,7 +7,7 @@
 #include <GLFW/glfw3.h>
 #include <functional>
 
-#include <Core/Type.h>
+#include <Type.h>
 #include <Core/Platform/AppInfo.h>
 
 namespace Quantix::Core::Platform

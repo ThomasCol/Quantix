@@ -3,7 +3,9 @@
 
 #include <vector>
 
-#include "Core/Type.h"
+#include <Type.h>
+
+#include "Core/DLLHeader.h"
 
 namespace Quantix::Resources
 {

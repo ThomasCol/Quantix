@@ -19,77 +19,50 @@ namespace Quantix::Core::Profiling
 	{
 	}
 
-	void	Profiler::FrameCounter()
+	void Profiler::StartProfiling(const QXstring& type)
 	{
-		static QXdouble current_time = 0;
-		static QXdouble last_time = 0;
-		static QXint n = 0;
-		_frameRate = n;
-
-		n++;
-		current_time = glfwGetTime();
-
-		if ((current_time - last_time) >= 1)
+		if (_activate)
 		{
-			// nombre de frames par seconde
-			_frameRate = n;
-			n = 0;
-			last_time = current_time;
+			if (!_activateFirst)
+			{
+				_profiling = BEGIN_PROFILING;
+				_activateFirst = true;
+			}
+
+			_infoProfiling.insert(std::make_pair(type, Info{ type + "\n", glfwGetTime(), 0.f, currId, true }));
+
+			currId++;
 		}
 	}
 
-	int	Profiler::GetFrameCounter()
-	{
-		return _frameRate;
-	}
-
-	void Profiler::StartProfiling(QXstring type)
-	{
-		if (!_activate)
-		{
-			_profiling = BEGIN_PROFILING;
-			_activate = true;
-		}
-		_infoProfiling.insert(std::make_pair(type, Info{type + "\n", glfwGetTime(), 0.f, currId, true}));
-
-		currId++;
-	}
-
-	void Profiler::SetMessage(QXstring type, QXstring msg)
+	void Profiler::SetMessage(const QXstring& type, const QXstring& msg)
 	{
 		if (_infoProfiling[type].activate)
 			_infoProfiling[type].msg += msg;
 	}
 
-	void Profiler::StopProfiling(QXstring type)
+	void Profiler::StopProfiling(const QXstring& type)
 	{
-		_infoProfiling[type].activate = false;
-		for (std::map<QXstring, Info>::iterator it = _infoProfiling.begin(); it != _infoProfiling.end(); ++it)
-			if (it->second.activate)
-			{
-				it->second.timer = glfwGetTime() - it->second.beginTime;
-				return;
-			}
-		_activate = false;
-		currId = 0;
+		if (_activate && _activateFirst)
+		{
+			_infoProfiling[type].activate = false;
+			for (std::map<QXstring, Info>::iterator it = _infoProfiling.begin(); it != _infoProfiling.end(); ++it)
+				if (it->second.activate)
+				{
+					it->second.timer = glfwGetTime() - it->second.beginTime;
+					return;
+				}
+			_activateFirst = false;
+			currId = 0;
 
-		SetProfiling();
+			SetProfiling();
 
-		QXstring fps = "FPS: " + std::to_string(GetFrameCounter());
+			_profiling += QXstring(END_PROFILING);
 
-		_profiling += fps;
-		_profiling += "\n\n" + QXstring(END_PROFILING);
-
-		Quantix::Core::Debugger::Logger::GetInstance()->SetProfiling(_profiling);
-		_profiling = "";
-		_infoProfiling.clear();
-	}
-
-	void Profiler::Update(QXfloat deltaTime)
-	{
-		for (std::map<QXstring, Info>::iterator it = _infoProfiling.begin(); it != _infoProfiling.end(); ++it)
-			if (it->second.activate)
-				it->second.timer += _info->deltaTime;
+			Quantix::Core::Debugger::Logger::GetInstance()->SetProfiling(_profiling);
+			_profiling = "";
+			_infoProfiling.clear();
+		}
 	}
 
 	void Profiler::SetProfiling()

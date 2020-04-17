@@ -1,4 +1,5 @@
 #include "Physic/Transform3D.h"
+#include "Core/DataStructure/GameObject3D.h"
 
 namespace Quantix::Physic
 {
@@ -35,22 +36,22 @@ namespace Quantix::Physic
 
 	#pragma region Getters&Setters
 
-	Math::QXvec3 Transform3D::GetPosition() const
+	const Math::QXvec3& Transform3D::GetPosition()
 	{
 		return _position;
 	}
 
-	Math::QXvec3 Transform3D::GetRotation() const
+	const Math::QXvec3& Transform3D::GetRotation()
 	{
 		return _rotation;
 	}
 
-	Math::QXvec3 Transform3D::GetScale() const
+	const Math::QXvec3& Transform3D::GetScale()
 	{
 		return _scale;
 	}
 
-	Math::QXmat4 Transform3D::GetTRS() const
+	const Math::QXmat4& Transform3D::GetTRS()
 	{
 		return _trs;
 	}
@@ -84,10 +85,10 @@ namespace Quantix::Physic
 
 	void	Transform3D::Update(const Math::QXmat4& trsParent) const
 	{
-		std::vector<Transform3D>::const_iterator it;
+		std::vector<Transform3D*>::const_iterator it;
 
 		for (it = _childs.cbegin(); it != _childs.cend(); ++it)
-			it->Update(_trs);
+			(*it)->Update(_trs);
 	}
 
 	void	Transform3D::Translate(const Math::QXvec3& pos)
@@ -108,14 +109,14 @@ namespace Quantix::Physic
 		UpdateTRS();
 	}
 
-	void	Transform3D::AddChild(const Transform3D& child)
+	void	Transform3D::AddChild(Transform3D* child)
 	{
 		_childs.push_back(child);
 	}
 
 	void	Transform3D::AddChild(Transform3D&& child)
 	{
-		_childs.push_back(std::move(child));
+		_childs.push_back(std::move(&child));
 	}
 
 	#pragma endregion

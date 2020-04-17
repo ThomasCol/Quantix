@@ -116,7 +116,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
@@ -125,12 +125,15 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\MathLib\Lib\Debug_x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Debug_x64;$(ProjectDir)\Lib\MathLib\Lib\Debug_x64;$(ProjectDir)externals\debug\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>rttr_core_s_d.lib;glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
     </PreBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -171,7 +174,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
@@ -182,12 +185,15 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\MathLib\Lib\Release_x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Win64\Release;$(ProjectDir)\Lib\MathLib\Lib\Release_x64;$(ProjectDir)externals\release\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>rttr_core_s.lib;glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
     </PreBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lib\Glad\src\glad.c" />
@@ -216,8 +222,10 @@
     <ClCompile Include="Src\Resources\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="externals\rttrEnabled.h" />
     <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
     <ClInclude Include="Include\Core\DataStructure\ResourcesManager.h" />
+    <ClInclude Include="Include\Core\MathHeader.h" />
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
     <ClInclude Include="Include\Core\Components\Camera.h" />
     <ClInclude Include="Include\Core\Debugger\Assertion.h" />
@@ -239,7 +247,6 @@
     <ClInclude Include="Include\Resources\Shader.h" />
     <ClInclude Include="Include\Resources\ShaderProgram.h" />
     <ClInclude Include="Include\Resources\Texture.h" />
-    <ClInclude Include="Include\Core\Type.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

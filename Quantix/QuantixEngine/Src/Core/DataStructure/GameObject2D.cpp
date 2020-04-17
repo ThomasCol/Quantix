@@ -1,15 +1,36 @@
 #include "Core/DataStructure/GameObject2D.h"
 
-namespace Core::DataStructure
+RTTR_PLUGIN_REGISTRATION
+{
+	using namespace Quantix::Core::DataStructure;
+	rttr::registration::class_<GameObject2D>("GameObject2D")
+	.constructor<>()
+	.constructor<const QXstring&, Quantix::Physic::Transform2D*>()
+	.constructor<const GameObject2D&>()
+	.constructor<GameObject2D&&>()
+	.method("SetGlobalPosition", &GameObject2D::SetGlobalPosition)
+	.method("SetGlobalRotation", &GameObject2D::SetGlobalRotation)
+	.method("SetLocalPosition", &GameObject2D::SetLocalPosition)
+	.method("SetLocalRotation", &GameObject2D::SetLocalRotation)
+	.method("SetLocalScale", &GameObject2D::SetLocalScale)
+	.method("GetLocalPosition", &GameObject2D::GetLocalPosition)
+	.method("GetLocalRotation", &GameObject2D::GetLocalRotation)
+	.method("GetLocalScale", &GameObject2D::GetLocalScale)
+	.method("SetTransform", &GameObject2D::SetTransform)
+	.method("GetTransform", &GameObject2D::GetTransform);
+}
+
+namespace Quantix::Core::DataStructure
 {
 	GameObject2D::GameObject2D() noexcept :
 		GameComponent(),
-		_transform{ Quantix::Physic::Transform2D() }
+		_transform{ new Quantix::Physic::Transform2D() }
 	{
 	}
 
-	GameObject2D::GameObject2D(std::string name) noexcept :
-		GameComponent(name)
+	GameObject2D::GameObject2D(const QXstring& name, Quantix::Physic::Transform2D* transform) noexcept :
+		GameComponent(name),
+		_transform { transform }
 	{
 	}
 
@@ -41,23 +62,23 @@ namespace Core::DataStructure
 
 	void	GameObject2D::SetLocalPosition(Math::QXvec2 pos)
 	{
-		_transform.SetPosition(pos);
+		_transform->SetPosition(pos);
 	}
 
 	void	GameObject2D::SetLocalRotation(QXfloat rot)
 	{
-		_transform.SetRotationAngle(rot);
+		_transform->SetRotationAngle(rot);
 	}
 
 	void	GameObject2D::SetLocalScale(Math::QXvec2 scale)
 	{
-		_transform.SetScale(scale);
+		_transform->SetScale(scale);
 	}
 
 	void	GameObject2D::SetTransform(const Math::QXvec2& pos, const QXfloat rot, const Math::QXvec2& scale)
 	{
-		_transform.SetPosition(pos);
-		_transform.SetRotationAngle(rot);
-		_transform.SetScale(scale);
+		_transform->SetPosition(pos);
+		_transform->SetRotationAngle(rot);
+		_transform->SetScale(scale);
 	}
 }

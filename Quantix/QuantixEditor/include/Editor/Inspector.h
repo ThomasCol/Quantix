@@ -11,25 +11,30 @@
 #include <Node.h>
 #include <Core/DataStructure/GameObject3D.h>
 
+#include <rttr/registration.h>
+
 #include "Type.h"
 
 class Inspector
 {
 public:
 	Inspector() = default;
-	Inspector(Node node);
-	//Inspector(Core::DataStructure::GameComponent* gc);
+	Inspector(Quantix::Physic::Transform3D* transform);
 	Inspector(const Inspector& inspector) = default;
 	Inspector(Inspector&& inspector) = default;
 	~Inspector() = default;
 
 	inline void	SetEnable(QXbool enable) { _enable = enable; };
-	inline void SetNode(Node node) { _node = node; };
+	inline void SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 
 	void		Update();
+	void		ShowComponent();
+	void		AddComponent();
+	void		GetInstance(rttr::instance inst, rttr::type t);
+	void		DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type);
+
 private:
-	Node								_node;
-	//Core::DataStructure::GameComponent*	_gc;
+	Quantix::Physic::Transform3D*		_transform;
 	QXbool								_enable;
 
 };

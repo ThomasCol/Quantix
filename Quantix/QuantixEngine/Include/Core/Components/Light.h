@@ -4,7 +4,8 @@
 #include <Vec3.h>
 
 #include "Core/DLLHeader.h"
-#include "Core/Type.h"
+#include "Core/DataStructure/Component.h"
+#include <Type.h>
 
 namespace Quantix::Core::Components
 {
@@ -17,7 +18,7 @@ namespace Quantix::Core::Components
 		COUNT
 	};
 
-	struct QUANTIX_API Light
+	struct QUANTIX_API Light : public virtual Quantix::Core::DataStructure::Component
 	{
 #pragma region Attributes
 
@@ -70,12 +71,19 @@ namespace Quantix::Core::Components
 		 */
 		Light(Math::QXvec3 ambientValue, Math::QXvec3 diffuseValue, Math::QXvec3 specularValue, ELightType lightType) noexcept;
 
+
+		Light(Core::DataStructure::GameComponent* obj);
+
 		/**
 		 * @brief Destroy the Light object
 		 */
 		~Light() = default;
 
 #pragma endregion
+
+		Light* Copy() const override;
+
+		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};
 }
 

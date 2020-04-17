@@ -45,15 +45,6 @@
     <ClCompile Include="src\Editor\MenuBar.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\QuantixEngine\Src\Core\Debugger\Assertion.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\QuantixEngine\Src\Core\Debugger\Logger.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\QuantixEngine\Src\Core\Profiler\Profiler.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\Window.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -99,15 +90,6 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Docking\Docker.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\QuantixEngine\Include\Core\Debugger\Assertion.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\QuantixEngine\Include\Core\Debugger\Logger.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\QuantixEngine\Include\Core\Profiler\Profiler.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Window.h">

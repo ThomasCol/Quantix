@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 
-#include "Core/Type.h"
+#include <Type.h>
 #include "Resources/Shader.h"
 
 namespace Quantix::Resources

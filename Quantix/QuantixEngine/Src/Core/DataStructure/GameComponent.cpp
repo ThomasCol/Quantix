@@ -1,16 +1,17 @@
 #include "Core\DataStructure\GameComponent.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	GameComponent::GameComponent(const GameComponent& object) noexcept :
 		_name{ object._name },
 		_layer{ object._layer },
 		_isStatic{ object._isStatic },
-		_isActive{ object._isActive }
+		_isActive{ object._isActive },
+		_toRender{ false }
 	{
 		for (size_t i = 0; i < object._component.size(); i++)
 		{
-			_component.push_back(object._component[i]->Copy());
+			_component.push_back(object._component[i]);
 		}
 	}
 
@@ -19,7 +20,8 @@ namespace Core::DataStructure
 		_name{ std::move(object._name) },
 		_layer{ std::move(object._layer) },
 		_isStatic{ std::move(object._isStatic) },
-		_isActive{ std::move(object._isActive) }
+		_isActive{ std::move(object._isActive) },
+		_toRender{ std::move(object._toRender) }
 	{
 	}
 
@@ -37,7 +39,7 @@ namespace Core::DataStructure
 		{
 			if (_component[i] != nullptr)
 			{
-				_component[i]->Destroy();
+				//_component[i]->Destroy();
 				delete _component[i];
 			}
 		}
@@ -49,7 +51,7 @@ namespace Core::DataStructure
 		{
 			if (_component[i]->IsDestroyed())
 			{
-				_component[i]->Destroy();
+				//_component[i]->Destroy();
 				delete _component[i];
 				_component.erase(_component.begin() + i--);
 			}
@@ -63,6 +65,7 @@ namespace Core::DataStructure
 		_layer = gc._layer;
 		_isStatic = gc._isStatic;
 		_isActive = gc._isActive;
+		_toRender = gc._toRender;
 
 		return *this;
 	}

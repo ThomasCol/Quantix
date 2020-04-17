@@ -2,7 +2,7 @@
 #define __RENDERER_H__
 
 
-#include "Core/Type.h"
+#include <Type.h>
 #include "Core/Components/Mesh.h"
 #include "Core/Components/Light.h"
 #include "../../../QuantixEditor/include/Window.h"

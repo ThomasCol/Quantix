@@ -1,6 +1,7 @@
 #ifndef __MATERIAL_H__
 #define __MATERIAL_H__
 
+#include <rttrEnabled.h>
 #include <Mat4.h>
 
 #include "ShaderProgram.h"
@@ -193,6 +194,7 @@ namespace Quantix::Resources
 #pragma endregion
 
 #pragma endregion
+		CLASS_REGISTRATION()
 	};
 }
 

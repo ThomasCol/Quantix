@@ -1,7 +1,7 @@
 #ifndef __APPINFO_H__
 #define __APPINFO_H__
 
-#include "Core/Type.h"
+#include <Type.h>
 #include "Core/DLLHeader.h"
 
 namespace Quantix::Core::Platform

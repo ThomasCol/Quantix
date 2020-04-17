@@ -45,7 +45,6 @@ namespace Quantix::Core::Debugger
 		for (QXuint i{ 0 }; i < _data.size(); i++)
 			myfile << _data[i]._message + "\n";
 		myfile.close();
-		//delete m_instance;
 	}
 
 	void Logger::SetInfo(const QXstring& msg)

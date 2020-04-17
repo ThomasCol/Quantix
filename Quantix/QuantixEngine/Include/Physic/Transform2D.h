@@ -5,10 +5,11 @@
 #include <Type.h>
 #include <Vec2.h>
 #include <Mat4.h>
+#include "Core/DLLHeader.h"
 
 namespace Quantix::Physic
 {
-	class Transform2D
+	class QUANTIX_API Transform2D
 	{
 		private:
 
@@ -89,28 +90,28 @@ namespace Quantix::Physic
 			 *
 			 * @return const Math::QXvec2 Current Position
 			 */
-			Math::QXvec2	GetPosition() const;
+			const Math::QXvec2&		GetPosition();
 
 			/**
 			 * @brief Get the rotationAngle of the current transform
 			 *
 			 * @return const QXfloat& Current Rotation Angle
 			 */
-			QXfloat			GetRotationAngle() const;
+			const QXfloat&			GetRotationAngle();
 
 			/**
 			 * @brief Get the scale of the current transform
 			 *
 			 * @return const Math::QXvec2& Current Scale
 			 */
-			Math::QXvec2	GetScale() const;
+			const Math::QXvec2&		GetScale();
 
 			/**
 			 * @brief Get the trs of the current transform
 			 *
 			 * @return const Math::QXmat4& Current TRS
 			 */
-			Math::QXmat4	GetTRS() const;
+			const Math::QXmat4&		GetTRS();
 
 			/**
 			 * @brief Set the position of the current transform

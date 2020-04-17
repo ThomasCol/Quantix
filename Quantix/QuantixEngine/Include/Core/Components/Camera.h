@@ -3,12 +3,14 @@
 
 #include <Vec3.h>
 #include <Mat4.h>
-//#include "Component.h"
+
 #include "Core/DLLHeader.h"
+#include "Core/DataStructure/Component.h"
+#include "rttrEnabled.h"
 
 namespace Quantix::Core::Components
 {
-	class QUANTIX_API Camera //: public virtual Core::DataStructure::Component
+	class QUANTIX_API Camera : public virtual Core::DataStructure::Component
 	{
 	private:
 		#pragma region Attributes
@@ -34,8 +36,9 @@ namespace Quantix::Core::Components
 		 * @param dir Vector
 		 * @param up Vector
 		 */
-		Camera(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up);
-		//Camera(Core::DataStructure::GameObject* object);
+		Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up);
+		
+		Camera(Core::DataStructure::GameComponent* object);
 
 		/**
 		 * @brief Construct a new Camera object by copy 
@@ -49,16 +52,18 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param camera Camera
 		 */
-		Camera(Camera&& camera) noexcept = default;
+		Camera(Camera&& camera);
 
 		/**
 		 * @brief Destroy the Camera object
 		 * 
 		 */
-		~Camera() {};
+		~Camera() = default;
 		#pragma endregion Constructors/Destructor
 
 		#pragma region Methods
+		Camera* Copy() const override;
+
 		/**
 		 * @brief Init the camera component
 		 * 
@@ -67,9 +72,6 @@ namespace Quantix::Core::Components
 		 * @param up Vector
 		 */
 		void							Init(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up);
-		//const std::type_info&			GetType() const override;
-		//Core::DataStructure:Component*	Copy() const override;
-		//inline void						Destroy() override {};
 
 		/**
 		 * @brief Update the LookAtMatrix of the Camera
@@ -99,18 +101,24 @@ namespace Quantix::Core::Components
 
 		#pragma	region Accessor
 
-		inline Math::QXmat4 GetLookAt() { return _lookAt; }
+		inline Math::QXmat4				GetLookAt() { return _lookAt; }
 
-		inline void			SetPos(Math::QXvec3 pos) { _pos = pos; }
+		inline void						SetPos(Math::QXvec3 pos) { _pos = pos; }
 
-		inline Math::QXvec3 GetPos() { return _pos; }
+		inline Math::QXvec3				GetPos() { return _pos; }
 
-		inline Math::QXvec3 GetDir() { return _dir; }
+		inline void						SetDir(Math::QXvec3 dir) { _dir = dir; }
 
-		inline Math::QXvec3 GetUp() { return _up; }
+		inline Math::QXvec3				GetDir() { return _dir; }
+
+		inline void						SetUp(Math::QXvec3 up) { _up = up; }
+
+		inline Math::QXvec3				GetUp() { return _up; }
 		
 		#pragma	endregion
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION(Quantix::Core::DataStructure::Component)
 	};
 }
 

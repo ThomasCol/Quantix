@@ -11,7 +11,7 @@
 #include "Core/DLLHeader.h"
 #include "Component.h"
 
-namespace Core::DataStructure
+namespace Quantix::Core::DataStructure
 {
 	class QUANTIX_API GameComponent
 	{
@@ -22,6 +22,7 @@ namespace Core::DataStructure
 		QXint						_layer;
 		QXbool						_isStatic;
 		QXbool						_isActive;
+		QXbool						_toRender;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -53,6 +54,11 @@ namespace Core::DataStructure
 			_component.push_back(comp);
 		}
 
+		inline void				AddComponent(Quantix::Core::DataStructure::Component* comp)
+		{
+			_component.push_back(comp);
+		}
+
 		/**
 		 * @brief Get the Component object
 		 * 
@@ -62,10 +68,11 @@ namespace Core::DataStructure
 		template<typename T>
 		inline T*				GetComponent()
 		{
-			const std::type_info& type = typeid(T&);
 			for (Component* comp : _component)
 			{
-				if (comp->GetType() == type)
+				rttr::type t = comp->get_type();
+
+				if (rttr::type::get<T>() == t)
 					return dynamic_cast<T*>(comp);
 			}
 			return nullptr;
@@ -77,7 +84,7 @@ namespace Core::DataStructure
 		 * @tparam T type of the Component
 		 * @return std::vector<T*> components of that type
 		 */
-		template<typename T>
+		/*template<typename T>
 		inline std::vector<T*>	GetComponents()
 		{
 			std::vector<T*>			vecT;
@@ -88,6 +95,11 @@ namespace Core::DataStructure
 					vecT.push_back(comp);
 			}
 			return vecT;
+		}*/
+
+		inline const std::vector<Component*>&	GetComp()
+		{
+			return _component;
 		}
 
 		/**
@@ -114,7 +126,7 @@ namespace Core::DataStructure
 		 * 
 		 * @tparam T type of component you want to remove
 		 */
-		template<typename T>
+		/*template<typename T>
 		inline void				RemoveComponents()
 		{
 			const std::type_info& type{ typeid(T&) };
@@ -126,7 +138,7 @@ namespace Core::DataStructure
 					_component[i]->EraseEndOfFrame();
 				}
 			}
-		}
+		}*/
 		#pragma endregion Template
 
 		#pragma region Accessors
@@ -166,6 +178,8 @@ namespace Core::DataStructure
 		#pragma endregion Accessors
 		GameComponent&			operator=(const GameComponent& gc);
 		#pragma endregion Methods
+
+		CLASS_REGISTRATION();
 	};
 }
 
