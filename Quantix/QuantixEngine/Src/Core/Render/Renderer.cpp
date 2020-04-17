@@ -5,6 +5,8 @@
 #include <array>
 
 #include "Core/Profiler/Profiler.h"
+#include "Core/Render/PostProcess/Skybox.h"
+#include "Core/DataStructure/ResourcesManager.h"
 
 namespace Quantix::Core::Render
 {
@@ -15,15 +17,14 @@ namespace Quantix::Core::Render
 
 #pragma region Constructors
 
-	Renderer::Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback) :
+	Renderer::Renderer(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback, DataStructure::ResourcesManager& manager) noexcept :
 		_mainBuffer {}
 	{
-		glViewport(0, 0, width, height);
-
 		resizeCallback = ResizeCallback;
 
 		CreateFrameBuffer(width, height);
 
+		// Create uniform buffers
 		glGenBuffers(1, &_viewProjMatrixUBO);
 		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
 		glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(Math::QXmat4), nullptr, GL_STATIC_DRAW);
@@ -34,15 +35,21 @@ namespace Quantix::Core::Render
 		glBufferData(GL_UNIFORM_BUFFER, 10 * sizeof(Core::Components::Light) + sizeof(QXuint), nullptr, GL_STATIC_DRAW);
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
+		// Set buffers binding
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _viewProjMatrixUBO);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightUBO);
+
+		InitPostProcessEffects(manager);
+
+		glViewport(0, 0, width, height);
+
 	}
 
 #pragma endregion
 
 #pragma region Functions
 
-	void Renderer::CreateFrameBuffer(QXuint width, QXuint height)
+	void Renderer::CreateFrameBuffer(QXuint width, QXuint height) noexcept
 	{
 		QXint previous_framebuffer;
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_framebuffer);
@@ -79,7 +86,7 @@ namespace Quantix::Core::Render
         GLenum framebuffer_status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (framebuffer_status != GL_FRAMEBUFFER_COMPLETE)
         {
-            fprintf(stderr, "demo_bloom::framebuffer failed to complete (0x%x)\n", framebuffer_status);
+            LOG(ERROR, std::string("framebuffer failed to complete (0x%x)\n", framebuffer_status));
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
@@ -89,16 +96,15 @@ namespace Quantix::Core::Render
 		_mainBuffer.depthStencilRenderbuffer = depth_stencil_renderbuffer;
 	}
 
-	void Renderer::BindShader(Resources::Material* material, Core::Platform::AppInfo& info, Components::Camera* cam, std::vector<Core::Components::Light>& lights)
+	void Renderer::InitPostProcessEffects(DataStructure::ResourcesManager& manager) noexcept
 	{
-		material->UseShader();
-
-		material->SetFloat3("viewPos", cam->GetPos().e);
-
-		//material->SetLightArray(lights);
+		// create Skybox effect
+		_effects = new PostProcess::Skybox(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/SkyboxShader.vert", "../QuantixEngine/Media/Shader/SkyboxShader.frag"),
+			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/CubemapShader.vert", "../QuantixEngine/Media/Shader/CubemapShader.frag"),
+			manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj"), manager.CreateHDRTexture("../QuantixEngine/Media/Textures/Newport_Loft_Ref.hdr"));
 	}
 
-	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
+	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept
 	{
 		START_PROFILING("draw");
 
@@ -112,23 +118,27 @@ namespace Quantix::Core::Render
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
 
+		// Clear
 		glClearColor(0.0f, 0.0f, 0.0f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 
-		Math::QXmat4 proj{ Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f) };
-		Math::QXmat4 view{ cam->GetLookAt() };
+		// Bind uniform buffer
+		{
+			Math::QXmat4 proj{ Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f) };
+			Math::QXmat4 view{ cam->GetLookAt() };
 
-		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), view.array);
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), proj.array);
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), view.array);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), proj.array);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-		glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 4, light_size * sizeof(Core::Components::Light), &lights[0]);
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 4, light_size * sizeof(Core::Components::Light), &lights[0]);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		}
 
 		Resources::Material* material;
 
@@ -136,18 +146,22 @@ namespace Quantix::Core::Render
 		{
 			material = mesh[i]->GetMaterial();
 
+			// Compare Meshes key for binding each shader one time
 			if (mesh[i]->shaderID != last_shader_id)
 			{
-				BindShader(material, info, cam, lights);
+				material->UseShader();
+				material->SetFloat3("viewPos", cam->GetPos().e);
 				last_shader_id = mesh[i]->shaderID;
 			}
 
+			// Compare Meshes key for binding each texture once per shader
 			if (mesh[i]->textureID != last_texture_id)
 			{
 				material->SendData();
 				last_texture_id = mesh[i]->textureID;
 			}
 
+			// Draw current mesh
 			Math::QXmat4 trs { Math::QXmat4::CreateTRSMatrix({0, 0, 0.f}, {0, 0, 0}, { 1, 1, 1 }) };
 
 			material->SetMat4("TRS", trs);
@@ -159,27 +173,13 @@ namespace Quantix::Core::Render
 			glBindVertexArray(0);
 		}
 
+		_effects->Render(info);
+
 		glActiveTexture(0);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		STOP_PROFILING("draw");
-
-		/*for (QXuint i = 0; i < mesh.size(); ++i)
-		{
-			material = mesh[i]->GetMaterial();
-			BindShader(material, info, cam, lights);
-			material->SendData();
-			Math::QXmat4 trs{ Math::QXmat4::CreateTRSMatrix({0, 0, 0.f}, {0, 0, 0}, { 1, 1, 1 }) };
-
-			material->SetMat4("TRS", trs);
-
-			glBindVertexArray(mesh[i]->GetVAO());
-
-			glDrawElements(GL_TRIANGLES, (GLsizei)mesh[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
-
-			glBindVertexArray(0);
-		}*/
 
 		return _mainBuffer.texture;
 	}

@@ -20,7 +20,7 @@ namespace Quantix::Core::Platform
 	}*/
 
 	Application::Application(QXuint width, QXuint height, std::function<void(QXuint, QXuint)>& resizeCallback) :
-		renderer{ width, height, resizeCallback },
+		renderer{ width, height, resizeCallback, manager},
 		info{ width, height }
 	{
 	}

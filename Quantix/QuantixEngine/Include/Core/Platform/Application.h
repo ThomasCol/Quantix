@@ -19,10 +19,9 @@ namespace Quantix::Core::Platform
 	public:
 #pragma region Attributes
 
-		AppInfo							info;
-		//Window							window;
-		Render::Renderer 				renderer;
 		DataStructure::ResourcesManager manager;
+		AppInfo							info;
+		Render::Renderer 				renderer;
 
 #pragma endregion
 

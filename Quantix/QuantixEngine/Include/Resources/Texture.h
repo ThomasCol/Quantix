@@ -14,8 +14,9 @@ namespace Quantix::Resources
 	private:
 #pragma region Attributes
 
-		QXbyte*	_image;
-		QXuint	_id;
+		QXfloat*	_skyImage;
+		QXbyte*		_image;
+		QXuint		_id;
 
 #pragma endregion
 
@@ -55,7 +56,14 @@ namespace Quantix::Resources
 	 * 
 	 * @param file Path to the texture file
 	 */
-	void Load(const QXchar* file);
+	void Load(const QXchar* file) noexcept;
+
+	/**
+	 * @brief Load an HDR texture
+	 * 
+	 * @param file path to the HDR texture file
+	 */
+	void LoadHDRTexture(const QXstring& file) noexcept;
 
 #pragma region Accessor
 

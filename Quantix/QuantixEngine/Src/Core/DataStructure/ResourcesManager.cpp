@@ -160,6 +160,20 @@ namespace Quantix::Core::DataStructure
 		return texture;
 	}
 
+	Texture* ResourcesManager::CreateHDRTexture(const QXstring& filePath)
+	{
+		auto it = _textures.find(filePath);
+		if (it != _textures.end() && it->second != nullptr)
+		{
+			return it->second;
+		}
+
+		Texture* texture = new Texture;
+		texture->LoadHDRTexture(filePath);
+		_textures[filePath] = texture;
+		return texture;
+	}
+
 	Material* ResourcesManager::LoadMaterial(const QXstring& filePath)
 	{
 		FILE* file;
@@ -196,27 +210,6 @@ namespace Quantix::Core::DataStructure
 		fclose(file);
 
 		return material;
-	}
-
-	Material* ResourcesManager::LoadMaterial(tinyobj::material_t& material)
-	{
-		Material* mat = new Material;
-
-		mat->ambient.x = material.ambient[0];
-		mat->ambient.y = material.ambient[1];
-		mat->ambient.z = material.ambient[2];
-
-		mat->diffuse.x = material.diffuse[0];
-		mat->diffuse.y = material.diffuse[1];
-		mat->diffuse.z = material.diffuse[2];
-
-		mat->specular.x = material.specular[0];
-		mat->specular.y = material.specular[1];
-		mat->specular.z = material.specular[2];
-
-		mat->shininess = material.shininess;
-
-		return mat;
 	}
 
 	void ResourcesManager::LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices)

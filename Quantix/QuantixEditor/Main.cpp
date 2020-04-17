@@ -45,22 +45,6 @@ void PlatformUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 	glfwGetWindowSize(editor->GetWin().GetWindow(), (QXint*)&editor->GetApp()->info.width, (QXint*)&editor->GetApp()->info.height);
 }
 
-void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	Quantix::Core::UserEntry::InputMgr::GetInstance()->CheckKeys(key, action);
-}
-
-void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
-{
-	MouseTest* mouseInput = (MouseTest*)glfwGetWindowUserPointer(Window);
-
-	if (Button == GLFW_MOUSE_BUTTON_RIGHT && Action == GLFW_PRESS)
-	{
-		mouseInput->MouseCaptured = true;
-		glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	}
-}
-
 QXuint	AddButton(Quantix::Core::UserEntry::EKey button, Quantix::Core::UserEntry::ETriggerType type)
 {
 	Quantix::Core::UserEntry::KeyPack pack;
@@ -91,8 +75,8 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Mesh*>& meshes, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	START_PROFILING("Mesh");
-	Quantix::Core::Components::Mesh* mesh = editor->GetApp()->manager.CreateMesh("../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-	mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
+	Quantix::Core::Components::Mesh* mesh = editor->GetApp()->manager.CreateMesh("../QuantixEngine/Media/Mesh/sphere.obj");
+	//mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 	STOP_PROFILING("Mesh");
 
 	meshes.push_back(mesh);
@@ -146,10 +130,6 @@ int main()
 
 		//Init Pack Input Manager
 		InitPack();
-
-		//Init Callback
-		glfwSetKeyCallback(editor->GetWin().GetWindow(), IsTriggered);
-		glfwSetMouseButtonCallback(editor->GetWin().GetWindow(), MouseButtonCallback);
 
 		//Init Camera
 		Quantix::Core::Components::Camera* cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);

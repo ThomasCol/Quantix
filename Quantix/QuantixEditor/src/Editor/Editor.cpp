@@ -3,6 +3,24 @@
 #include "Logger.h"
 #include "Profiler.h"
 #include "stb_image.h"
+#include "Core/UserEntry/InputSystem.h"
+
+void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	Quantix::Core::UserEntry::InputMgr::GetInstance()->CheckKeys(key, action);
+}
+
+void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
+{
+	MouseTest* mouseInput = (MouseTest*)glfwGetWindowUserPointer(Window);
+
+	if (Button == GLFW_MOUSE_BUTTON_RIGHT && Action == GLFW_PRESS)
+	{
+		mouseInput->MouseCaptured = true;
+		glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+}
+
 
 Editor::Editor(QXuint width, QXuint height) :
 	_win{width, height},
@@ -12,7 +30,10 @@ Editor::Editor(QXuint width, QXuint height) :
 	_hierarchy{},
 	_flagsEditor{}
 {
+	//Init Callback
 	_mouseInput = new MouseTest({false, 0.0f, 0.0f, 0.0f, 0.0f});
+	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
+	glfwSetMouseButtonCallback(_win.GetWindow(), MouseButtonCallback);
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -84,6 +105,8 @@ void Editor::InitImGui()
 void Editor::Update(QXuint FBO)
 {
 	InitImGui();
+	if (_mouseInput->MouseCaptured)
+		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
 
 	_fbo = FBO;
 	static QXint i = 0;

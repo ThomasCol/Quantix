@@ -300,10 +300,10 @@ namespace Math
 		QXfloat far, QXfloat fov)
 	{
 		QXfloat top, right;
-		QXfloat a = (QXfloat)width / height;
+		QXfloat ratio = (QXfloat)width / height;
 
 		top = (QXfloat)(near * tanf(fov * 0.5 * Q_PI / 180.0f));
-		right = top * a;
+		right = top * ratio;
 
 		QXmat4 res;
 		res[0][0] = near / right;
