@@ -22,7 +22,7 @@ void Docker::Init()
 	ImGuiID dock_id_center = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Right, 0.2f, NULL, &dock_main_id);
 	ImGuiID dock_id_scene = ImGui::DockBuilderSplitNode(dock_id_center, ImGuiDir_Up, 0.7f, NULL, &dock_id_center);
 	ImGuiID dock_id_log = ImGui::DockBuilderSplitNode(dock_id_center, ImGuiDir_Down, 0.2f, NULL, &dock_id_center);
-	ImGuiID dock_id_right = ImGui::DockBuilderSplitNode(dock_id_scene, ImGuiDir_Right, 0.2f, NULL, &dock_id_scene);
+	ImGuiID dock_id_right = ImGui::DockBuilderSplitNode(dock_id_scene, ImGuiDir_Right, 0.3f, NULL, &dock_id_scene);
 
 	_winEditor.push_back(CreateWindowEditorDock("Console", dock_id_log));
 	_winEditor.push_back(CreateWindowEditorDock("Explorer", dock_id_log));

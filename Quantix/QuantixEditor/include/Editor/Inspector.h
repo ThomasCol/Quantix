@@ -28,6 +28,7 @@ public:
 	inline void SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 
 	void		Update();
+	void		PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 	void		ShowComponent();
 	void		AddComponent();
 	void		GetInstance(rttr::instance inst, rttr::type t);

@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <array>
 
+#include "Core/DataStructure/GameObject3D.h"
+
 namespace Quantix::Core::Render
 {
 	void ResizeCallback(QXuint width, QXuint height)
@@ -109,6 +111,8 @@ namespace Quantix::Core::Render
 
 		for (QXuint i = 0; i < mesh.size(); i++)
 		{
+			if (!mesh[i]->IsEnable())
+				continue;
 			material = mesh[i]->GetMaterial();
 
 			if (mesh[i]->shaderID != last_shader_id)
@@ -123,11 +127,9 @@ namespace Quantix::Core::Render
 				last_texture_id = mesh[i]->textureID;
 			}
 
-			Math::QXmat4 trs;
-			if (i)
-				trs = { Math::QXmat4::CreateTRSMatrix({0, 0, 0.f}, {0, (QXfloat)info.currentTime, 0}, { 1, 1, 1 }) };
-			else
-				trs = { Math::QXmat4::CreateTRSMatrix({0, 0, -1.f}, {0, (QXfloat)info.currentTime, 0}, { 1, 1, 1 }) };
+			Quantix::Core::DataStructure::GameObject3D* obj = (Quantix::Core::DataStructure::GameObject3D*)mesh[i]->GetObject();
+
+			Math::QXmat4 trs = { obj->GetTransform()->GetTRS() };
 
 			material->SetMat4("TRS", trs);
 

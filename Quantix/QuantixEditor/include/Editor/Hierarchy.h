@@ -12,7 +12,7 @@ public:
 	Hierarchy() = default;
 	~Hierarchy() = default;
 
-	void Update(std::string name, ImGuiWindowFlags flags, Quantix::Physic::Transform3D* gameComponents);
+	void				Update(std::string name, ImGuiWindowFlags flags, Quantix::Physic::Transform3D* gameComponents);
 
 	void				SetSelectable(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node, QXint i);
 	void				DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node);

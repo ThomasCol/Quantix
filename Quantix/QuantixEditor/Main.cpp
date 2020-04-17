@@ -41,27 +41,11 @@ void PlatformUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 		editor->_mouseInput->MouseY = (float)MouseY;
 
 		if (editor->_mouseInput->DeltaMouseX != 0 && editor->_mouseInput->DeltaMouseY != 0)
-			camera->ChangeView(editor->_mouseInput->MouseX, editor->_mouseInput->MouseY, editor->GetWin().GetWidth(), editor->GetWin().GetHeight(), editor->GetApp()->info.deltaTime);
+			camera->ChangeView(MouseX, MouseY, editor->GetWin().GetWidth(), editor->GetWin().GetHeight(), editor->GetApp()->info.deltaTime);
 	}
 
 	// Screen size
 	glfwGetWindowSize(editor->GetWin().GetWindow(), (QXint*)&editor->GetApp()->info.width, (QXint*)&editor->GetApp()->info.height);
-}
-
-void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	Quantix::Core::UserEntry::InputMgr::GetInstance()->CheckKeys(key, action);
-}
-
-void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
-{
-	MouseTest* mouseInput = (MouseTest*)glfwGetWindowUserPointer(Window);
-
-	if (Button == GLFW_MOUSE_BUTTON_RIGHT && Action == GLFW_PRESS)
-	{
-		mouseInput->MouseCaptured = true;
-		glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	}
 }
 
 QXuint	AddButton(Quantix::Core::UserEntry::EKey button, Quantix::Core::UserEntry::ETriggerType type)
@@ -158,10 +142,6 @@ void Init(Editor* editor, Quantix::Physic::Transform3D* graph, Quantix::Core::Da
 	//Init Pack Input Manager
 	InitPack();
 
-	//Init Callback
-	glfwSetKeyCallback(editor->GetWin().GetWindow(), IsTriggered);
-	glfwSetMouseButtonCallback(editor->GetWin().GetWindow(), MouseButtonCallback);
-
 	gameObject->SetTransform(graph->GetChild()[0]);
 	gameObject->AddComponent<Quantix::Core::Components::Mesh>();
 	graph->GetChild()[0]->SetObject(gameObject);
@@ -205,7 +185,7 @@ int main()
 {
 	try
 	{
-		Editor*											editor = new Editor(1440, 920);
+		Editor*											editor = new Editor(1920, 900);
 		//Init Camera
 		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 		Quantix::Physic::Transform3D*					graph = new Quantix::Physic::Transform3D(Math::QXvec3(0,0,0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1));

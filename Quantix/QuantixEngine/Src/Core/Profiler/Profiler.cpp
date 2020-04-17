@@ -43,7 +43,7 @@ namespace Quantix::Core::Profiling
 
 	void Profiler::StopProfiling(const QXstring& type)
 	{
-		if (_activate && _activateFirst)
+		if (_activate)
 		{
 			_infoProfiling[type].activate = false;
 			for (std::map<QXstring, Info>::iterator it = _infoProfiling.begin(); it != _infoProfiling.end(); ++it)
@@ -52,6 +52,9 @@ namespace Quantix::Core::Profiling
 					it->second.timer = glfwGetTime() - it->second.beginTime;
 					return;
 				}
+		}
+		if (!_activate && _activateFirst)
+		{
 			_activateFirst = false;
 			currId = 0;
 
@@ -94,8 +97,10 @@ namespace Quantix::Core::Profiling
 			// Set precision to 2 digits
 			streamObj << std::setprecision(2);
 
-			streamObj << pair.second.timer;
-			QXstring time = "**** Time to process ****: " + streamObj.str() + "seconds\n\n";
+			QXdouble tmpTimer = pair.second.timer * 1000.f;
+			streamObj << tmpTimer;
+
+			QXstring time = "**** Time to process ****: " + streamObj.str() + " milliseconds\n\n";
 			_profiling += time;
 		}
 	}
