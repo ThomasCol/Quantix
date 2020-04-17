@@ -43,7 +43,7 @@ namespace Quantix::Core::DataStructure
 		 * 
 		 * @param comp Component
 		 */
-		Component(Component&& comp);
+		Component(Component&& comp) noexcept;
 
 		/**
 		 * @brief Construct a new Component object
