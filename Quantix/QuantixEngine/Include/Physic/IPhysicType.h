@@ -1,7 +1,7 @@
 #ifndef __IPHYSICTYPE_H__
 #define __IPHYSICTYPE_H__
 
-//#include <PxActor.h>
+#include <physx/include/PxActor.h>
 //#include <PxPhysicsAPI.h>
 //#include <PxRigidActorExt.h>
 
