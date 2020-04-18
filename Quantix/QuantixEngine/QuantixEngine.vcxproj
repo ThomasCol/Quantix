@@ -197,6 +197,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
     <ClCompile Include="Src\Core\Components\Rigidbody.cpp" />
     <ClCompile Include="Src\Core\Components\PlaneCollider.cpp" />
     <ClCompile Include="Src\Physic\IPhysicType.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="Include\Physic\IPhysicType.h" />
     <ClInclude Include="Include\Core\Components\PlaneCollider.h" />
     <ClInclude Include="Include\Core\Components\Rigidbody.h" />
+    <ClInclude Include="Include\Physic\PhysicDynamic.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
