@@ -10,7 +10,7 @@
 
 namespace Quantix::Resources
 {
-	struct Vertex
+	struct QUANTIX_API Vertex
 	{
 		Math::QXvec3 position;
 		Math::QXvec2 uv;

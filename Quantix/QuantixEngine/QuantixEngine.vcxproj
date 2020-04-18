@@ -119,7 +119,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4312</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -198,6 +198,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Src\Core\Components\PlaneCollider.cpp" />
+    <ClCompile Include="Src\Core\UserEntry\InputManager.cpp" />
     <ClCompile Include="Src\Physic\IPhysicType.cpp" />
     <ClCompile Include="Src\Core\Components\CapsuleCollider.cpp" />
     <ClCompile Include="Src\Core\Components\SphereCollider.cpp" />
@@ -222,7 +223,6 @@
     <ClCompile Include="Src\Core\Debugger\Assertion.cpp" />
     <ClCompile Include="Src\Core\Debugger\Logger.cpp" />
     <ClCompile Include="Src\Core\Profiler\Profiler.cpp" />
-    <ClCompile Include="Src\Core\UserEntry\InputSystem.cpp" />
     <ClCompile Include="Src\Physic\Transform2D.cpp" />
     <ClCompile Include="Src\Physic\Transform3D.cpp" />
     <ClCompile Include="Src\Resources\Material.cpp" />
@@ -255,8 +255,8 @@
     <ClInclude Include="Include\Core\Render\PostProcess\PostProcessEffect.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
     <ClInclude Include="Include\Core\Render\PostProcess\Skybox.h" />
+    <ClInclude Include="Include\Core\UserEntry\InputManager.h" />
     <ClInclude Include="Include\Resources\Scene.h" />
-    <ClInclude Include="Include\Core\UserEntry\InputSystem.h" />
     <ClInclude Include="Include\Physic\Transform2D.h" />
     <ClInclude Include="Include\Physic\Transform3D.h" />
     <ClInclude Include="Include\Resources\Material.h" />

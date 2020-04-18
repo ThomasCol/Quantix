@@ -2,7 +2,7 @@
 #include "Core/DataStructure/GameComponent.h"
 #include "MathDefines.h"
 
-#define SENSIBILITY 0.0025
+#define SENSIBILITY 0.05f
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -79,24 +79,21 @@ namespace Quantix::Core::Components
 		_lookAt = Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up);
 	}
 
-	void			Camera::ChangeView(int posX, int posY, int width, int height, double frameTime)
+	void			Camera::ChangeView(QXfloat posX, QXfloat posY, QXint width, QXint height, QXdouble frameTime)
 	{
-		int x = posX - (int)(width * 0.5f);
-		int y = posY - (int)(height * 0.5f);
+		Math::QXvec3	rotDir{ -posY, -posX, 0.f };
 
-		Math::QXvec3	rotDir{ (float)-y, (float)-x, 0.f };
-
-		Rotate(rotDir * (float)frameTime * SENSIBILITY);
+		Rotate(rotDir * (QXfloat)frameTime * SENSIBILITY);
 	}
 
 	void			Camera::Rotate(Math::QXvec3 rotate)
 	{
 		_angle += rotate;
 
-		if (_angle.x > (float)Q_PI / 3.f)
-			_angle.x = (float)Q_PI / 3.f;
-		if (_angle.x < (float)(-Q_PI) / 3.f)
-			_angle.x = (float)(-Q_PI) / 3.f;
+		if (_angle.x > Q_PI / 3.f)
+			_angle.x = Q_PI / 3.f;
+		if (_angle.x < -Q_PI / 3.f)
+			_angle.x = -Q_PI / 3.f;
 
 		_dir.z = cos(_angle.x) * cos(_angle.y);
 		_dir.y = sin(_angle.x);

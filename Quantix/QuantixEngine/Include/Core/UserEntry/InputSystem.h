@@ -13,7 +13,8 @@ namespace Quantix::Core::UserEntry
 	enum class QUANTIX_API EButtonType
 	{
 		KEYBOARD,
-		GAMEPAD
+		GAMEPAD,
+		MOUSE
 	};
 
 	enum class QUANTIX_API ETriggerType
@@ -151,14 +152,9 @@ namespace Quantix::Core::UserEntry
 
 	enum QUANTIX_API EMouseButton
 	{
-		QX_MOUSE_BUTTON_1 = GLFW_MOUSE_BUTTON_1,
-		QX_MOUSE_BUTTON_2 = GLFW_MOUSE_BUTTON_2,
-		QX_MOUSE_BUTTON_3 = GLFW_MOUSE_BUTTON_3,
-		QX_MOUSE_BUTTON_4 = GLFW_MOUSE_BUTTON_4,
-		QX_MOUSE_BUTTON_5 = GLFW_MOUSE_BUTTON_5,
-		QX_MOUSE_BUTTON_6 = GLFW_MOUSE_BUTTON_6,
-		QX_MOUSE_BUTTON_7 = GLFW_MOUSE_BUTTON_7,
-		QX_MOUSE_BUTTON_8 = GLFW_MOUSE_BUTTON_8
+		QX_MOUSE_BUTTON_LEFT = GLFW_MOUSE_BUTTON_LEFT,
+		QX_MOUSE_BUTTON_RIGHT = GLFW_MOUSE_BUTTON_RIGHT,
+		QX_MOUSE_BUTTON_MIDDLE = GLFW_MOUSE_BUTTON_MIDDLE
 	};
 
 	enum QUANTIX_API EGamepadButton
@@ -204,7 +200,7 @@ namespace Quantix::Core::UserEntry
 		virtual void		React(int action) = 0;
 	};
 
-	struct QUANTIX_API MouseMvmt : public Input
+	struct QUANTIX_API MouseMouvement : public Input
 	{
 	public:
 
@@ -249,7 +245,7 @@ namespace Quantix::Core::UserEntry
 		bool IsValid() const;
 	};
 
-	class QUANTIX_API InputMgr
+	class QUANTIX_API InputManager
 	{
 	private:
 		//Attribute
@@ -257,15 +253,15 @@ namespace Quantix::Core::UserEntry
 		//MouseMvmt				_mouseMvmt;
 		std::vector<Joystick>	_joysticks;
 
-		static InputMgr*		instance;
+		static InputManager*		instance;
 
 		//Methods
 		bool				IsKeyAlreadyInPack(unsigned int indexOfPack, const Button& key);
 
 	public:
 		//Constructor & Destructor
-		InputMgr() = default;
-		~InputMgr() = default;
+		InputManager() = default;
+		~InputManager() = default;
 
 		//Methods
 		int					AddPack(const KeyPack& pack);
@@ -286,7 +282,7 @@ namespace Quantix::Core::UserEntry
 		float	GetJoysticksAxis(const Joystick& joystick, EGamepadAxis axis);*/
 
 		//Getter
-		static InputMgr*	GetInstance();
+		//static InputManagers*	GetInstance();
 		const KeyPack&		GetPack(unsigned int index);
 	};
 }

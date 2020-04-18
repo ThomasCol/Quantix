@@ -22,7 +22,6 @@
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />
     <ClCompile Include="Src\Core\Render\Renderer.cpp" />
     <ClCompile Include="Lib\Glad\src\glad.c" />
-    <ClCompile Include="Src\Core\UserEntry\InputSystem.cpp" />
     <ClCompile Include="Src\Physic\Transform2D.cpp" />
     <ClCompile Include="Src\Physic\Transform3D.cpp" />
     <ClCompile Include="Src\Resources\Scene.cpp" />
@@ -35,6 +34,7 @@
     <ClCompile Include="Src\Core\Components\CubeCollider.cpp" />
     <ClCompile Include="Src\Physic\IPhysicType.cpp" />
     <ClCompile Include="Src\Core\Components\PlaneCollider.cpp" />
+    <ClCompile Include="Src\Core\UserEntry\InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -57,7 +57,6 @@
     <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
     <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
-    <ClInclude Include="Include\Core\UserEntry\InputSystem.h" />
     <ClInclude Include="Include\Physic\Transform2D.h" />
     <ClInclude Include="Include\Physic\Transform3D.h" />
     <ClInclude Include="Include\Core\Render\PostProcess\PostProcessEffect.h" />
@@ -72,5 +71,6 @@
     <ClInclude Include="Include\Core\Components\SphereCollider.h" />
     <ClInclude Include="Include\Physic\IPhysicType.h" />
     <ClInclude Include="Include\Core\Components\PlaneCollider.h" />
+    <ClInclude Include="Include\Core\UserEntry\InputManager.h" />
   </ItemGroup>
 </Project>

@@ -108,7 +108,7 @@ namespace Quantix::Core::Render
 
 		QXbyte last_shader_id = -1;
 		QXbyte last_texture_id = -1;
-		QXuint	light_size = lights.size();
+		QXuint	light_size = (QXuint)lights.size();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
 

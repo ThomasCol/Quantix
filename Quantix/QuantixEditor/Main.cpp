@@ -12,9 +12,10 @@
 #include <Editor.h>
 #include <Core/Profiler/Profiler.h>
 #include <Window.h>
-#include <Core/UserEntry/InputSystem.h>
+//#include <Core/UserEntry/InputSystem.h>
 #include <Vec3.h>
 #include <Core/DataStructure/GameObject3D.h>
+#include <Core/UserEntry/InputManager.h>
 
 #define SPEED (0.1f)
 
@@ -31,31 +32,19 @@ void PlatformUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 {
 	// Mouse state
 	{
-		double MouseX, MouseY;
-		glfwGetCursorPos(editor->GetWin().GetWindow(), &MouseX, &MouseY);
+		Math::QXvec2 mousePos = GetMousePos();
 
-		editor->_mouseInput->DeltaMouseX = (float)MouseX - editor->_mouseInput->MouseX;
-		editor->_mouseInput->DeltaMouseY = (float)MouseY - editor->_mouseInput->MouseY;
+		editor->_mouseInput->DeltaMouseX = mousePos.x - editor->_mouseInput->MouseX;
+		editor->_mouseInput->DeltaMouseY = mousePos.y - editor->_mouseInput->MouseY;
 
-		editor->_mouseInput->MouseX = (float)MouseX;
-		editor->_mouseInput->MouseY = (float)MouseY;
+		editor->_mouseInput->MouseX = mousePos.x;
+		editor->_mouseInput->MouseY = mousePos.y;
 
-		if (editor->_mouseInput->DeltaMouseX != 0 && editor->_mouseInput->DeltaMouseY != 0)
-			camera->ChangeView(MouseX, MouseY, editor->GetWin().GetWidth(), editor->GetWin().GetHeight(), editor->GetApp()->info.deltaTime);
+		camera->ChangeView(editor->_mouseInput->DeltaMouseX, editor->_mouseInput->DeltaMouseY, editor->GetWin().GetWidth(), editor->GetWin().GetHeight(), editor->GetApp()->info.deltaTime);
 	}
 
 	// Screen size
 	glfwGetWindowSize(editor->GetWin().GetWindow(), (QXint*)&editor->GetApp()->info.width, (QXint*)&editor->GetApp()->info.height);
-}
-
-QXuint	AddButton(Quantix::Core::UserEntry::EKey button, Quantix::Core::UserEntry::ETriggerType type)
-{
-	Quantix::Core::UserEntry::KeyPack pack;
-	QXuint index = Quantix::Core::UserEntry::InputMgr::GetInstance()->AddPack(pack);
-	Quantix::Core::UserEntry::Button key(button, type);
-	Quantix::Core::UserEntry::InputMgr::GetInstance()->AddKeyToPack(index, key);
-
-	return index;
 }
 
 void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
@@ -63,13 +52,13 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 	if (editor->_mouseInput->MouseCaptured)
 	{
 		PlatformUpdate(editor, camera);
-		if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackF).IsValid())
+		if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
 			camera->SetPos(camera->GetPos() + (camera->GetDir() * SPEED));
-		if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackB).IsValid())
+		if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
 			camera->SetPos(camera->GetPos() - (camera->GetDir() * SPEED));
-		if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackL).IsValid())
+		if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
 			camera->SetPos(camera->GetPos() - (camera->GetDir().Cross(camera->GetUp()) * SPEED));
-		if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackR).IsValid())
+		if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
 			camera->SetPos(camera->GetPos() + (camera->GetDir().Cross(camera->GetUp()) * SPEED));
 		camera->UpdateLookAt(camera->GetPos());
 	}
@@ -115,23 +104,23 @@ void InitScene(Editor* editor, Quantix::Core::DataStructure::GameObject3D* objec
 
 void InitPack()
 {
-	indexPackD = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_F1, Quantix::Core::UserEntry::ETriggerType::PRESSED);
+	/*indexPackD = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_F1, Quantix::Core::UserEntry::ETriggerType::PRESSED);
 	indexPackE = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_ESCAPE, Quantix::Core::UserEntry::ETriggerType::PRESSED);
 	indexPackF = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_W, Quantix::Core::UserEntry::ETriggerType::DOWN);
 	indexPackB = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_S, Quantix::Core::UserEntry::ETriggerType::DOWN);
 	indexPackL = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_A, Quantix::Core::UserEntry::ETriggerType::DOWN);
-	indexPackR = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_D, Quantix::Core::UserEntry::ETriggerType::DOWN);
+	indexPackR = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_D, Quantix::Core::UserEntry::ETriggerType::DOWN);*/
 }
 
 void	DebugMode()
 {
-	if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackD).IsValid())
+	if (GetKey(QX_KEY_F1) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		if (!state)
 			ACTIVATE_PROFILING(!GETSTATE_PROFILING());
 		state = true;
 	}
-	if (!Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackD).IsValid())
+	if (GetKey(QX_KEY_F1) != Quantix::Core::UserEntry::EKeyState::RELEASED)
 		state = false;
 }
 
@@ -161,7 +150,7 @@ void Update(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, 
 
 	meshes.push_back(mesh);
 
-	if (Quantix::Core::UserEntry::InputMgr::GetInstance()->GetPack(indexPackE).IsValid())
+	if (GetKey(QX_KEY_ESCAPE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		if (editor->_mouseInput->MouseCaptured)
 		{
@@ -169,6 +158,11 @@ void Update(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, 
 			editor->_mouseInput->MouseCaptured = false;
 		}
 	}
+
+	Quantix::Core::UserEntry::InputManager::GetInstance()->Update(editor->GetWin().GetWindow());
+
+	Quantix::Core::UserEntry::EKeyState state = GetKey(QX_MOUSE_BUTTON_LEFT);
+
 	DebugMode();
 
 	START_PROFILING("Draw");

@@ -101,5 +101,24 @@
     <ClInclude Include="externals\stb_image.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Editor.rc">
+      <Filter>Fichiers de ressources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="C:\Users\thoma\Desktop\logo_thomas4_nsl_icon.ico">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="..\QuantixEngine\Media\Logo\Quantix_Logo.ico">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

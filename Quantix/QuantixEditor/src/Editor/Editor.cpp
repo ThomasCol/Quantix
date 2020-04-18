@@ -1,13 +1,13 @@
 #include "Editor.h"
 #include <iostream>
-#include <Core/UserEntry/InputSystem.h>
+//#include <Core/UserEntry/InputSystem.h>
 #include <Core/Profiler/Profiler.h>
 #include "stb_image.h"
-#include "Core/UserEntry/InputSystem.h"
+//#include "Core/UserEntry/InputSystem.h"
 
 void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	Quantix::Core::UserEntry::InputMgr::GetInstance()->CheckKeys(key, action);
+	//Quantix::Core::UserEntry::InputMgr::GetInstance()->CheckKeys(key, action);
 }
 
 void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
@@ -200,7 +200,6 @@ void Editor::Simulation()
 		if (ImGui::ImageButton((ImTextureID)_simImg[i]->GetId(), ImVec2(25, 25)))
 			_simState[i] = !_simState[i];
 		ImGui::PopStyleColor();
-
 		pos *= -1;
 	}
 }

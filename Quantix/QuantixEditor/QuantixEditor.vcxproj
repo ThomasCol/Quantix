@@ -103,6 +103,7 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
+      <DisableSpecificWarnings>4251;4312</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -210,6 +211,15 @@
     <ClInclude Include="include\Editor\MenuBar.h" />
     <ClInclude Include="include\Editor\Node.h" />
     <ClInclude Include="include\Window.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Editor.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\QuantixEngine\Media\Logo\Quantix_Logo.ico" />
+    <Image Include="C:\Users\thoma\Desktop\logo_thomas4_nsl_icon.ico" />
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

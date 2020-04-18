@@ -90,7 +90,7 @@ namespace Quantix::Core::Components
 		 * @param height int Value
 		 * @param frameTime double Value
 		 */
-		void							ChangeView(int posX, int posY, int width, int height, double frameTime);
+		void							ChangeView(QXfloat posX, QXfloat posY, QXint width, QXint height, QXdouble frameTime);
 
 		/**
 		 * @brief Rotate The dir of the Camera

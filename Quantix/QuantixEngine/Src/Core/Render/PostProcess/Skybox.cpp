@@ -55,7 +55,7 @@ namespace Quantix::Core::Render::PostProcess
 	void Skybox::CaptureCubemap() noexcept
 	{
 		// Create specific projections and cam to take "screenshots" and create 6 textures
-		Math::QXmat4 proj = Math::QXmat4::CreateProjectionMatrix(1024, 1024, 0.478, 10, 90);
+		Math::QXmat4 proj = Math::QXmat4::CreateProjectionMatrix(1024, 1024, 0.478f, 10, 90);
 
 		Math::QXmat4 views[] = {
 			Math::QXmat4::CreateLookAtMatrix({0, 0, 0}, {1, 0, 0}, {0, -1, 0}), //BACK
