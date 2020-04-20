@@ -2,14 +2,12 @@
 #define __IPHYSICTYPE_H__
 
 
-#include <../physx/include/PxActor.h>
-#include <physx/include/PxActor.h>
 #include <PxActor.h>
 
-//#include <PxPhysicsAPI.h>
-//#include <PxRigidActorExt.h>
+#include <PxPhysicsAPI.h>
+#include <PxRigidActorExt.h>
 
-namespace Physic
+namespace Quantix::Physic
 {
 
 	class PhysicStatic;
