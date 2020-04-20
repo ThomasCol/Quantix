@@ -8,7 +8,7 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::Components
 {
-	SphereCollider::SphereCollider(DataStructure::GameComponent* par) noexcept :
+	SphereCollider::SphereCollider(DataStructure::GameComponent* par):
 		ICollider(par)
 	{}
 
@@ -19,4 +19,9 @@ namespace Quantix::Core::Components
 	SphereCollider::SphereCollider(SphereCollider&& other) noexcept :
 		ICollider(other)
 	{}
+
+	SphereCollider* SphereCollider::Copy() const
+	{
+		return new SphereCollider(*this);
+	}
 }

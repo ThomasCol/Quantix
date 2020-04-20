@@ -16,12 +16,15 @@ namespace Quantix::Core::Components
 	{
 #pragma region Constructors
 
-		SphereCollider(DataStructure::GameComponent* par) noexcept;
+		SphereCollider(DataStructure::GameComponent* par);
 		SphereCollider(const SphereCollider& par) noexcept;
 		SphereCollider(SphereCollider&& other) noexcept;
 		~SphereCollider() noexcept = default;
 		
 #pragma endregion
+
+		SphereCollider* Copy() const override;
+
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
 	};
 }

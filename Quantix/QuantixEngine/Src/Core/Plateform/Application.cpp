@@ -23,8 +23,10 @@ namespace Quantix::Core::Platform
 		renderer { width, height, manager },
 		info{ width, height },
 		sceneManager {},
-		scene {new Resources::Scene()}
+		scene {new Resources::Scene()},
+		physicHandler {}
 	{
+		physicHandler.InitSystem();
 	}
 
 	void Application::Run()

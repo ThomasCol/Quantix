@@ -8,7 +8,7 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::Components
 {
-	PlaneCollider::PlaneCollider(DataStructure::GameComponent* par) noexcept :
+	PlaneCollider::PlaneCollider(DataStructure::GameComponent* par):
 		ICollider(par)
 	{}
 
@@ -19,4 +19,9 @@ namespace Quantix::Core::Components
 	PlaneCollider::PlaneCollider(PlaneCollider&& other) noexcept :
 		ICollider(other)
 	{}
+
+	PlaneCollider* PlaneCollider::Copy() const
+	{
+		return new PlaneCollider(*this);
+	}
 }

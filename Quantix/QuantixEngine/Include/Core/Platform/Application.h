@@ -6,6 +6,7 @@
 #include "Core/DataStructure/ResourcesManager.h"
 #include "Core/DataStructure/SceneManager.h"
 #include "Resources/Scene.h"
+#include "Physic/PhysicHandler.h"
 
 namespace Quantix::Core::Platform
 {
@@ -26,6 +27,7 @@ namespace Quantix::Core::Platform
 		Render::Renderer 				renderer;
 		DataStructure::SceneManager		sceneManager;
 		Resources::Scene*				scene;
+		Physic::PhysicHandler			physicHandler;
 
 #pragma endregion
 

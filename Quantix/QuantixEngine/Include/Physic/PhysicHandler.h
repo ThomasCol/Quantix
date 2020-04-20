@@ -6,6 +6,7 @@
 #include <PxPhysicsAPI.h>
 #include <PxActor.h>
 #include <PxRigidActorExt.h>
+#include "Core/DLLHeader.h"
 
 #include "Core/DataStructure/GameComponent.h"
 
@@ -14,7 +15,7 @@ namespace Quantix::Physic
 	using namespace physx;
 	class IPhysicType;
 
-	class PhysicHandler
+	class QUANTIX_API PhysicHandler
 	{
 	private:
 #pragma region Attributes

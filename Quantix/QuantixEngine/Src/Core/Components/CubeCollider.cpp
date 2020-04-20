@@ -8,7 +8,7 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::Components
 {
-	CubeCollider::CubeCollider(DataStructure::GameComponent* par) noexcept :
+	CubeCollider::CubeCollider(DataStructure::GameComponent* par):
 		ICollider(par)
 	{}
 
@@ -19,4 +19,9 @@ namespace Quantix::Core::Components
 	CubeCollider::CubeCollider(CubeCollider&& other) noexcept :
 		ICollider(other)
 	{}
+
+	CubeCollider* CubeCollider::Copy() const
+	{
+		return new CubeCollider(*this);
+	}
 }

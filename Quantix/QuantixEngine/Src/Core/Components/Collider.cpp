@@ -11,31 +11,31 @@ RTTR_PLUGIN_REGISTRATION
 		rttr::value("Point", Quantix::Core::Components::EPhysXType::DYNAMIC),
 		rttr::value("Spot", Quantix::Core::Components::EPhysXType::COUNT))
 	.property("idShape", &Quantix::Core::Components::ICollider::idShape)
-	.property("type", &Quantix::Core::Components::ICollider::type);
+	.property("physicType", &Quantix::Core::Components::ICollider::physicType);
 }
 
 namespace Quantix::Core::Components
 {
-	ICollider::ICollider(DataStructure::GameComponent* par) noexcept:
+	ICollider::ICollider(DataStructure::GameComponent* par):
 		Core::DataStructure::Component(par)
 	{}
-
+	
 	ICollider::ICollider(const ICollider& col) noexcept :
 		Core::DataStructure::Component(col),
 		idShape {col.idShape},
-		type	{col.type}
+		physicType{col.physicType }
 	{}
 
 	ICollider::ICollider(ICollider&& col) noexcept :
 		Core::DataStructure::Component(col),
 		idShape{ std::move(col.idShape) },
-		type{ std::move(col.type) }
+		physicType{ std::move(col.physicType) }
 	{}
 
 	ICollider& ICollider::operator=(const ICollider& other) noexcept
 	{
 		idShape = other.idShape;
-		type = other.type;
+		physicType = other.physicType;
 
 		return *this;
 	}
@@ -43,8 +43,13 @@ namespace Quantix::Core::Components
 	ICollider& ICollider::operator=(ICollider&& other) noexcept
 	{
 		idShape = std::move(other.idShape);
-		type = std::move(other.type);
+		physicType = std::move(other.physicType);
 
 		return *this;
+	}
+
+	ICollider* ICollider::Copy() const
+	{
+		return new ICollider(*this);
 	}
 }
