@@ -36,6 +36,8 @@ namespace Quantix::Core::Components
 		};
 #pragma region Constructors
 
+		Mesh() = default;
+
 		/**
 		 * @brief Construct a new Mesh object
 		 * 

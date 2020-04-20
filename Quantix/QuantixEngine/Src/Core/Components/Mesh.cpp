@@ -8,6 +8,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::Components::Mesh>("Mesh")
+	.constructor<>()
 	.constructor<Quantix::Resources::Model*, Quantix::Resources::Material*>()
 	.constructor<const Quantix::Core::Components::Mesh&>()
 	.constructor<Quantix::Core::Components::Mesh&&>()

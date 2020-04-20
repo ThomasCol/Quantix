@@ -99,8 +99,6 @@ void Editor::InitImGui()
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
 
-	ImGuizmo::SetRect(0, 0, _app->info.width, _app->info.height);
-
 	// Disabling mouse for ImGui if mouse is captured by the app (it must be done here)
 	if (_mouseInput->MouseCaptured)
 		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
@@ -171,12 +169,12 @@ void Editor::DrawMenuBar()
 		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
 		i++;
 	}
-	_menuBar.Update(_root->GetTransform()->GetChilds());
+	_menuBar.Update(_root->GetTransform()->GetChilds(), _app);
 }
 
 void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 {
-	_hierarchy.Update(name, flags, _root->GetTransform());
+	_hierarchy.Update(name, flags, _root->GetTransform(), _app->scene);
 }
 
 void Editor::Simulation()
@@ -250,7 +248,8 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		//ImGuizmo::DrawGrid(ViewTransform.e, ProjectionTransform.e, identity, 10.f);
+		ImGuizmo::SetRect(ImGui::GetCursorPosX(), ImGui::GetCursorPosY(), ImGui::GetContentRegionMax().x, ImGui::GetContentRegionMax().y);
+		ImGuizmo::DrawGrid(_mainCamera->GetLookAt().array, _app->info.proj.array, Math::QXmat4::Identity().array, 10.f);
 		if (i == 0)
 		{
 			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");
@@ -263,8 +262,8 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 		}
-		DrawGuizmo();
 		ImGui::Image((ImTextureID)(size_t)_fbo, ImGui::GetWindowSize(), { 0.f, 1.f }, { 1.f, 0.f });
+		DrawGuizmo();
 	}
 	ImGui::End();
 }

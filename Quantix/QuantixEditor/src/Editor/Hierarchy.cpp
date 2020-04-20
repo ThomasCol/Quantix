@@ -18,7 +18,7 @@ void Hierarchy::SetSelectable(std::vector<Quantix::Physic::Transform3D*>& nodeGl
 		DesactivatePrevInspector(nodeGlobal, node[i]);
 }
 
-void Hierarchy::DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node)
+void Hierarchy::DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
 	static QXint j = 0;
 	for (QXuint i{ 0 }; i < node.size(); i++)
@@ -42,49 +42,49 @@ void Hierarchy::DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGloba
 				SetSelectable(nodeGlobal, node, i);
 			if (isOpen)
 			{
-				DrawObject(nodeGlobal, node[i]->GetChilds());
+				DrawObject(nodeGlobal, node[i]->GetChilds(), scene);
 				ImGui::TreePop();
 			}
 		}
-		PopUpMenuItem(nodeGlobal, node[i]);
+		PopUpMenuItem(nodeGlobal, node[i], scene);
 		ImGui::PopID();
 	}
-	PopUpMenu(node);
+	PopUpMenu(node, scene);
 }
 
-void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::Transform3D* node)
+void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::Transform3D* node, Quantix::Resources::Scene* scene)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		if (ImGui::TreeNodeEx(&node, ImGuiTreeNodeFlags_Selected, "World Scene"))
 		{
 			if (node->GetChilds().size() > 0)
-				DrawObject(node->GetChilds(), node->GetChilds());
+				DrawObject(node->GetChilds(), node->GetChilds(), scene);
 			ImGui::TreePop();
 		}
 	}
 	ImGui::End();
 }
 
-void Hierarchy::CreateChild(QXbool& select, std::vector<Quantix::Physic::Transform3D*>& nodes)
+void Hierarchy::CreateChild(QXbool& select, std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene)
 {
 	for (QXuint i = 0; i < nodes.size(); i++)
 	{
 		if (nodes[i]->GetChilds().size() != 0)
-			CreateChild(select, nodes[i]->GetChilds());
+			CreateChild(select, nodes[i]->GetChilds(), scene);
 
 		if (nodes[i] == _selected)
 		{
+			nodes[i]->GetChilds().push_back(new Quantix::Physic::Transform3D());
 			if (nodes[i]->GetChilds().size() == 0)
 			{
-				nodes[i]->GetChilds().push_back(new Quantix::Physic::Transform3D());
 				nodes[i]->GetChilds().back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject"));
 			}
 			else
 			{
-				nodes[i]->GetChilds().push_back(new Quantix::Physic::Transform3D());
 				nodes[i]->GetChilds().back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject" + std::to_string((QXuint)nodes[i]->GetChilds().size())));
 			}
+			//scene->AddGameObject(nodes[i]->GetChilds().back()->GetObject()->GetName());
 			select = false;
 			_selected = nullptr;
 			ImGui::CloseCurrentPopup();
@@ -92,14 +92,14 @@ void Hierarchy::CreateChild(QXbool& select, std::vector<Quantix::Physic::Transfo
 	}
 }
 
-void Hierarchy::MenuRename(std::vector<Quantix::Physic::Transform3D*>& nodes)
+void Hierarchy::MenuRename(std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene)
 {
 	for (QXuint i = 0; i < nodes.size(); i++)
 	{
 		if (nodes[i]->GetChilds().size() != 0)
 		{
 			std::vector<Quantix::Physic::Transform3D*> child = nodes[i]->GetChilds();
-			MenuRename(child);
+			MenuRename(child, scene);
 		}
 
 		if (nodes[i] == _selected)
@@ -110,6 +110,7 @@ void Hierarchy::MenuRename(std::vector<Quantix::Physic::Transform3D*>& nodes)
 			memcpy(currName, nodes[i]->GetObject()->GetName().c_str(), nodes[i]->GetObject()->GetName().size() + 1);
 			if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
 			{
+				//scene->GetGameObject(nodes[i]->GetObject()->GetName())->SetName(currName);
 				nodes[i]->GetObject()->SetName(currName);
 				if (_inspector != nullptr)
 					_inspector->SetNode(nodes[i]);
@@ -120,19 +121,19 @@ void Hierarchy::MenuRename(std::vector<Quantix::Physic::Transform3D*>& nodes)
 	}
 }
 
-void Hierarchy::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Quantix::Physic::Transform3D*>& nodes)
+void Hierarchy::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene)
 {
 	for (QXuint i{ 0 }; i < itemMenu.size(); i++)
 	{
 		if (selection[i])
 		{
 			if (itemMenu[i] == "Create Child")
-				CreateChild(selection[i], nodes);
+				CreateChild(selection[i], nodes, scene);
 		}
 	}
 }
 
-void Hierarchy::PopUpMenuItem(std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node)
+void Hierarchy::PopUpMenuItem(std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Resources::Scene* scene)
 {
 	if (ImGui::BeginPopupContextItem("Context Item"))
 	{
@@ -142,14 +143,14 @@ void Hierarchy::PopUpMenuItem(std::vector<Quantix::Physic::Transform3D*>& nodes,
 		{
 			static QXbool selection[1] = { false };
 			ImGui::Selectable("Create Child", &selection[0]);
-			MenuRename(nodes);
-			MenuItem(selection, { "Create Child" }, nodes);
+			MenuRename(nodes, scene);
+			MenuItem(selection, { "Create Child" }, nodes, scene);
 		}
 		ImGui::EndPopup();
 	}
 }
 
-void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<Quantix::Physic::Transform3D*>& node)
+void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
 	if (selection)
 	{
@@ -158,29 +159,30 @@ void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<Quantix::Physic
 			node.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject"));
 		else
 			node.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject" + std::to_string((QXuint)node.size())));
+		//scene->AddGameObject(node.back()->GetObject()->GetName());
 		selection = false;
 	}
 }
 
-void Hierarchy::CreateItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Quantix::Physic::Transform3D*>& node)
+void Hierarchy::CreateItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
 	for (QXuint i{ 0 }; i < itemMenu.size(); i++)
 	{
 		if (selection[i])
 		{
 			if (itemMenu[i] == "Create Empty")
-				CreateEmptyObject(selection[i], node);
+				CreateEmptyObject(selection[i], node, scene);
 		}
 	}
 }
 
-void Hierarchy::PopUpMenu(std::vector<Quantix::Physic::Transform3D*>& node)
+void Hierarchy::PopUpMenu(std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
 	if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
 	{
 		static QXbool selection[1] = { false };
 		ImGui::Selectable("Create Empty", &selection[0]);
-		CreateItem(selection, { "Create Empty" }, node);
+		CreateItem(selection, { "Create Empty" }, node, scene);
 		ImGui::EndPopup();
 	}
 }

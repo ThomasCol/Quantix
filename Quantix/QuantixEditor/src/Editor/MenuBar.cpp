@@ -5,87 +5,6 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 
-/*void MenuBar::Update(std::vector<Node>& object)
-{
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(52 / 255, 73 / 255, 94 / 255, 1));
-	if (ImGui::BeginMenuBar())
-	{
-		ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(1, 1, 1, 1));
-		FileButton();
-		EditButton();
-		AssetButton();
-		GameObjectButton(object);
-		ImGui::PopStyleColor();
-		ImGui::EndMenuBar();
-	}
-	ImGui::PopStyleColor();
-}
-
-void MenuBar::CreateGameObject(QXstring name, std::vector<Node>& object, QXbool& selection)
-{
-	static QXuint i = 0;
-	if (i == 0)
-		object.push_back({ {}, "GameObject", i, false });
-	else
-		object.push_back({ {}, "GameObject" + std::to_string(i), i, false });
-	selection = false;
-	i++;
-}
-
-void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Node>& object)
-{
-	static QXuint j[2] = { 0, 0 };
-	for (QXuint i{ 0 }; i < objectName.size(); i++)
-	{
-		if (selection[i])
-		{
-			if (j[i] == 0)
-				object.push_back({ {}, objectName[i], j[i], false });
-			else
-				object.push_back({ {}, objectName[i] + std::to_string(j[i]), j[i], false });
-			selection[i] = false;
-			j[i]++;
-			return;
-		}
-	}
-}
-
-void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Node>& object)
-{
-	static QXuint j[2] = { 0, 0 };
-	for (QXuint i{ 0 }; i < objectName.size(); i++)
-	{
-		if (selection[i])
-		{
-			if (j[i] == 0)
-				object.push_back({ {}, objectName[i], j[i], false });
-			else
-				object.push_back({ {}, objectName[i] + std::to_string(j[i]), j[i], false });
-			selection[i] = false;
-			j[i]++;
-			return;
-		}
-	}
-}
-
-void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Node>& object)
-{
-	static QXuint j[2] = { 0, 0 };
-	for (QXuint i{ 0 }; i < objectName.size(); i++)
-	{
-		if (selection[i])
-		{
-			if (j[i] == 0)
-				object.push_back({ {}, objectName[i], j[i], false });
-			else
-				object.push_back({ {}, objectName[i] + std::to_string(j[i]), j[i], false });
-			selection[i] = false;
-			j[i]++;
-			return;
-		}
-	}
-}*/
-
 void MenuBar::FileButton()
 {
 	if (ImGui::BeginMenu("File"))
@@ -126,38 +45,8 @@ void MenuBar::AssetButton()
 		ImGui::EndMenu();
 	}
 }
-/*
-void MenuBar::GameObjectButton(std::vector<Node>& object)
-{
-	static QXint id = 0;
-	if (ImGui::BeginMenu("GameObject"))
-	{
-		static QXbool selection = { false };
-		ImGui::Selectable("Create Empty", &selection);
-		if (selection)
-			CreateGameObject("GameObject", object, selection);
-		if (ImGui::BeginMenu("3D Object"))
-		{
-			static QXbool selection[2] = { false, false };
-			ImGui::Selectable("Cube", &selection[0]);
-			ImGui::Selectable("Sphere", &selection[1]);
-			CreateShapeObject(selection, { "Cube", "Sphere" }, object);
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Light"))
-		{
-			static QXbool selection[3] = { false, false, false };
-			ImGui::Selectable("Spot Light", &selection[0]);
-			ImGui::Selectable("Point Light", &selection[1]);
-			ImGui::Selectable("Directional Light", &selection[2]);
-			CreateLightObject(selection, { "Spot Light", "Point Light", "Directional Light" }, object);
-			ImGui::EndMenu();
-		}
-		ImGui::EndMenu();
-	}
-}*/
 
-void MenuBar::Update(std::vector<Quantix::Physic::Transform3D*>& object)
+void MenuBar::Update(std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app)
 {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(52 / 255, 73 / 255, 94 / 255, 1));
 	if (ImGui::BeginMenuBar())
@@ -166,14 +55,14 @@ void MenuBar::Update(std::vector<Quantix::Physic::Transform3D*>& object)
 		FileButton();
 		EditButton();
 		AssetButton();
-		GameObjectButton(object);
+		GameObjectButton(object, app);
 		ImGui::PopStyleColor();
 		ImGui::EndMenuBar();
 	}
 	ImGui::PopStyleColor();
 }
 
-void MenuBar::CreateGameObject(QXstring name, std::vector<Quantix::Physic::Transform3D*>& object, QXbool& selection)
+void MenuBar::CreateGameObject(QXstring name, std::vector<Quantix::Physic::Transform3D*>& object, QXbool& selection, Quantix::Core::Platform::Application* app)
 {
 	static QXuint i = 0;
 	object.push_back(new Quantix::Physic::Transform3D());
@@ -181,11 +70,12 @@ void MenuBar::CreateGameObject(QXstring name, std::vector<Quantix::Physic::Trans
 		object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject"));
 	else
 		object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject" + std::to_string(i)));
+	//scene->AddGameObject(object.back()->GetObject()->GetName());
 	selection = false;
 	i++;
 }
 
-void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Quantix::Physic::Transform3D*>& object)
+void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app)
 {
 	static QXuint j[2] = { 0, 0 };
 	for (QXuint i{ 0 }; i < objectName.size(); i++)
@@ -197,6 +87,7 @@ void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, 
 				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i]));
 			else
 				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i] + std::to_string(j[i])));
+			//scene->AddGameObject(object.back()->GetObject()->GetName());
 			selection[i] = false;
 			j[i]++;
 			return;
@@ -204,7 +95,7 @@ void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, 
 	}
 }
 
-void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Quantix::Physic::Transform3D*>& object)
+void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app)
 {
 	static QXuint j[2] = { 0, 0 };
 	for (QXuint i{ 0 }; i < objectName.size(); i++)
@@ -216,6 +107,15 @@ void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectN
 				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i]));
 			else
 				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i] + std::to_string(j[i])));
+			
+			object.back()->GetObject()->AddComponent<Quantix::Core::Components::Mesh>();
+			Quantix::Core::Components::Mesh* mesh = object.back()->GetObject()->GetComponent<Quantix::Core::Components::Mesh>();
+
+			if (i == 0)
+				mesh = app->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
+			else
+				mesh = app->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/sphere.obj");
+
 			selection[i] = false;
 			j[i]++;
 			return;
@@ -223,7 +123,7 @@ void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectN
 	}
 }
 
-void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Quantix::Physic::Transform3D*>& object)
+void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectName, std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app)
 {
 	static QXuint j[2] = { 0, 0 };
 	for (QXuint i{ 0 }; i < objectName.size(); i++)
@@ -235,6 +135,7 @@ void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectN
 				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i]));
 			else
 				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i] + std::to_string(j[i])));
+				//scene->AddGameObject(object.back()->GetObject()->GetName());
 			selection[i] = false;
 			j[i]++;
 			return;
@@ -242,7 +143,7 @@ void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectN
 	}
 }
 
-void MenuBar::GameObjectButton(std::vector<Quantix::Physic::Transform3D*>& object)
+void MenuBar::GameObjectButton(std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app)
 {
 	static QXint id = 0;
 	if (ImGui::BeginMenu("GameObject"))
@@ -250,13 +151,13 @@ void MenuBar::GameObjectButton(std::vector<Quantix::Physic::Transform3D*>& objec
 		static QXbool selection = { false };
 		ImGui::Selectable("Create Empty", &selection);
 		if (selection)
-			CreateGameObject("GameObject", object, selection);
+			CreateGameObject("GameObject", object, selection, app);
 		if (ImGui::BeginMenu("3D Object"))
 		{
 			static QXbool selection[2] = { false, false };
 			ImGui::Selectable("Cube", &selection[0]);
 			ImGui::Selectable("Sphere", &selection[1]);
-			CreateShapeObject(selection, { "Cube", "Sphere" }, object);
+			CreateShapeObject(selection, { "Cube", "Sphere" }, object, app);
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Light"))
@@ -265,7 +166,7 @@ void MenuBar::GameObjectButton(std::vector<Quantix::Physic::Transform3D*>& objec
 			ImGui::Selectable("Spot Light", &selection[0]);
 			ImGui::Selectable("Point Light", &selection[1]);
 			ImGui::Selectable("Directional Light", &selection[2]);
-			CreateLightObject(selection, { "Spot Light", "Point Light", "Directional Light" }, object);
+			CreateLightObject(selection, { "Spot Light", "Point Light", "Directional Light" }, object, app);
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenu();
