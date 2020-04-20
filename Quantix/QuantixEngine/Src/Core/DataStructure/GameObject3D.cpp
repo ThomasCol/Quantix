@@ -47,7 +47,12 @@ namespace Quantix::Core::DataStructure
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes)
 	{
 		if (_toRender)
-			meshes.push_back(GetComponent<Core::Components::Mesh>());
+		{
+			Core::Components::Mesh* mesh = GetComponent<Core::Components::Mesh>();
+
+			if (mesh && mesh->IsEnable())
+				meshes.push_back(mesh);
+		}
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
 			child->GetObject()->Update(meshes, this);
@@ -56,7 +61,12 @@ namespace Quantix::Core::DataStructure
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject)
 	{
 		if (_toRender)
-			meshes.push_back(GetComponent<Core::Components::Mesh>());
+		{
+			Core::Components::Mesh* mesh = GetComponent<Core::Components::Mesh>();
+
+			if (mesh && mesh->IsEnable())
+				meshes.push_back(mesh);
+		}
 
 		_transform->Update(parentObject->GetTransform());
 
