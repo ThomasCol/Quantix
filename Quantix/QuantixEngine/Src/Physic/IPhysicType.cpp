@@ -1,10 +1,10 @@
 #include <iostream>
 
 #include "Physic/IPhysicType.h"
-//#include "Physic/PhysicStatic.h"
-//#include "Physic/PhysicDynamic.h"
+#include "Physic/PhysicStatic.h"
+#include "Physic/PhysicDynamic.h"
 
-namespace Physic
+namespace Quantix::Physic
 {
 	IPhysicType::IPhysicType() noexcept :
 		type{ ETypePhysic::NONE }
@@ -24,10 +24,10 @@ namespace Physic
 
 	void IPhysicType::print()
 	{
-		/*if (type == ETypePhysic::STATIC)
+		if (type == ETypePhysic::STATIC)
 			(dynamic_cast<PhysicStatic*>(this))->print();
 		else if (type == ETypePhysic::DYNAMIC)
-			(dynamic_cast<PhysicDynamic*>(this))->print();*/
+			(dynamic_cast<PhysicDynamic*>(this))->print();
 	}
 
 	ETypePhysic IPhysicType::GetType()

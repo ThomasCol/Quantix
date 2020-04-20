@@ -15,13 +15,15 @@ namespace Quantix::Core::Components
 	struct QUANTIX_API CubeCollider : public ICollider
 	{
 #pragma region Constructors
-
-		CubeCollider(DataStructure::GameComponent* par) noexcept;
+		CubeCollider() = default;
+		CubeCollider(DataStructure::GameComponent* par);
 		CubeCollider(const CubeCollider& par) noexcept;
 		CubeCollider(CubeCollider&& other) noexcept;
 		~CubeCollider() noexcept = default;
-
 #pragma endregion
+
+		CubeCollider* Copy() const override;
+
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
 	};
 }

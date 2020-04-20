@@ -6,6 +6,7 @@
 #include "rttrEnabled.h"
 
 #include "Physic/IPhysicType.h"
+#include "Physic/PhysicHandler.h"
 #include "Core/MathHeader.h"
 
 namespace Quantix::Core::DataStructure
@@ -15,18 +16,17 @@ namespace Quantix::Core::DataStructure
 
 namespace Quantix::Core::Components
 {
-	struct QUANTIX_API Rigidbody : public Core::DataStructure::Component
+	struct QUANTIX_API Rigidbody : public virtual Core::DataStructure::Component
 	{
 #pragma region Attributes
 		Physic::IPhysicType* actorPhysic{ nullptr };
 
-		//PhysicHandler* handler {nullptr};
 #pragma endregion
 
 #pragma region Constructors
 
-		Rigidbody() = delete;
-		Rigidbody(DataStructure::GameComponent* par/*, PhysicHandler* handler*/) noexcept;
+		Rigidbody() = default;
+		Rigidbody(DataStructure::GameComponent* par);
 		Rigidbody(const Rigidbody& src) noexcept;
 		Rigidbody(Rigidbody&& src) noexcept;
 		~Rigidbody() noexcept = default;
@@ -38,6 +38,11 @@ namespace Quantix::Core::Components
 		void AddForce(Math::QXvec3 vec) noexcept;
 
 #pragma endregion
+
+#pragma region Accessors 
+		Rigidbody* Copy() const;
+#pragma endregion 
+
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};
 }

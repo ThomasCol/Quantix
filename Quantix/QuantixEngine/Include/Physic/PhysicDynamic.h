@@ -3,25 +3,27 @@
 
 #include "Physic/IPhysicType.h"
 
-namespace Physic
+namespace Quantix::Physic
 {
-	//class PhysicStatic;
+	using namespace physx;
+
+	class PhysicStatic;
 
 	class PhysicDynamic : public IPhysicType
 	{
 	private:
 #pragma region Attributes
 
-		//PxRigidDynamic* _dynamic = nullptr;
+		PxRigidDynamic* _dynamic = nullptr;
 
 #pragma endregion
 
 	public:
 #pragma region Constructors
 		PhysicDynamic() noexcept;
-		//PhysicDynamic(/*PxPhysics* SDK*/) noexcept;
-		PhysicDynamic(/*PxPhysics* SDK,*/ EPhysXShape physXShape) noexcept;
-		//PhysicDynamic(/*PxPhysics* SDK,*/ /*PhysicStatic* physicStatic*/) noexcept;
+		PhysicDynamic(PxPhysics* SDK) noexcept;
+		PhysicDynamic(PxPhysics* SDK, EPhysXShape physXShape) noexcept;
+		PhysicDynamic(PxPhysics* SDK, PhysicStatic* physicStatic) noexcept;
 		PhysicDynamic(const PhysicDynamic&) noexcept;
 		PhysicDynamic(PhysicDynamic&&) noexcept;
 		~PhysicDynamic();
@@ -35,7 +37,7 @@ namespace Physic
 #pragma endregion
 
 #pragma region Accessors
-		//PxRigidDynamic* GetRigid() const;
+		PxRigidDynamic* GetRigid() const;
 #pragma endregion
 #pragma endregion
 	};
