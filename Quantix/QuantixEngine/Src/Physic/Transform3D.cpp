@@ -114,11 +114,6 @@ namespace Quantix::Physic
 		_childs.push_back(child);
 	}
 
-	void	Transform3D::AddChild(Transform3D&& child)
-	{
-		_childs.push_back(std::move(&child));
-	}
-
 	#pragma endregion
 
 	#pragma region Operators

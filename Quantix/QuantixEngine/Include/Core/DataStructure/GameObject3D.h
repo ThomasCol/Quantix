@@ -26,6 +26,9 @@ namespace Quantix::Core::DataStructure
 		#pragma endregion Constructors/Destructor
 
 		#pragma region Methods
+
+		inline void								AddChild(const GameObject3D* object) { _transform->AddChild(object->GetTransform()); }
+
 		#pragma region Accessors
 		/**
 		 * @brief Set the Global Position object

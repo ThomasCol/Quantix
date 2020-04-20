@@ -21,7 +21,7 @@ namespace Quantix::Physic
 
 			Math::QXmat4				_trs;
 
-			std::vector<Transform2D>	_childs;
+			std::vector<Transform2D*>	_childs;
 
 			//Pointer GameComponent
 
@@ -173,14 +173,7 @@ namespace Quantix::Physic
 			 *
 			 * @param child The 2D transform child to add to the current transform
 			 */
-			void			AddChild(const Transform2D& child);
-
-			/**
-			 * @brief Add a child by rvalue to the current transform
-			 *
-			 * @param child The 2D transform child to add by rvalue to the current transform
-			 */
-			void			AddChild(Transform2D&& child);
+			void			AddChild(Transform2D* child);
 
 		#pragma endregion
 

@@ -184,13 +184,6 @@ namespace Quantix::Physic
 			 */
 			void										AddChild(Transform3D* child);
 
-			/**
-			 * @brief Add a child by rvalue to the current transform
-			 *
-			 * @param child The 3D transform child to add by rvalue to the current transform
-			 */
-			void										AddChild(Transform3D&& child);
-
 		#pragma endregion
 
 		#pragma region Operators

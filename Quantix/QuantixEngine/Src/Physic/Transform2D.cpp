@@ -87,10 +87,10 @@ namespace Quantix::Physic
 
 		void	Transform2D::Update(const Math::QXmat4& trsParent) const
 		{
-			std::vector<Transform2D>::const_iterator it;
+			std::vector<Transform2D*>::const_iterator it;
 
 			for (it = _childs.cbegin(); it != _childs.cend(); ++it)
-				it->Update(_trs);
+				(*it)->Update(_trs);
 		}
 
 
@@ -112,14 +112,9 @@ namespace Quantix::Physic
 			UpdateTRS();
 		}
 
-		void	Transform2D::AddChild(const Transform2D& child)
+		void	Transform2D::AddChild(Transform2D* child)
 		{
 			_childs.push_back(child);
-		}
-
-		void	Transform2D::AddChild(Transform2D&& child)
-		{
-			_childs.push_back(std::move(child));
 		}
 
 	#pragma endregion
