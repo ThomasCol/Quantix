@@ -144,7 +144,7 @@ namespace Quantix::Physic
 
 			inline Core::DataStructure::GameObject3D*	GetObject() const { return _gameObject; };
 
-			inline std::vector<Transform3D*>&			GetChild() { return _childs; };
+			inline std::vector<Transform3D*>&			GetChilds() { return _childs; };
 		#pragma endregion
 
 		#pragma region Functions

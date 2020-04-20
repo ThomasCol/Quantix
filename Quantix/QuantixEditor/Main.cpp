@@ -118,7 +118,7 @@ void	DebugMode()
 		state = false;
 }
 
-void Init(Editor* editor, Quantix::Physic::Transform3D* graph, std::vector<Quantix::Core::DataStructure::GameObject3D*> gameObject, std::vector<Quantix::Core::Components::Light>& lights)
+void Init(Editor* editor, std::vector<Quantix::Core::DataStructure::GameObject3D*> gameObject, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	glfwSetWindowUserPointer(editor->GetWin().GetWindow(), editor->_mouseInput);
 
@@ -127,9 +127,7 @@ void Init(Editor* editor, Quantix::Physic::Transform3D* graph, std::vector<Quant
 
 	for (QXuint i = 0; i < gameObject.size(); i++)
 	{
-		gameObject[i]->SetTransform(graph->GetChild()[i]);
 		gameObject[i]->AddComponent<Quantix::Core::Components::Mesh>();
-		graph->GetChild()[i]->SetObject(gameObject[i]);
 
 		START_PROFILING("Mesh");
 		Quantix::Core::Components::Mesh* mesh = gameObject[i]->GetComponent<Quantix::Core::Components::Mesh>();
@@ -145,7 +143,6 @@ void Init(Editor* editor, Quantix::Physic::Transform3D* graph, std::vector<Quant
 
 	//Init Scene
 	InitScene(editor, lights);
-	editor->SetObject(graph);
 
 	//Init Editor
 	editor->Init();
@@ -194,21 +191,25 @@ int main()
 		Editor*											editor = new Editor(1920, 900);
 		//Init Camera
 		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
-		Quantix::Physic::Transform3D*					graph = new Quantix::Physic::Transform3D(Math::QXvec3(0,0,0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1));
+		Quantix::Core::DataStructure::GameObject3D*		root = new Quantix::Core::DataStructure::GameObject3D("root");
 
-		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
-		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(5, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
+		editor->SetRoot(root);
 
-		std::vector<Quantix::Core::DataStructure::GameObject3D*>		gameObject;
-		for (QXuint i = 0; i < graph->GetChild().size(); i++)
-			gameObject.push_back(new Quantix::Core::DataStructure::GameObject3D("Mesh" + std::to_string(i), graph->GetChild()[i]));
+		std::vector<Quantix::Core::DataStructure::GameObject3D*>		gameObjects;
+		Quantix::Core::DataStructure::GameObject3D* gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh");
+		Quantix::Core::DataStructure::GameObject3D* gameObject2 = new Quantix::Core::DataStructure::GameObject3D("Mesh2");
+		gameObjects.push_back(gameObject);
+		gameObjects.push_back(gameObject2);
+
+		root->AddChild(gameObject);
+		gameObject->AddChild(gameObject2);
 
 		std::vector<Quantix::Core::Components::Light>	lights;
 
-		Init(editor, graph, gameObject, lights);
+		Init(editor, gameObjects, lights);
 
 		while (!editor->GetWin().ShouldClose())
-			Update(editor, gameObject, lights, cam);
+			Update(editor, gameObjects, lights, cam);
 
 		delete cam;
 	}

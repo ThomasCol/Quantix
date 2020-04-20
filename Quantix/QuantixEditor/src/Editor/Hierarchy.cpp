@@ -29,7 +29,7 @@ void Hierarchy::DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGloba
 			j++;
 		}
 		ImGui::PushID(&node[i]);
-		if (node[i]->GetChild().size() == 0)
+		if (node[i]->GetChilds().size() == 0)
 		{
 			ImGui::Bullet();
 			if (ImGui::Selectable(node[i]->GetObject()->GetName().c_str(), node[i]->GetObject()->GetIsActive()))
@@ -42,7 +42,7 @@ void Hierarchy::DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGloba
 				SetSelectable(nodeGlobal, node, i);
 			if (isOpen)
 			{
-				DrawObject(nodeGlobal, node[i]->GetChild());
+				DrawObject(nodeGlobal, node[i]->GetChilds());
 				ImGui::TreePop();
 			}
 		}
@@ -58,8 +58,8 @@ void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::T
 	{
 		if (ImGui::TreeNodeEx(&node, ImGuiTreeNodeFlags_Selected, "World Scene"))
 		{
-			if (node->GetChild().size() > 0)
-				DrawObject(node->GetChild(), node->GetChild());
+			if (node->GetChilds().size() > 0)
+				DrawObject(node->GetChilds(), node->GetChilds());
 			ImGui::TreePop();
 		}
 	}
@@ -70,20 +70,20 @@ void Hierarchy::CreateChild(QXbool& select, std::vector<Quantix::Physic::Transfo
 {
 	for (QXuint i = 0; i < nodes.size(); i++)
 	{
-		if (nodes[i]->GetChild().size() != 0)
-			CreateChild(select, nodes[i]->GetChild());
+		if (nodes[i]->GetChilds().size() != 0)
+			CreateChild(select, nodes[i]->GetChilds());
 
 		if (nodes[i] == _selected)
 		{
-			if (nodes[i]->GetChild().size() == 0)
+			if (nodes[i]->GetChilds().size() == 0)
 			{
-				nodes[i]->GetChild().push_back(new Quantix::Physic::Transform3D());
-				nodes[i]->GetChild().back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject"));
+				nodes[i]->GetChilds().push_back(new Quantix::Physic::Transform3D());
+				nodes[i]->GetChilds().back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject"));
 			}
 			else
 			{
-				nodes[i]->GetChild().push_back(new Quantix::Physic::Transform3D());
-				nodes[i]->GetChild().back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject" + std::to_string((QXuint)nodes[i]->GetChild().size())));
+				nodes[i]->GetChilds().push_back(new Quantix::Physic::Transform3D());
+				nodes[i]->GetChilds().back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject" + std::to_string((QXuint)nodes[i]->GetChilds().size())));
 			}
 			select = false;
 			_selected = nullptr;
@@ -96,9 +96,9 @@ void Hierarchy::MenuRename(std::vector<Quantix::Physic::Transform3D*>& nodes)
 {
 	for (QXuint i = 0; i < nodes.size(); i++)
 	{
-		if (nodes[i]->GetChild().size() != 0)
+		if (nodes[i]->GetChilds().size() != 0)
 		{
-			std::vector<Quantix::Physic::Transform3D*> child = nodes[i]->GetChild();
+			std::vector<Quantix::Physic::Transform3D*> child = nodes[i]->GetChilds();
 			MenuRename(child);
 		}
 
@@ -189,9 +189,9 @@ void Hierarchy::DesactivatePrevInspector(std::vector<Quantix::Physic::Transform3
 {
 	for (QXuint i{ 0 }; i < nodes.size(); i++)
 	{
-		if (nodes[i]->GetChild().size() > 0)
-			DesactivatePrevInspector(nodes[i]->GetChild(), node);
-		if (nodes[i]->GetChild().size() == 0)
+		if (nodes[i]->GetChilds().size() > 0)
+			DesactivatePrevInspector(nodes[i]->GetChilds(), node);
+		if (nodes[i]->GetChilds().size() == 0)
 		{
 			if (nodes[i]->GetObject() != node->GetObject() && nodes[i]->GetObject()->GetIsActive())
 				nodes[i]->GetObject()->SetIsActive(!nodes[i]->GetObject()->GetIsActive());

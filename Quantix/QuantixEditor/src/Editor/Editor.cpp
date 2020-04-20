@@ -163,12 +163,12 @@ void Editor::DrawMenuBar()
 		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
 		i++;
 	}
-	_menuBar.Update(_graph3D->GetChild());
+	_menuBar.Update(_root->GetTransform()->GetChilds());
 }
 
 void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 {
-	_hierarchy.Update(name, flags, _graph3D);
+	_hierarchy.Update(name, flags, _root->GetTransform());
 }
 
 void Editor::Simulation()

@@ -5,6 +5,7 @@
 #include <map>
 #include <cstdlib>
 #include <Core/Platform/Application.h>
+#include <Core/DataStructure/GameObject3D.h>
 
 #include "Window.h"
 #include "Docker.h"
@@ -51,7 +52,7 @@ public:
 
 	inline Quantix::Core::Platform::Window&				GetWin() { return _win; };
 	inline Quantix::Core::Platform::Application*		GetApp() const { return _app; };
-	inline void											SetObject(Quantix::Physic::Transform3D* object) { _graph3D = object; };
+	inline void											SetRoot(Quantix::Core::DataStructure::GameObject3D* object) { _root = object; };
 
 
 	MouseTest*											_mouseInput;
@@ -59,7 +60,7 @@ private:
 	Quantix::Core::Platform::Window						_win;
 	Quantix::Core::Platform::Application*				_app;
 	rttr::library										_lib;
-	Quantix::Physic::Transform3D*						_graph3D;
+	Quantix::Core::DataStructure::GameObject3D*			_root;
 
 	Docker												_docker;
 	Folder												_folder;

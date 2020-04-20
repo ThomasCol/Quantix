@@ -25,6 +25,7 @@ namespace Quantix::Core::DataStructure
 		GameComponent(name),
 		_transform { transform }
 	{
+		_transform->SetObject(this);
 	}
 
 	GameObject3D::GameObject3D(const GameObject3D& g3d) noexcept :
