@@ -31,7 +31,7 @@ namespace Quantix::Resources
 
 	#pragma region Functions
 
-	void	Scene::AddGameObject(const QXstring& name, const QXstring& parentName)
+	void	Scene::AddGameObject(const QXstring& name, const QXstring& parentName) noexcept
 	{
 		Core::DataStructure::GameObject3D* object = new Core::DataStructure::GameObject3D(name);
 		QXbool is_set = false;
@@ -57,7 +57,7 @@ namespace Quantix::Resources
 		_objects.push_back(object);
 	}
 
-	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager)
+	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept
 	{
 		_root = new Quantix::Core::DataStructure::GameObject3D("root");
 
@@ -95,7 +95,7 @@ namespace Quantix::Resources
 		// TODO
 	}
 
-	Core::DataStructure::GameObject3D* Scene::GetGameObject(const QXstring& name)
+	Core::DataStructure::GameObject3D* Scene::GetGameObject(const QXstring& name) noexcept
 	{
 		for (QXsizei i = 0; i < _objects.size(); ++i)
 		{

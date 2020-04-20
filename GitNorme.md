@@ -36,3 +36,4 @@ params to create shader are a file and the shader type.
 - Test : Add or change test
 - Dependencies : change dependencies of project
 - Perf : Improve performance
+- Clean : Clean Files

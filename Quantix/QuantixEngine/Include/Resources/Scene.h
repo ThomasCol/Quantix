@@ -63,19 +63,19 @@ namespace Quantix::Resources
 
 			#pragma region Functions
 
-			void	AddGameObject(const QXstring& name, const QXstring& parentName = "");
+			void	AddGameObject(const QXstring& name, const QXstring& parentName = "") noexcept;
 
 			/**
 			 * @brief method that init the scene
 			 *
 			 */
-			void	Init(Quantix::Core::DataStructure::ResourcesManager& manager);
+			void	Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept;
 
 			/**
 			 * @brief method that update the world and its hierarchy
 			 *
 			 */
-			void	Update(std::vector<Core::Components::Mesh*>& meshes);
+			void	Update(std::vector<Core::Components::Mesh*>& meshes) noexcept;
 
 			void Reset()noexcept;
 
@@ -110,9 +110,9 @@ namespace Quantix::Resources
 			const QXuint& GetID()const noexcept { return _id; }
 			QXuint& GetID() noexcept { return _id; }
 
-			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
+			inline Core::DataStructure::GameObject3D* GetRoot() noexcept { return _root; }
 
-			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name);
+			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name) noexcept;
 
 			#pragma endregion
 
