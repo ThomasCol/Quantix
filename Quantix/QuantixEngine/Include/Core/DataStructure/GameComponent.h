@@ -98,7 +98,7 @@ namespace Quantix::Core::DataStructure
 			return vecT;
 		}*/
 
-		inline const std::vector<Component*>&	GetComp()
+		inline const std::vector<Component*>&	GetComponents()
 		{
 			return _component;
 		}
@@ -111,7 +111,6 @@ namespace Quantix::Core::DataStructure
 				{
 					(*it)->EraseEndOfFrame();
 					_component.erase(it);
-					delete (*it);
 					return;
 				}
 			}

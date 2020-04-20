@@ -27,7 +27,7 @@ public:
 	void				DesactivatePrevInspector(std::vector<Quantix::Physic::Transform3D*>& gameComponents, Quantix::Physic::Transform3D* gameComponent);
 
 
-	inline Inspector*	GetInspector() const { return _inspector; };
+	inline Inspector*	GetInspector() { return _inspector; };
 
 private:
 	Inspector*	_inspector;

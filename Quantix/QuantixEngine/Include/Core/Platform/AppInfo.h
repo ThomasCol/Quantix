@@ -2,6 +2,7 @@
 #define __APPINFO_H__
 
 #include <Type.h>
+#include <Mat4.h>
 #include "Core/DLLHeader.h"
 
 namespace Quantix::Core::Platform
@@ -10,12 +11,14 @@ namespace Quantix::Core::Platform
 	{
 #pragma region Attributes
 
-		QXuint		width;
-		QXuint		height;
+		QXuint			width;
+		QXuint			height;
 
-		QXdouble	deltaTime;
-		QXdouble	currentTime;
-		QXdouble	prevTime;
+		QXdouble		deltaTime;
+		QXdouble		currentTime;
+		QXdouble		prevTime;
+
+		Math::QXmat4	proj;
 
 #pragma endregion
 	};

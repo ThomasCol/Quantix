@@ -16,6 +16,15 @@
     <Filter Include="Fichiers sources\Ext">
       <UniqueIdentifier>{67004f6e-2079-4471-87ed-189f0c87d6c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\Ext\ImGui">
+      <UniqueIdentifier>{6b7d73e6-274a-4c6e-98b0-763cf34babf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Ext\ImGuizmo">
+      <UniqueIdentifier>{e0d62e6e-bb09-4209-a4b3-39d37fe9524f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Ext">
+      <UniqueIdentifier>{83a0d0a0-81fe-4572-9f33-ffba8c84e25d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -49,22 +58,34 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="externals\imgui\src\imgui.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
+      <Filter>Fichiers sources\Ext\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="externals\imgui\src\imgui_demo.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
+      <Filter>Fichiers sources\Ext\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="externals\imgui\src\imgui_draw.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
+      <Filter>Fichiers sources\Ext\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="externals\imgui\src\imgui_impl_glfw.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
+      <Filter>Fichiers sources\Ext\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="externals\imgui\src\imgui_impl_opengl3.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
+      <Filter>Fichiers sources\Ext\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="externals\imgui\src\imgui_widgets.cpp">
-      <Filter>Fichiers sources\Ext</Filter>
+      <Filter>Fichiers sources\Ext\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imguizmo\ImCurveEdit.cpp">
+      <Filter>Fichiers sources\Ext\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imguizmo\ImGradient.cpp">
+      <Filter>Fichiers sources\Ext\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imguizmo\ImGuizmo.cpp">
+      <Filter>Fichiers sources\Ext\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\imguizmo\ImSequencer.cpp">
+      <Filter>Fichiers sources\Ext\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,11 +119,11 @@
     <ClInclude Include="..\QuantixEngine\Lib\Glad\include\glad\glad.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="externals\stb_image.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\stb_image.h">
+      <Filter>Fichiers d%27en-tête\Ext</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

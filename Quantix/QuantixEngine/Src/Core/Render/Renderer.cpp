@@ -120,12 +120,11 @@ namespace Quantix::Core::Render
 
 		// Bind uniform buffer
 		{
-			Math::QXmat4 proj{ Math::QXmat4::CreateProjectionMatrix(info.width, info.height, 0.1f, 1000.f, 80.f) };
 			Math::QXmat4 view{ cam->GetLookAt() };
 
 			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
 			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), view.array);
-			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), proj.array);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), info.proj.array);
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);

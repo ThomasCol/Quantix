@@ -12,7 +12,6 @@
 #include <Editor.h>
 #include <Core/Profiler/Profiler.h>
 #include <Window.h>
-//#include <Core/UserEntry/InputSystem.h>
 #include <Vec3.h>
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/UserEntry/InputManager.h>
@@ -196,6 +195,7 @@ int main()
 		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 		Quantix::Physic::Transform3D*					graph = new Quantix::Physic::Transform3D(Math::QXvec3(0,0,0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1));
 
+		editor->SetMainCamera(cam);
 		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
 		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(5, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
 

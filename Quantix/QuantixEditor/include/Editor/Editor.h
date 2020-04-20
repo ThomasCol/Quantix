@@ -11,6 +11,8 @@
 #include "MenuBar.h"
 #include "Hierarchy.h"
 #include "Explorer.h"
+#include <imGuizmo.h>
+
 
 namespace fs = std::filesystem;
 
@@ -41,6 +43,8 @@ public:
 	void												DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags);
 	void												Simulation();
 	void												DrawSimulation();
+	void												ShowGuizmoObject(Quantix::Physic::Transform3D* transform);
+	void												DrawGuizmo();
 	void												DrawScene(const QXstring& name, ImGuiWindowFlags flags);
 
 	void												PrintLog();
@@ -52,7 +56,7 @@ public:
 	inline Quantix::Core::Platform::Window&				GetWin() { return _win; };
 	inline Quantix::Core::Platform::Application*		GetApp() const { return _app; };
 	inline void											SetObject(Quantix::Physic::Transform3D* object) { _graph3D = object; };
-
+	inline void											SetMainCamera(Quantix::Core::Components::Camera* camera) { _mainCamera = camera; };
 
 	MouseTest*											_mouseInput;
 private:
@@ -60,6 +64,7 @@ private:
 	Quantix::Core::Platform::Application*				_app;
 	rttr::library										_lib;
 	Quantix::Physic::Transform3D*						_graph3D;
+	Quantix::Core::Components::Camera*					_mainCamera;
 
 	Docker												_docker;
 	Folder												_folder;
@@ -71,6 +76,7 @@ private:
 	std::map<QXstring, QXbool>							_simState;
 
 	QXuint												_fbo;
+	ImGuizmo::OPERATION									_guizmoType;
 	ImGuiWindowFlags									_flagsEditor;
 };
 
