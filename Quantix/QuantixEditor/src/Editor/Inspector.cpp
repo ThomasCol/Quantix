@@ -28,9 +28,9 @@ void Inspector::Update()
 			static Math::QXvec3	pos = _transform->GetPosition();
 			static Math::QXvec3	rot = _transform->GetRotation();
 			static Math::QXvec3	scale = _transform->GetScale();
-			ImGui::Text("Position"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Position", pos.e);
-			ImGui::Text("Rotation"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Rotation", rot.e);
-			ImGui::Text("Scale"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Scale", scale.e);
+			ImGui::Text("Position"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Position", pos.e, 0.25f);
+			ImGui::Text("Rotation"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Rotation", rot.e, 0.25f);
+			ImGui::Text("Scale"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Scale", scale.e, 0.25f);
 
 			_transform->SetPosition(pos);
 			_transform->SetRotation(rot);

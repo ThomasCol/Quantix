@@ -10,17 +10,6 @@ void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods
 	//Quantix::Core::UserEntry::InputMgr::GetInstance()->CheckKeys(key, action);
 }
 
-void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
-{
-	MouseTest* mouseInput = (MouseTest*)glfwGetWindowUserPointer(Window);
-
-	if (Button == GLFW_MOUSE_BUTTON_RIGHT && Action == GLFW_PRESS)
-	{
-		mouseInput->MouseCaptured = true;
-		glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	}
-}
-
 Editor::Editor(QXuint width, QXuint height) :
 	_win{ width, height },
 	_lib{"QuantixEngine"},
@@ -36,11 +25,9 @@ Editor::Editor(QXuint width, QXuint height) :
 
 	//Init Callback
 	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
-	//glfwSetMouseButtonCallback(_win.GetWindow(), MouseButtonCallback);
 
 	_mouseInput = new MouseTest({false, 0.0f, 0.0f, 0.0f, 0.0f});
 	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
-	glfwSetMouseButtonCallback(_win.GetWindow(), MouseButtonCallback);
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -65,10 +52,10 @@ Editor::Editor(QXuint width, QXuint height) :
 
 	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight());
 
-	_simImg.push_back(_app->manager.CreateTexture("media/IconEditor/Play.png"));
-	_simImg.push_back(_app->manager.CreateTexture("media/IconEditor/Pause.png"));
-	_simState.push_back(false);
-	_simState.push_back(false);
+	_simImg.insert(std::make_pair("Play", _app->manager.CreateTexture("media/IconEditor/Play.png")));
+	_simImg.insert(std::make_pair("Pause", _app->manager.CreateTexture("media/IconEditor/Pause.png")));
+	_simState.insert(std::make_pair("Play", false));
+	_simState.insert(std::make_pair("Pause", false));
 }
 
 Editor::~Editor()
@@ -176,29 +163,26 @@ void Editor::DrawMenuBar()
 		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
 		i++;
 	}
-	//_menuBar.Update(_object);
 	_menuBar.Update(_graph3D->GetChild());
 }
 
 void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 {
-	//_hierarchy.Update(name, flags, _object);
 	_hierarchy.Update(name, flags, _graph3D);
 }
 
 void Editor::Simulation()
 {
 	QXint pos = -20;
-	for (QXuint i{ 0 }; i < _simImg.size(); i++)
+	for (auto it = _simState.begin(); it != _simState.end(); ++it)
 	{
-		QXbool state = _simState[i];
-		if (!_simState[i])
+		if (!it->second)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 1, 1));
 		else
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(44 / 255, 62 / 255, 80 / 255, 1));
 		ImGui::SetCursorPos(ImVec2(ImGui::GetWindowSize().x / 2 + pos, 0));
-		if (ImGui::ImageButton((ImTextureID)_simImg[i]->GetId(), ImVec2(25, 25)))
-			_simState[i] = !_simState[i];
+		if (ImGui::ImageButton((ImTextureID)_simImg[it->first]->GetId(), ImVec2(25, 25)))
+			it->second = !it->second;
 		ImGui::PopStyleColor();
 		pos *= -1;
 	}
@@ -209,6 +193,13 @@ void Editor::DrawSimulation()
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
 	ImGui::BeginChild(ImGui::GetID("Editor"), ImVec2(0, 35), false, flags);
 	Simulation();
+	if (_simState["Play"])
+	{
+		if (!_simState["Pause"])
+		{
+			//Update Scene
+		}
+	}
 	ImGui::EndChild();
 
 }
@@ -222,6 +213,13 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 		{
 			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");
 			i++;
+		}
+		if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
+		{
+			_mouseInput->MouseCaptured = true;
+			glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
 		}
 		ImGui::Image((ImTextureID)(size_t)_fbo, ImGui::GetWindowSize(), { 0.f, 1.f }, { 1.f, 0.f });
 	}

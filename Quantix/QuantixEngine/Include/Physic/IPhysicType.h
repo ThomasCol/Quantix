@@ -2,7 +2,7 @@
 #define __IPHYSICTYPE_H__
 
 
-#include <../physx/include/PxActor.h>
+#include <physx/include/PxActor.h>
 #include <physx/include/PxActor.h>
 #include <PxActor.h>
 

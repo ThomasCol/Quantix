@@ -67,10 +67,8 @@ private:
 	Hierarchy											_hierarchy;
 	Explorer											_explorer;
 
-	std::vector<Quantix::Resources::Texture*>			_simImg;
-	std::vector<QXbool>									_simState;
-	std::vector<Node>									_object;
-	//std::vector<Core::DataStructure::GameComponent*>	_gameComponent;
+	std::map<QXstring, Quantix::Resources::Texture*>	_simImg;
+	std::map<QXstring, QXbool>							_simState;
 
 	QXuint												_fbo;
 	ImGuiWindowFlags									_flagsEditor;

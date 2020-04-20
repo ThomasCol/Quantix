@@ -64,14 +64,8 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 	}
 }
 
-void InitScene(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, std::vector<Quantix::Core::Components::Light>& lights)
+void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 {
-	START_PROFILING("Mesh");
-	Quantix::Core::Components::Mesh* mesh = object->GetComponent<Quantix::Core::Components::Mesh>();
-	mesh = editor->GetApp()->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-	mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
-	STOP_PROFILING("Mesh");
-
 	Quantix::Core::Components::Light light;
 	light.ambient = { 0.5f, 0.5f, 0.5f };
 	light.diffuse = { 0.7f, 0.7f, 0.7f };
@@ -124,31 +118,49 @@ void	DebugMode()
 		state = false;
 }
 
-void Init(Editor* editor, Quantix::Physic::Transform3D* graph, Quantix::Core::DataStructure::GameObject3D* gameObject, std::vector<Quantix::Core::Components::Light>& lights)
+void Init(Editor* editor, Quantix::Physic::Transform3D* graph, std::vector<Quantix::Core::DataStructure::GameObject3D*> gameObject, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	glfwSetWindowUserPointer(editor->GetWin().GetWindow(), editor->_mouseInput);
 
 	//Init Pack Input Manager
 	InitPack();
 
-	gameObject->SetTransform(graph->GetChild()[0]);
-	gameObject->AddComponent<Quantix::Core::Components::Mesh>();
-	graph->GetChild()[0]->SetObject(gameObject);
+	for (QXuint i = 0; i < gameObject.size(); i++)
+	{
+		gameObject[i]->SetTransform(graph->GetChild()[i]);
+		gameObject[i]->AddComponent<Quantix::Core::Components::Mesh>();
+		graph->GetChild()[i]->SetObject(gameObject[i]);
+
+		START_PROFILING("Mesh");
+		Quantix::Core::Components::Mesh* mesh = gameObject[i]->GetComponent<Quantix::Core::Components::Mesh>();
+		if (i == 0)
+		{
+			mesh = editor->GetApp()->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
+			mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
+		}
+		else
+			mesh = editor->GetApp()->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
+		STOP_PROFILING("Mesh");
+	}
 
 	//Init Scene
-	InitScene(editor, gameObject, lights);
+	InitScene(editor, lights);
 	editor->SetObject(graph);
 
 	//Init Editor
 	editor->Init();
 }
 
-void Update(Editor* editor, Quantix::Core::DataStructure::GameObject3D* object, std::vector<Quantix::Core::Components::Light>& lights, Quantix::Core::Components::Camera* cam)
+void Update(Editor* editor, std::vector<Quantix::Core::DataStructure::GameObject3D*> object, std::vector<Quantix::Core::Components::Light>& lights, Quantix::Core::Components::Camera* cam)
 {
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
-	Quantix::Core::Components::Mesh*				mesh = object->GetComponent<Quantix::Core::Components::Mesh>();
+	
+	for (QXuint i = 0; i < object.size(); i++)
+	{
+		Quantix::Core::Components::Mesh* mesh = object[i]->GetComponent<Quantix::Core::Components::Mesh>();
 
-	meshes.push_back(mesh);
+		meshes.push_back(mesh);
+	}
 
 	if (GetKey(QX_KEY_ESCAPE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
@@ -185,8 +197,12 @@ int main()
 		Quantix::Physic::Transform3D*					graph = new Quantix::Physic::Transform3D(Math::QXvec3(0,0,0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1));
 
 		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
+		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(5, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));
 
-		Quantix::Core::DataStructure::GameObject3D*		gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh1", graph->GetChild()[0]);
+		std::vector<Quantix::Core::DataStructure::GameObject3D*>		gameObject;
+		for (QXuint i = 0; i < graph->GetChild().size(); i++)
+			gameObject.push_back(new Quantix::Core::DataStructure::GameObject3D("Mesh" + std::to_string(i), graph->GetChild()[i]));
+
 		std::vector<Quantix::Core::Components::Light>	lights;
 
 		Init(editor, graph, gameObject, lights);
