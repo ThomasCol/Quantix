@@ -37,6 +37,7 @@
     <ClCompile Include="Src\Core\UserEntry\InputManager.cpp" />
     <ClCompile Include="Src\Core\Components\Rigidbody.cpp" />
     <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
+    <ClCompile Include="Src\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
