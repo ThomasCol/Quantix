@@ -218,8 +218,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\QuantixEngine\Media\Logo\Quantix_Logo.ico" />
-    <Image Include="C:\Users\thoma\Desktop\logo_thomas4_nsl_icon.ico" />
-    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
