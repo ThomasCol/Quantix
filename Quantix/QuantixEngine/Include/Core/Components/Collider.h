@@ -30,7 +30,7 @@ namespace Quantix::Core::Components
 #pragma endregion
 
 #pragma region Constructors
-		ICollider() = delete;
+		ICollider() = default;
 		ICollider(DataStructure::GameComponent* par);
 		ICollider(const ICollider& col) noexcept;
 		ICollider(ICollider&& col) noexcept;

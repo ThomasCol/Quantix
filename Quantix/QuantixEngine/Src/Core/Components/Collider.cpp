@@ -5,6 +5,10 @@ RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
 	rttr::registration::class_<Quantix::Core::Components::ICollider>("Collider")
+		.constructor<>()
+		.constructor<Quantix::Core::DataStructure::GameComponent*>()
+		.constructor<const Quantix::Core::Components::ICollider&>()
+		.constructor<Quantix::Core::Components::ICollider&&>()
 	.enumeration<Quantix::Core::Components::EPhysXType>("EPhysXType")
 		(rttr::value("Default", Quantix::Core::Components::EPhysXType::DEFAULT),
 		rttr::value("Directional", Quantix::Core::Components::EPhysXType::STATIC),

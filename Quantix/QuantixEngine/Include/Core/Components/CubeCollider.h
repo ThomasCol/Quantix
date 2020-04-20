@@ -15,6 +15,7 @@ namespace Quantix::Core::Components
 	struct QUANTIX_API CubeCollider : public ICollider
 	{
 #pragma region Constructors
+		CubeCollider() = default;
 		CubeCollider(DataStructure::GameComponent* par);
 		CubeCollider(const CubeCollider& par) noexcept;
 		CubeCollider(CubeCollider&& other) noexcept;

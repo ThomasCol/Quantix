@@ -16,6 +16,7 @@ namespace Quantix::Core::Components
 	{
 #pragma region Constructors
 
+		PlaneCollider() = default;
 		PlaneCollider(DataStructure::GameComponent* par);
 		PlaneCollider(const PlaneCollider& par) noexcept;
 		PlaneCollider(PlaneCollider&& other) noexcept;

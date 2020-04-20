@@ -16,6 +16,7 @@ namespace Quantix::Core::Components
 	{
 #pragma region Constructors
 
+		SphereCollider() = default;
 		SphereCollider(DataStructure::GameComponent* par);
 		SphereCollider(const SphereCollider& par) noexcept;
 		SphereCollider(SphereCollider&& other) noexcept;

@@ -16,6 +16,7 @@ namespace Quantix::Core::Components
 	{
 #pragma region Constructors
 
+		CapsuleCollider() = default;
 		CapsuleCollider(DataStructure::GameComponent* par);
 		CapsuleCollider(const CapsuleCollider& par) noexcept;
 		CapsuleCollider(CapsuleCollider&& other) noexcept;

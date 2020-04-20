@@ -3,7 +3,11 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Core::Components::PlaneCollider>("PlaneCollider");
+	rttr::registration::class_<Quantix::Core::Components::PlaneCollider>("PlaneCollider")
+		.constructor<>()
+		.constructor<Quantix::Core::DataStructure::GameComponent*>()
+		.constructor<const Quantix::Core::Components::PlaneCollider&>()
+		.constructor<Quantix::Core::Components::PlaneCollider&&>();
 }
 
 namespace Quantix::Core::Components

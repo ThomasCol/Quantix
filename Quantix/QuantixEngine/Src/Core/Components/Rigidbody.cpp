@@ -12,6 +12,10 @@ RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
 	rttr::registration::class_<Quantix::Core::Components::Rigidbody>("Rigidbody")
+		.constructor<>()
+		.constructor<Quantix::Core::DataStructure::GameComponent*>()
+		.constructor<const Quantix::Core::Components::Rigidbody&>()
+		.constructor<Quantix::Core::Components::Rigidbody&&>()
 	.property("actorPhysic", &Quantix::Core::Components::Rigidbody::actorPhysic);
 }
 
