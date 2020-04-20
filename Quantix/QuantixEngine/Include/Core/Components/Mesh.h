@@ -87,6 +87,8 @@ namespace Quantix::Core::Components
 		 */
 		inline void SetMaterialMainTexture(Resources::Texture* texture) noexcept { _material->SetMainTexture(texture); textureID = texture->GetId(); }
 
+		void		SetActive(QXbool enable) override;
+
 #pragma endregion
 
 #pragma endregion

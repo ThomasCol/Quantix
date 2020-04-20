@@ -59,19 +59,16 @@ namespace Quantix::Physic
 	void	Transform3D::SetPosition(const Math::QXvec3& newPos)
 	{
 		_position = newPos;
-		UpdateTRS();
 	}
 
 	void	Transform3D::SetRotation(const Math::QXvec3& newRot)
 	{
 		_rotation = newRot;
-		UpdateTRS();
 	}
 
 	void	Transform3D::SetScale(const Math::QXvec3& newSca)
 	{
 		_scale = newSca;
-		UpdateTRS();
 	}
 
 	#pragma endregion
@@ -83,30 +80,26 @@ namespace Quantix::Physic
 		_trs = Math::QXmat4::CreateTRSMatrix(_position, _rotation, _scale);
 	}
 
-	void	Transform3D::Update(const Math::QXmat4& trsParent) const
+	void	Transform3D::Update(const Transform3D* parentTransform)
 	{
-		std::vector<Transform3D*>::const_iterator it;
+		UpdateTRS();
 
-		for (it = _childs.cbegin(); it != _childs.cend(); ++it)
-			(*it)->Update(_trs);
+		_trs *= parentTransform->_trs;
 	}
 
 	void	Transform3D::Translate(const Math::QXvec3& pos)
 	{
 		_position += pos;
-		UpdateTRS();
 	}
 
 	void	Transform3D::Rotate(const Math::QXvec3& rot)
 	{
 		_rotation += rot;
-		UpdateTRS();
 	}
 
 	void	Transform3D::Scale(const Math::QXvec3& sca)
 	{
 		_scale += sca;
-		UpdateTRS();
 	}
 
 	void	Transform3D::AddChild(Transform3D* child)

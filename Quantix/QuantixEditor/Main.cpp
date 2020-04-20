@@ -118,28 +118,12 @@ void	DebugMode()
 		state = false;
 }
 
-void Init(Editor* editor, std::vector<Quantix::Core::DataStructure::GameObject3D*> gameObject, std::vector<Quantix::Core::Components::Light>& lights)
+void Init(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	glfwSetWindowUserPointer(editor->GetWin().GetWindow(), editor->_mouseInput);
 
 	//Init Pack Input Manager
 	InitPack();
-
-	for (QXuint i = 0; i < gameObject.size(); i++)
-	{
-		gameObject[i]->AddComponent<Quantix::Core::Components::Mesh>();
-
-		START_PROFILING("Mesh");
-		Quantix::Core::Components::Mesh* mesh = gameObject[i]->GetComponent<Quantix::Core::Components::Mesh>();
-		if (i == 0)
-		{
-			mesh = editor->GetApp()->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-			mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
-		}
-		else
-			mesh = editor->GetApp()->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
-		STOP_PROFILING("Mesh");
-	}
 
 	//Init Scene
 	InitScene(editor, lights);
@@ -148,17 +132,8 @@ void Init(Editor* editor, std::vector<Quantix::Core::DataStructure::GameObject3D
 	editor->Init();
 }
 
-void Update(Editor* editor, std::vector<Quantix::Core::DataStructure::GameObject3D*> object, std::vector<Quantix::Core::Components::Light>& lights, Quantix::Core::Components::Camera* cam)
+void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights, Quantix::Core::Components::Camera* cam)
 {
-	std::vector<Quantix::Core::Components::Mesh*>	meshes;
-	
-	for (QXuint i = 0; i < object.size(); i++)
-	{
-		Quantix::Core::Components::Mesh* mesh = object[i]->GetComponent<Quantix::Core::Components::Mesh>();
-
-		meshes.push_back(mesh);
-	}
-
 	if (GetKey(QX_KEY_ESCAPE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		if (editor->_mouseInput->MouseCaptured)
@@ -174,8 +149,11 @@ void Update(Editor* editor, std::vector<Quantix::Core::DataStructure::GameObject
 
 	DebugMode();
 
+	std::vector<Quantix::Core::Components::Mesh*>	meshes;
+
 	START_PROFILING("Draw");
 	//Editor Update
+	editor->GetApp()->Update(meshes);
 	editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, cam));
 	STOP_PROFILING("Draw");
 	START_PROFILING("Refresh");
@@ -191,25 +169,13 @@ int main()
 		Editor*											editor = new Editor(1920, 900);
 		//Init Camera
 		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
-		Quantix::Core::DataStructure::GameObject3D*		root = new Quantix::Core::DataStructure::GameObject3D("root");
-
-		editor->SetRoot(root);
-
-		std::vector<Quantix::Core::DataStructure::GameObject3D*>		gameObjects;
-		Quantix::Core::DataStructure::GameObject3D* gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh");
-		Quantix::Core::DataStructure::GameObject3D* gameObject2 = new Quantix::Core::DataStructure::GameObject3D("Mesh2");
-		gameObjects.push_back(gameObject);
-		gameObjects.push_back(gameObject2);
-
-		root->AddChild(gameObject);
-		gameObject->AddChild(gameObject2);
 
 		std::vector<Quantix::Core::Components::Light>	lights;
 
-		Init(editor, gameObjects, lights);
+		Init(editor, lights);
 
 		while (!editor->GetWin().ShouldClose())
-			Update(editor, gameObjects, lights, cam);
+			Update(editor, lights, cam);
 
 		delete cam;
 	}

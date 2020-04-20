@@ -154,7 +154,7 @@ namespace Quantix::Physic
 			 *
 			 * @param trsParent The parent TRS to convert its own trs in global
 			 */
-			void										Update(const Math::QXmat4& trsParent) const;
+			void										Update(const Transform3D* parentTransform);
 
 			/**
 			 * @brief Translate the current transform

@@ -52,6 +52,8 @@ Editor::Editor(QXuint width, QXuint height) :
 
 	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight());
 
+	_root = _app->scene->GetRoot();
+
 	_simImg.insert(std::make_pair("Play", _app->manager.CreateTexture("media/IconEditor/Play.png")));
 	_simImg.insert(std::make_pair("Pause", _app->manager.CreateTexture("media/IconEditor/Pause.png")));
 	_simState.insert(std::make_pair("Play", false));
@@ -108,6 +110,7 @@ void Editor::Update(QXuint FBO)
 	// Disabling mouse for ImGui if mouse is captured by the app (it must be done here)
 	if (_mouseInput->MouseCaptured)
 		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
+
 
 	_fbo = FBO;
 	static QXint i = 0;

@@ -108,7 +108,7 @@ namespace Quantix::Core::DataStructure
 		 * 
 		 * @param enable Value to set _isEnable
 		 */
-		inline void							SetActive(bool enable) { _isEnable = enable; };
+		inline virtual void					SetActive(bool enable) { _isEnable = enable; };
 		#pragma endregion Accessors
 		
 		#pragma region Inline

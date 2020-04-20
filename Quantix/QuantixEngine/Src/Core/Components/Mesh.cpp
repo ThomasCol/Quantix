@@ -32,4 +32,9 @@ namespace Quantix::Core::Components
 	{
 		return new Mesh(*this);
 	}
+	void Mesh::SetActive(QXbool enable)
+	{
+		_isEnable = enable;
+		_object->SetRender(enable);
+	}
 }

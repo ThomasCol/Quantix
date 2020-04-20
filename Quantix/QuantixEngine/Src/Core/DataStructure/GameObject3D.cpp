@@ -44,6 +44,26 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
+	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes)
+	{
+		if (_toRender)
+			meshes.push_back(GetComponent<Core::Components::Mesh>());
+
+		for (Physic::Transform3D* child : _transform->GetChilds())
+			child->GetObject()->Update(meshes, this);
+	}
+
+	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject)
+	{
+		if (_toRender)
+			meshes.push_back(GetComponent<Core::Components::Mesh>());
+
+		_transform->Update(parentObject->GetTransform());
+
+		for (Physic::Transform3D* child : _transform->GetChilds())
+			child->GetObject()->Update(meshes, this);
+	}
+
 	void	GameObject3D::SetGlobalPosition(Math::QXvec3 pos)
 	{
 		//_transform.SetGlobalPosition(pos);

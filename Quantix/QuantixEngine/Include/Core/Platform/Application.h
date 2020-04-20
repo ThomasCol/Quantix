@@ -52,10 +52,11 @@ namespace Quantix::Core::Platform
 #pragma endregion
 
 #pragma region Functions
+
 		/**
 		 * @brief Run Application
 		 */
-		void Run();
+		void Update(std::vector<Core::Components::Mesh*>& meshes);
 
 #pragma endregion
 	};

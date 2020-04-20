@@ -1,20 +1,27 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include "Physic/Transform3D.h"
+#include "Core/DataStructure/GameObject3D.h"
 #include "../Core/DataStructure/GameComponent.h"
+
+namespace Quantix::Core::DataStructure
+{
+	class ResourcesManager;
+}
 
 namespace Quantix::Resources
 {
-	class Scene
+	class QUANTIX_API Scene
 	{
 		private:
 
 			#pragma region Attributes
 
-			QXstring			_name;
-			Physic::Transform3D	_world;
-			QXuint		_id;
+			QXstring							_name;
+			Core::DataStructure::GameObject3D*	_root;
+			QXuint								_id;
+
+			std::vector<Core::DataStructure::GameObject3D*> _objects;
 
 			#pragma endregion
 
@@ -28,7 +35,7 @@ namespace Quantix::Resources
 			 */
 			Scene() = default;
 
-			Scene(const QXstring& name, const Physic::Transform3D& world, const QXuint& id) noexcept;
+			Scene(const QXstring& name, Core::DataStructure::GameObject3D* root, const QXuint& id) noexcept;
 
 			/**
 			 * @brief Construct a new Scene object by copy
@@ -56,17 +63,19 @@ namespace Quantix::Resources
 
 			#pragma region Functions
 
+			void	AddGameObject(const QXstring& name, const QXstring& parentName = "");
+
 			/**
 			 * @brief method that init the scene
 			 *
 			 */
-			void	Init();
+			void	Init(Quantix::Core::DataStructure::ResourcesManager& manager);
 
 			/**
 			 * @brief method that update the world and its hierarchy
 			 *
 			 */
-			void	Update();
+			void	Update(std::vector<Core::Components::Mesh*>& meshes);
 
 			void Reset()noexcept;
 
@@ -100,6 +109,10 @@ namespace Quantix::Resources
 
 			const QXuint& GetID()const noexcept { return _id; }
 			QXuint& GetID() noexcept { return _id; }
+
+			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
+
+			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name);
 
 			#pragma endregion
 
