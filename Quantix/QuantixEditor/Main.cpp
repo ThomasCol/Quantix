@@ -12,7 +12,6 @@
 #include <Editor.h>
 #include <Core/Profiler/Profiler.h>
 #include <Window.h>
-//#include <Core/UserEntry/InputSystem.h>
 #include <Vec3.h>
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/UserEntry/InputManager.h>
@@ -169,6 +168,7 @@ int main()
 		Editor*											editor = new Editor(1920, 900);
 		//Init Camera
 		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
+		editor->SetMainCamera(cam);
 
 		std::vector<Quantix::Core::Components::Light>	lights;
 

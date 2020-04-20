@@ -119,30 +119,32 @@ namespace Quantix::Physic
 			 */
 			const Math::QXmat4&								GetTRS();
 
+			void											SetTRS(Math::QXmat4& trs);
+
 			/**
 			 * @brief Set the position of the current transform
 			 *
 			 * @param newPos the new position of the current transform
 			 */
-			void										SetPosition(const Math::QXvec3& newPos);
+			void											SetPosition(const Math::QXvec3& newPos);
 
 			/**
 			 * @brief Set the rotation of the current transform
 			 *
 			 * @param newPos the new rotation of the current transform
 			 */
-			void										SetRotation(const Math::QXvec3& newRot);
+			void											SetRotation(const Math::QXvec3& newRot);
 
 			/**
 			 * @brief Set the scale of the current transform
 			 *
 			 * @param newPos the new scale of the current transform
 			 */
-			void										SetScale(const Math::QXvec3& newSca);
+			void											SetScale(const Math::QXvec3& newSca);
 			
-			void										SetObject(Core::DataStructure::GameObject3D* object) { _gameObject = object; };
+			void											SetObject(Core::DataStructure::GameObject3D* object) { _gameObject = object; };
 
-			inline Core::DataStructure::GameObject3D*	GetObject() const { return _gameObject; };
+			inline Core::DataStructure::GameObject3D*		GetObject() const { return _gameObject; };
 
 			inline std::vector<Transform3D*>&			GetChilds() { return _childs; };
 		#pragma endregion

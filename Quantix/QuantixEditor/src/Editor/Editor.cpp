@@ -1,9 +1,8 @@
 #include "Editor.h"
 #include <iostream>
-//#include <Core/UserEntry/InputSystem.h>
+#include <Core/UserEntry/InputManager.h>
 #include <Core/Profiler/Profiler.h>
 #include "stb_image.h"
-//#include "Core/UserEntry/InputSystem.h"
 
 void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -17,6 +16,7 @@ Editor::Editor(QXuint width, QXuint height) :
 	_folder{},
 	_menuBar{},
 	_hierarchy{},
+	_guizmoType{ ImGuizmo::OPERATION::TRANSLATE },
 	_flagsEditor{}
 {
 	_lib.load();
@@ -75,6 +75,8 @@ void Editor::Init()
 {
 	InitImGui();
 
+	_app->info.proj = { Math::QXmat4::CreateProjectionMatrix(_app->info.width, _app->info.height, 0.1f, 1000.f, 80.f) };
+
 	ImGui::GetStyle().WindowRounding = 0.f;
 	_flagsEditor = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse;
 	ImGui::Begin("Quantix Editor", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
@@ -95,6 +97,9 @@ void Editor::InitImGui()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
+
+	ImGuizmo::SetRect(0, 0, _app->info.width, _app->info.height);
 
 	// Disabling mouse for ImGui if mouse is captured by the app (it must be done here)
 	if (_mouseInput->MouseCaptured)
@@ -177,7 +182,7 @@ void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 void Editor::Simulation()
 {
 	QXint pos = -20;
-	for (auto it = _simState.begin(); it != _simState.end(); ++it)
+	for (auto it = _simState.rbegin(); it != _simState.rend(); ++it)
 	{
 		if (!it->second)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 1, 1));
@@ -207,11 +212,45 @@ void Editor::DrawSimulation()
 
 }
 
+void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
+{
+	Math::QXmat4 matrix = transform->GetTRS();
+
+	ImGuizmo::DrawCube(_mainCamera->GetLookAt().array, _app->info.proj.array, matrix.array);
+	ImGuizmo::ViewManipulate(_mainCamera->GetLookAt().array, 0.f, ImVec2(transform->GetPosition().x, transform->GetPosition().y), ImVec2(128,128), 0xFF0000FF);
+
+	if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
+		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::WORLD, matrix.array);
+	else if (_guizmoType == ImGuizmo::OPERATION::ROTATE)
+		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::WORLD, matrix.array);
+	else
+		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::SCALE, ImGuizmo::MODE::WORLD, matrix.array);
+
+	transform->SetTRS(matrix);
+}
+
+void Editor::DrawGuizmo()
+{
+	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+	{
+		if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
+			_guizmoType = ImGuizmo::OPERATION::ROTATE;
+		else if (_guizmoType == ImGuizmo::OPERATION::ROTATE)
+			_guizmoType = ImGuizmo::OPERATION::SCALE;
+		else if (_guizmoType == ImGuizmo::OPERATION::SCALE)
+			_guizmoType = ImGuizmo::OPERATION::TRANSLATE;
+	}
+
+	if (_hierarchy.GetInspector() != nullptr)
+		ShowGuizmoObject(_hierarchy.GetInspector()->GetTransform());
+}
+
 void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 {
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
+		//ImGuizmo::DrawGrid(ViewTransform.e, ProjectionTransform.e, identity, 10.f);
 		if (i == 0)
 		{
 			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");
@@ -224,6 +263,7 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 		}
+		DrawGuizmo();
 		ImGui::Image((ImTextureID)(size_t)_fbo, ImGui::GetWindowSize(), { 0.f, 1.f }, { 1.f, 0.f });
 	}
 	ImGui::End();

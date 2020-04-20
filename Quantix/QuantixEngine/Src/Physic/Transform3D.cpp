@@ -56,6 +56,11 @@ namespace Quantix::Physic
 		return _trs;
 	}
 
+	void Transform3D::SetTRS(Math::QXmat4& trs)
+	{
+		_trs = trs;
+	}
+
 	void	Transform3D::SetPosition(const Math::QXvec3& newPos)
 	{
 		_position = newPos;

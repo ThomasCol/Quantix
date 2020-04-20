@@ -28,9 +28,10 @@ void Inspector::Update()
 			Math::QXvec3	pos = _transform->GetPosition();
 			Math::QXvec3	rot = _transform->GetRotation();
 			Math::QXvec3	scale = _transform->GetScale();
-			ImGui::Text("Position"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Position", pos.e, 0.25f);
-			ImGui::Text("Rotation"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Rotation", rot.e, 0.25f);
-			ImGui::Text("Scale"); ImGui::SameLine(150.f); ImGui::DragFloat3("##Scale", scale.e, 0.25f);
+
+			ImGui::Text("Position");	ImGui::SameLine(150.f);	ImGui::DragFloat3("##Position", pos.e, 0.25f);
+			ImGui::Text("Rotation");	ImGui::SameLine(150.f); ImGui::DragFloat3("##Rotation", rot.e, 0.25f);
+			ImGui::Text("Scale");		ImGui::SameLine(150.f); ImGui::DragFloat3("##Scale", scale.e, 0.25f);
 
 			_transform->SetPosition(pos);
 			_transform->SetRotation(rot);
@@ -39,18 +40,18 @@ void Inspector::Update()
 			ImGui::TreePop();
 		}
 
-		for (int i = 0; i < _transform->GetObject()->GetComp().size(); i++)
+		for (int i = 0; i < _transform->GetObject()->GetComponents().size(); i++)
 		{
 			ImGui::PushID(i);
-			auto currentComp = _transform->GetObject()->GetComp()[i];
+			auto currentComp = _transform->GetObject()->GetComponents()[i];
 
-			if (_transform->GetObject()->GetComp()[i] != nullptr)
+			if (_transform->GetObject()->GetComponents()[i] != nullptr)
 			{
-				rttr::type t = _transform->GetObject()->GetComp()[i]->get_type();
+				rttr::type t = _transform->GetObject()->GetComponents()[i]->get_type();
 				GetInstance(currentComp, t);
 			}
 
-			PopUpMenuItem(_transform->GetObject()->GetComp()[i]);
+			PopUpMenuItem(_transform->GetObject()->GetComponents()[i]);
 			ImGui::PopID(); 
 		}
 
