@@ -52,7 +52,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON                    "G:\\Programmation\\GP\\Engine\\Quantix\\Quantix\\QuantixEngine\\Media\\Logo\\Quantix_Logo.ico"
+IDI_ICON1               ICON                    "..\\QuantixEngine\\Media\\Logo\\Quantix_Logo.ico"
 
 #endif    // Français (France) resources
 /////////////////////////////////////////////////////////////////////////////

@@ -35,6 +35,8 @@
     <ClCompile Include="Src\Physic\IPhysicType.cpp" />
     <ClCompile Include="Src\Core\Components\PlaneCollider.cpp" />
     <ClCompile Include="Src\Core\UserEntry\InputManager.cpp" />
+    <ClCompile Include="Src\Core\Components\Rigidbody.cpp" />
+    <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -72,5 +74,7 @@
     <ClInclude Include="Include\Physic\IPhysicType.h" />
     <ClInclude Include="Include\Core\Components\PlaneCollider.h" />
     <ClInclude Include="Include\Core\UserEntry\InputManager.h" />
+    <ClInclude Include="Include\Core\Components\Rigidbody.h" />
+    <ClInclude Include="Include\Physic\PhysicDynamic.h" />
   </ItemGroup>
 </Project>
