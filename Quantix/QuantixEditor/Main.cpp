@@ -6,7 +6,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_internal.h>
-
+#include <vld.h>
 #include <Core/Components/Camera.h>
 
 #include <Editor.h>
@@ -68,15 +68,16 @@ void InitScene(Editor* editor, Quantix::Core::DataStructure::GameObject3D* objec
 {
 	START_PROFILING("Mesh");
 	Quantix::Core::Components::Mesh* mesh = object->GetComponent<Quantix::Core::Components::Mesh>();
-	mesh = editor->GetApp()->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-	mesh->SetMaterialMainTexture(editor->GetApp()->manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
+	mesh = editor->GetApp()->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
 	STOP_PROFILING("Mesh");
+
+	object->SetTransformValue({ 0, 0, 0 }, { 0, 0, 0 }, { 100, 0.5, 100 });
 
 	Quantix::Core::Components::Light light;
 	light.ambient = { 0.5f, 0.5f, 0.5f };
 	light.diffuse = { 0.7f, 0.7f, 0.7f };
 	light.specular = { 1.0f, 1.0f, 1.0f };
-	light.position = { 0.0f, 0.0f, 10.f };
+	light.position = { 0.0f, 2.0f, 0.f };
 	light.direction = { 0.0f, 0.0f, -1.f };
 	light.constant = 0.5f;
 	light.linear = 0.09f;
@@ -85,7 +86,7 @@ void InitScene(Editor* editor, Quantix::Core::DataStructure::GameObject3D* objec
 	light.outerCutOff = cos(0.76f);
 	light.type = Quantix::Core::Components::ELightType::SPOT;
 
-	Quantix::Core::Components::Light light2;
+	/*Quantix::Core::Components::Light light2;
 	light2.ambient = { 0.5f, 0.5f, 0.5f };
 	light2.diffuse = { 0.7f, 0.7f, 0.7f };
 	light2.specular = { 1.0f, 1.0f, 1.0f };
@@ -96,10 +97,10 @@ void InitScene(Editor* editor, Quantix::Core::DataStructure::GameObject3D* objec
 	light2.quadratic = 0.032f;
 	light2.cutOff = cos(0.70f);
 	light2.outerCutOff = cos(0.76f);
-	light2.type = Quantix::Core::Components::ELightType::POINT;
+	light2.type = Quantix::Core::Components::ELightType::POINT;*/
 
 	lights.push_back(light);
-	lights.push_back(light2);
+	//lights.push_back(light2);
 }
 
 void InitPack()
@@ -181,7 +182,7 @@ int main()
 	{
 		Editor*											editor = new Editor(1920, 900);
 		//Init Camera
-		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
+		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, 0, 1 }, Math::QXvec3::up);
 		Quantix::Physic::Transform3D*					graph = new Quantix::Physic::Transform3D(Math::QXvec3(0,0,0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1));
 
 		graph->AddChild(new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1)));

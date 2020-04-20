@@ -8,6 +8,7 @@
 #include "Core/Render/PostProcess/Skybox.h"
 #include "Core/DataStructure/ResourcesManager.h"
 #include "Core/DataStructure/GameObject3D.h"
+#include "Core/UserEntry/InputManager.h"
 
 namespace Quantix::Core::Render
 {
@@ -134,7 +135,7 @@ namespace Quantix::Core::Render
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 		}
 
-		Resources::Material* material;
+		Resources::Material*						material;
 		Math::QXmat4								trs;
 		Quantix::Core::DataStructure::GameObject3D* obj;
 
