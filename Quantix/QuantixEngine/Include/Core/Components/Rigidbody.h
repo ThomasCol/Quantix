@@ -26,7 +26,7 @@ namespace Quantix::Core::Components
 #pragma region Constructors
 
 		Rigidbody() = delete;
-		Rigidbody(DataStructure::GameComponent* par, Physic::PhysicHandler* handler);
+		Rigidbody(DataStructure::GameComponent* par);
 		Rigidbody(const Rigidbody& src) noexcept;
 		Rigidbody(Rigidbody&& src) noexcept;
 		~Rigidbody() noexcept = default;

@@ -4,6 +4,8 @@
 #include "Physic/PhysicHandler.h"
 #include "Physic/PhysicDynamic.h"
 
+#include "Physic/PhysicHandler.h"
+
 #include <iostream>
 
 RTTR_PLUGIN_REGISTRATION
@@ -15,9 +17,9 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::Components
 {
-	Rigidbody::Rigidbody(DataStructure::GameComponent* par, Physic::PhysicHandler* handler):
+	Rigidbody::Rigidbody(DataStructure::GameComponent* par):
 		Core::DataStructure::Component(par),
-		actorPhysic{ handler->GetObject(par, true) }
+		actorPhysic{ Physic::PhysicHandler::GetInstance()->GetObject(par, true) }
 	{}
 
 	Rigidbody::Rigidbody(const Rigidbody& src) noexcept :

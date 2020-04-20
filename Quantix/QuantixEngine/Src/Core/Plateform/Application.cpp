@@ -2,6 +2,7 @@
 
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
+#include "Physic/PhysicHandler.h"
 
 namespace Quantix::Core::Platform
 {
@@ -23,10 +24,9 @@ namespace Quantix::Core::Platform
 		renderer { width, height, manager },
 		info{ width, height },
 		sceneManager {},
-		scene {new Resources::Scene()},
-		physicHandler {}
+		scene {new Resources::Scene()}
 	{
-		physicHandler.InitSystem();
+		Physic::PhysicHandler::GetInstance()->InitSystem();
 	}
 
 	void Application::Run()

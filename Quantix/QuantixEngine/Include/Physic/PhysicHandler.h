@@ -18,7 +18,12 @@ namespace Quantix::Physic
 	class QUANTIX_API PhysicHandler
 	{
 	private:
+		PhysicHandler() = default;
+
+
 #pragma region Attributes
+
+		static PhysicHandler* _instance;
 
 		bool recordMemoryAllocations = true;
 		PxPhysics* mSDK = NULL;
@@ -44,13 +49,16 @@ namespace Quantix::Physic
 #pragma endregion
 	public:
 #pragma region Constructors
-		PhysicHandler() = default;
 		PhysicHandler(const PhysicHandler& src) = delete;
 		PhysicHandler(PhysicHandler&& src) = delete;
 		~PhysicHandler() = default;
 #pragma endregion
 
 #pragma region Functions
+
+		static PhysicHandler* GetInstance();
+
+
 		void		Print(std::vector<Core::DataStructure::GameComponent*> go);
 
 		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody = false);

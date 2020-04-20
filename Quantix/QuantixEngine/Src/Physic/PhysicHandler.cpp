@@ -32,6 +32,17 @@ namespace Quantix::Physic
 		return physx::PxFilterFlag::eDEFAULT;
 	}
 
+	PhysicHandler* PhysicHandler::_instance = nullptr;
+
+	PhysicHandler* PhysicHandler::GetInstance()
+	{
+		if (!_instance)
+		{
+			_instance = new PhysicHandler();
+		}
+		return _instance;
+	}
+
 	void		PhysicHandler::Print(std::vector<Core::DataStructure::GameComponent*> go)
 	{
 		for (size_t i = 0; i < go.size(); i++)
