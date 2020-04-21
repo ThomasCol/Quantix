@@ -31,7 +31,7 @@ namespace Quantix::Resources
 
 	#pragma region Functions
 
-	void	Scene::AddGameObject(const QXstring& name, const QXstring& parentName)
+	Core::DataStructure::GameObject3D* Scene::AddGameObject(const QXstring& name, const QXstring& parentName)
 	{
 		Core::DataStructure::GameObject3D* object = new Core::DataStructure::GameObject3D(name);
 		QXbool is_set = false;
@@ -55,6 +55,7 @@ namespace Quantix::Resources
 		}
 
 		_objects.push_back(object);
+		return object;
 	}
 
 	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager)

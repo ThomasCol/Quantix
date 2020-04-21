@@ -215,7 +215,7 @@ void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 	Math::QXmat4 matrix = transform->GetTRS();
 
 	ImGuizmo::DrawCube(_mainCamera->GetLookAt().array, _app->info.proj.array, matrix.array);
-	ImGuizmo::ViewManipulate(_mainCamera->GetLookAt().array, 0.f, ImVec2(transform->GetPosition().x, transform->GetPosition().y), ImVec2(128,128), 0xFF0000FF);
+	ImGuizmo::ViewManipulate(_mainCamera->GetLookAt().array, 0.f, ImVec2(transform->GetPosition().x, transform->GetPosition().y), ImVec2(128,128), 0x10101010);
 
 	if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
 		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::WORLD, matrix.array);
@@ -229,6 +229,10 @@ void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 
 void Editor::DrawGuizmo()
 {
+	ImGuiViewport* viewport = ImGui::GetWindowViewport();
+	
+	ImGuizmo::SetRect(viewport->Pos.x, viewport->Pos.y, viewport->Size.x, viewport->Size.y);
+	ImGuizmo::DrawGrid(_mainCamera->GetLookAt().array, _app->info.proj.array, Math::QXmat4::Identity().array, 10.f);
 	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
@@ -248,8 +252,6 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		ImGuizmo::SetRect(ImGui::GetCursorPosX(), ImGui::GetCursorPosY(), ImGui::GetContentRegionMax().x, ImGui::GetContentRegionMax().y);
-		ImGuizmo::DrawGrid(_mainCamera->GetLookAt().array, _app->info.proj.array, Math::QXmat4::Identity().array, 10.f);
 		if (i == 0)
 		{
 			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");

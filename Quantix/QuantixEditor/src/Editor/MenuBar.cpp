@@ -65,12 +65,10 @@ void MenuBar::Update(std::vector<Quantix::Physic::Transform3D*>& object, Quantix
 void MenuBar::CreateGameObject(QXstring name, std::vector<Quantix::Physic::Transform3D*>& object, QXbool& selection, Quantix::Core::Platform::Application* app)
 {
 	static QXuint i = 0;
-	object.push_back(new Quantix::Physic::Transform3D());
 	if (i == 0)
-		object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject"));
+		app->scene->AddGameObject("GameObject");
 	else
-		object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject" + std::to_string(i)));
-	//scene->AddGameObject(object.back()->GetObject()->GetName());
+		app->scene->AddGameObject("GameObject" + std::to_string(i));
 	selection = false;
 	i++;
 }
@@ -82,12 +80,10 @@ void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, 
 	{
 		if (selection[i])
 		{
-			object.push_back(new Quantix::Physic::Transform3D());
 			if (j[i] == 0)
-				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i]));
+				app->scene->AddGameObject(objectName[i]);
 			else
-				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i] + std::to_string(j[i])));
-			//scene->AddGameObject(object.back()->GetObject()->GetName());
+				app->scene->AddGameObject(objectName[i] + std::to_string(j[i]));
 			selection[i] = false;
 			j[i]++;
 			return;
@@ -102,15 +98,14 @@ void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectN
 	{
 		if (selection[i])
 		{
-			object.push_back(new Quantix::Physic::Transform3D());
+			Quantix::Core::DataStructure::GameObject3D* obj;
 			if (j[i] == 0)
-				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i]));
+				obj = app->scene->AddGameObject(objectName[i]);
 			else
-				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i] + std::to_string(j[i])));
+				obj = app->scene->AddGameObject(objectName[i] + std::to_string(j[i]));
 			
-			object.back()->GetObject()->AddComponent<Quantix::Core::Components::Mesh>();
-			Quantix::Core::Components::Mesh* mesh = object.back()->GetObject()->GetComponent<Quantix::Core::Components::Mesh>();
-
+			obj->AddComponent<Quantix::Core::Components::Mesh>();
+			Quantix::Core::Components::Mesh* mesh = obj->GetComponent<Quantix::Core::Components::Mesh>();
 			if (i == 0)
 				mesh = app->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
 			else
@@ -130,12 +125,11 @@ void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectN
 	{
 		if (selection[i])
 		{
-			object.push_back(new Quantix::Physic::Transform3D());
+			Quantix::Core::DataStructure::GameObject3D* obj;
 			if (j[i] == 0)
-				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i]));
+				obj = app->scene->AddGameObject(objectName[i]);
 			else
-				object.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D(objectName[i] + std::to_string(j[i])));
-				//scene->AddGameObject(object.back()->GetObject()->GetName());
+				obj = app->scene->AddGameObject(objectName[i] + std::to_string(j[i]));
 			selection[i] = false;
 			j[i]++;
 			return;

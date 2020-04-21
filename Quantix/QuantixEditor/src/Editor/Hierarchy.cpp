@@ -75,16 +75,11 @@ void Hierarchy::CreateChild(QXbool& select, std::vector<Quantix::Physic::Transfo
 
 		if (nodes[i] == _selected)
 		{
-			nodes[i]->GetChilds().push_back(new Quantix::Physic::Transform3D());
-			if (nodes[i]->GetChilds().size() == 0)
-			{
-				nodes[i]->GetChilds().back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject"));
-			}
+			if (nodes.size() == 0)
+				scene->AddGameObject("GameObject");
 			else
-			{
-				nodes[i]->GetChilds().back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject" + std::to_string((QXuint)nodes[i]->GetChilds().size())));
-			}
-			//scene->AddGameObject(nodes[i]->GetChilds().back()->GetObject()->GetName());
+				scene->AddGameObject("GameObject" + std::to_string((QXuint)nodes[i]->GetChilds().size()), nodes[i]->GetObject()->GetName());
+
 			select = false;
 			_selected = nullptr;
 			ImGui::CloseCurrentPopup();
@@ -110,8 +105,7 @@ void Hierarchy::MenuRename(std::vector<Quantix::Physic::Transform3D*>& nodes, Qu
 			memcpy(currName, nodes[i]->GetObject()->GetName().c_str(), nodes[i]->GetObject()->GetName().size() + 1);
 			if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
 			{
-				//scene->GetGameObject(nodes[i]->GetObject()->GetName())->SetName(currName);
-				nodes[i]->GetObject()->SetName(currName);
+				scene->GetGameObject(nodes[i]->GetObject()->GetName())->SetName(currName);
 				if (_inspector != nullptr)
 					_inspector->SetNode(nodes[i]);
 				_selected = nullptr;
@@ -154,12 +148,10 @@ void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<Quantix::Physic
 {
 	if (selection)
 	{
-		node.push_back(new Quantix::Physic::Transform3D());
 		if (node.size() == 0)
-			node.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject"));
+			scene->AddGameObject("GameObject");
 		else
-			node.back()->SetObject(new Quantix::Core::DataStructure::GameObject3D("GameObject" + std::to_string((QXuint)node.size())));
-		//scene->AddGameObject(node.back()->GetObject()->GetName());
+			scene->AddGameObject("GameObject" + std::to_string((QXuint)node.size()));
 		selection = false;
 	}
 }

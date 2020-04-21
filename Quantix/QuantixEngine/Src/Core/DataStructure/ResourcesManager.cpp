@@ -92,10 +92,10 @@ namespace Quantix::Core::DataStructure
 
 		QXstring key = modelPath + materialPath;
 
-		if (_meshes[key] != nullptr)
+	/*	if (_meshes[key] != nullptr)
 		{
 			return _meshes[key];
-		}
+		}*/
 
 		//mesh = new Components::Mesh(CreateModel(modelPath), CreateMaterial(materialPath));
 		mesh->SetModel(CreateModel(modelPath));
