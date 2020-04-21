@@ -99,8 +99,6 @@ void Editor::InitImGui()
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
 
-	ImGuizmo::SetRect(0, 0, _app->info.width, _app->info.height);
-
 	// Disabling mouse for ImGui if mouse is captured by the app (it must be done here)
 	if (_mouseInput->MouseCaptured)
 		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
@@ -171,12 +169,12 @@ void Editor::DrawMenuBar()
 		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
 		i++;
 	}
-	_menuBar.Update(_root->GetTransform()->GetChilds());
+	_menuBar.Update(_root->GetTransform()->GetChilds(), _app);
 }
 
 void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 {
-	_hierarchy.Update(name, flags, _root->GetTransform());
+	_hierarchy.Update(name, flags, _root->GetTransform(), _app->scene);
 }
 
 void Editor::Simulation()
@@ -217,7 +215,7 @@ void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 	Math::QXmat4 matrix = transform->GetTRS();
 
 	ImGuizmo::DrawCube(_mainCamera->GetLookAt().array, _app->info.proj.array, matrix.array);
-	ImGuizmo::ViewManipulate(_mainCamera->GetLookAt().array, 0.f, ImVec2(transform->GetPosition().x, transform->GetPosition().y), ImVec2(128,128), 0xFF0000FF);
+	ImGuizmo::ViewManipulate(_mainCamera->GetLookAt().array, 0.f, ImVec2(transform->GetPosition().x, transform->GetPosition().y), ImVec2(128,128), 0x10101010);
 
 	if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
 		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::WORLD, matrix.array);
@@ -231,6 +229,10 @@ void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 
 void Editor::DrawGuizmo()
 {
+	ImGuiViewport* viewport = ImGui::GetWindowViewport();
+	
+	ImGuizmo::SetRect(viewport->Pos.x, viewport->Pos.y, viewport->Size.x, viewport->Size.y);
+	ImGuizmo::DrawGrid(_mainCamera->GetLookAt().array, _app->info.proj.array, Math::QXmat4::Identity().array, 10.f);
 	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
@@ -250,7 +252,6 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		//ImGuizmo::DrawGrid(ViewTransform.e, ProjectionTransform.e, identity, 10.f);
 		if (i == 0)
 		{
 			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");
@@ -263,8 +264,8 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 		}
-		DrawGuizmo();
 		ImGui::Image((ImTextureID)(size_t)_fbo, ImGui::GetWindowSize(), { 0.f, 1.f }, { 1.f, 0.f });
+		DrawGuizmo();
 	}
 	ImGui::End();
 }
