@@ -197,6 +197,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Physic\SimulationCallback.cpp" />
     <ClCompile Include="Src\Physic\PhysicHandler.cpp" />
     <ClCompile Include="Src\Physic\PhysicStatic.cpp" />
     <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
@@ -276,6 +277,7 @@
     <ClInclude Include="Include\Physic\PhysicDynamic.h" />
     <ClInclude Include="Include\Physic\PhysicStatic.h" />
     <ClInclude Include="Include\Physic\PhysicHandler.h" />
+    <ClInclude Include="Include\Physic\SimulationCallback.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

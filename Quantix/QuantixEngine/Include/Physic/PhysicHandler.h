@@ -37,8 +37,6 @@ namespace Quantix::Physic
 		PxScene* mScene;
 		PxMaterial* mMaterial;
 
-		//MySimulationCallback* pSimulationEvent;
-
 		PxCollection* collection;
 
 		PxReal mAccumulator = 0.0f;

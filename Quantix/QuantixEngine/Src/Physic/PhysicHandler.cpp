@@ -3,6 +3,7 @@
 #include "Physic/PhysicDynamic.h"
 #include "Core/MathHeader.h"
 #include "Core/DataStructure/GameObject3D.h"
+#include "Physic/SimulationCallback.h"
 
 #include <vector>
 
@@ -272,8 +273,6 @@ namespace Quantix::Physic
 
 		collection = PxCreateCollection();            // Create a collection
 
-		//pSimulationEvent = new MySimulationCallback();
-
 		InitScene();
 
 		mMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
@@ -310,7 +309,7 @@ namespace Quantix::Physic
 		//sceneDesc.cudaContextManager = PxCreateCudaContextManager(*pDefaultFundation, cudaContextManagerDesc);
 
 		sceneDesc.filterShader = &contactReportFilterShader;
-		//sceneDesc.simulationEventCallback = new MySimulationCallback();
+		sceneDesc.simulationEventCallback = new SimulationCallback();
 		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
 
 		mCpuDispatcher = PxDefaultCpuDispatcherCreate(4);
