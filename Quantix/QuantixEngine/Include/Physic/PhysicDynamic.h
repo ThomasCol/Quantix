@@ -2,6 +2,7 @@
 #define __PHYSICDYNAMIC_H__
 
 #include "Physic/IPhysicType.h"
+#include "Physic/Transform3D.h"
 
 namespace Quantix::Physic
 {

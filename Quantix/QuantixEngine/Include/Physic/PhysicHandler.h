@@ -74,6 +74,7 @@ namespace Quantix::Physic
 		void		InitScene();
 
 		void		UpdateSystem(std::vector<Core::DataStructure::GameComponent*> go, double deltaTime);
+		void		UpdatePhysicActor();
 
 #pragma region Operators
 
