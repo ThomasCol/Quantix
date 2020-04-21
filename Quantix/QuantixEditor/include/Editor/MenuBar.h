@@ -17,16 +17,17 @@ public:
 	MenuBar(MenuBar&& menu) = default;
 	~MenuBar() = default;
 
-	void Update(std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app);
-	void CreateGameObject(std::string name, std::vector<Quantix::Physic::Transform3D*>& object, bool& selection, Quantix::Core::Platform::Application* app);
-	void CreateObject(bool* selection, std::vector<std::string> objectName, std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app);
-	void CreateShapeObject(bool* selection, std::vector<std::string> objectName, std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app);
-	void CreateLightObject(bool* selection, std::vector<std::string> objectName, std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app);
+	void Update(Quantix::Core::Platform::Application* app);
+	void CreateGameObject(std::string name, bool& selection, Quantix::Core::Platform::Application* app);
+	void CreateObject(bool* selection, std::vector<std::string> objectName, Quantix::Core::Platform::Application* app);
+	void CreateShapeObject(bool* selection, std::vector<std::string> objectName, Quantix::Core::Platform::Application* app);
+	void CreateComponentLight(Quantix::Core::DataStructure::GameObject3D* obj, std::vector<QXstring> objectName, QXuint i);
+	void CreateLightObject(bool* selection, std::vector<std::string> objectName, Quantix::Core::Platform::Application* app);
 
 	void FileButton();
 	void EditButton();
 	void AssetButton();
-	void GameObjectButton(std::vector<Quantix::Physic::Transform3D*>& object, Quantix::Core::Platform::Application* app);
+	void GameObjectButton(Quantix::Core::Platform::Application* app);
 
 private:
 

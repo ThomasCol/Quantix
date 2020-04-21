@@ -25,7 +25,7 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
-	GameComponent::GameComponent(std::string name, const QXbool& isStatic) noexcept :
+	GameComponent::GameComponent(const QXstring& name, const QXbool& isStatic) noexcept :
 		_name{ name },
 		_layer{ 0 },
 		_isStatic{ isStatic },

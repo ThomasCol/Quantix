@@ -1,5 +1,6 @@
 #include "Editor.h"
 #include <iostream>
+#include <MathDefines.h>
 #include <Core/UserEntry/InputManager.h>
 #include <Core/Profiler/Profiler.h>
 #include "stb_image.h"
@@ -169,7 +170,7 @@ void Editor::DrawMenuBar()
 		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
 		i++;
 	}
-	_menuBar.Update(_root->GetTransform()->GetChilds(), _app);
+	_menuBar.Update(_app);
 }
 
 void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
@@ -213,26 +214,40 @@ void Editor::DrawSimulation()
 void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 {
 	Math::QXmat4 matrix = transform->GetTRS();
+	Math::QXmat4 matrixRot = transform->GetTRS();
 
 	ImGuizmo::DrawCube(_mainCamera->GetLookAt().array, _app->info.proj.array, matrix.array);
-	ImGuizmo::ViewManipulate(_mainCamera->GetLookAt().array, 0.f, ImVec2(transform->GetPosition().x, transform->GetPosition().y), ImVec2(128,128), 0x10101010);
+	ImGuizmo::ViewManipulate(_mainCamera->GetLookAt().array, 50.f, ImVec2(transform->GetPosition().x, transform->GetPosition().y), ImVec2(256,256), 0x10101010);
+
+	Math::QXvec3 translation, rotation, rotTmp, scale;
 
 	if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
+	{
 		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::WORLD, matrix.array);
+		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
+		transform->SetPosition(translation);
+	}
 	else if (_guizmoType == ImGuizmo::OPERATION::ROTATE)
-		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::WORLD, matrix.array);
+	{
+		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::LOCAL, matrix.array);
+		ImGuizmo::DecomposeMatrixToComponents(matrixRot.array, translation.e, rotTmp.e, scale.e);
+		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
+		rotation = rotation * (Q_PI / 180);
+		rotTmp = rotTmp * (Q_PI / 180);
+		transform->Rotate(rotation - rotTmp);
+	}
 	else
+	{
 		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::SCALE, ImGuizmo::MODE::WORLD, matrix.array);
+		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
+		transform->SetScale(scale);
+	}
 
 	transform->SetTRS(matrix);
 }
 
 void Editor::DrawGuizmo()
 {
-	ImGuiViewport* viewport = ImGui::GetWindowViewport();
-	
-	ImGuizmo::SetRect(viewport->Pos.x, viewport->Pos.y, viewport->Size.x, viewport->Size.y);
-	ImGuizmo::DrawGrid(_mainCamera->GetLookAt().array, _app->info.proj.array, Math::QXmat4::Identity().array, 10.f);
 	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
@@ -250,8 +265,11 @@ void Editor::DrawGuizmo()
 void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 {
 	static QXint i = 0;
+	ImVec2 pos = ImGui::GetCursorPos();
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
+		ImGuizmo::SetDrawlist();
+		ImGuizmo::SetRect(pos.x, pos.y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 		if (i == 0)
 		{
 			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");

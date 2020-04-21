@@ -151,8 +151,8 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
 
 	START_PROFILING("Draw");
-	//Editor Update
 	editor->GetApp()->Update(meshes);
+	//Editor Update
 	editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, cam));
 	STOP_PROFILING("Draw");
 	START_PROFILING("Refresh");

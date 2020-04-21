@@ -8,6 +8,7 @@
 
 namespace Math
 {
+	struct QXquaternion;
 	/**
 	 * @brief QXmat4 structure
 	 * 
@@ -193,6 +194,17 @@ namespace Math
 		 */
 		static QXmat4		CreateTRSMatrix(const QXvec3& trans, const QXvec3& rotate,
 									const QXvec3& scale);
+
+		/**
+		 * @brief Create TRS matrix
+		 *
+		 * @param trans QXvec3 translation vector
+		 * @param rotate QXquaternion rotation vector
+		 * @param scale QXvec3 scale vector
+		 * @return new QXmat4 mat4 that is TRS matrix
+		 */
+		static QXmat4		CreateTRSMatrix(const QXvec3& trans, const QXquaternion& rotate,
+			const QXvec3& scale);
 		/* ============================= */
 
 		/**

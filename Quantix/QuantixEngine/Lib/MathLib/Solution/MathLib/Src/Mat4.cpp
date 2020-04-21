@@ -1,7 +1,8 @@
 #include <math.h>
 
-#include "Mat4.h"
-#include "Mat.h"
+#include "Quaternion.h"
+//#include "Mat4.h"
+//#include "Mat.h"
 
 #include "MathDefines.h"
 
@@ -289,6 +290,17 @@ namespace Math
 	{
 		QXmat4	transMatrix(QXmat4::CreateTranslationMatrix(trans));
 		QXmat4	rotateMatrix(QXmat4::CreateFixedAngleEulerRotationMatrix(rotate));
+		QXmat4	scaleMatrix(QXmat4::CreateScaleMatrix(scale));
+
+		QXmat4	TRS(scaleMatrix * rotateMatrix * transMatrix);
+
+		return TRS;
+	}
+
+	QXmat4	QXmat4::CreateTRSMatrix(const QXvec3& trans, const QXquaternion& rotate, const QXvec3& scale)
+	{
+		QXmat4	transMatrix(QXmat4::CreateTranslationMatrix(trans));
+		QXmat4	rotateMatrix(rotate.ConvertQuaternionToMat());
 		QXmat4	scaleMatrix(QXmat4::CreateScaleMatrix(scale));
 
 		QXmat4	TRS(scaleMatrix * rotateMatrix * transMatrix);
