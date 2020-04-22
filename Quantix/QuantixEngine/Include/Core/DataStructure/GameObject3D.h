@@ -33,6 +33,8 @@ namespace Quantix::Core::DataStructure
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject);
 
+		
+
 		#pragma region Accessors
 		/**
 		 * @brief Set the Global Position object

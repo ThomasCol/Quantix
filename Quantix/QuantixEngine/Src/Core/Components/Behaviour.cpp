@@ -1,5 +1,6 @@
 #include "Core/Components/Behaviour.h"
 #include "Core/DataStructure/ResourcesManager.h"
+#include "Core/DataStructure/GameObject3D.h"
 
 RTTR_PLUGIN_REGISTRATION
 {

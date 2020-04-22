@@ -9,6 +9,7 @@
 namespace Quantix::Core::DataStructure
 {
 	class ResourcesManager;
+	class GameObject3D;
 }
 
 namespace Quantix::Core::Components
@@ -23,7 +24,12 @@ namespace Quantix::Core::Components
 		virtual ~Behaviour() = default;
 
 		//inline virtual void	Start(Core::DataStructure::ResourcesManager * rm) { (void)rm; };
-		virtual void	Update() { std::cout << "update" << std::endl; };
+
+		virtual void	Update() { /*std::cout << "update" << std::endl;*/ };
+		virtual void    OnContact(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) { std::cout << "OnContact" << std::endl; }
+		virtual void    OnTrigger(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) { std::cout << "OnTrigger" << std::endl; }
+
+
 		//inline virtual void	OnCollision(Physics::Collision::Collider * collider) {};
 
 		//virtual void				Destroy() = 0;
