@@ -92,6 +92,23 @@ void Inspector::ShowComponent()
 		}
 		ImGui::EndPopup();
 	}
+
+	/*if (ImGui::BeginPopup("Item Behaviour"))
+	{
+		rttr::array_range behavioursAvailable = rttr::type::get<Quantix::Core::Components::Behaviour>().get_derived_classes();
+		QXuint j = 0;
+		for (auto it : behavioursAvailable)
+		{
+			QXbool enable = false;
+			ImGui::PushID(j);
+
+			ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
+			if (enable)
+				_transform->GetObject()->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::Components::Behaviour*>());
+
+			ImGui::PopID();
+		}
+	}*/
 }
 
 void Inspector::AddComponent()

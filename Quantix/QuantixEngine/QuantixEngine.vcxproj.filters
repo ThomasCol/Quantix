@@ -39,7 +39,7 @@
     <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
     <ClCompile Include="Src\Physic\PhysicStatic.cpp" />
     <ClCompile Include="Src\Physic\PhysicHandler.cpp" />
-    <ClCompile Include="Behaviour.cpp" />
+    <ClCompile Include="Src\Core\Components\Behaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -81,6 +81,6 @@
     <ClInclude Include="Include\Physic\PhysicDynamic.h" />
     <ClInclude Include="Include\Physic\PhysicStatic.h" />
     <ClInclude Include="Include\Physic\PhysicHandler.h" />
-    <ClInclude Include="Behaviour.h" />
+    <ClInclude Include="Include\Core\Components\Behaviour.h" />
   </ItemGroup>
 </Project>

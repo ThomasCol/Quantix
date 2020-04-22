@@ -5,6 +5,11 @@
 #include "Core/DataStructure/Component.h"
 #include "rttrEnabled.h"
 
+namespace Quantix::Core::DataStructure
+{
+	class ResourcesManager;
+}
+
 namespace Quantix::Core::Components
 {
 
@@ -16,11 +21,16 @@ namespace Quantix::Core::Components
 		Behaviour(Behaviour && behaviour) = default;
 		virtual ~Behaviour() = default;
 
-		inline virtual void	Start(Resources::ResourcesManager * rm) { (void)rm; };
-		inline virtual void	Update(CRenderWindow * win, double frameTime) { (void)win; (void)frameTime; };
+		//inline virtual void	Start(Core::DataStructure::ResourcesManager * rm) { (void)rm; };
+		//inline virtual void	Update(double frameTime) { (void)frameTime; };
 		//inline virtual void	OnCollision(Physics::Collision::Collider * collider) {};
 
-		virtual void				Destroy() = 0;
+		//virtual void				Destroy() = 0;
+
+		Behaviour* Copy() const;
+
+
+		CLASS_REGISTRATION(Quantix::Core::DataStructure::Component)
 	};
 
 }
