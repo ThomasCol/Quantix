@@ -79,7 +79,7 @@ namespace Quantix::Resources
 		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
 	}
 
-	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes)
+	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes) noexcept
 	{
 		// TODO pas complet update mesh et update gameobject
 		if (_root)
