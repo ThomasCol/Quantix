@@ -56,7 +56,7 @@ void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::T
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		if (ImGui::TreeNodeEx(&node, ImGuiTreeNodeFlags_Selected, "World Scene"))
+		if (ImGui::TreeNodeEx(&node, ImGuiTreeNodeFlags_DefaultOpen, "World Scene"))
 		{
 			if (node->GetChilds().size() > 0)
 				DrawObject(node->GetChilds(), node->GetChilds(), scene);

@@ -17,9 +17,12 @@ Editor::Editor(QXuint width, QXuint height) :
 	_folder{},
 	_menuBar{},
 	_hierarchy{},
+	_play{ false },
+	_pause{ false },
 	_guizmoType{ ImGuizmo::OPERATION::TRANSLATE },
 	_flagsEditor{}
 {
+	_cameraEditor = new Quantix::Core::Components::Camera({ 0, 7, -10 }, { 0, -1, 1 }, Math::QXvec3::up);
 	_lib.load();
 	if (!_lib.is_loaded())
 		std::cout << _lib.get_error_string() << std::endl;
@@ -27,8 +30,7 @@ Editor::Editor(QXuint width, QXuint height) :
 	//Init Callback
 	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
 
-	_mouseInput = new MouseTest({false, 0.0f, 0.0f, 0.0f, 0.0f});
-	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
+	_mouseInput = new MouseTest({ false, 0.0f, 0.0f, GetMousePos().x, GetMousePos().y });
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -108,13 +110,6 @@ void Editor::InitImGui()
 void Editor::Update(QXuint FBO)
 {
 	InitImGui();
-	if (_mouseInput->MouseCaptured)
-		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
-
-	// Disabling mouse for ImGui if mouse is captured by the app (it must be done here)
-	if (_mouseInput->MouseCaptured)
-		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
-
 
 	_fbo = FBO;
 	static QXint i = 0;
@@ -205,32 +200,50 @@ void Editor::DrawSimulation()
 		if (!_simState["Pause"])
 		{
 			//Update Scene
+			_play = true;
+			if (!_activateFocus)
+			{
+				_mouseInput->MouseCaptured = true;
+				glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+				Math::QXvec2 mousePos = GetMousePos();
+				_mouseInput->MouseX = mousePos.x;
+				_mouseInput->MouseY = mousePos.y;
+
+				_activateFocus = true;
+			}
+		}
+		else
+		{
+			_pause = true;
+			_activateFocus = false;
 		}
 	}
+	else
+	{
+		_play = false;
+		_pause = false;
+		_simState["Pause"] = false;
+		_activateFocus = false;
+	}
 	ImGui::EndChild();
-
 }
 
-void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
+void Editor::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp)
 {
-	Math::QXmat4 matrix = transform->GetTRS();
-	Math::QXmat4 matrixRot = transform->GetTRS();
-
-	ImGuizmo::DrawCube(_mainCamera->GetLookAt().array, _app->info.proj.array, matrix.array);
-	ImGuizmo::ViewManipulate(_mainCamera->GetLookAt().array, 50.f, ImVec2(transform->GetPosition().x, transform->GetPosition().y), ImVec2(256,256), 0x10101010);
-
-	Math::QXvec3 translation, rotation, rotTmp, scale;
+	Math::QXvec3 translation, transTmp, rotation, rotTmp, scale, scaleTmp;
 
 	if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
 	{
-		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::WORLD, matrix.array);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::LOCAL, matrix.array);
+		ImGuizmo::DecomposeMatrixToComponents(matrixTmp.array, transTmp.e, rotation.e, scale.e);
 		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
-		transform->SetPosition(translation);
+		transform->Translate(translation - transTmp);
 	}
 	else if (_guizmoType == ImGuizmo::OPERATION::ROTATE)
 	{
-		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::LOCAL, matrix.array);
-		ImGuizmo::DecomposeMatrixToComponents(matrixRot.array, translation.e, rotTmp.e, scale.e);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::LOCAL, matrix.array);
+		ImGuizmo::DecomposeMatrixToComponents(matrixTmp.array, translation.e, rotTmp.e, scale.e);
 		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
 		rotation = rotation * (Q_PI / 180);
 		rotTmp = rotTmp * (Q_PI / 180);
@@ -238,12 +251,31 @@ void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 	}
 	else
 	{
-		ImGuizmo::Manipulate(_mainCamera->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::SCALE, ImGuizmo::MODE::WORLD, matrix.array);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::SCALE, ImGuizmo::MODE::LOCAL, matrix.array);
+		ImGuizmo::DecomposeMatrixToComponents(matrixTmp.array, translation.e, rotation.e, scaleTmp.e);
 		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
-		transform->SetScale(scale);
+		transform->Scale(scale - scaleTmp);
 	}
 
 	transform->SetTRS(matrix);
+}
+
+void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
+{
+	Math::QXmat4 matrix = transform->GetTRS();
+	Math::QXmat4 matrixTmp = transform->GetTRS();
+	ImVec2 size = ImGui::GetWindowSize();
+	ImVec2 pos = ImGui::GetCursorPos();
+	Math::QXvec3 vecLenght = transform->GetPosition() - _cameraEditor->GetPos();
+	ImGuiIO& io = ImGui::GetIO();
+
+
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+
+	ImGuizmo::DrawCube(_cameraEditor->GetLookAt().array, _app->info.proj.array, matrix.array);
+	ImGuizmo::ViewManipulate(_cameraEditor->GetLookAt().array, vecLenght.Length(), ImVec2(0,0), ImVec2(0,0), 0x10101010);
+
+	MoveObject(transform, matrix, matrixTmp);
 }
 
 void Editor::DrawGuizmo()
@@ -265,11 +297,10 @@ void Editor::DrawGuizmo()
 void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 {
 	static QXint i = 0;
-	ImVec2 pos = ImGui::GetCursorPos();
+
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		ImGuizmo::SetDrawlist();
-		ImGuizmo::SetRect(pos.x, pos.y, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 		if (i == 0)
 		{
 			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");
@@ -279,11 +310,17 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 		{
 			_mouseInput->MouseCaptured = true;
 			glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+			Math::QXvec2 mousePos = GetMousePos();
+			_mouseInput->MouseX = mousePos.x;
+			_mouseInput->MouseY = mousePos.y;
+
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 		}
 		ImGui::Image((ImTextureID)(size_t)_fbo, ImGui::GetWindowSize(), { 0.f, 1.f }, { 1.f, 0.f });
-		DrawGuizmo();
+		if (!_mouseInput->MouseCaptured)
+			DrawGuizmo();
 	}
 	ImGui::End();
 }
