@@ -30,7 +30,7 @@ namespace Quantix::Core::DataStructure
 		GameComponent() = default;
 		GameComponent(const GameComponent& object) noexcept;
 		GameComponent(GameComponent&& object) noexcept;
-		GameComponent(std::string name, const QXbool& isStatic = false) noexcept;
+		GameComponent(const QXstring& name, const QXbool& isStatic = false) noexcept;
 		~GameComponent();
 		#pragma endregion Constructors/Destructor
 
