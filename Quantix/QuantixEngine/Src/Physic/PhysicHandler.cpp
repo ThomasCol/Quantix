@@ -1,7 +1,9 @@
 #include "Physic/PhysicHandler.h"
 #include "Physic/PhysicStatic.h"
 #include "Physic/PhysicDynamic.h"
-#include "Core/DataStructure/GameComponent.h"
+#include "Core/MathHeader.h"
+#include "Core/DataStructure/GameObject3D.h"
+#include "Physic/SimulationCallback.h"
 
 #include <vector>
 
@@ -61,6 +63,7 @@ namespace Quantix::Physic
 			{
 				PhysicStatic* tmp = new PhysicStatic(mSDK);
 				mScene->addActor(*tmp->GetRigid());
+				tmp->GetRigid()->userData = dynamic_cast<Core::DataStructure::GameObject3D*>(object);
 				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
 			}
 			else if (it != _physObject.end()
@@ -91,6 +94,7 @@ namespace Quantix::Physic
 			{
 				PhysicDynamic* tmp = new PhysicDynamic(mSDK);
 				mScene->addActor(*tmp->GetRigid());
+				tmp->GetRigid()->userData = dynamic_cast<Core::DataStructure::GameObject3D*>(object);
 				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
 			}
 
@@ -269,8 +273,6 @@ namespace Quantix::Physic
 
 		collection = PxCreateCollection();            // Create a collection
 
-		//pSimulationEvent = new MySimulationCallback();
-
 		InitScene();
 
 		mMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
@@ -307,7 +309,7 @@ namespace Quantix::Physic
 		//sceneDesc.cudaContextManager = PxCreateCudaContextManager(*pDefaultFundation, cudaContextManagerDesc);
 
 		sceneDesc.filterShader = &contactReportFilterShader;
-		//sceneDesc.simulationEventCallback = new MySimulationCallback();
+		sceneDesc.simulationEventCallback = new SimulationCallback();
 		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
 
 		mCpuDispatcher = PxDefaultCpuDispatcherCreate(4);
@@ -389,7 +391,6 @@ namespace Quantix::Physic
 			//std::cout << "avant test" << std::endl;
 			if (status2 )
 			{
-				std::cout << "bite" << std::endl;
 				if (hitOverlap.hasBlock)
 					std::cout << hitOverlap.block.actor->getName() << std::endl; // closest actor who overlap
 			}*/
@@ -409,5 +410,24 @@ namespace Quantix::Physic
 		mScene->simulate(mStepSize);
 
 		mScene->fetchResults(true);
+	}
+
+	void PhysicHandler::UpdatePhysicActor()
+	{
+		PxU32 nbActors;
+		PxActor** listActor = mScene->getActiveActors(nbActors);
+
+		for (PxU32 index = 0; index < nbActors; index++)
+		{
+			PxRigidDynamic* currentActor = (PxRigidDynamic*)listActor[index];
+			if (currentActor)
+			{
+				PxTransform transformPhysic = currentActor->getGlobalPose();
+				Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
+
+				//transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
+				//transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
+			}
+		}
 	}
 }
