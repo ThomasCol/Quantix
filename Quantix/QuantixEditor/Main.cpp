@@ -7,6 +7,9 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_internal.h>
 
+#include <fmod.hpp>
+#include <fmod_errors.h>
+
 #include <Core/Components/Camera.h>
 
 #include <Editor.h>
@@ -106,6 +109,42 @@ void InitPack()
 	indexPackR = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_D, Quantix::Core::UserEntry::ETriggerType::DOWN);*/
 }
 
+void InitFMod(FMOD::System* system)
+{
+	FMOD_RESULT result;
+
+	result = FMOD::System_Create(&system);      // Create the main system object.
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+		return;
+	}
+
+	result = system->init(512, FMOD_INIT_NORMAL, 0);    // Initialize FMOD.
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+		return;
+	}
+
+	FMOD::Sound* backgroundHandler{ nullptr };
+	result = system->createSound("media/Sounds/BackgroundTest.wav", FMOD_DEFAULT, nullptr, &backgroundHandler);
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+		return;
+	}
+
+	result = system->playSound(backgroundHandler, nullptr, false, nullptr);
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+		return;
+	}
+
+	std::cout << "FMod init finished" << std::endl;
+}
+
 void	DebugMode()
 {
 	if (GetKey(QX_KEY_F1) == Quantix::Core::UserEntry::EKeyState::PRESSED)
@@ -174,8 +213,15 @@ int main()
 
 		Init(editor, lights);
 
+		//Tests for FMOD
+		FMOD::System* system = NULL;
+		InitFMod(system);
+
 		while (!editor->GetWin().ShouldClose())
+		{
+			system->update(); //Update for FMOD
 			Update(editor, lights, cam);
+		}
 
 		delete cam;
 	}
