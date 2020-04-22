@@ -81,6 +81,18 @@ namespace Quantix::Core::DataStructure
 			child->GetObject()->Update(meshes, this);
 	}
 
+	void									GameObject3D::CallOnTrigger(GameObject3D* other)
+	{
+		for (QXuint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->OnTrigger(this, other);
+	}
+
+	void									GameObject3D::CallOnContact(GameObject3D* other)
+	{
+		for (QXuint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->OnContact(this, other);
+	}
+
 	void	GameObject3D::SetGlobalPosition(Math::QXvec3 pos)
 	{
 		//_transform.SetGlobalPosition(pos);

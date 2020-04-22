@@ -33,7 +33,8 @@ namespace Quantix::Core::DataStructure
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject);
 
-		
+		void									CallOnTrigger(GameObject3D* other);
+		void									CallOnContact(GameObject3D* other);
 
 		#pragma region Accessors
 		/**
