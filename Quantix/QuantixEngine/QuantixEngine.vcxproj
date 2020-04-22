@@ -116,7 +116,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions;$(ProjectDir)externals\cereal</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableSpecificWarnings>4251;4312</DisableSpecificWarnings>

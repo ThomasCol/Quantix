@@ -19,25 +19,25 @@ class Inspector
 {
 public:
 	Inspector() = default;
-	Inspector(Quantix::Physic::Transform3D* transform);
+	Inspector(std::shared_ptr<Quantix::Physic::Transform3D> transform);
 	Inspector(const Inspector& inspector) = default;
 	Inspector(Inspector&& inspector) = default;
 	~Inspector() = default;
 
-	inline void								SetEnable(QXbool enable) { _enable = enable; };
-	inline void								SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
-	inline Quantix::Physic::Transform3D*	GetTransform() { return _transform; };
+	inline void												SetEnable(QXbool enable) { _enable = enable; };
+	inline void												SetNode(std::shared_ptr<Quantix::Physic::Transform3D> transform) { _transform = transform; };
+	inline std::shared_ptr<Quantix::Physic::Transform3D>	GetTransform() { return _transform; };
 
-	void									Update();
-	void									PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
-	void									ShowComponent();
-	void									AddComponent();
-	void									GetInstance(rttr::instance inst, rttr::type t);
-	void									DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type);
+	void													Update();
+	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
+	void													ShowComponent();
+	void													AddComponent();
+	void													GetInstance(rttr::instance inst, rttr::type t);
+	void													DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type);
 
 private:
-	Quantix::Physic::Transform3D*		_transform;
-	QXbool								_enable;
+	std::shared_ptr<Quantix::Physic::Transform3D>		_transform;
+	QXbool												_enable;
 
 };
 

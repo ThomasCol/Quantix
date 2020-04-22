@@ -44,7 +44,7 @@ public:
 	void												DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags);
 	void												Simulation();
 	void												DrawSimulation();
-	void												ShowGuizmoObject(Quantix::Physic::Transform3D* transform);
+	void												ShowGuizmoObject(std::shared_ptr<Quantix::Physic::Transform3D> transform);
 	void												DrawGuizmo();
 	void												DrawScene(const QXstring& name, ImGuiWindowFlags flags);
 
@@ -56,7 +56,7 @@ public:
 
 	inline Quantix::Core::Platform::Window&				GetWin() { return _win; };
 	inline Quantix::Core::Platform::Application*		GetApp() const { return _app; };
-	inline void											SetRoot(Quantix::Core::DataStructure::GameObject3D* object) { _root = object; };
+	inline void											SetRoot(std::shared_ptr<Quantix::Core::DataStructure::GameObject3D> object) { _root = object; };
 	inline void											SetMainCamera(Quantix::Core::Components::Camera* camera) { _mainCamera = camera; };
 
 	MouseTest*											_mouseInput;
@@ -64,7 +64,7 @@ private:
 	Quantix::Core::Platform::Window						_win;
 	Quantix::Core::Platform::Application*				_app;
 	rttr::library										_lib;
-	Quantix::Core::DataStructure::GameObject3D*			_root;
+	std::shared_ptr<Quantix::Core::DataStructure::GameObject3D>	_root;
 	Quantix::Core::Components::Camera*					_mainCamera;
 
 	Docker												_docker;
