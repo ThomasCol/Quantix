@@ -4,6 +4,7 @@
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
 #include "rttrEnabled.h"
+#include <iostream>
 
 namespace Quantix::Core::DataStructure
 {
@@ -22,7 +23,7 @@ namespace Quantix::Core::Components
 		virtual ~Behaviour() = default;
 
 		//inline virtual void	Start(Core::DataStructure::ResourcesManager * rm) { (void)rm; };
-		//inline virtual void	Update(double frameTime) { (void)frameTime; };
+		virtual void	Update() { std::cout << "update" << std::endl; };
 		//inline virtual void	OnCollision(Physics::Collision::Collider * collider) {};
 
 		//virtual void				Destroy() = 0;

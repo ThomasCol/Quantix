@@ -69,4 +69,10 @@ namespace Quantix::Core::DataStructure
 
 		return *this;
 	}
+
+	void GameComponent::Update(std::vector<Core::Components::Mesh*>& meshes)
+	{
+		for (QXint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->Update();
+	}
 }

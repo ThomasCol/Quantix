@@ -48,6 +48,9 @@ namespace Quantix::Core::DataStructure
 	{
 		if (_toRender)
 		{
+			for (QXint i = 0; i < _behaviours.size(); i++)
+				_behaviours[i]->Update();
+
 			Core::Components::Mesh* mesh = GetComponent<Core::Components::Mesh>();
 
 			if (mesh && mesh->IsEnable())
@@ -67,6 +70,10 @@ namespace Quantix::Core::DataStructure
 			if (mesh && mesh->IsEnable())
 				meshes.push_back(mesh);
 		}
+
+		// Update All Behaviours
+		for (QXint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->Update();
 
 		_transform->Update(parentObject->GetTransform());
 

@@ -20,7 +20,7 @@ namespace Quantix::Core::DataStructure
 	protected:
 		#pragma region Attributes
 		std::vector<Component*>						_component;
-		std::vector<Components::Behaviour*>	_behaviours;
+		std::vector<Components::Behaviour*>			_behaviours;
 		std::string									_name;
 		QXint										_layer;
 		QXbool										_isStatic;
@@ -60,11 +60,14 @@ namespace Quantix::Core::DataStructure
 		inline void				AddComponent(Quantix::Core::DataStructure::Component* comp)
 		{
 			_component.push_back(comp);
+			Components::Behaviour* beha = dynamic_cast<Components::Behaviour*>(comp);
+			if (beha)
+				AddBehaviour(beha);
 		}
 
 		inline void				AddBehaviour(Quantix::Core::Components::Behaviour* beha)
 		{
-			_component.push_back(beha);
+			_behaviours.push_back(beha);
 		}
 
 		/**
@@ -191,6 +194,9 @@ namespace Quantix::Core::DataStructure
 				}
 			}
 		}*/
+
+		virtual void Update(std::vector<Core::Components::Mesh*>& meshes);
+
 		#pragma endregion Template
 
 		#pragma region Accessors
