@@ -29,7 +29,7 @@ namespace Quantix::Core::DataStructure
 
 		inline void								AddChild(const GameObject3D* object) { _transform->AddChild(object->GetTransform()); }
 
-		void									Update(std::vector<Core::Components::Mesh*>& meshes);
+		void									Update(std::vector<Core::Components::Mesh*>& meshes) override;
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject);
 
@@ -44,6 +44,8 @@ namespace Quantix::Core::DataStructure
 		{
 			archive(_component);
 		}
+		void									CallOnTrigger(GameObject3D* other);
+		void									CallOnContact(GameObject3D* other);
 
 		#pragma region Accessors
 		/**

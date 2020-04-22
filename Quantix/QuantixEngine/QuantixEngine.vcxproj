@@ -198,6 +198,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Src\Physic\SimulationCallback.cpp" />
+    <ClCompile Include="Src\Core\Components\Behaviour.cpp" />
     <ClCompile Include="Src\Physic\PhysicHandler.cpp" />
     <ClCompile Include="Src\Physic\PhysicStatic.cpp" />
     <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="Src\Resources\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Components\Behaviour.h" />
     <ClInclude Include="Include\Core\Components\CapsuleCollider.h" />
     <ClInclude Include="Include\Core\Components\CubeCollider.h" />
     <ClInclude Include="externals\rttrEnabled.h" />

@@ -46,6 +46,9 @@ namespace Quantix::Core::DataStructure
 	{
 		if (_toRender)
 		{
+			for (QXint i = 0; i < _behaviours.size(); i++)
+				_behaviours[i]->Update();
+
 			Core::Components::Mesh* mesh = GetComponent<Core::Components::Mesh>();
 
 			if (mesh && mesh->IsEnable())
@@ -66,10 +69,26 @@ namespace Quantix::Core::DataStructure
 				meshes.push_back(mesh);
 		}
 
+		// Update All Behaviours
+		for (QXint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->Update();
+
 		_transform->Update(parentObject->GetTransform());
 
 		for (std::shared_ptr<Physic::Transform3D> child : _transform->GetChilds())
 			child->GetObject()->Update(meshes, this);
+	}
+
+	void									GameObject3D::CallOnTrigger(GameObject3D* other)
+	{
+		for (QXuint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->OnTrigger(this, other);
+	}
+
+	void									GameObject3D::CallOnContact(GameObject3D* other)
+	{
+		for (QXuint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->OnContact(this, other);
 	}
 
 	void	GameObject3D::SetGlobalPosition(Math::QXvec3 pos)
