@@ -69,13 +69,13 @@ namespace Quantix::Resources
 			 * @brief method that init the scene
 			 *
 			 */
-			void	Init(Quantix::Core::DataStructure::ResourcesManager& manager);
+			void	Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept;
 
 			/**
 			 * @brief method that update the world and its hierarchy
 			 *
 			 */
-			void	Update(std::vector<Core::Components::Mesh*>& meshes);
+			void	Update(std::vector<Core::Components::Mesh*>& meshes) noexcept;
 
 			void Reset()noexcept;
 
@@ -124,7 +124,7 @@ namespace Quantix::Resources
 
 			inline std::shared_ptr<Core::DataStructure::GameObject3D> GetRoot() { return _root; }
 
-			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name);
+			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name) noexcept;
 
 			#pragma endregion
 
