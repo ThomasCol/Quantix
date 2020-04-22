@@ -4,6 +4,20 @@
 #include "Physic/PhysicStatic.h"
 #include "Physic/PhysicDynamic.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Physic::IPhysicType>("IPhysicType")
+	.constructor<>()
+	.constructor<Quantix::Physic::ETypePhysic>()
+	.constructor<const Quantix::Physic::IPhysicType&>()
+	.constructor<Quantix::Physic::IPhysicType&&>()
+	.enumeration<Quantix::Physic::ETypePhysic>("ETypePhysic")
+					 (rttr::value("None", Quantix::Physic::ETypePhysic::NONE),
+					 rttr::value("Dynamic", Quantix::Physic::ETypePhysic::DYNAMIC),
+					 rttr::value("Static", Quantix::Physic::ETypePhysic::STATIC))
+	.property("Type", &Quantix::Physic::IPhysicType::type);
+}
+
 namespace Quantix::Physic
 {
 	IPhysicType::IPhysicType() noexcept :
@@ -30,7 +44,7 @@ namespace Quantix::Physic
 			(dynamic_cast<PhysicDynamic*>(this))->print();
 	}
 
-	ETypePhysic IPhysicType::GetType()
+	ETypePhysic& IPhysicType::GetType()
 	{
 		return type;
 	}

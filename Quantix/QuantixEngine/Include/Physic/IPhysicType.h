@@ -7,9 +7,10 @@
 #include <PxPhysicsAPI.h>
 #include <PxRigidActorExt.h>
 
+#include "rttrEnabled.h"
+
 namespace Quantix::Physic
 {
-
 	class PhysicStatic;
 	class PhysicDynamic;
 
@@ -33,6 +34,8 @@ namespace Quantix::Physic
 		ETypePhysic		type = ETypePhysic::NONE;
 
 	public:
+
+
 		IPhysicType() noexcept;
 		IPhysicType(ETypePhysic oType) noexcept;
 		IPhysicType(const IPhysicType&) noexcept;
@@ -41,7 +44,9 @@ namespace Quantix::Physic
 
 		void		print();
 
-		ETypePhysic		GetType();
+		ETypePhysic&		GetType();
+		void		SetType(ETypePhysic& nt) { type = nt; };
+		
 		template<class T>
 		T* GetObject()
 		{
@@ -60,6 +65,8 @@ namespace Quantix::Physic
 		{
 			return (PhysicStatic*)this;
 		}
+
+		CLASS_REGISTRATION()
 	};
 }
 

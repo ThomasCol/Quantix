@@ -1,6 +1,22 @@
 #include "Physic/PhysicStatic.h"
 #include "Physic/PhysicDynamic.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Physic::PhysicStatic>("PhysicDynamic")
+	.constructor<>()
+	.constructor<physx::PxPhysics*>()
+	.constructor<physx::PxPhysics*, Quantix::Physic::EPhysXShape>()
+	.constructor<physx::PxPhysics*, Quantix::Physic::PhysicDynamic*>()
+	.constructor<const Quantix::Physic::PhysicStatic&>()
+	.constructor<Quantix::Physic::PhysicStatic&&>()
+	.enumeration<Quantix::Physic::EPhysXShape>("EPhysXShape")
+					 (rttr::value("Cube", Quantix::Physic::EPhysXShape::CUBE),
+					 rttr::value("Sphere", Quantix::Physic::EPhysXShape::SPHERE),
+					 rttr::value("Capsule", Quantix::Physic::EPhysXShape::CAPSULE))
+	.property("static", &Quantix::Physic::PhysicStatic::GetRigid, &Quantix::Physic::PhysicStatic::SetRigid);
+}
+
 namespace Quantix::Physic
 {
 	PhysicStatic::PhysicStatic() : IPhysicType(ETypePhysic::STATIC)
@@ -93,8 +109,13 @@ namespace Quantix::Physic
 		std::cout << "Je suis static" << std::endl;
 	}
 
-	PxRigidStatic* PhysicStatic::GetRigid() const
+	PxRigidStatic* PhysicStatic::GetRigid()
 	{
 		return _static;
+	}
+
+	void PhysicStatic::SetRigid(PxRigidStatic* st)
+	{
+		_static = st;
 	}
 }

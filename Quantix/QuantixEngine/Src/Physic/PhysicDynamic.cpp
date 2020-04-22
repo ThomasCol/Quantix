@@ -4,6 +4,22 @@
 #include "Physic/PhysicStatic.h"
 #include <PxRigidActorExt.h>
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Physic::PhysicDynamic>("PhysicDynamic")
+	.constructor<>()
+	.constructor<physx::PxPhysics*>()
+	.constructor<physx::PxPhysics*, Quantix::Physic::EPhysXShape>()
+	.constructor<physx::PxPhysics*, Quantix::Physic::PhysicStatic*>()
+	.constructor<const Quantix::Physic::PhysicDynamic&>()
+	.constructor<Quantix::Physic::PhysicDynamic&&>()
+	.enumeration<Quantix::Physic::EPhysXShape>("EPhysXShape")
+					 (rttr::value("Cube", Quantix::Physic::EPhysXShape::CUBE),
+					 rttr::value("Sphere", Quantix::Physic::EPhysXShape::SPHERE),
+					 rttr::value("Capsule", Quantix::Physic::EPhysXShape::CAPSULE))
+	.property("dynamic", &Quantix::Physic::PhysicDynamic::GetRigid, &Quantix::Physic::PhysicDynamic::SetRigid);
+}
+
 namespace Quantix::Physic
 {
 	using namespace physx;
@@ -106,8 +122,13 @@ namespace Quantix::Physic
 		std::cout << "Je suis dynamic" << std::endl;
 	}
 
-	PxRigidDynamic* PhysicDynamic::GetRigid() const
+	PxRigidDynamic* PhysicDynamic::GetRigid()
 	{
 		return _dynamic;
+	}
+
+	void PhysicDynamic::SetRigid(PxRigidDynamic* rigid)
+	{
+		_dynamic = rigid;
 	}
 }

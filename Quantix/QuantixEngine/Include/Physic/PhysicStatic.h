@@ -29,8 +29,10 @@ namespace Quantix::Physic
 #pragma region Functions
 		void	print();
 
-		PxRigidStatic* GetRigid() const;
+		PxRigidStatic* GetRigid();
+		void SetRigid(PxRigidStatic* rigid);
 #pragma endregion
+		CLASS_REGISTRATION(Quantix::Physic::IPhysicType)
 	};
 }
 #endif

@@ -38,9 +38,12 @@ namespace Quantix::Physic
 #pragma endregion
 
 #pragma region Accessors
-		PxRigidDynamic* GetRigid() const;
+		PxRigidDynamic* GetRigid();
+		void SetRigid(PxRigidDynamic* rigid);
 #pragma endregion
 #pragma endregion
+
+		CLASS_REGISTRATION(Quantix::Physic::IPhysicType)
 	};
 }
 
