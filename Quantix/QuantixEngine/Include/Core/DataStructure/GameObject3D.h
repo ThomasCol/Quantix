@@ -14,12 +14,12 @@ namespace Quantix::Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		Quantix::Physic::Transform3D*		_transform;
+		std::shared_ptr<Quantix::Physic::Transform3D>		_transform;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
 		GameObject3D() = default;
-		GameObject3D(const QXstring&, Quantix::Physic::Transform3D* transform = new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1))) noexcept;
+		GameObject3D(const QXstring& name, const Math::QXvec3& pos = Math::QXvec3( 0, 0, 0 ), const Math::QXvec3& rot = Math::QXvec3(0, 0, 0), const Math::QXvec3& scale = Math::QXvec3(1, 1, 1)) noexcept;
 		GameObject3D(const GameObject3D& g3d) noexcept;
 		GameObject3D(GameObject3D&& g3d) noexcept;
 		~GameObject3D();
@@ -32,6 +32,18 @@ namespace Quantix::Core::DataStructure
 		void									Update(std::vector<Core::Components::Mesh*>& meshes);
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject);
+
+		template<class Archive>
+		void save(Archive& archive) const
+		{
+			archive(_component);
+		}
+
+		template<class Archive>
+		void load(Archive& archive)
+		{
+			archive(_component);
+		}
 
 		#pragma region Accessors
 		/**
@@ -109,19 +121,28 @@ namespace Quantix::Core::DataStructure
 		 */
 		void									SetTransformValue(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale);
 
-		inline void								SetTransform(Quantix::Physic::Transform3D* transform) { _transform = transform; };
+		inline void								SetTransform(std::shared_ptr<Quantix::Physic::Transform3D> transform) { _transform = transform; };
 
 		/**
 		 * @brief Get the Transform object
 		 *
 		 */
-		Quantix::Physic::Transform3D*			GetTransform() const { return _transform; };
+		std::shared_ptr<Quantix::Physic::Transform3D>			GetTransform() const { return _transform; };
 		#pragma endregion Accessors
-		GameObject3D&							operator=(const GameObject3D& object);
+		GameObject3D&											operator=(const GameObject3D& object);
 		#pragma endregion Methods
 
 		CLASS_REGISTRATION(GameComponent);
 	};
 }
+
+namespace cereal
+{
+	template <class Archive>
+	struct specialize<Archive, Quantix::Core::DataStructure::GameObject3D, cereal::specialization::member_load_save> {};
+}
+
+CEREAL_REGISTER_TYPE(Quantix::Core::DataStructure::GameObject3D);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Quantix::Core::DataStructure::GameComponent, Quantix::Core::DataStructure::GameObject3D)
 
 #endif // !_GAMEOBJECT3D_H_

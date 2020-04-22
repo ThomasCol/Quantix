@@ -211,7 +211,7 @@ void Editor::DrawSimulation()
 
 }
 
-void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
+void Editor::ShowGuizmoObject(std::shared_ptr<Quantix::Physic::Transform3D> transform)
 {
 	Math::QXmat4 matrix = transform->GetTRS();
 	Math::QXmat4 matrixRot = transform->GetTRS();

@@ -17,11 +17,11 @@ namespace Quantix::Resources
 
 			#pragma region Attributes
 
-			QXstring							_name;
-			Core::DataStructure::GameObject3D*	_root;
-			QXuint								_id;
+			QXstring											_name;
+			std::shared_ptr<Core::DataStructure::GameObject3D>	_root;
+			QXuint												_id;
 
-			std::vector<Core::DataStructure::GameObject3D*> _objects;
+			std::vector<Core::DataStructure::GameObject3D*>		_objects;
 
 			#pragma endregion
 
@@ -81,6 +81,18 @@ namespace Quantix::Resources
 
 			void Rename(const QXstring& str) noexcept;
 
+			template<class Archive>
+			void save(Archive& archive) const
+			{
+				archive(_name, _root->GetTransform(), _id);
+			}
+
+			template<class Archive>
+			void load(Archive& archive)
+			{
+				archive(_name, _root->GetTransform(), _id);
+			}
+
 			#pragma endregion
 
 			#pragma region Operators
@@ -110,7 +122,7 @@ namespace Quantix::Resources
 			const QXuint& GetID()const noexcept { return _id; }
 			QXuint& GetID() noexcept { return _id; }
 
-			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
+			inline std::shared_ptr<Core::DataStructure::GameObject3D> GetRoot() { return _root; }
 
 			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name);
 

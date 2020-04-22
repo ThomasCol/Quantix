@@ -423,7 +423,7 @@ namespace Quantix::Physic
 			if (currentActor)
 			{
 				PxTransform transformPhysic = currentActor->getGlobalPose();
-				Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
+				std::shared_ptr<Transform3D> transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
 
 				//transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
 				//transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));

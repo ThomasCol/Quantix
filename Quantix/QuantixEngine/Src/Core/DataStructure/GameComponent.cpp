@@ -29,7 +29,8 @@ namespace Quantix::Core::DataStructure
 		_name{ name },
 		_layer{ 0 },
 		_isStatic{ isStatic },
-		_isActive{ false }
+		_isActive{ false },
+		_toRender { false }
 	{
 	}
 

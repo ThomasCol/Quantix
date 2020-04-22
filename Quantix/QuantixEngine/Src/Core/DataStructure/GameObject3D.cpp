@@ -4,7 +4,7 @@ RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::DataStructure::GameObject3D>("GameObject3D")
 	.constructor<>()
-	.constructor<const QXstring&, Quantix::Physic::Transform3D*>()
+	.constructor<const QXstring&, const Math::QXvec3&, const Math::QXvec3&, const Math::QXvec3&>()
 	.constructor<const Quantix::Core::DataStructure::GameObject3D&>()
 	.constructor<Quantix::Core::DataStructure::GameObject3D&&>()
 	.method("SetGlobalPosition", &Quantix::Core::DataStructure::GameObject3D::SetGlobalPosition)
@@ -21,12 +21,10 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::DataStructure
 {
-	GameObject3D::GameObject3D(const QXstring& name, Quantix::Physic::Transform3D* transform) noexcept :
+	GameObject3D::GameObject3D(const QXstring& name, const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale) noexcept :
 		GameComponent(name),
-		_transform { transform }
-	{
-		_transform->SetObject(this);
-	}
+		_transform { new Physic::Transform3D(pos, rot, scale, this) }
+	{}
 
 	GameObject3D::GameObject3D(const GameObject3D& g3d) noexcept :
 		GameComponent(g3d),
@@ -35,7 +33,7 @@ namespace Quantix::Core::DataStructure
 	}
 
 	GameObject3D::GameObject3D(GameObject3D&& g3d) noexcept :
-		GameComponent(g3d),
+		GameComponent(std::move(g3d)),
 		_transform{ std::move(g3d._transform) }
 	{
 	}
@@ -54,7 +52,7 @@ namespace Quantix::Core::DataStructure
 				meshes.push_back(mesh);
 		}
 
-		for (Physic::Transform3D* child : _transform->GetChilds())
+		for (std::shared_ptr<Physic::Transform3D> child : _transform->GetChilds())
 			child->GetObject()->Update(meshes, this);
 	}
 
@@ -70,7 +68,7 @@ namespace Quantix::Core::DataStructure
 
 		_transform->Update(parentObject->GetTransform());
 
-		for (Physic::Transform3D* child : _transform->GetChilds())
+		for (std::shared_ptr<Physic::Transform3D> child : _transform->GetChilds())
 			child->GetObject()->Update(meshes, this);
 	}
 

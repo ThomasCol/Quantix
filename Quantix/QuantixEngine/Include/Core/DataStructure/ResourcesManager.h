@@ -35,6 +35,18 @@ namespace Quantix::Core::DataStructure
 
 #pragma region Functions
 
+		/*template<class Archive>
+		void save(Archive& archive) const
+		{
+			archive(x, vec.y, vec.z);
+		}
+
+		template<class Archive>
+		void load(Archive& archive)
+		{
+			archive(data._name, data._objects);
+		}*/
+
 		/**
 		 * @brief Create a Default Material object
 		 * 
@@ -97,6 +109,8 @@ namespace Quantix::Core::DataStructure
 		 * @param model model to save
 		 */
 		void				SaveModelToCache(const QXstring& filePath, Model* model) noexcept;
+
+		void				SaveScene(Scene* scene) noexcept;
 
 #pragma endregion
 		
@@ -176,6 +190,8 @@ namespace Quantix::Core::DataStructure
 		 */
 		Model*				CreateModel(const QXstring& filePath) noexcept;
 
+		Scene*				CreateScene(const QXstring& filePath);
+
 		/**
 		 * @brief Create a Shader object
 		 * 
@@ -223,10 +239,14 @@ namespace Quantix::Core::DataStructure
 		 * @param filePath path to the texture to delete
 		 */
 		void				DeleteTexture(const QXstring& filePath) noexcept;
-		Scene*				CreateScene(const QXstring& filePath);
 
 #pragma endregion
 	};
+}
+
+namespace cereal
+{
+	
 }
 
 #endif // __RESOURCESMANAGER_H__
