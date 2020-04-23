@@ -20,7 +20,9 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<Quantix::Core::Components::Rigidbody&&>()
 	.property("Mass", &Quantix::Core::Components::Rigidbody::GetMass, &Quantix::Core::Components::Rigidbody::SetMass)
 	.property("LinearVelocity", &Quantix::Core::Components::Rigidbody::GetLinearVelocity, &Quantix::Core::Components::Rigidbody::SetLinearVelocity)
-	.property("AngularVelocity", &Quantix::Core::Components::Rigidbody::GetAngularVelocity, &Quantix::Core::Components::Rigidbody::SetAngularVelocity);
+	.property("AngularVelocity", &Quantix::Core::Components::Rigidbody::GetAngularVelocity, &Quantix::Core::Components::Rigidbody::SetAngularVelocity)
+	.property("TransformPosition", &Quantix::Core::Components::Rigidbody::GetTransformPosition, &Quantix::Core::Components::Rigidbody::SetTransformPosition)
+	.property("TransformRotation", &Quantix::Core::Components::Rigidbody::GetTransformRotation, &Quantix::Core::Components::Rigidbody::SetTransformRotation);
 }
 
 namespace Quantix::Core::Components
@@ -85,5 +87,32 @@ namespace Quantix::Core::Components
 	void Rigidbody::SetAngularVelocity(Math::QXvec3 v)
 	{
 		actorPhysic->GetRigid()->setAngularVelocity(physx::PxVec3(v.x, v.y, v.z));
+	}
+
+	Math::QXvec3 Rigidbody::GetTransformPosition()
+	{
+		physx::PxVec3 v = actorPhysic->GetRigid()->getGlobalPose().p;
+		return 	Math::QXvec3(v.x, v.y, v.z);
+	}
+
+	void Rigidbody::SetTransformPosition(Math::QXvec3 v)
+	{
+		actorPhysic->GetRigid()->setGlobalPose(physx::PxTransform(
+												physx::PxVec3(v.x, v.y, v.z),
+												actorPhysic->GetRigid()->getGlobalPose().q));
+	}
+
+	Math::QXquaternion Rigidbody::GetTransformRotation()
+	{
+		physx::PxQuat q = actorPhysic->GetRigid()->getGlobalPose().q;
+		return 	Math::QXquaternion(q.w, q.x, q.y, q.z);
+	}
+
+	void Rigidbody::SetTransformRotation(Math::QXquaternion q)
+	{
+		actorPhysic->GetRigid()->setGlobalPose(physx::PxTransform(
+												actorPhysic->GetRigid()->getGlobalPose().p, 
+												physx::PxQuat(q.v.x, q.v.y, q.v.z, q.w)
+												));
 	}
 }

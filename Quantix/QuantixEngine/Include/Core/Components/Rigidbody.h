@@ -51,6 +51,12 @@ namespace Quantix::Core::Components
 		Math::QXvec3 GetAngularVelocity();
 		void SetAngularVelocity(Math::QXvec3);
 
+		Math::QXvec3 GetTransformPosition();
+		void SetTransformPosition(Math::QXvec3 v);
+
+		Math::QXquaternion GetTransformRotation();
+		void SetTransformRotation(Math::QXquaternion q);
+
 #pragma endregion 
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
