@@ -69,7 +69,7 @@ namespace Quantix::Core::DataStructure
 		//_transform.SetGlobalPosition(pos);
 	}
 
-	void	GameObject3D::SetGlobalRotation(Math::QXvec3 rot)
+	void	GameObject3D::SetGlobalRotation(Math::QXquaternion rot)
 	{
 		//_transform.SetGlobalRotation(pos);
 	}
@@ -79,7 +79,7 @@ namespace Quantix::Core::DataStructure
 		_transform->SetPosition(pos);
 	}
 
-	void	GameObject3D::SetLocalRotation(Math::QXvec3 rot)
+	void	GameObject3D::SetLocalRotation(Math::QXquaternion rot)
 	{
 		_transform->SetRotation(rot);
 	}
@@ -89,7 +89,7 @@ namespace Quantix::Core::DataStructure
 		_transform->SetScale(scale);
 	}
 
-	void	GameObject3D::SetTransformValue(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale)
+	void	GameObject3D::SetTransformValue(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& scale)
 	{
 		_transform->SetPosition(pos);
 		_transform->SetRotation(rot);

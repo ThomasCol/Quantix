@@ -19,7 +19,7 @@ namespace Quantix::Core::DataStructure
 	public:
 		#pragma region Constructors/Destructor
 		GameObject3D() = default;
-		GameObject3D(const QXstring&, Quantix::Physic::Transform3D* transform = new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXvec3(0, 0, 0), Math::QXvec3(1, 1, 1))) noexcept;
+		GameObject3D(const QXstring&, Quantix::Physic::Transform3D* transform = new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXquaternion(1, 0, 0, 0), Math::QXvec3(1, 1, 1))) noexcept;
 		GameObject3D(const GameObject3D& g3d) noexcept;
 		GameObject3D(GameObject3D&& g3d) noexcept;
 		~GameObject3D();
@@ -46,7 +46,7 @@ namespace Quantix::Core::DataStructure
 		 *
 		 * @param rot QXvec3
 		 */
-		void									SetGlobalRotation(Math::QXvec3 rot);
+		void									SetGlobalRotation(Math::QXquaternion rot);
 
 		/**
 		* @brief Get the Global Position object
@@ -72,7 +72,7 @@ namespace Quantix::Core::DataStructure
 		 *
 		 * @param rot QXvec3
 		 */
-		void									SetLocalRotation(Math::QXvec3 rot);
+		void									SetLocalRotation(Math::QXquaternion rot);
 
 		/**
 		 * @brief Set the Local Scale object
@@ -91,7 +91,7 @@ namespace Quantix::Core::DataStructure
 		* @brief Get the Local Rotation object
 		*
 		*/
-		const Math::QXvec3&						GetLocalRotation() { return _transform->GetRotation();
+		const Math::QXquaternion&				GetLocalRotation() { return _transform->GetRotation();
 		};
 
 		/**
@@ -107,7 +107,7 @@ namespace Quantix::Core::DataStructure
 		 * @param rot QXvec3
 		 * @param scale QXvec3
 		 */
-		void									SetTransformValue(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale);
+		void									SetTransformValue(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& scale);
 
 		inline void								SetTransform(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 

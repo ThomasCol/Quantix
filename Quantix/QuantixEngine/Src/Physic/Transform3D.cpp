@@ -18,11 +18,11 @@ namespace Quantix::Physic
 		_trs{ std::move(t._trs) }, _childs{ std::move(t._childs) }
 	{}
 
-	Transform3D::Transform3D(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& sca) :
+	Transform3D::Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca) :
 		_position{ pos }, _rotation{ rot }, _scale{ sca }, _trs{ Math::QXmat4::CreateTRSMatrix(pos, rot, sca)}, _childs{}
 	{}
 
-	Transform3D::Transform3D(Math::QXvec3&& pos, Math::QXvec3&& rot, Math::QXvec3&& sca) :
+	Transform3D::Transform3D(Math::QXvec3&& pos, Math::QXquaternion&& rot, Math::QXvec3&& sca) :
 		_position{ std::move(pos) }, _rotation{ std::move(rot) }, _scale{ std::move(sca) }, 
 		_trs{ Math::QXmat4::CreateTRSMatrix(std::move(pos), std::move(rot), std::move(sca)) }, _childs{}
 	{}
@@ -41,7 +41,7 @@ namespace Quantix::Physic
 		return _position;
 	}
 
-	const Math::QXvec3& Transform3D::GetRotation()
+	Math::QXquaternion& Transform3D::GetRotation()
 	{
 		return _rotation;
 	}
@@ -66,7 +66,7 @@ namespace Quantix::Physic
 		_position = newPos;
 	}
 
-	void	Transform3D::SetRotation(const Math::QXvec3& newRot)
+	void	Transform3D::SetRotation(const Math::QXquaternion& newRot)
 	{
 		_rotation = newRot;
 	}
@@ -97,9 +97,9 @@ namespace Quantix::Physic
 		_position += pos;
 	}
 
-	void	Transform3D::Rotate(const Math::QXvec3& rot)
+	void	Transform3D::Rotate(const Math::QXquaternion& rot)
 	{
-		_rotation += rot;
+		_rotation = _rotation * rot;
 	}
 
 	void	Transform3D::Scale(const Math::QXvec3& sca)

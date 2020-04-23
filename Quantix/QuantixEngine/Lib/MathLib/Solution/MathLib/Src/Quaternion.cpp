@@ -1,4 +1,5 @@
 #include "Quaternion.h"
+#include "MathDefines.h"
 
 namespace Math
 {
@@ -63,6 +64,11 @@ namespace Math
 		res.v.z = w * q.v.z + v.x * q.v.y - v.y * q.v.x + v.z * q.w;
 
 		return res;
+	}
+
+	QXquaternion QXquaternion::operator*=(const QXquaternion& q) const noexcept
+	{
+		return *this * q;
 	}
 
 	QXvec3 QXquaternion::operator*(const QXvec3& vec) const noexcept
@@ -233,6 +239,77 @@ namespace Math
 		return res;
 	}
 
+	static bool equals(const float& v1, const float& v2, const float& epsilon)
+	{
+		return (v1 < v2 + epsilon && v1 > v2 - epsilon);
+	}
+
+	static float clamp(float& v, const float& min, const float& max)
+	{
+		if (v < min)
+			return min;
+		else if (v > max)
+			return max;
+		return v;
+	}
+
+	QXvec3& QXquaternion::QuaternionToEuler()
+	{
+		QXvec3 res;
+		QXquaternion tmp = QXquaternion(w * w, v.x * v.x, v.y * v.x, v.z * v.z);
+		float test = 2.0f * (v.y * w - v.x * v.z);
+
+		if (equals(test, 1.0f, 0.000001f))
+		{
+			res.z = -2.0f * (atan2(v.x, w));
+			res.x = 0;
+			res.y = Q_PI / 2.0f;
+		}
+		else if (equals(test, -1.0f, 0.000001f))
+		{
+			res.z = 2.0f * (atan2(v.x, w));
+			res.x = 0;
+			res.y = Q_PI / -2.0f;
+		}
+		else
+		{
+			res.z = atan2(2.0f * (v.x * v.y - v.z * w), (tmp.v.x - tmp.v.y - tmp.v.z + tmp.w));
+			res.x = atan2(2.0f * (v.x * v.z - v.x * w), (-tmp.v.x - tmp.v.y + tmp.v.z + tmp.w));
+			res.z = asin(clamp(test, -1.0f, 1.0f));
+		}
+
+		return res;
+	}
+
+	void		QXquaternion::SetEulerToQuaternion(const QXvec3& vect)
+	{
+		float angle;
+
+		angle = vect.x * 0.5f; 
+		const float sr = sin(angle);
+		const float cr = cos(angle);
+		
+		angle = vect.y * 0.5f;
+		const float sp = sin(angle);
+		const float cp = cos(angle);
+
+		angle = vect.z * 0.5f;
+		const float sy = sin(angle);
+		const float cy = cos(angle);
+
+		const float cpcy = cp * cy;
+		const float spcy = sp * cy;
+		const float cpsy = cp * sy;
+		const float spsy = sp * sy;
+		
+		v.x = sr * cpcy - cr * spsy;
+		v.y = cr * spcy + sr * cpsy;
+		v.z = cr * cpsy - sr * spcy;
+		w = cr * cpcy + sr * spsy;
+		
+		*this = NormalizeQuaternion();
+	}
+
 	QXstring QXquaternion::ToString() const noexcept
 	{
 		QXstring quat = std::to_string(w) + ", " + v.ToString();
@@ -331,6 +408,37 @@ namespace Math
 			q1 = q1 * -1.f;
 
 		return ((q1 * sin((1 - t) * theta) + q2 * sin(t * theta)) * (1 / sin(theta))).NormalizeQuaternion();
+	}
+
+	QXquaternion	QXquaternion::EulerToQuaternion(const QXvec3& vect)
+	{
+		QXquaternion q;
+
+		float angle;
+
+		angle = vect.x * 0.5f;
+		const float sr = sin(angle);
+		const float cr = cos(angle);
+
+		angle = vect.y * 0.5f;
+		const float sp = sin(angle);
+		const float cp = cos(angle);
+
+		angle = vect.z * 0.5f;
+		const float sy = sin(angle);
+		const float cy = cos(angle);
+
+		const float cpcy = cp * cy;
+		const float spcy = sp * cy;
+		const float cpsy = cp * sy;
+		const float spsy = sp * sy;
+
+		q.v.x = sr * cpcy - cr * spsy;
+		q.v.y = cr * spcy + sr * cpsy;
+		q.v.z = cr * cpsy - sr * spcy;
+		q.w = cr * cpcy + sr * spsy;
+
+		return q.NormalizeQuaternion();
 	}
 
 #pragma endregion Static Functions

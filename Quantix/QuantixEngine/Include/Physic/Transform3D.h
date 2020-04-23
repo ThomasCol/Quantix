@@ -2,8 +2,8 @@
 #define __TRANSFORM3D_H__
 
 #include <vector>
+#include <Quaternion.h>
 #include <Vec3.h>
-#include <Mat4.h>
 #include "Core/DLLHeader.h"
 
 namespace Quantix::Core::DataStructure
@@ -20,7 +20,7 @@ namespace Quantix::Physic
 		#pragma region Attributes
 			
 			Math::QXvec3								_position;
-			Math::QXvec3								_rotation;
+			Math::QXquaternion							_rotation;
 			Math::QXvec3								_scale;
 
 			Math::QXmat4								_trs;
@@ -69,7 +69,7 @@ namespace Quantix::Physic
 			 * @param rot The Rotation of the transform
 			 * @param sca The Scale angle of the transform
 			 */
-			Transform3D(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& sca);
+			Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca);
 
 			/**
 			 * @brief Construct a new 3D Transform object by rvalues
@@ -78,7 +78,7 @@ namespace Quantix::Physic
 			 * @param rot The Rotation of the transform
 			 * @param sca The Scale angle of the transform
 			 */
-			Transform3D(Math::QXvec3&& pos, Math::QXvec3&& rot, Math::QXvec3&& sca);
+			Transform3D(Math::QXvec3&& pos, Math::QXquaternion&& rot, Math::QXvec3&& sca);
 
 			/**
 			 * @brief Destroy the 3D Transform object
@@ -103,7 +103,7 @@ namespace Quantix::Physic
 			 *
 			 * @return const Math::QXvec3& Current Rotation
 			 */
-			const Math::QXvec3&								GetRotation();
+			Math::QXquaternion&								GetRotation();
 
 			/**
 			 * @brief Get the scale of the current transform
@@ -133,7 +133,7 @@ namespace Quantix::Physic
 			 *
 			 * @param newPos the new rotation of the current transform
 			 */
-			void											SetRotation(const Math::QXvec3& newRot);
+			void											SetRotation(const Math::QXquaternion& newRot);
 
 			/**
 			 * @brief Set the scale of the current transform
@@ -146,7 +146,7 @@ namespace Quantix::Physic
 
 			inline Core::DataStructure::GameObject3D*		GetObject() const { return _gameObject; };
 
-			inline std::vector<Transform3D*>&			GetChilds() { return _childs; };
+			inline std::vector<Transform3D*>&				GetChilds() { return _childs; };
 		#pragma endregion
 
 		#pragma region Functions
@@ -170,7 +170,7 @@ namespace Quantix::Physic
 			 *
 			 * @param rot The rotation that it will turn further
 			 */
-			void										Rotate(const Math::QXvec3& rot);
+			void										Rotate(const Math::QXquaternion& rot);
 
 			/**
 			 * @brief Scale the current transform

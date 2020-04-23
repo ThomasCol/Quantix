@@ -231,27 +231,27 @@ void Editor::DrawSimulation()
 
 void Editor::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp)
 {
+	Math::QXmat4 matrixTmp2 = Math::QXmat4::Identity();
 	Math::QXvec3 translation, transTmp, rotation, rotTmp, scale, scaleTmp;
 
 	if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
 	{
-		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::LOCAL, matrix.array);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::WORLD, matrix.array);
 		ImGuizmo::DecomposeMatrixToComponents(matrixTmp.array, transTmp.e, rotation.e, scale.e);
 		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
 		transform->Translate(translation - transTmp);
 	}
 	else if (_guizmoType == ImGuizmo::OPERATION::ROTATE)
 	{
-		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::LOCAL, matrix.array);
-		ImGuizmo::DecomposeMatrixToComponents(matrixTmp.array, translation.e, rotTmp.e, scale.e);
-		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
-		rotation = rotation * (Q_PI / 180);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::WORLD, matrixTmp2.array);
+		ImGuizmo::DecomposeMatrixToComponents(matrixTmp2.array, translation.e, rotTmp.e, scale.e);
 		rotTmp = rotTmp * (Q_PI / 180);
-		transform->Rotate(rotation - rotTmp);
+
+		transform->Rotate(Math::QXquaternion::EulerToQuaternion(rotTmp));
 	}
 	else
 	{
-		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::SCALE, ImGuizmo::MODE::LOCAL, matrix.array);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::SCALE, ImGuizmo::MODE::WORLD, matrix.array);
 		ImGuizmo::DecomposeMatrixToComponents(matrixTmp.array, translation.e, rotation.e, scaleTmp.e);
 		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
 		transform->Scale(scale - scaleTmp);

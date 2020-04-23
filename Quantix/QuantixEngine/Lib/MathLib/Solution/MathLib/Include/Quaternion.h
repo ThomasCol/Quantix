@@ -84,7 +84,7 @@ namespace Math
 		 * @brief Operator * multiplication
 		 * 
 		 * @param s float scale value for multiplication
-		 * @return New reference QXquaternion result of multiplication
+		 * @return QXquaternion result of multiplication
 		 */
 		QXquaternion		operator*(QXfloat s) const noexcept;
 
@@ -92,9 +92,17 @@ namespace Math
 		 * @brief Operator * multiplication
 		 * 
 		 * @param q Quaternion for multiplication
-		 * @return New reference QXquaternion result of multiplication
+		 * @return QXquaternion result of multiplication
 		 */
 		QXquaternion		operator*(const QXquaternion& q) const noexcept;
+
+		/**
+		 * @brief Operator *= multiplication
+		 *
+		 * @param q Quaternion for multiplication
+		 * @return QXquaternion result of multiplication
+		 */
+		QXquaternion		operator*=(const QXquaternion& q) const noexcept;
 
 		/**
 		 * @brief Operator * multiplication with a vector
@@ -249,6 +257,10 @@ namespace Math
 		 */
 		QXquaternion		SubQuaternion(const QXquaternion& q) const noexcept;
 
+		QXvec3&				QuaternionToEuler();
+
+		void				SetEulerToQuaternion(const QXvec3& vect);
+
 		/**
 		 * @brief String of Quaternion object
 		 * 
@@ -290,6 +302,9 @@ namespace Math
 		 * @return QXquaternion slerp normalize
 		 */
 		static QXquaternion	SlerpQuaternion(QXquaternion& q1, const QXquaternion& q2, QXfloat t) noexcept;
+
+
+		static QXquaternion	EulerToQuaternion(const QXvec3& vect);
 		#pragma endregion Static Functions
 		#pragma endregion Functions
 
