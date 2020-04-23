@@ -84,5 +84,6 @@
     <ClInclude Include="Include\Physic\PhysicHandler.h" />
     <ClInclude Include="Include\Core\Components\Behaviour.h" />
     <ClInclude Include="Include\Physic\SimulationCallback.h" />
+    <ClInclude Include="Include\Physic\PhysicSetting.h" />
   </ItemGroup>
 </Project>

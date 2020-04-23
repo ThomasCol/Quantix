@@ -102,19 +102,18 @@ namespace Quantix::Physic
 		}
 	}
 	//ADD ENUM + Constructor type of shape
-	IPhysicType* PhysicHandler::CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
+	void PhysicHandler::CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
 		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
 
 		physicType->GetObjectDynamic()->GetRigid()->attachShape(*mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *aMaterial));
-
 		// Set un ID pour la suppression dans le collider
 		// a la suppression, detacher la shape situer a l'id stocker
 	}
 
-	IPhysicType* PhysicHandler::CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
+	void PhysicHandler::CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
@@ -122,11 +121,13 @@ namespace Quantix::Physic
 
 		physicType->GetObjectDynamic()->GetRigid()->attachShape(*mSDK->createShape(PxSphereGeometry(1.f), *aMaterial));
 
+
+
 		// Set un ID pour la suppression dans le collider et le get set de donné
 		// a la suppression, detacher la shape situer a l'id stocker
 	}
 
-	IPhysicType* PhysicHandler::CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
+	void PhysicHandler::CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 

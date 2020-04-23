@@ -263,6 +263,7 @@
     <ClInclude Include="Include\Core\Render\Renderer.h" />
     <ClInclude Include="Include\Core\Render\PostProcess\Skybox.h" />
     <ClInclude Include="Include\Core\UserEntry\InputManager.h" />
+    <ClInclude Include="Include\Physic\PhysicSetting.h" />
     <ClInclude Include="Include\Resources\Scene.h" />
     <ClInclude Include="Include\Physic\Transform2D.h" />
     <ClInclude Include="Include\Physic\Transform3D.h" />

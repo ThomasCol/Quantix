@@ -61,11 +61,11 @@ namespace Quantix::Physic
 
 		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody = false);
 
-		IPhysicType* CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+		void CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
 
-		IPhysicType* CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+		void CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
 
-		IPhysicType* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+		void CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
 
 		void		InitSystem();
 		void		ReleaseSystem();

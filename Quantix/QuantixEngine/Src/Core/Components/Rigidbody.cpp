@@ -114,5 +114,53 @@ namespace Quantix::Core::Components
 												actorPhysic->GetRigid()->getGlobalPose().p, 
 												physx::PxQuat(q.v.x, q.v.y, q.v.z, q.w)
 												));
+
+		//actorPhysic->GetRigid()->fla
+		//physx::PxBaseFlag::
+		//physx::PxRigidBodyFlag::
+	}
+
+	void Rigidbody::SetActorFlagDisableGravity(bool b)
+	{
+		actorFlag.disableGravity = b;
+		actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, b);
+	}
+
+	bool Rigidbody::GetActorFlagDisableGravity()
+	{
+		return actorFlag.disableGravity;
+	}
+
+	void Rigidbody::SetActorFlagDisableSimulation(bool b)
+	{
+		actorFlag.disableSimulation = b;
+		actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, b);
+	}
+
+	bool Rigidbody::GetActorFlagDisableSimulation()
+	{
+		return actorFlag.disableSimulation;
+	}
+
+	void Rigidbody::SetActorFlagSendSleepNotifies(bool b)
+	{
+		actorFlag.sendSleepNotifies = b;
+		actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES, b);
+	}
+
+	bool Rigidbody::GetActorFlagSendSleepNotifies()
+	{
+		return actorFlag.sendSleepNotifies;
+	}
+
+	void Rigidbody::SetActorFlagVisualization(bool b)
+	{
+		actorFlag.visualization = b;
+		actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eVISUALIZATION, b);
+	}
+
+	bool Rigidbody::GetActorFlagVisualization()
+	{
+		return actorFlag.visualization;
 	}
 }

@@ -9,6 +9,8 @@
 #include "Physic/PhysicHandler.h"
 #include "Core/MathHeader.h"
 
+#include "Physic/PhysicSetting.h"
+
 namespace Quantix::Core::DataStructure
 {
 	class GameComponent;
@@ -20,6 +22,8 @@ namespace Quantix::Core::Components
 	{
 #pragma region Attributes
 		Physic::PhysicDynamic* actorPhysic{ nullptr };
+
+		Physic::ActorFlag actorFlag;
 
 #pragma endregion
 
@@ -56,6 +60,15 @@ namespace Quantix::Core::Components
 
 		Math::QXquaternion GetTransformRotation();
 		void SetTransformRotation(Math::QXquaternion q);
+
+		void SetActorFlagDisableGravity(bool b);
+		bool GetActorFlagDisableGravity();
+		void SetActorFlagDisableSimulation(bool b);
+		bool GetActorFlagDisableSimulation();
+		void SetActorFlagSendSleepNotifies(bool b);
+		bool GetActorFlagSendSleepNotifies();
+		void SetActorFlagVisualization(bool b);
+		bool GetActorFlagVisualization();
 
 #pragma endregion 
 
