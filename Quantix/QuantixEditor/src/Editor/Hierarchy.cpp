@@ -7,7 +7,7 @@
 #include "Hierarchy.h"
 #include <Core/Debugger/Logger.h>
 
-void Hierarchy::SetSelectable(std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& nodeGlobal, std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& node, QXint i)
+void Hierarchy::SetSelectable(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node, QXint i)
 {
 	node[i]->GetObject()->SetIsActive(!node[i]->GetObject()->GetIsActive());
 	if (_inspector == nullptr)
@@ -18,7 +18,7 @@ void Hierarchy::SetSelectable(std::vector<std::shared_ptr<Quantix::Physic::Trans
 		DesactivatePrevInspector(nodeGlobal, node[i]);
 }
 
-void Hierarchy::DrawObject(std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& nodeGlobal, std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& node, Quantix::Resources::Scene* scene)
+void Hierarchy::DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
 	static QXint j = 0;
 	for (QXuint i{ 0 }; i < node.size(); i++)
@@ -52,11 +52,11 @@ void Hierarchy::DrawObject(std::vector<std::shared_ptr<Quantix::Physic::Transfor
 	PopUpMenu(node, scene);
 }
 
-void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, std::shared_ptr<Quantix::Physic::Transform3D> node, Quantix::Resources::Scene* scene)
+void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::Transform3D* node, Quantix::Resources::Scene* scene)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		if (ImGui::TreeNodeEx(&node, ImGuiTreeNodeFlags_Selected, "World Scene"))
+		if (ImGui::TreeNodeEx(&node, ImGuiTreeNodeFlags_DefaultOpen, "World Scene"))
 		{
 			if (node->GetChilds().size() > 0)
 				DrawObject(node->GetChilds(), node->GetChilds(), scene);
@@ -66,7 +66,7 @@ void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, std::shared_ptr<Qu
 	ImGui::End();
 }
 
-void Hierarchy::CreateChild(QXbool& select, std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& nodes, Quantix::Resources::Scene* scene)
+void Hierarchy::CreateChild(QXbool& select, std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene)
 {
 	for (QXuint i = 0; i < nodes.size(); i++)
 	{
@@ -87,13 +87,13 @@ void Hierarchy::CreateChild(QXbool& select, std::vector<std::shared_ptr<Quantix:
 	}
 }
 
-void Hierarchy::MenuRename(std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& nodes, Quantix::Resources::Scene* scene)
+void Hierarchy::MenuRename(std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene)
 {
 	for (QXuint i = 0; i < nodes.size(); i++)
 	{
 		if (nodes[i]->GetChilds().size() != 0)
 		{
-			std::vector<std::shared_ptr<Quantix::Physic::Transform3D>> child = nodes[i]->GetChilds();
+			std::vector<Quantix::Physic::Transform3D*> child = nodes[i]->GetChilds();
 			MenuRename(child, scene);
 		}
 
@@ -115,7 +115,7 @@ void Hierarchy::MenuRename(std::vector<std::shared_ptr<Quantix::Physic::Transfor
 	}
 }
 
-void Hierarchy::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& nodes, Quantix::Resources::Scene* scene)
+void Hierarchy::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene)
 {
 	for (QXuint i{ 0 }; i < itemMenu.size(); i++)
 	{
@@ -127,7 +127,7 @@ void Hierarchy::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, std:
 	}
 }
 
-void Hierarchy::PopUpMenuItem(std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& nodes, std::shared_ptr<Quantix::Physic::Transform3D> node, Quantix::Resources::Scene* scene)
+void Hierarchy::PopUpMenuItem(std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Resources::Scene* scene)
 {
 	if (ImGui::BeginPopupContextItem("Context Item"))
 	{
@@ -144,7 +144,7 @@ void Hierarchy::PopUpMenuItem(std::vector<std::shared_ptr<Quantix::Physic::Trans
 	}
 }
 
-void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& node, Quantix::Resources::Scene* scene)
+void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
 	if (selection)
 	{
@@ -156,7 +156,7 @@ void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<std::shared_ptr
 	}
 }
 
-void Hierarchy::CreateItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& node, Quantix::Resources::Scene* scene)
+void Hierarchy::CreateItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
 	for (QXuint i{ 0 }; i < itemMenu.size(); i++)
 	{
@@ -168,7 +168,7 @@ void Hierarchy::CreateItem(QXbool* selection, std::vector<QXstring> itemMenu, st
 	}
 }
 
-void Hierarchy::PopUpMenu(std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& node, Quantix::Resources::Scene* scene)
+void Hierarchy::PopUpMenu(std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
 	if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
 	{
@@ -179,7 +179,7 @@ void Hierarchy::PopUpMenu(std::vector<std::shared_ptr<Quantix::Physic::Transform
 	}
 }
 
-void Hierarchy::DesactivatePrevInspector(std::vector<std::shared_ptr<Quantix::Physic::Transform3D>>& nodes, std::shared_ptr<Quantix::Physic::Transform3D> node)
+void Hierarchy::DesactivatePrevInspector(std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node)
 {
 	for (QXuint i{ 0 }; i < nodes.size(); i++)
 	{

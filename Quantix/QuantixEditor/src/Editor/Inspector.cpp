@@ -5,7 +5,7 @@
 
 #include "Inspector.h"
 
-Inspector::Inspector(std::shared_ptr<Quantix::Physic::Transform3D> transform) :
+Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
 	_transform{ transform },
 	_enable{ true }
 {

@@ -108,7 +108,7 @@ namespace Quantix::Physic
 		_trs = Math::QXmat4::CreateTRSMatrix(_position, _rotation, _scale);
 	}
 
-	void	Transform3D::Update(const std::shared_ptr<Transform3D> parentTransform)
+	void	Transform3D::Update(const Transform3D* parentTransform)
 	{
 		UpdateTRS();
 
@@ -130,7 +130,7 @@ namespace Quantix::Physic
 		_scale += sca;
 	}
 
-	void	Transform3D::AddChild(std::shared_ptr<Transform3D> child)
+	void	Transform3D::AddChild(Transform3D* child)
 	{
 		_childs.push_back(child);
 	}

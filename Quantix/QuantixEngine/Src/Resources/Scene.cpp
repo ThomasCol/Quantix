@@ -60,7 +60,7 @@ namespace Quantix::Resources
 
 	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept
 	{
-		_root = std::make_shared<Quantix::Core::DataStructure::GameObject3D>(Quantix::Core::DataStructure::GameObject3D("root"));
+		_root = new Quantix::Core::DataStructure::GameObject3D(Quantix::Core::DataStructure::GameObject3D("root"));
 
 		Quantix::Core::DataStructure::GameObject3D* gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh");
 		Quantix::Core::DataStructure::GameObject3D* gameObject2 = new Quantix::Core::DataStructure::GameObject3D("Mesh2");

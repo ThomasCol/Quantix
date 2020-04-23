@@ -14,7 +14,7 @@ namespace Quantix::Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		std::shared_ptr<Quantix::Physic::Transform3D>		_transform;
+		Quantix::Physic::Transform3D*		_transform;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -123,13 +123,13 @@ namespace Quantix::Core::DataStructure
 		 */
 		void									SetTransformValue(const Math::QXvec3& pos, const Math::QXvec3& rot, const Math::QXvec3& scale);
 
-		inline void								SetTransform(std::shared_ptr<Quantix::Physic::Transform3D> transform) { _transform = transform; };
+		inline void								SetTransform(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 
 		/**
 		 * @brief Get the Transform object
 		 *
 		 */
-		std::shared_ptr<Quantix::Physic::Transform3D>			GetTransform() const { return _transform; };
+		Quantix::Physic::Transform3D*			GetTransform() const { return _transform; };
 		#pragma endregion Accessors
 		GameObject3D&											operator=(const GameObject3D& object);
 		#pragma endregion Methods

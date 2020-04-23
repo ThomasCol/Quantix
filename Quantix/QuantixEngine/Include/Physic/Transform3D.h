@@ -27,9 +27,9 @@ namespace Quantix::Physic
 
 			Math::QXmat4								_trs;
 
-			std::vector<std::shared_ptr<Transform3D>>	_childs;
+			std::vector<Transform3D*>	_childs;
 
-			std::shared_ptr<Quantix::Core::DataStructure::GameObject3D> _gameObject;
+			Quantix::Core::DataStructure::GameObject3D* _gameObject;
 
 		#pragma endregion
 			
@@ -144,9 +144,9 @@ namespace Quantix::Physic
 			 */
 			void											SetScale(const Math::QXvec3& newSca);
 
-			inline std::shared_ptr<Core::DataStructure::GameObject3D>	GetObject() const { return _gameObject; };
+			inline Core::DataStructure::GameObject3D*	GetObject() const { return _gameObject; };
 
-			inline std::vector<std::shared_ptr<Transform3D>>&			GetChilds() { return _childs; };
+			inline std::vector<Transform3D*>&			GetChilds() { return _childs; };
 
 		#pragma endregion
 
@@ -157,7 +157,7 @@ namespace Quantix::Physic
 			 *
 			 * @param trsParent The parent TRS to convert its own trs in global
 			 */
-			void										Update(const std::shared_ptr<Transform3D> parentTransform);
+			void										Update(const Transform3D* parentTransform);
 
 			/**
 			 * @brief Translate the current transform
@@ -185,7 +185,7 @@ namespace Quantix::Physic
 			 *
 			 * @param child The 3D transform child to add to the current transform
 			 */
-			void										AddChild(std::shared_ptr<Transform3D> child);
+			void										AddChild(Transform3D* child);
 
 			template<class Archive>
 			void save(Archive& archive) const

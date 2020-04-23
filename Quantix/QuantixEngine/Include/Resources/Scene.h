@@ -18,7 +18,7 @@ namespace Quantix::Resources
 			#pragma region Attributes
 
 			QXstring											_name;
-			std::shared_ptr<Core::DataStructure::GameObject3D>	_root;
+			Core::DataStructure::GameObject3D*	_root;
 			QXuint												_id;
 
 			std::vector<Core::DataStructure::GameObject3D*>		_objects;
@@ -122,7 +122,7 @@ namespace Quantix::Resources
 			const QXuint& GetID()const noexcept { return _id; }
 			QXuint& GetID() noexcept { return _id; }
 
-			inline std::shared_ptr<Core::DataStructure::GameObject3D> GetRoot() { return _root; }
+			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
 
 			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name) noexcept;
 

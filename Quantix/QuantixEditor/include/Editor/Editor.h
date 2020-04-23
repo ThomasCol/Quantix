@@ -44,7 +44,8 @@ public:
 	void												DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags);
 	void												Simulation();
 	void												DrawSimulation();
-	void												ShowGuizmoObject(std::shared_ptr<Quantix::Physic::Transform3D> transform);
+	void												MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp);
+	void												ShowGuizmoObject(Quantix::Physic::Transform3D* transform);
 	void												DrawGuizmo();
 	void												DrawScene(const QXstring& name, ImGuiWindowFlags flags);
 
@@ -56,15 +57,20 @@ public:
 
 	inline Quantix::Core::Platform::Window&				GetWin() { return _win; };
 	inline Quantix::Core::Platform::Application*		GetApp() const { return _app; };
-	inline void											SetRoot(std::shared_ptr<Quantix::Core::DataStructure::GameObject3D> object) { _root = object; };
+	inline void											SetRoot(Quantix::Core::DataStructure::GameObject3D* object) { _root = object; };
 	inline void											SetMainCamera(Quantix::Core::Components::Camera* camera) { _mainCamera = camera; };
+	inline Quantix::Core::Components::Camera*			GetMainCamera() { return _mainCamera; };
+	inline Quantix::Core::Components::Camera*			GetEditorCamera() { return _cameraEditor; };
+	inline QXbool										GetPlay() const { return _play; };
+	inline QXbool										GetPause() const { return _pause; };
 
 	MouseTest*											_mouseInput;
 private:
 	Quantix::Core::Platform::Window						_win;
 	Quantix::Core::Platform::Application*				_app;
 	rttr::library										_lib;
-	std::shared_ptr<Quantix::Core::DataStructure::GameObject3D>	_root;
+	Quantix::Core::DataStructure::GameObject3D*			_root;
+	Quantix::Core::Components::Camera*					_cameraEditor;
 	Quantix::Core::Components::Camera*					_mainCamera;
 
 	Docker												_docker;
@@ -75,6 +81,9 @@ private:
 
 	std::map<QXstring, Quantix::Resources::Texture*>	_simImg;
 	std::map<QXstring, QXbool>							_simState;
+	QXbool												_play;
+	QXbool												_pause;
+	QXbool												_activateFocus;
 
 	QXuint												_fbo;
 	ImGuizmo::OPERATION									_guizmoType;

@@ -55,7 +55,7 @@ namespace Quantix::Core::DataStructure
 				meshes.push_back(mesh);
 		}
 
-		for (std::shared_ptr<Physic::Transform3D> child : _transform->GetChilds())
+		for (Physic::Transform3D* child : _transform->GetChilds())
 			child->GetObject()->Update(meshes, this);
 	}
 
@@ -75,7 +75,7 @@ namespace Quantix::Core::DataStructure
 
 		_transform->Update(parentObject->GetTransform());
 
-		for (std::shared_ptr<Physic::Transform3D> child : _transform->GetChilds())
+		for (Physic::Transform3D* child : _transform->GetChilds())
 			child->GetObject()->Update(meshes, this);
 	}
 
