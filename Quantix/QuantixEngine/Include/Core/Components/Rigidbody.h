@@ -19,7 +19,7 @@ namespace Quantix::Core::Components
 	struct QUANTIX_API Rigidbody : public virtual Core::DataStructure::Component
 	{
 #pragma region Attributes
-		Physic::IPhysicType* actorPhysic{ nullptr };
+		Physic::PhysicDynamic* actorPhysic{ nullptr };
 
 #pragma endregion
 
@@ -41,6 +41,16 @@ namespace Quantix::Core::Components
 
 #pragma region Accessors 
 		Rigidbody* Copy() const;
+
+		QXfloat GetMass();
+		void SetMass(QXfloat);
+
+		Math::QXvec3 GetLinearVelocity();
+		void SetLinearVelocity(Math::QXvec3);
+
+		Math::QXvec3 GetAngularVelocity();
+		void SetAngularVelocity(Math::QXvec3);
+
 #pragma endregion 
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
