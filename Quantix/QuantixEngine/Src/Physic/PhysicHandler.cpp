@@ -104,140 +104,38 @@ namespace Quantix::Physic
 	//ADD ENUM + Constructor type of shape
 	IPhysicType* PhysicHandler::CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
-		auto it = _physObject.find(object);
-		if (!hasRigidbody)
-		{
-			if (it == _physObject.end())
-			{
-				PhysicStatic* tmp = new PhysicStatic(mSDK, EPhysXShape::CUBE);
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
-			else if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::DYNAMIC))
-			{
-				// creer a partir dun dyna plus tard
-				PhysicStatic* tmp = new PhysicStatic(mSDK, dynamic_cast<PhysicDynamic*>(_physObject[object]));
-				mScene->removeActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
-				mScene->addActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
-				_physObject.erase(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
+		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
-			return _physObject[object];
-		}
-		else
-		{
-			if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::STATIC))
-			{
-				PhysicDynamic* tmp = new PhysicDynamic(mSDK, dynamic_cast<PhysicStatic*>(_physObject[object]));
-				mScene->removeActor(*_physObject[object]->GetObjectStatic()->GetRigid());
-				mScene->addActor(*_physObject[object]->GetObjectStatic()->GetRigid());
-				_physObject.erase(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
-			else
-			{
-				PhysicDynamic* tmp = new PhysicDynamic(mSDK, EPhysXShape::CUBE);
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
+		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
 
-			return _physObject[object];
-		}
+		physicType->GetObjectDynamic()->GetRigid()->attachShape(*mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *aMaterial));
+
+		// Set un ID pour la suppression dans le collider
+		// a la suppression, detacher la shape situer a l'id stocker
 	}
 
 	IPhysicType* PhysicHandler::CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
-		auto it = _physObject.find(object);
-		if (!hasRigidbody)
-		{
-			if (it == _physObject.end())
-			{
-				PhysicStatic* tmp = new PhysicStatic(mSDK, EPhysXShape::SPHERE);
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
-			else if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::DYNAMIC))
-			{
-				// creer a partir dun dyna plus tard
-				PhysicStatic* tmp = new PhysicStatic(mSDK, dynamic_cast<PhysicDynamic*>(_physObject[object]));
-				mScene->removeActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
-				mScene->addActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
-				_physObject.erase(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
+		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
-			return _physObject[object];
-		}
-		else
-		{
-			if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::STATIC))
-			{
-				PhysicDynamic* tmp = new PhysicDynamic(mSDK, dynamic_cast<PhysicStatic*>(_physObject[object]));
-				mScene->removeActor(*_physObject[object]->GetObjectStatic()->GetRigid());
-				mScene->addActor(*_physObject[object]->GetObjectStatic()->GetRigid());
-				_physObject.erase(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
-			else
-			{
-				PhysicDynamic* tmp = new PhysicDynamic(mSDK, EPhysXShape::SPHERE);
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
+		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
 
-			return _physObject[object];
-		}
+		physicType->GetObjectDynamic()->GetRigid()->attachShape(*mSDK->createShape(PxSphereGeometry(1.f), *aMaterial));
+
+		// Set un ID pour la suppression dans le collider et le get set de donné
+		// a la suppression, detacher la shape situer a l'id stocker
 	}
 
 	IPhysicType* PhysicHandler::CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
-		auto it = _physObject.find(object);
-		if (!hasRigidbody)
-		{
-			if (it == _physObject.end())
-			{
-				PhysicStatic* tmp = new PhysicStatic(mSDK, EPhysXShape::CAPSULE);
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
-			else if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::DYNAMIC))
-			{
-				// creer a partir dun dyna plus tard
-				PhysicStatic* tmp = new PhysicStatic(mSDK, dynamic_cast<PhysicDynamic*>(_physObject[object]));
-				mScene->removeActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
-				mScene->addActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
-				_physObject.erase(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
+		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
-			return _physObject[object];
-		}
-		else
-		{
-			if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::STATIC))
-			{
-				PhysicDynamic* tmp = new PhysicDynamic(mSDK, dynamic_cast<PhysicStatic*>(_physObject[object]));
-				mScene->removeActor(*_physObject[object]->GetObjectStatic()->GetRigid());
-				mScene->addActor(*_physObject[object]->GetObjectStatic()->GetRigid());
-				_physObject.erase(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
-			else
-			{
-				PhysicDynamic* tmp = new PhysicDynamic(mSDK, EPhysXShape::CAPSULE);
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
+		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
 
-			return _physObject[object];
-		}
+		physicType->GetObjectDynamic()->GetRigid()->attachShape(*mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *aMaterial));
+
+		// Set un ID pour la suppression dans le collider et le get set de donné
+		// a la suppression, detacher la shape situer a l'id stocker
 	}
 
 	void PhysicHandler::InitSystem()
