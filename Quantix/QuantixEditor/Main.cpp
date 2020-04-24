@@ -150,6 +150,14 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
 
+	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+		editor->GetApp()->manager.SaveScene(editor->GetApp()->scene);
+	if (GetKey(QX_KEY_BACKSPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+	{
+		editor->GetApp()->scene = editor->GetApp()->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
+		editor->SetRoot(editor->GetApp()->scene->GetRoot());
+	}
+
 	START_PROFILING("Draw");
 	//Editor Update
 	editor->GetApp()->Update(meshes);
@@ -178,6 +186,7 @@ int main()
 			Update(editor, lights, cam);
 
 		delete cam;
+		delete editor;
 	}
 	catch (const std::exception& e)
 	{
@@ -186,5 +195,6 @@ int main()
 	}
 
 	Quantix::Core::Debugger::Logger::GetInstance()->CloseLogger();
+	
 	return 0;
 }

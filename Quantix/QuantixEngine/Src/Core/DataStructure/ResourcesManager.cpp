@@ -1,5 +1,7 @@
 #include "Core/DataStructure/ResourcesManager.h"
 
+#include <istream>
+
 #include "Core/Debugger/Logger.h"
 
 namespace Quantix::Core::DataStructure
@@ -49,6 +51,7 @@ namespace Quantix::Core::DataStructure
 		if (_materials.size() == 0)
 		{
 			_materials[path + std::to_string(0) + ".mat"] = material;
+			material->SetPath(path + std::to_string(0) + ".mat");
 			return material;
 		}
 
@@ -69,6 +72,8 @@ namespace Quantix::Core::DataStructure
 			tmp_path = path + std::to_string(_materials.size()) + ".mat";
 			_materials[tmp_path] = material;
 		}
+
+		material->SetPath(tmp_path);
 
 		return material;
 	}
@@ -121,6 +126,7 @@ namespace Quantix::Core::DataStructure
 		std::vector<QXuint> indices;
 		LoadModel(filePath, vertices, indices);
 		Model* model = new Model(vertices, indices);
+		model->SetPath(filePath);
 		_models[filePath] = model;
 		return model;
 	}
@@ -326,11 +332,6 @@ namespace Quantix::Core::DataStructure
 		}
 	}
 
-	Scene* ResourcesManager::LoadScene(const QXstring& filePath) noexcept
-	{
-		return new Scene();
-	}
-
 	void ResourcesManager::SaveMaterialToCache(const QXstring& filePath, const Material* material) noexcept
 	{
 		FILE* file;
@@ -355,16 +356,18 @@ namespace Quantix::Core::DataStructure
 
 		const Texture* texture = material->GetMainTexture();
 
-		for (auto it = _textures.begin(); it != _textures.begin(); ++it)
+		for (auto it = _textures.begin(); it != _textures.end(); ++it)
 		{
 			if (it->second == texture)
 			{
 				char_count = it->first.length();
 
 				fwrite(&char_count, sizeof(QXsizei), 1, file);
-				fwrite(&it->first, sizeof(QXstring), char_count, file);
+				fwrite(it->first.data(), sizeof(QXchar), char_count, file);
+				break;
 			}
 		}
+		fclose(file);
 	}
 
 	void ResourcesManager::SaveModelToCache(const QXstring& filePath, Model* model) noexcept
@@ -430,6 +433,22 @@ namespace Quantix::Core::DataStructure
 
 		delete texture;
 		_textures[filePath] = nullptr;
+	}
+
+	void ResourcesManager::SaveScene(Scene* scene)
+	{
+		std::ofstream stream("../QuantixEngine/Media/scene.quantix");
+
+		Tool::Serializer serializer;
+		stream << serializer.Serialize(scene);
+	}
+
+	Scene* ResourcesManager::LoadScene(const QXstring& path)
+	{
+		Tool::Serializer serializer;
+		Scene* scene = new Scene();
+		serializer.Deserialize(path, scene, *this);
+		return scene;
 	}
 
 #pragma endregion

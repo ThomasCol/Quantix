@@ -116,7 +116,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions;$(ProjectDir)externals\rapidjson\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableSpecificWarnings>4251;4312</DisableSpecificWarnings>
@@ -197,6 +197,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Tool\Serializer.cpp" />
     <ClCompile Include="Src\Physic\PhysicHandler.cpp" />
     <ClCompile Include="Src\Physic\PhysicStatic.cpp" />
     <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="Include\Core\Render\PostProcess\PostProcessEffect.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
     <ClInclude Include="Include\Core\Render\PostProcess\Skybox.h" />
+    <ClInclude Include="Include\Core\Tool\Serializer.h" />
     <ClInclude Include="Include\Core\UserEntry\InputManager.h" />
     <ClInclude Include="Include\Resources\Scene.h" />
     <ClInclude Include="Include\Physic\Transform2D.h" />

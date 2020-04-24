@@ -39,6 +39,7 @@
     <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
     <ClCompile Include="Src\Physic\PhysicStatic.cpp" />
     <ClCompile Include="Src\Physic\PhysicHandler.cpp" />
+    <ClCompile Include="Src\Core\Tool\Serializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -80,5 +81,6 @@
     <ClInclude Include="Include\Physic\PhysicDynamic.h" />
     <ClInclude Include="Include\Physic\PhysicStatic.h" />
     <ClInclude Include="Include\Physic\PhysicHandler.h" />
+    <ClInclude Include="Include\Core\Tool\Serializer.h" />
   </ItemGroup>
 </Project>

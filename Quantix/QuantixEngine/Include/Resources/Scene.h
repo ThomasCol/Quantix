@@ -17,7 +17,7 @@ namespace Quantix::Resources
 
 			#pragma region Attributes
 
-			QXstring							_name;
+			QXstring							_name = "Default";
 			Core::DataStructure::GameObject3D*	_root;
 			QXuint								_id;
 
@@ -33,7 +33,7 @@ namespace Quantix::Resources
 			 * @brief Construct a new Scene object
 			 *
 			 */
-			Scene() = default;
+			Scene();
 
 			Scene(const QXstring& name, Core::DataStructure::GameObject3D* root, const QXuint& id) noexcept;
 

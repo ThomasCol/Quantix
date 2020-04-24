@@ -1,6 +1,7 @@
 #ifndef __MODEL_H__
 #define __MODEL_H__
 
+#include <rttrEnabled.h>
 #include <vector>
 #include <Vec2.h>
 #include <Vec3.h>
@@ -36,6 +37,8 @@ namespace Quantix::Resources
 		std::vector<QXuint>	_indices;
 		QXuint				_VAO;
 
+		QXstring			_path;
+
 #pragma endregion
 		
 	public:
@@ -66,7 +69,7 @@ namespace Quantix::Resources
 		 * @param attrib Model attributes
 		 * @param shapes Shapes for the model
 		 */
-		Model(const std::vector<Vertex>& vertices, const std::vector<QXuint> indices);
+		Model(const std::vector<Vertex>& vertices, const std::vector<QXuint>& indices);
 
 		/**
 		 * @brief Destroy the Model object
@@ -110,9 +113,15 @@ namespace Quantix::Resources
 		 */
 		inline const std::vector<Vertex>& GetVertices() { return _vertices; }
 
+		inline QXstring					GetPath() { return _path; }
+
+		inline void						SetPath(QXstring path) { _path = path; }
+
 #pragma endregion
 
 #pragma endregion
+
+		CLASS_REGISTRATION()
 	};
 }
 

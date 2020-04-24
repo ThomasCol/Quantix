@@ -49,10 +49,11 @@ namespace Quantix::Core::DataStructure
 		 * @tparam T type of Component
 		 */
 		template<typename T>
-		inline void				AddComponent()
+		inline T*				AddComponent()
 		{
 			T* comp = new T(this);
 			_component.push_back(comp);
+			return comp;
 		}
 
 		inline void				AddComponent(Quantix::Core::DataStructure::Component* comp)

@@ -10,7 +10,8 @@ RTTR_PLUGIN_REGISTRATION
 	.property("ambient", &Quantix::Resources::Material::ambient)
 	.property("diffuse", &Quantix::Resources::Material::diffuse)
 	.property("specular", &Quantix::Resources::Material::specular)
-	.property("shininess", &Quantix::Resources::Material::shininess);
+	.property("shininess", &Quantix::Resources::Material::shininess)
+	.method("GetPath", &Quantix::Resources::Material::GetPath);
 }
 
 namespace Quantix::Resources
