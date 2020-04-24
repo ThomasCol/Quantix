@@ -11,6 +11,7 @@
 #include "Core/DLLHeader.h"
 #include "Component.h"
 #include "Core/Components/Mesh.h"
+#include "Core/Components/Behaviour.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -18,12 +19,13 @@ namespace Quantix::Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		std::vector<Component*>		_component;
-		std::string					_name;
-		QXint						_layer;
-		QXbool						_isStatic;
-		QXbool						_isActive;
-		QXbool						_toRender;
+		std::vector<Component*>						_component;
+		std::vector<Components::Behaviour*>			_behaviours;
+		std::string									_name;
+		QXint										_layer;
+		QXbool										_isStatic;
+		QXbool										_isActive;
+		QXbool										_toRender;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -58,6 +60,14 @@ namespace Quantix::Core::DataStructure
 		inline void				AddComponent(Quantix::Core::DataStructure::Component* comp)
 		{
 			_component.push_back(comp);
+			Components::Behaviour* beha = dynamic_cast<Components::Behaviour*>(comp);
+			if (beha)
+				AddBehaviour(beha);
+		}
+
+		inline void				AddBehaviour(Quantix::Core::Components::Behaviour* beha)
+		{
+			_behaviours.push_back(beha);
 		}
 
 		/**
@@ -103,6 +113,24 @@ namespace Quantix::Core::DataStructure
 			return _component;
 		}
 
+		inline const std::vector<Core::Components::Behaviour*> GetBehaviours()
+		{
+			return _behaviours;
+		}
+
+		template<typename T>
+		inline T* GetBehaviour()
+		{
+			for (Core::Components::Behaviour* beha : _behaviours)
+			{
+				rttr::type t = beha->get_type();
+
+				if (rttr::type::get<T>() == t)
+					return dynamic_cast<T*>(beha);
+			}
+			return nullptr;
+		}
+
 		inline void				RemoveComponent(Component* component)
 		{
 			for (auto it{_component.begin()}; it != _component.end(); ++it)
@@ -115,6 +143,20 @@ namespace Quantix::Core::DataStructure
 				}
 			}
 		}
+
+		inline void			RemoveBehaviour(Core::Components::Behaviour* behaviour)
+		{
+			for (auto it{ _component.begin() }; it != _component.end(); ++it)
+			{
+				if ((*it) == behaviour)
+				{
+					(*it)->EraseEndOfFrame();
+					_component.erase(it);
+					return;
+				}
+			}
+		}
+
 		/**
 		 * @brief Remove component
 		 * 
@@ -152,6 +194,9 @@ namespace Quantix::Core::DataStructure
 				}
 			}
 		}*/
+
+		virtual void Update(std::vector<Core::Components::Mesh*>& meshes);
+
 		#pragma endregion Template
 
 		#pragma region Accessors

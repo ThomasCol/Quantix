@@ -16,12 +16,16 @@ namespace Quantix::Core::Components
 	{
 #pragma region Constructors
 
-		PlaneCollider(DataStructure::GameComponent* par) noexcept;
+		PlaneCollider() = default;
+		PlaneCollider(DataStructure::GameComponent* par);
 		PlaneCollider(const PlaneCollider& par) noexcept;
 		PlaneCollider(PlaneCollider&& other) noexcept;
 		~PlaneCollider() noexcept = default;
 
 #pragma endregion
+
+		PlaneCollider* Copy() const override;
+
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
 	};
 }

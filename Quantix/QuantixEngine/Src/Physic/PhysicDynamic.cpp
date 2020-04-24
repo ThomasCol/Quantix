@@ -1,18 +1,35 @@
 #include "Physic/PhysicDynamic.h"
 
 #include <iostream>
-//#include "Physic/PhysicStatic.h"
-//#include <PxRigidActorExt.h>
+#include "Physic/PhysicStatic.h"
+#include <PxRigidActorExt.h>
 
-namespace Physic
+RTTR_PLUGIN_REGISTRATION
 {
+	rttr::registration::class_<Quantix::Physic::PhysicDynamic>("PhysicDynamic")
+	.constructor<>()
+	.constructor<physx::PxPhysics*>()
+	.constructor<physx::PxPhysics*, Quantix::Physic::EPhysXShape>()
+	.constructor<physx::PxPhysics*, Quantix::Physic::PhysicStatic*>()
+	.constructor<const Quantix::Physic::PhysicDynamic&>()
+	.constructor<Quantix::Physic::PhysicDynamic&&>()
+	.enumeration<Quantix::Physic::EPhysXShape>("EPhysXShape")
+					 (rttr::value("Cube", Quantix::Physic::EPhysXShape::CUBE),
+					 rttr::value("Sphere", Quantix::Physic::EPhysXShape::SPHERE),
+					 rttr::value("Capsule", Quantix::Physic::EPhysXShape::CAPSULE))
+	.property("dynamic", &Quantix::Physic::PhysicDynamic::GetRigid, &Quantix::Physic::PhysicDynamic::SetRigid);
+}
+
+namespace Quantix::Physic
+{
+	using namespace physx;
 	PhysicDynamic::PhysicDynamic() noexcept : IPhysicType(ETypePhysic::DYNAMIC)
 	{
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Dynamic" << std::endl;
 	}
 
-	/*PhysicDynamic::PhysicDynamic(PxPhysics* SDK) : IPhysicType(type_physic::DYNAMIC) noexcept
+	PhysicDynamic::PhysicDynamic(PxPhysics* SDK) noexcept : IPhysicType(ETypePhysic::DYNAMIC)
 	{
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Dynamic" << std::endl;
@@ -24,14 +41,14 @@ namespace Physic
 		std::cout << "Dynamic ==> position: {" << _dynamic->getGlobalPose().p.x << ", " << _dynamic->getGlobalPose().p.y << ", " << _dynamic->getGlobalPose().p.z << "}" << std::endl;
 		_dynamic->attachShape(*aCubeShape);
 		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 0.5f);
-	}*/
+	}
 
-	PhysicDynamic::PhysicDynamic(/*PxPhysics* SDK,*/ EPhysXShape physXShape) noexcept : IPhysicType(ETypePhysic::DYNAMIC)
+	PhysicDynamic::PhysicDynamic(PxPhysics* SDK, EPhysXShape physXShape) noexcept : IPhysicType(ETypePhysic::DYNAMIC)
 	{
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Dynamic" << std::endl;
 
-		/*_dynamic = SDK->createRigidDynamic(PxTransform(PxVec3(0, 10, 0)));
+		_dynamic = SDK->createRigidDynamic(PxTransform(PxVec3(0, 10, 0)));
 		//_dynamic->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
 		//_dynamic->setRigidBodyFlag(PxRigidBodyFlag::, true);
 
@@ -61,14 +78,14 @@ namespace Physic
 		}
 		std::cout << "Dynamic ==> position: {" << _dynamic->getGlobalPose().p.x << ", " << _dynamic->getGlobalPose().p.y << ", " << _dynamic->getGlobalPose().p.z << "}" << std::endl;
 		_dynamic->attachShape(*aShape);
-		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);*/
+		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);
 	}
 
-	/*PhysicDynamic::PhysicDynamic(PxPhysics* SDK, PhysicStatic* physicStatic) noexcept
+	PhysicDynamic::PhysicDynamic(PxPhysics* SDK, PhysicStatic* physicStatic) noexcept
 	{
 		type = ETypePhysic::DYNAMIC;
 
-		/*int nb = physicStatic->GetRigid()->getNbShapes();
+		int nb = physicStatic->GetRigid()->getNbShapes();
 		PxShape* shape;
 		physicStatic->GetRigid()->getShapes(&shape, nb);
 
@@ -83,17 +100,17 @@ namespace Physic
 			physicStatic->GetRigid()->detachShape(shape[i]);
 		}
 		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);
-	}*/
+	}
 
 	PhysicDynamic::PhysicDynamic(const PhysicDynamic& pd) noexcept : IPhysicType(pd)
 	{
-		//_dynamic = pd._dynamic;
+		_dynamic = pd._dynamic;
 	}
 
 	PhysicDynamic::PhysicDynamic(PhysicDynamic&& pd) noexcept : IPhysicType(pd)
 	{
 		type = std::move(pd.type);
-		//_dynamic = std::move(pd._dynamic);
+		_dynamic = std::move(pd._dynamic);
 	}
 
 	PhysicDynamic::~PhysicDynamic()
@@ -105,8 +122,13 @@ namespace Physic
 		std::cout << "Je suis dynamic" << std::endl;
 	}
 
-	/*PxRigidDynamic* PhysicDynamic::GetRigid() const
+	PxRigidDynamic* PhysicDynamic::GetRigid()
 	{
 		return _dynamic;
-	}*/
+	}
+
+	void PhysicDynamic::SetRigid(PxRigidDynamic* rigid)
+	{
+		_dynamic = rigid;
+	}
 }

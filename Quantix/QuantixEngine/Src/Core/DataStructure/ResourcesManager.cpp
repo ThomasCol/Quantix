@@ -73,6 +73,11 @@ namespace Quantix::Core::DataStructure
 		return material;
 	}
 
+	Scene* ResourcesManager::CreateDefaultScene() noexcept
+	{
+		return new Scene();
+	}
+
 	Material* ResourcesManager::CreateMaterial(const QXstring& filePath) noexcept
 	{
 		if (filePath == "")
@@ -92,12 +97,6 @@ namespace Quantix::Core::DataStructure
 
 		QXstring key = modelPath + materialPath;
 
-	/*	if (_meshes[key] != nullptr)
-		{
-			return _meshes[key];
-		}*/
-
-		//mesh = new Components::Mesh(CreateModel(modelPath), CreateMaterial(materialPath));
 		mesh->SetModel(CreateModel(modelPath));
 		mesh->SetMaterial(CreateMaterial(materialPath));
 
@@ -123,6 +122,19 @@ namespace Quantix::Core::DataStructure
 		Model* model = new Model(vertices, indices);
 		_models[filePath] = model;
 		return model;
+	}
+
+	Scene* ResourcesManager::CreateScene(const QXstring& filepath)
+	{
+		if (filepath == "")
+			return CreateDefaultScene();
+
+		auto it = _scenes.find(filepath);
+		if (it != _scenes.end() && it->second != nullptr)
+		{
+			return it->second;
+		}
+		return LoadScene(filepath);
 	}
 
 	ShaderProgram* ResourcesManager::CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath) noexcept
@@ -179,24 +191,6 @@ namespace Quantix::Core::DataStructure
 		texture->LoadHDRTexture(filePath.c_str());
 		_textures[filePath] = texture;
 		return texture;
-	}
-
-	Scene* ResourcesManager::CreateScene(const QXstring& filepath)
-	{
-		if (filepath == "")
-			return CreateDefaultScene();
-
-		auto it = _scenes.find(filepath);
-		if (it != _scenes.end() && it->second != nullptr)
-		{
-			return it->second;
-		}
-		return LoadScene(filepath);
-	}
-
-	Scene* ResourcesManager::CreateDefaultScene() noexcept
-	{
-		return new Scene();
 	}
 
 	Material* ResourcesManager::LoadMaterial(const QXstring& filePath) noexcept
@@ -384,6 +378,25 @@ namespace Quantix::Core::DataStructure
 		fwrite(model->GetIndices().data(), sizeof(QXuint), index_count, file);
 
 		fclose(file);
+	}
+
+	void ResourcesManager::SaveScene(Scene* scene) noexcept
+	{
+		QXstring cache_file;
+		for (auto it = _scenes.begin(); it != _scenes.end(); ++it)
+		{
+			if (it->second == scene)
+				cache_file = it->first + ".quantix";
+		}
+
+		if (cache_file == "")
+			return;
+
+		FILE* file;
+
+		fopen_s(&file, cache_file.c_str(), "wb");
+
+
 	}
 
 	void ResourcesManager::DeleteMaterial(const QXstring& filePath) noexcept

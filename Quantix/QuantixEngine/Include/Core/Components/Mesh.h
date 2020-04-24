@@ -52,7 +52,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param mesh Mesh to copy
 		 */
-		Mesh(const Mesh& mesh) = default;
+		Mesh(const Mesh& mesh);
 
 		/**
 		 * @brief Construct a new Mesh object
@@ -88,6 +88,8 @@ namespace Quantix::Core::Components
 		 * @param texture new main texture pointer
 		 */
 		inline void SetMaterialMainTexture(Resources::Texture* texture) noexcept { _material->SetMainTexture(texture); textureID = texture->GetId(); }
+
+		QXbool		IsEnable() const override;
 
 		void		SetActive(QXbool enable) override;
 

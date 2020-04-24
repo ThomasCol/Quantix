@@ -31,8 +31,8 @@ public:
 	inline Inspector*	GetInspector() { return _inspector; };
 
 private:
-	Inspector*	_inspector;
-	void*		_selected{ nullptr };
+	Inspector*				_inspector;
+	void*	_selected{ nullptr };
 };
 
 #endif // !_HIERARCHY_H_

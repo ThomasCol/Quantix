@@ -2,16 +2,15 @@
 #define __IPHYSICTYPE_H__
 
 
-#include <physx/include/PxActor.h>
-#include <physx/include/PxActor.h>
 #include <PxActor.h>
 
-//#include <PxPhysicsAPI.h>
-//#include <PxRigidActorExt.h>
+#include <PxPhysicsAPI.h>
+#include <PxRigidActorExt.h>
 
-namespace Physic
+#include "rttrEnabled.h"
+
+namespace Quantix::Physic
 {
-
 	class PhysicStatic;
 	class PhysicDynamic;
 
@@ -35,6 +34,8 @@ namespace Physic
 		ETypePhysic		type = ETypePhysic::NONE;
 
 	public:
+
+
 		IPhysicType() noexcept;
 		IPhysicType(ETypePhysic oType) noexcept;
 		IPhysicType(const IPhysicType&) noexcept;
@@ -43,7 +44,9 @@ namespace Physic
 
 		void		print();
 
-		ETypePhysic		GetType();
+		ETypePhysic&		GetType();
+		void		SetType(ETypePhysic& nt) { type = nt; };
+		
 		template<class T>
 		T* GetObject()
 		{
@@ -62,6 +65,8 @@ namespace Physic
 		{
 			return (PhysicStatic*)this;
 		}
+
+		CLASS_REGISTRATION()
 	};
 }
 

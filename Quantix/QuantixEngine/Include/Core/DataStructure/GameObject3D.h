@@ -19,7 +19,7 @@ namespace Quantix::Core::DataStructure
 	public:
 		#pragma region Constructors/Destructor
 		GameObject3D() = default;
-		GameObject3D(const QXstring&, Quantix::Physic::Transform3D* transform = new Quantix::Physic::Transform3D(Math::QXvec3(0, 0, 0), Math::QXquaternion(1, 0, 0, 0), Math::QXvec3(1, 1, 1))) noexcept;
+		GameObject3D(const QXstring&, const Math::QXvec3& pos = Math::QXvec3(0, 0, 0), const Math::QXquaternion& rot = Math::QXquaternion(1, 0, 0, 0), const Math::QXvec3& sca = Math::QXvec3(1, 1, 1)) noexcept;
 		GameObject3D(const GameObject3D& g3d) noexcept;
 		GameObject3D(GameObject3D&& g3d) noexcept;
 		~GameObject3D();
@@ -29,9 +29,23 @@ namespace Quantix::Core::DataStructure
 
 		inline void								AddChild(const GameObject3D* object) { _transform->AddChild(object->GetTransform()); }
 
-		void									Update(std::vector<Core::Components::Mesh*>& meshes);
+		void									Update(std::vector<Core::Components::Mesh*>& meshes) override;
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject);
+
+		template<class Archive>
+		void save(Archive& archive) const
+		{
+			archive(_component);
+		}
+
+		template<class Archive>
+		void load(Archive& archive)
+		{
+			archive(_component);
+		}
+		void									CallOnTrigger(GameObject3D* other);
+		void									CallOnContact(GameObject3D* other);
 
 		#pragma region Accessors
 		/**
@@ -117,7 +131,7 @@ namespace Quantix::Core::DataStructure
 		 */
 		Quantix::Physic::Transform3D*			GetTransform() const { return _transform; };
 		#pragma endregion Accessors
-		GameObject3D&							operator=(const GameObject3D& object);
+		GameObject3D&											operator=(const GameObject3D& object);
 		#pragma endregion Methods
 
 		CLASS_REGISTRATION(GameComponent);

@@ -94,6 +94,7 @@ void Inspector::ShowComponent()
 		}
 		ImGui::EndPopup();
 	}
+
 }
 
 void Inspector::AddComponent()

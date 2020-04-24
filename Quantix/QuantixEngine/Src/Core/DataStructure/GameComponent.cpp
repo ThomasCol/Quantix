@@ -29,7 +29,8 @@ namespace Quantix::Core::DataStructure
 		_name{ name },
 		_layer{ 0 },
 		_isStatic{ isStatic },
-		_isActive{ false }
+		_isActive{ false },
+		_toRender { false }
 	{
 	}
 
@@ -68,5 +69,11 @@ namespace Quantix::Core::DataStructure
 		_toRender = gc._toRender;
 
 		return *this;
+	}
+
+	void GameComponent::Update(std::vector<Core::Components::Mesh*>& meshes)
+	{
+		for (QXint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->Update();
 	}
 }

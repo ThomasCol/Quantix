@@ -2,6 +2,7 @@
 
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
+#include "Physic/PhysicHandler.h"
 
 namespace Quantix::Core::Platform
 {
@@ -26,6 +27,7 @@ namespace Quantix::Core::Platform
 		scene {new Resources::Scene()}
 	{
 		scene->Init(manager);
+		Physic::PhysicHandler::GetInstance()->InitSystem();
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes)

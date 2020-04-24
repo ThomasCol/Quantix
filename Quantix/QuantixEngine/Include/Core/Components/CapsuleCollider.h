@@ -16,12 +16,16 @@ namespace Quantix::Core::Components
 	{
 #pragma region Constructors
 
-		CapsuleCollider(DataStructure::GameComponent* par) noexcept;
+		CapsuleCollider() = default;
+		CapsuleCollider(DataStructure::GameComponent* par);
 		CapsuleCollider(const CapsuleCollider& par) noexcept;
 		CapsuleCollider(CapsuleCollider&& other) noexcept;
 		~CapsuleCollider() noexcept = default;
-
 #pragma endregion
+
+		CapsuleCollider* Copy() const override;
+
+
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
 	};
 }

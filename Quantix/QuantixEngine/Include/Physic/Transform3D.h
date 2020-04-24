@@ -25,7 +25,7 @@ namespace Quantix::Physic
 
 			Math::QXmat4								_trs;
 
-			std::vector<Transform3D*>					_childs;
+			std::vector<Transform3D*>	_childs;
 
 			Quantix::Core::DataStructure::GameObject3D* _gameObject;
 
@@ -69,7 +69,7 @@ namespace Quantix::Physic
 			 * @param rot The Rotation of the transform
 			 * @param sca The Scale angle of the transform
 			 */
-			Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca);
+			Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca, Quantix::Core::DataStructure::GameObject3D* object);
 
 			/**
 			 * @brief Construct a new 3D Transform object by rvalues
@@ -141,10 +141,8 @@ namespace Quantix::Physic
 			 * @param newPos the new scale of the current transform
 			 */
 			void											SetScale(const Math::QXvec3& newSca);
-			
-			void											SetObject(Core::DataStructure::GameObject3D* object) { _gameObject = object; };
 
-			inline Core::DataStructure::GameObject3D*		GetObject() const { return _gameObject; };
+			inline Core::DataStructure::GameObject3D*	GetObject() const { return _gameObject; };
 
 			inline std::vector<Transform3D*>&				GetChilds() { return _childs; };
 		#pragma endregion
@@ -185,6 +183,18 @@ namespace Quantix::Physic
 			 * @param child The 3D transform child to add to the current transform
 			 */
 			void										AddChild(Transform3D* child);
+
+			template<class Archive>
+			void save(Archive& archive) const
+			{
+				archive(_position, _rotation, _scale, _gameObject, _childs);
+			}
+
+			template<class Archive>
+			void load(Archive& archive)
+			{
+				archive(_position, _rotation, _scale, _gameObject, _childs);
+			}
 
 		#pragma endregion
 

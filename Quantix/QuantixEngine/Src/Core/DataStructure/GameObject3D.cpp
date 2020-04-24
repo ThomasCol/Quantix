@@ -4,7 +4,7 @@ RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::DataStructure::GameObject3D>("GameObject3D")
 	.constructor<>()
-	.constructor<const QXstring&, Quantix::Physic::Transform3D*>()
+	.constructor<const QXstring&, const Math::QXvec3&, const Math::QXquaternion&, const Math::QXvec3&>()
 	.constructor<const Quantix::Core::DataStructure::GameObject3D&>()
 	.constructor<Quantix::Core::DataStructure::GameObject3D&&>()
 	.method("SetGlobalPosition", &Quantix::Core::DataStructure::GameObject3D::SetGlobalPosition)
@@ -21,12 +21,10 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::DataStructure
 {
-	GameObject3D::GameObject3D(const QXstring& name, Quantix::Physic::Transform3D* transform) noexcept :
+	GameObject3D::GameObject3D(const QXstring& name, const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca) noexcept :
 		GameComponent(name),
-		_transform { transform }
-	{
-		_transform->SetObject(this);
-	}
+		_transform { new Physic::Transform3D(pos, rot, sca, this) }
+	{}
 
 	GameObject3D::GameObject3D(const GameObject3D& g3d) noexcept :
 		GameComponent(g3d),
@@ -35,7 +33,7 @@ namespace Quantix::Core::DataStructure
 	}
 
 	GameObject3D::GameObject3D(GameObject3D&& g3d) noexcept :
-		GameComponent(g3d),
+		GameComponent(std::move(g3d)),
 		_transform{ std::move(g3d._transform) }
 	{
 	}
@@ -47,7 +45,15 @@ namespace Quantix::Core::DataStructure
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes)
 	{
 		if (_toRender)
-			meshes.push_back(GetComponent<Core::Components::Mesh>());
+		{
+			for (QXint i = 0; i < _behaviours.size(); i++)
+				_behaviours[i]->Update();
+
+			Core::Components::Mesh* mesh = GetComponent<Core::Components::Mesh>();
+
+			if (mesh && mesh->IsEnable())
+				meshes.push_back(mesh);
+		}
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
 			child->GetObject()->Update(meshes, this);
@@ -56,12 +62,33 @@ namespace Quantix::Core::DataStructure
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject)
 	{
 		if (_toRender)
-			meshes.push_back(GetComponent<Core::Components::Mesh>());
+		{
+			Core::Components::Mesh* mesh = GetComponent<Core::Components::Mesh>();
+
+			if (mesh && mesh->IsEnable())
+				meshes.push_back(mesh);
+		}
+
+		// Update All Behaviours
+		for (QXint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->Update();
 
 		_transform->Update(parentObject->GetTransform());
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
 			child->GetObject()->Update(meshes, this);
+	}
+
+	void									GameObject3D::CallOnTrigger(GameObject3D* other)
+	{
+		for (QXuint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->OnTrigger(this, other);
+	}
+
+	void									GameObject3D::CallOnContact(GameObject3D* other)
+	{
+		for (QXuint i = 0; i < _behaviours.size(); i++)
+			_behaviours[i]->OnContact(this, other);
 	}
 
 	void	GameObject3D::SetGlobalPosition(Math::QXvec3 pos)

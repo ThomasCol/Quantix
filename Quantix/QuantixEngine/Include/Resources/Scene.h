@@ -17,11 +17,11 @@ namespace Quantix::Resources
 
 			#pragma region Attributes
 
-			QXstring							_name;
+			QXstring											_name;
 			Core::DataStructure::GameObject3D*	_root;
-			QXuint								_id;
+			QXuint												_id;
 
-			std::vector<Core::DataStructure::GameObject3D*> _objects;
+			std::vector<Core::DataStructure::GameObject3D*>		_objects;
 
 			#pragma endregion
 
@@ -69,17 +69,29 @@ namespace Quantix::Resources
 			 * @brief method that init the scene
 			 *
 			 */
-			void	Init(Quantix::Core::DataStructure::ResourcesManager& manager);
+			void	Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept;
 
 			/**
 			 * @brief method that update the world and its hierarchy
 			 *
 			 */
-			void	Update(std::vector<Core::Components::Mesh*>& meshes);
+			void	Update(std::vector<Core::Components::Mesh*>& meshes) noexcept;
 
 			void Reset()noexcept;
 
 			void Rename(const QXstring& str) noexcept;
+
+			template<class Archive>
+			void save(Archive& archive) const
+			{
+				archive(_name, _root->GetTransform(), _id);
+			}
+
+			template<class Archive>
+			void load(Archive& archive)
+			{
+				archive(_name, _root->GetTransform(), _id);
+			}
 
 			#pragma endregion
 
@@ -112,7 +124,7 @@ namespace Quantix::Resources
 
 			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
 
-			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name);
+			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name) noexcept;
 
 			#pragma endregion
 

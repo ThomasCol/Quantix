@@ -1,10 +1,24 @@
 #include <iostream>
 
 #include "Physic/IPhysicType.h"
-//#include "Physic/PhysicStatic.h"
-//#include "Physic/PhysicDynamic.h"
+#include "Physic/PhysicStatic.h"
+#include "Physic/PhysicDynamic.h"
 
-namespace Physic
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Physic::IPhysicType>("IPhysicType")
+	.constructor<>()
+	.constructor<Quantix::Physic::ETypePhysic>()
+	.constructor<const Quantix::Physic::IPhysicType&>()
+	.constructor<Quantix::Physic::IPhysicType&&>()
+	.enumeration<Quantix::Physic::ETypePhysic>("ETypePhysic")
+					 (rttr::value("None", Quantix::Physic::ETypePhysic::NONE),
+					 rttr::value("Dynamic", Quantix::Physic::ETypePhysic::DYNAMIC),
+					 rttr::value("Static", Quantix::Physic::ETypePhysic::STATIC))
+	.property("Type", &Quantix::Physic::IPhysicType::type);
+}
+
+namespace Quantix::Physic
 {
 	IPhysicType::IPhysicType() noexcept :
 		type{ ETypePhysic::NONE }
@@ -24,13 +38,13 @@ namespace Physic
 
 	void IPhysicType::print()
 	{
-		/*if (type == ETypePhysic::STATIC)
+		if (type == ETypePhysic::STATIC)
 			(dynamic_cast<PhysicStatic*>(this))->print();
 		else if (type == ETypePhysic::DYNAMIC)
-			(dynamic_cast<PhysicDynamic*>(this))->print();*/
+			(dynamic_cast<PhysicDynamic*>(this))->print();
 	}
 
-	ETypePhysic IPhysicType::GetType()
+	ETypePhysic& IPhysicType::GetType()
 	{
 		return type;
 	}

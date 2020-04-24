@@ -13,7 +13,8 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<const Quantix::Core::Components::Mesh&>()
 	.constructor<Quantix::Core::Components::Mesh&&>()
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
-	.property("Material", &Quantix::Core::Components::Mesh::GetMaterial, &Quantix::Core::Components::Mesh::SetMaterial);
+	.property("Material", &Quantix::Core::Components::Mesh::GetMaterial, &Quantix::Core::Components::Mesh::SetMaterial)
+	.property("Enable", &Quantix::Core::DataStructure::Component::IsEnable, &Quantix::Core::DataStructure::Component::SetActive);
 }
 
 namespace Quantix::Core::Components
@@ -29,10 +30,24 @@ namespace Quantix::Core::Components
 		object->SetRender(true);
 	}
 
+	Mesh::Mesh(const Mesh& mesh)
+	{
+		_model = mesh._model;
+		_material = mesh._material;
+	}
+
 	Mesh* Mesh::Copy() const
 	{
 		return new Mesh(*this);
 	}
+
+	QXbool	Mesh::IsEnable() const
+	{
+		if (!_model)
+			return false;
+		return _isEnable;
+	}
+
 	void Mesh::SetActive(QXbool enable)
 	{
 		_isEnable = enable;
