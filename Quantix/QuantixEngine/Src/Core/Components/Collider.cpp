@@ -17,7 +17,11 @@ RTTR_PLUGIN_REGISTRATION
 		rttr::value("Spot", Quantix::Core::Components::EPhysXType::COUNT))
 	.property("physicType", &Quantix::Core::Components::ICollider::physicType)
 	.property("LocalPosition", &Quantix::Core::Components::ICollider::GetPosition, &Quantix::Core::Components::ICollider::SetPosition)
-	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetRotation, &Quantix::Core::Components::ICollider::SetRotation);
+		.property("LocalRotation", &Quantix::Core::Components::ICollider::GetRotation, &Quantix::Core::Components::ICollider::SetRotation)
+	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetShapeFlagSceneQuery, &Quantix::Core::Components::ICollider::SetShapeFlagSceneQuery)
+	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetShapeFlagSimulation, &Quantix::Core::Components::ICollider::SetShapeFlagSimulation)
+	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetShapeFlagTrigger, &Quantix::Core::Components::ICollider::SetShapeFlagTrigger)
+	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetShapeFlagVisualization, &Quantix::Core::Components::ICollider::SetShapeFlagVisualization);
 }
 
 namespace Quantix::Core::Components
@@ -30,15 +34,6 @@ namespace Quantix::Core::Components
 		else
 			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
 	}
-	
-	/*ICollider::ICollider(const ICollider& col, ETypeShape type) noexcept :
-		Core::DataStructure::Component(col),
-		shape {col.shape },
-		physicType{col.physicType },
-		actorPhysic{col.actorPhysic}
-	{
-
-	}*/
 
 	ICollider::ICollider(const ICollider& col) noexcept :
 		Core::DataStructure::Component(col),
@@ -99,6 +94,50 @@ namespace Quantix::Core::Components
 	{
 		physx::PxQuat tmp = physx::PxQuat(q.v.x, q.v.y, q.v.z, q.w);
 		shape->setLocalPose(physx::PxTransform(shape->getLocalPose().p, tmp));
+	}
+
+	void ICollider::SetShapeFlagSceneQuery(bool b)
+	{
+		shapeFlag.sceneQuery = b;
+		shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, b);
+	}
+
+	bool ICollider::GetShapeFlagSceneQuery()
+	{
+		return shapeFlag.sceneQuery;
+	}
+
+	void ICollider::SetShapeFlagSimulation(bool b)
+	{
+		shapeFlag.simulation = b;
+		shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, b);
+	}
+
+	bool ICollider::GetShapeFlagSimulation()
+	{
+		return shapeFlag.simulation;
+	}
+
+	void ICollider::SetShapeFlagTrigger(bool b)
+	{
+		shapeFlag.trigger = b;
+		shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, b);
+	}
+
+	bool ICollider::GetShapeFlagTrigger()
+	{
+		return shapeFlag.trigger;
+	}
+
+	void ICollider::SetShapeFlagVisualization(bool b)
+	{
+		shapeFlag.visualization = b;
+		shape->setFlag(physx::PxShapeFlag::eVISUALIZATION, b);
+	}
+
+	bool ICollider::GetShapeFlagVisualization()
+	{
+		return shapeFlag.visualization;
 	}
 
 	void ICollider::Remove()

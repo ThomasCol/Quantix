@@ -7,6 +7,7 @@
 #include <PxPhysicsAPI.h>
 #include "rttrEnabled.h"
 #include "Core/MathHeader.h"
+#include "Physic/PhysicSetting.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -40,12 +41,13 @@ namespace Quantix::Core::Components
 		EPhysXType physicType { EPhysXType::DEFAULT };
 		Physic::IPhysicType* actorPhysic{ nullptr };
 
+		Physic::ShapeFlag shapeFlag;
+
 #pragma endregion
 
 #pragma region Constructors
 		ICollider() = default;
 		ICollider(DataStructure::GameComponent* par);
-		//ICollider(const ICollider& col, ETypeShape type) noexcept;
 		ICollider(const ICollider& col) noexcept;
 		ICollider(ICollider&& col) noexcept;
 		virtual ~ICollider() = default;
@@ -68,6 +70,15 @@ namespace Quantix::Core::Components
 
 		Math::QXquaternion GetRotation();
 		void SetRotation(Math::QXquaternion);
+
+		void SetShapeFlagSceneQuery(bool b);
+		bool GetShapeFlagSceneQuery();
+		void SetShapeFlagSimulation(bool b);
+		bool GetShapeFlagSimulation();
+		void SetShapeFlagTrigger(bool b);
+		bool GetShapeFlagTrigger();
+		void SetShapeFlagVisualization(bool b);
+		bool GetShapeFlagVisualization();
 
 		void Remove();
 

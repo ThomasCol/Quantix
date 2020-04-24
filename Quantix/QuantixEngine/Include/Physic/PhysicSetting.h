@@ -26,17 +26,13 @@ namespace Quantix::Physic
 		CLASS_REGISTRATION()
 	};
 
-	RTTR_PLUGIN_REGISTRATION
+	struct QUANTIX_API ShapeFlag
 	{
-		rttr::registration::class_<Quantix::Physic::ActorFlag>("ActorFlag")
-		.constructor<>()
-		.constructor<const Quantix::Physic::ActorFlag&>()
-		.constructor<Quantix::Physic::ActorFlag&&>()
-		.property("disableGravity", &Quantix::Physic::ActorFlag::disableGravity)
-		.property("disableSimulation", &Quantix::Physic::ActorFlag::disableSimulation)
-		.property("sendSleepNotifies", &Quantix::Physic::ActorFlag::sendSleepNotifies)
-		.property("visualization", &Quantix::Physic::ActorFlag::visualization);
-	}
+		bool sceneQuery = true;
+		bool simulation = true;
+		bool trigger = false;
+		bool visualization = false;
+	};
 }
 
 #endif // !__PHYSICSETTING_H__
