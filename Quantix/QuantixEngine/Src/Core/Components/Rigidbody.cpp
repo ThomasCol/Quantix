@@ -21,9 +21,11 @@ RTTR_PLUGIN_REGISTRATION
 	.property("Mass", &Quantix::Core::Components::Rigidbody::GetMass, &Quantix::Core::Components::Rigidbody::SetMass)
 	.property("LinearVelocity", &Quantix::Core::Components::Rigidbody::GetLinearVelocity, &Quantix::Core::Components::Rigidbody::SetLinearVelocity)
 	.property("AngularVelocity", &Quantix::Core::Components::Rigidbody::GetAngularVelocity, &Quantix::Core::Components::Rigidbody::SetAngularVelocity)
-	.property("TransformPosition", &Quantix::Core::Components::Rigidbody::GetTransformPosition, &Quantix::Core::Components::Rigidbody::SetTransformPosition)
-	.property("TransformRotation", &Quantix::Core::Components::Rigidbody::GetTransformRotation, &Quantix::Core::Components::Rigidbody::SetTransformRotation);
-
+	.property("Position", &Quantix::Core::Components::Rigidbody::GetTransformPosition, &Quantix::Core::Components::Rigidbody::SetTransformPosition)
+	.property("Rotation", &Quantix::Core::Components::Rigidbody::GetTransformRotation, &Quantix::Core::Components::Rigidbody::SetTransformRotation)
+	.property("Gravity", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableGravity, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableGravity)
+	.property("Simulation", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableSimulation, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableSimulation)
+	.property("Visualization", &Quantix::Core::Components::Rigidbody::GetActorFlagVisualization, &Quantix::Core::Components::Rigidbody::SetActorFlagVisualization);
 }
 
 namespace Quantix::Core::Components
@@ -31,9 +33,7 @@ namespace Quantix::Core::Components
 	Rigidbody::Rigidbody(DataStructure::GameComponent* par):
 		Core::DataStructure::Component(par),
 		actorPhysic{ (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(par, true) }
-	{
-
-	}
+	{}
 
 	Rigidbody::Rigidbody(const Rigidbody& src) noexcept :
 		Core::DataStructure::Component(src),
@@ -118,7 +118,7 @@ namespace Quantix::Core::Components
 
 		//actorPhysic->GetRigid()->fla
 		//physx::PxBaseFlag::
-		//physx::PxRigidBodyFlag::
+		//physx::PxRigidBodyFlag
 	}
 
 	void Rigidbody::SetActorFlagDisableGravity(bool b)

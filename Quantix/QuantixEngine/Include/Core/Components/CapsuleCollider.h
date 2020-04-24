@@ -23,6 +23,16 @@ namespace Quantix::Core::Components
 		~CapsuleCollider() noexcept = default;
 #pragma endregion
 
+#pragma region Accessors
+
+		QXfloat GetRadius();
+		void SetRadius(QXfloat);
+
+		QXfloat GetHalfHeight();
+		void SetHalfHeight(QXfloat);
+
+#pragma endregion
+
 		CapsuleCollider* Copy() const override;
 
 

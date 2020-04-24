@@ -3,6 +3,7 @@
 
 #include "Core/Components/Collider.h"
 #include "Core/DLLHeader.h"
+#include "Core/MathHeader.h"
 #include "rttrEnabled.h"
 
 namespace Quantix::Core::DataStructure
@@ -12,7 +13,7 @@ namespace Quantix::Core::DataStructure
 
 namespace Quantix::Core::Components
 {
-	struct QUANTIX_API SphereCollider : public ICollider
+	struct QUANTIX_API SphereCollider : public virtual ICollider
 	{
 #pragma region Constructors
 
@@ -24,9 +25,16 @@ namespace Quantix::Core::Components
 		
 #pragma endregion
 
+#pragma region Accessors
+
+		QXfloat GetRadius();
+		void SetRadius(QXfloat f);
+
+#pragma endregion
+
 		SphereCollider* Copy() const override;
 
-		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
+		CLASS_REGISTRATION(Quantix::Core::Components::ICollider, Quantix::Core::DataStructure::Component);
 	};
 }
 #endif

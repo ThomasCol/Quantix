@@ -1,5 +1,7 @@
 #include "Core/Components/CubeCollider.h"
 #include "Core/DataStructure/GameComponent.h"
+#include "Core/Components/Rigidbody.h"
+#include "Physic/PhysicHandler.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -14,7 +16,12 @@ namespace Quantix::Core::Components
 {
 	CubeCollider::CubeCollider(DataStructure::GameComponent* par):
 		ICollider(par)
-	{}
+	{
+		if (par->GetComponent<Rigidbody>())
+			shape = Physic::PhysicHandler::GetInstance()->CreateCubeCollider(par, true);
+		else
+			shape = Physic::PhysicHandler::GetInstance()->CreateCubeCollider(par, false);
+	}
 
 	CubeCollider::CubeCollider(const CubeCollider& other) noexcept :
 		ICollider(other)
@@ -23,6 +30,19 @@ namespace Quantix::Core::Components
 	CubeCollider::CubeCollider(CubeCollider&& other) noexcept :
 		ICollider(other)
 	{}
+
+	Math::QXvec3 CubeCollider::GetHalfExtents()
+	{
+		physx::PxBoxGeometry box;
+		shape->getBoxGeometry(box);
+		physx::PxVec3 vec = box.halfExtents;
+		return Math::QXvec3(vec.x, vec.y, vec.z);
+	}
+
+	void CubeCollider::SetHalfExtents(Math::QXvec3 vec)
+	{
+		shape->setGeometry(physx::PxBoxGeometry(vec.x, vec.y, vec.z));
+	}
 
 	CubeCollider* CubeCollider::Copy() const
 	{

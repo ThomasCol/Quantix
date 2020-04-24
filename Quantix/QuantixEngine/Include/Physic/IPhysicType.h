@@ -35,7 +35,6 @@ namespace Quantix::Physic
 
 	public:
 
-
 		IPhysicType() noexcept;
 		IPhysicType(ETypePhysic oType) noexcept;
 		IPhysicType(const IPhysicType&) noexcept;

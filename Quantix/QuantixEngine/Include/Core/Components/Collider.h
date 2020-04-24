@@ -3,7 +3,10 @@
 
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
+#include "Physic/IPhysicType.h"
+#include <PxPhysicsAPI.h>
 #include "rttrEnabled.h"
+#include "Core/MathHeader.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -20,18 +23,29 @@ namespace Quantix::Core::Components
 		COUNT
 	};
 
+	enum class ETypeShape
+	{
+		DEFAULT,
+		SPHERE,
+		CUBE, 
+		CAPSULE,
+		COUNT
+	};
+
 	struct QUANTIX_API ICollider : public virtual Core::DataStructure::Component
 	{
 #pragma region Attributes
 
-		QXint idShape { -1 };
+		physx::PxShape* shape{ nullptr };
 		EPhysXType physicType { EPhysXType::DEFAULT };
+		Physic::IPhysicType* actorPhysic{ nullptr };
 
 #pragma endregion
 
 #pragma region Constructors
 		ICollider() = default;
 		ICollider(DataStructure::GameComponent* par);
+		//ICollider(const ICollider& col, ETypeShape type) noexcept;
 		ICollider(const ICollider& col) noexcept;
 		ICollider(ICollider&& col) noexcept;
 		virtual ~ICollider() = default;
@@ -48,6 +62,14 @@ namespace Quantix::Core::Components
 
 #pragma region Acessors 
 		ICollider* Copy() const override;
+
+		Math::QXvec3 GetPosition();
+		void SetPosition(Math::QXvec3);
+
+		Math::QXquaternion GetRotation();
+		void SetRotation(Math::QXquaternion);
+
+		void Remove();
 
 #pragma endregion
 

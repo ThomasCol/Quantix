@@ -22,6 +22,13 @@ namespace Quantix::Core::Components
 		~CubeCollider() noexcept = default;
 #pragma endregion
 
+#pragma region Accessors
+
+		Math::QXvec3 GetHalfExtents();
+		void SetHalfExtents(Math::QXvec3);
+
+#pragma endregion
+
 		CubeCollider* Copy() const override;
 
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
