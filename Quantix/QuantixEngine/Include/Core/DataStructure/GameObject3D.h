@@ -131,7 +131,7 @@ namespace Quantix::Core::DataStructure
 		 */
 		Quantix::Physic::Transform3D*			GetTransform() const { return _transform; };
 		#pragma endregion Accessors
-		GameObject3D&											operator=(const GameObject3D& object);
+		GameObject3D&							operator=(const GameObject3D& object);
 		#pragma endregion Methods
 
 		CLASS_REGISTRATION(GameComponent);

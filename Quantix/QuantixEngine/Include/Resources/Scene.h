@@ -63,7 +63,7 @@ namespace Quantix::Resources
 
 			#pragma region Functions
 
-			Core::DataStructure::GameObject3D*	AddGameObject(const QXstring& name, const QXstring& parentName = "");
+			Core::DataStructure::GameObject3D*	AddGameObject(const QXstring& name, void* parent = nullptr);
 
 			/**
 			 * @brief method that init the scene

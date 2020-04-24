@@ -32,7 +32,7 @@ public:
 
 private:
 	Inspector*				_inspector;
-	void*	_selected{ nullptr };
+	void*					_selected{ nullptr };
 };
 
 #endif // !_HIERARCHY_H_
