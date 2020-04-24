@@ -13,7 +13,6 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<const Quantix::Core::Components::Mesh&>()
 	.constructor<Quantix::Core::Components::Mesh&&>()
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
-	.property("Key", &Quantix::Core::Components::Mesh::key)
 	.property("Material", &Quantix::Core::Components::Mesh::GetMaterial, &Quantix::Core::Components::Mesh::SetMaterial)
 	.property("Model", &Quantix::Core::Components::Mesh::_model);
 }

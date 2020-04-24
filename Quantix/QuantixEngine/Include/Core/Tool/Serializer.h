@@ -12,10 +12,22 @@ namespace Quantix::Core::Tool
 	class QUANTIX_API Serializer
 	{
 	private:
+		#pragma region Functions
 
-		void WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, const QXstring& parentName,
+			DataStructure::ResourcesManager& manager);
 
-		void WriteVec3(const QXstring& name, const Math::QXvec3& vec, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void ReadCamera(Components::Camera* camera, rapidjson::Value& val);
+
+		void ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager& manager);
+
+		void ReadLight(Components::Light* light, rapidjson::Value& val);
+
+		void ReadMesh(Components::Mesh* Mesh, rapidjson::Value& val, DataStructure::ResourcesManager& manager);
+
+		void ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val);
+
+		void ReadVec3(Math::QXvec3& vec, rapidjson::Value& val);
 
 		void SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
@@ -24,21 +36,30 @@ namespace Quantix::Core::Tool
 		void WriteInstance(rttr::instance inst, rttr::property currentProp, rttr::type type,
 			rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
-		void DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, const QXstring& parentName, DataStructure::ResourcesManager& manager);
+		void WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
-		void ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager& manager);
+		void WriteVec3(const QXstring& name, const Math::QXvec3& vec, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
-		void ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val);
-
-		void ReadVec3(Math::QXvec3& vec, rapidjson::Value& val);
+		#pragma endregion
 
 	public:
+		#pragma region Constructors
+
 		Serializer() = default;
+		Serializer(const Serializer& serializer) = default;
+		Serializer(Serializer&& serilizer) = default;
+
 		~Serializer() = default;
+
+		#pragma endregion
+
+		#pragma region Functions
+
+		QXbool		Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager& manager);
 
 		QXstring	Serialize(Resources::Scene* scene);
 
-		QXbool		Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager& manager);
+		#pragma endregion
 	};
 }
 

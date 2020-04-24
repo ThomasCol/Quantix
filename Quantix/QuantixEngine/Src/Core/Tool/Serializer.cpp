@@ -7,24 +7,6 @@
 
 namespace Quantix::Core::Tool
 {
-	QXstring Serializer::Serialize(Resources::Scene* scene)
-	{
-		rapidjson::StringBuffer sb;
-		rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
-		writer.StartObject();
-		writer.String("Scene");
-		writer.StartObject();
-		writer.String("name");
-		writer.String(scene->GetName().c_str());
-
-		SerializeRecursive(scene->GetRoot()->GetTransform(), 0, writer);
-
-		writer.EndObject();
-		writer.EndObject();
-
-		return sb.GetString();
-	}
-
 	QXbool Serializer::Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager& manager)
 	{
 		//std::ifstream stream(path);
@@ -57,6 +39,100 @@ namespace Quantix::Core::Tool
 		}
 
 		return true;
+	}
+
+	QXstring Serializer::Serialize(Resources::Scene* scene)
+	{
+		rapidjson::StringBuffer sb;
+		rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
+		writer.StartObject();
+		writer.String("Scene");
+		writer.StartObject();
+		writer.String("name");
+		writer.String(scene->GetName().c_str());
+
+		SerializeRecursive(scene->GetRoot()->GetTransform(), 0, writer);
+
+		writer.EndObject();
+		writer.EndObject();
+
+		return sb.GetString();
+	}
+
+	void Serializer::DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, const QXstring& parentName, DataStructure::ResourcesManager& manager)
+	{
+		rapidjson::Value::MemberIterator ret = val.FindMember("GameObject" + std::to_string(index));
+
+		if (ret == val.MemberEnd())
+			return;
+
+		rapidjson::Value& cur_val = ret->value;
+		QXstring	name = cur_val.FindMember("name")->value.GetString();
+		DataStructure::GameObject3D* object = scene->AddGameObject(name, parentName);
+
+		ReadTransform(object->GetTransform(), cur_val.FindMember("Transform")->value);
+
+		rapidjson::Value& components = cur_val.FindMember("Components")->value;
+		for (QXsizei i = 0; i < components.Size(); ++i)
+			ReadComponent(object, components[i], manager);
+
+		rapidjson::Value& childs = cur_val.FindMember("Childs")->value;
+		for (QXsizei i = 0; i < childs.Size(); ++i)
+			DeserializeRecursive(scene, i, childs[i], name, manager);
+	}
+
+	void Serializer::ReadCamera(Components::Camera* camera, rapidjson::Value& val)
+	{
+		Math::QXvec3 vec;
+		ReadVec3(vec, val.FindMember("Pos")->value);
+		camera->SetPos(vec);
+		ReadVec3(vec, val.FindMember("Up")->value);
+		camera->SetUp(vec);
+		ReadVec3(vec, val.FindMember("Dir")->value);
+		camera->SetDir(vec);
+	}
+
+	void Serializer::ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager& manager)
+	{
+		rapidjson::Value::MemberIterator ret = val.FindMember("Mesh");
+		if (ret != val.MemberEnd())
+		{
+			Components::Mesh* mesh = object->AddComponent<Components::Mesh>();
+			ReadMesh(mesh, ret->value, manager);
+		}
+		ret = val.FindMember("Light");
+		if (ret != val.MemberEnd())
+		{
+			Components::Light* light = object->AddComponent<Components::Light>();
+			ReadLight(light, ret->value);
+		}
+		ret = val.FindMember("Camera");
+		if (ret != val.MemberEnd())
+		{
+			Components::Camera* camera = object->AddComponent<Components::Camera>();
+			ReadCamera(camera, ret->value);
+		}
+	}
+
+	void Serializer::ReadLight(Components::Light* light, rapidjson::Value& val)
+	{
+		ReadVec3(light->direction, val.FindMember("direction")->value);
+		ReadVec3(light->position, val.FindMember("position")->value);
+		ReadVec3(light->ambient, val.FindMember("ambient")->value);
+		ReadVec3(light->diffuse, val.FindMember("diffuse")->value);
+		ReadVec3(light->specular, val.FindMember("specular")->value);
+		light->constant = val.FindMember("constant")->value.GetFloat();
+		light->linear = val.FindMember("linear")->value.GetFloat();
+		light->quadratic = val.FindMember("quadratic")->value.GetFloat();
+		light->cutOff = val.FindMember("cutOff")->value.GetFloat();
+		light->outerCutOff = val.FindMember("outerCutOff")->value.GetFloat();
+		light->type = (Components::ELightType)val.FindMember("type")->value.GetInt();
+	}
+
+	void Serializer::ReadMesh(Components::Mesh* mesh, rapidjson::Value& val, DataStructure::ResourcesManager& manager)
+	{
+		mesh->SetActive(val.FindMember("Enable")->value.GetBool());
+		manager.CreateMesh(mesh, val.FindMember("Model")->value.GetString(), val.FindMember("Material")->value.GetString());
 	}
 
 	void Serializer::WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
@@ -107,10 +183,12 @@ namespace Quantix::Core::Tool
 
 		writer.String("Childs");
 		writer.StartArray();
-		writer.StartObject();
 		for (QXsizei i = 0; i < transform->GetChilds().size(); ++i)
+		{
+			writer.StartObject();
 			SerializeRecursive(transform->GetChilds()[i], i, writer);
-		writer.EndObject();
+			writer.EndObject();
+		}
 		writer.EndArray();
 		writer.EndObject();
 	}
@@ -201,28 +279,6 @@ namespace Quantix::Core::Tool
 		}
 	}
 
-	void Serializer::DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, const QXstring& parentName, DataStructure::ResourcesManager& manager)
-	{
-		rapidjson::Value::MemberIterator ret = val.FindMember("GameObject" + std::to_string(index));
-
-		if (ret == val.MemberEnd())
-			return;
-
-		rapidjson::Value& cur_val = ret->value;
-		QXstring	name = cur_val.FindMember("name")->value.GetString();
-		DataStructure::GameObject3D* object = scene->AddGameObject(name, parentName);
-
-		ReadTransform(object->GetTransform(), cur_val.FindMember("Transform")->value);
-
-		rapidjson::Value& components = cur_val.FindMember("Components")->value;
-		for (QXsizei i = 0; i < components.Size(); ++i)
-			ReadComponent(object, components[i], manager);
-
-		rapidjson::Value& childs = cur_val.FindMember("Childs")->value;
-		for (QXsizei i = 0; i < childs.Size(); ++i)
-			DeserializeRecursive(scene, i, childs[i], name, manager);
-	}
-
 	void Serializer::ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val)
 	{
 		Math::QXvec3 vec;
@@ -241,61 +297,5 @@ namespace Quantix::Core::Tool
 		vec.x = (QXfloat)val.FindMember("x")->value.GetDouble();
 		vec.y = (QXfloat)val.FindMember("y")->value.GetDouble();
 		vec.z = (QXfloat)val.FindMember("z")->value.GetDouble();
-	}
-
-	void Serializer::ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager& manager)
-	{
-		rapidjson::Value::MemberIterator ret = val.FindMember("Mesh");
-		if (ret != val.MemberEnd())
-		{
-			Components::Mesh* mesh = object->AddComponent<Components::Mesh>();
-			mesh->SetActive(ret->value.FindMember("Enable")->value.GetBool());
-			manager.CreateMesh(mesh, ret->value.FindMember("Model")->value.GetString(), ret->value.FindMember("Material")->value.GetString());
-			mesh->key = ret->value.FindMember("Key")->value.GetUint();
-		}
-		ret = val.FindMember("Light");
-		if (ret != val.MemberEnd())
-		{
-			Components::Light* light = object->AddComponent<Components::Light>();
-			ReadVec3(light->direction, ret->value.FindMember("direction")->value);
-			ReadVec3(light->position, ret->value.FindMember("position")->value);
-			ReadVec3(light->ambient, ret->value.FindMember("ambient")->value);
-			ReadVec3(light->diffuse, ret->value.FindMember("diffuse")->value);
-			ReadVec3(light->specular, ret->value.FindMember("specular")->value);
-			light->constant = ret->value.FindMember("constant")->value.GetFloat();
-			light->linear = ret->value.FindMember("linear")->value.GetFloat();
-			light->quadratic = ret->value.FindMember("quadratic")->value.GetFloat();
-			light->cutOff = ret->value.FindMember("cutOff")->value.GetFloat();
-			light->outerCutOff = ret->value.FindMember("outerCutOff")->value.GetFloat();
-			light->type = (Components::ELightType)ret->value.FindMember("type")->value.GetInt();
-		}
-		ret = val.FindMember("Light");
-		if (ret != val.MemberEnd())
-		{
-			Components::Light* light = object->AddComponent<Components::Light>();
-			ReadVec3(light->direction, ret->value.FindMember("direction")->value);
-			ReadVec3(light->position, ret->value.FindMember("position")->value);
-			ReadVec3(light->ambient, ret->value.FindMember("ambient")->value);
-			ReadVec3(light->diffuse, ret->value.FindMember("diffuse")->value);
-			ReadVec3(light->specular, ret->value.FindMember("specular")->value);
-			light->constant = ret->value.FindMember("constant")->value.GetFloat();
-			light->linear = ret->value.FindMember("linear")->value.GetFloat();
-			light->quadratic = ret->value.FindMember("quadratic")->value.GetFloat();
-			light->cutOff = ret->value.FindMember("cutOff")->value.GetFloat();
-			light->outerCutOff = ret->value.FindMember("outerCutOff")->value.GetFloat();
-			light->type = (Components::ELightType)ret->value.FindMember("type")->value.GetInt();
-		}
-		ret = val.FindMember("Camera");
-		if (ret != val.MemberEnd())
-		{
-			Components::Camera* camera = object->AddComponent<Components::Camera>();
-			Math::QXvec3 vec;
-			ReadVec3(vec, ret->value.FindMember("Pos")->value);
-			camera->SetPos(vec);
-			ReadVec3(vec, ret->value.FindMember("Up")->value);
-			camera->SetUp(vec);
-			ReadVec3(vec, ret->value.FindMember("Dir")->value);
-			camera->SetDir(vec);
-		}
 	}
 }

@@ -109,6 +109,8 @@ namespace Quantix::Core::DataStructure
 		_meshes[key] = mesh;
 
 		mesh->shaderID = mesh->GetMaterial()->GetShaderProgram()->GetID();
+		if (mesh->GetMaterial()->GetMainTexture())
+			mesh->textureID = mesh->GetMaterial()->GetMainTexture()->GetId();
 		
 			
 		return mesh;
