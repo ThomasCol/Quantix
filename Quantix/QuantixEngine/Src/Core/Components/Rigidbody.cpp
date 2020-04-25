@@ -25,7 +25,15 @@ RTTR_PLUGIN_REGISTRATION
 	.property("Rotation", &Quantix::Core::Components::Rigidbody::GetTransformRotation, &Quantix::Core::Components::Rigidbody::SetTransformRotation)
 	.property("Gravity", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableGravity, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableGravity)
 	.property("Simulation", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableSimulation, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableSimulation)
-	.property("Visualization", &Quantix::Core::Components::Rigidbody::GetActorFlagVisualization, &Quantix::Core::Components::Rigidbody::SetActorFlagVisualization);
+	.property("Visualization", &Quantix::Core::Components::Rigidbody::GetActorFlagVisualization, &Quantix::Core::Components::Rigidbody::SetActorFlagVisualization)
+	.property("CCD", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCD, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCD)
+	.property("CCDFriction", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCDFriction, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCDFriction)
+	.property("SpeculativeCCD", &Quantix::Core::Components::Rigidbody::GetRigidFlagSpeculativeCCD, &Quantix::Core::Components::Rigidbody::SetRigidFlagSpeculativeCCD)
+	.property("Kinematic", &Quantix::Core::Components::Rigidbody::GetRigidFlagKinematic, &Quantix::Core::Components::Rigidbody::SetRigidFlagKinematic)
+	.property("RetainAcceleration", &Quantix::Core::Components::Rigidbody::GetRigidFlagRetainAcceleration, &Quantix::Core::Components::Rigidbody::SetRigidFlagRetainAcceleration)
+	.property("KinematicQueries", &Quantix::Core::Components::Rigidbody::GetRigidFlagKineForQueries, &Quantix::Core::Components::Rigidbody::SetRigidFlagKineForQueries)
+	.property("PoseIntPreview", &Quantix::Core::Components::Rigidbody::GetActorFlagPosePreview, &Quantix::Core::Components::Rigidbody::SetRigidFlagPosePreview)
+	.property("CCDMaxImpulse", &Quantix::Core::Components::Rigidbody::GetActorFlagCCDMaxContactImpulse, &Quantix::Core::Components::Rigidbody::SetActorFlagCCDMaxContactImpulse);
 }
 
 namespace Quantix::Core::Components
@@ -116,9 +124,8 @@ namespace Quantix::Core::Components
 												physx::PxQuat(q.v.x, q.v.y, q.v.z, q.w)
 												));
 
-		//actorPhysic->GetRigid()->fla
 		//physx::PxBaseFlag::
-		//physx::PxRigidBodyFlag
+		
 	}
 
 	void Rigidbody::SetActorFlagDisableGravity(bool b)
@@ -163,5 +170,93 @@ namespace Quantix::Core::Components
 	bool Rigidbody::GetActorFlagVisualization()
 	{
 		return actorFlag.visualization;
+	}
+
+	void Rigidbody::SetRigidFlagCCD(bool b)
+	{
+		rigidFlag.ccd = b;
+		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, b);
+	}
+
+	bool Rigidbody::GetRigidFlagCCD()
+	{
+		return rigidFlag.ccd;
+	}
+
+	void Rigidbody::SetRigidFlagCCDFriction(bool b)
+	{
+		rigidFlag.ccdFriction = b;
+		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD_FRICTION, b);
+	}
+
+	bool Rigidbody::GetRigidFlagCCDFriction()
+	{
+		return rigidFlag.ccdFriction;
+	}
+
+	void Rigidbody::SetRigidFlagSpeculativeCCD(bool b)
+	{
+		rigidFlag.speculativeCCD = b;
+		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, b);
+	}
+
+	bool Rigidbody::GetRigidFlagSpeculativeCCD()
+	{
+		return rigidFlag.speculativeCCD;
+	}
+
+	void Rigidbody::SetRigidFlagKinematic(bool b)
+	{
+		rigidFlag.kinematic = b;
+		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, b);
+	}
+
+	bool Rigidbody::GetRigidFlagKinematic()
+	{
+		return rigidFlag.kinematic;
+	}
+
+	void Rigidbody::SetRigidFlagRetainAcceleration(bool b)
+	{
+		rigidFlag.retainAcceleration = b;
+		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eRETAIN_ACCELERATIONS, b);
+	}
+
+	bool Rigidbody::GetRigidFlagRetainAcceleration()
+	{
+		return rigidFlag.retainAcceleration;
+	}
+
+	void Rigidbody::SetRigidFlagKineForQueries(bool b)
+	{
+		rigidFlag.useKinematicTargetForQueries = b;
+		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eUSE_KINEMATIC_TARGET_FOR_SCENE_QUERIES, b);
+	}
+
+	bool Rigidbody::GetRigidFlagKineForQueries()
+	{
+		return rigidFlag.useKinematicTargetForQueries;
+	}
+
+	void Rigidbody::SetRigidFlagPosePreview(bool b)
+	{
+		rigidFlag.poseIntegrationPreview = b;
+		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_POSE_INTEGRATION_PREVIEW, b);
+	}
+
+	bool Rigidbody::GetActorFlagPosePreview()
+	{
+		return rigidFlag.poseIntegrationPreview;
+	}
+
+	void Rigidbody::SetActorFlagCCDMaxContactImpulse(bool b)
+	{
+		rigidFlag.ccdMaxContactImpulse = b;
+		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD_MAX_CONTACT_IMPULSE, b);
+	}
+
+	bool Rigidbody::GetActorFlagCCDMaxContactImpulse()
+	{
+		return rigidFlag.ccdMaxContactImpulse;
 	}
 }

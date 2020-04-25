@@ -24,6 +24,7 @@ namespace Quantix::Core::Components
 		Physic::PhysicDynamic* actorPhysic{ nullptr };
 
 		Physic::ActorFlag actorFlag;
+		Physic::RigidBodyFlag rigidFlag;
 
 #pragma endregion
 
@@ -69,6 +70,23 @@ namespace Quantix::Core::Components
 		bool GetActorFlagSendSleepNotifies();
 		void SetActorFlagVisualization(bool b);
 		bool GetActorFlagVisualization();
+
+		void SetRigidFlagCCD(bool b);
+		bool GetRigidFlagCCD();
+		void SetRigidFlagCCDFriction(bool b);
+		bool GetRigidFlagCCDFriction();
+		void SetRigidFlagSpeculativeCCD(bool b);
+		bool GetRigidFlagSpeculativeCCD();
+		void SetRigidFlagKinematic(bool b);
+		bool GetRigidFlagKinematic();
+		void SetRigidFlagRetainAcceleration(bool b);
+		bool GetRigidFlagRetainAcceleration();
+		void SetRigidFlagKineForQueries(bool b);
+		bool GetRigidFlagKineForQueries();
+		void SetRigidFlagPosePreview(bool b);
+		bool GetActorFlagPosePreview();
+		void SetActorFlagCCDMaxContactImpulse(bool b);
+		bool GetActorFlagCCDMaxContactImpulse();
 
 #pragma endregion 
 

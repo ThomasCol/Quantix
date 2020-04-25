@@ -8,7 +8,14 @@ namespace Quantix::Physic
 {
 	struct QUANTIX_API RigidBodyFlag
 	{
-
+		bool ccd = false;
+		bool ccdFriction = false;
+		bool speculativeCCD = false;
+		bool kinematic = false;
+		bool retainAcceleration = false;
+		bool useKinematicTargetForQueries = false;
+		bool poseIntegrationPreview = false;
+		bool ccdMaxContactImpulse = false;
 	};
 
 	struct QUANTIX_API BaseFlag
