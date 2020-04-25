@@ -31,18 +31,18 @@ namespace Quantix::Resources
 
 	#pragma region Functions
 
-	Core::DataStructure::GameObject3D* Scene::AddGameObject(const QXstring& name, const QXstring& parentName)
+	Core::DataStructure::GameObject3D* Scene::AddGameObject(const QXstring& name, void* parent)
 	{
 		Core::DataStructure::GameObject3D* object = new Core::DataStructure::GameObject3D(name);
 		QXbool is_set = false;
 
-		if (parentName == "")
+		if (parent == nullptr)
 			_root->AddChild(object);
 		else
 		{
 			for (QXsizei i = 0; i < _objects.size(); ++i)
 			{
-				if (_objects[i]->GetName() == parentName)
+				if (_objects[i] == parent)
 				{
 					_objects[i]->AddChild(object);
 					is_set = true;
@@ -50,7 +50,7 @@ namespace Quantix::Resources
 				}
 			}
 
-			if (is_set)
+			if (!is_set)
 				_root->AddChild(object);
 		}
 
@@ -62,11 +62,14 @@ namespace Quantix::Resources
 	{
 		_root = new Quantix::Core::DataStructure::GameObject3D("root");
 
-		Quantix::Core::DataStructure::GameObject3D* gameObject = new Quantix::Core::DataStructure::GameObject3D("Mesh");
-		Quantix::Core::DataStructure::GameObject3D* gameObject2 = new Quantix::Core::DataStructure::GameObject3D("Mesh2");
+		AddGameObject("Mesh");
+		AddGameObject("Mesh2", GetGameObject("Mesh"));
 
-		_root->AddChild(gameObject);
-		gameObject->AddChild(gameObject2);
+		Quantix::Core::DataStructure::GameObject3D* gameObject = GetGameObject("Mesh");//new Quantix::Core::DataStructure::GameObject3D("Mesh");
+		Quantix::Core::DataStructure::GameObject3D* gameObject2 = GetGameObject("Mesh2");// new Quantix::Core::DataStructure::GameObject3D("Mesh2");
+
+		/*_root->AddChild(gameObject);
+		gameObject->AddChild(gameObject2);*/
 
 		gameObject->AddComponent<Quantix::Core::Components::Mesh>();
 		gameObject2->AddComponent<Quantix::Core::Components::Mesh>();

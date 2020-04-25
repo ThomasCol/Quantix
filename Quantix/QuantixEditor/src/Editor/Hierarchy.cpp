@@ -20,14 +20,8 @@ void Hierarchy::SetSelectable(std::vector<Quantix::Physic::Transform3D*>& nodeGl
 
 void Hierarchy::DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene)
 {
-	static QXint j = 0;
 	for (QXuint i{ 0 }; i < node.size(); i++)
 	{
-		if (j == 0)
-		{
-			Quantix::Core::Debugger::Logger::GetInstance()->SetInfo("Fake GameObject.");
-			j++;
-		}
 		ImGui::PushID(&node[i]);
 		if (node[i]->GetChilds().size() == 0)
 		{
@@ -75,10 +69,15 @@ void Hierarchy::CreateChild(QXbool& select, std::vector<Quantix::Physic::Transfo
 
 		if (nodes[i] == _selected)
 		{
-			if (nodes.size() == 0)
-				scene->AddGameObject("GameObject");
+			if (nodes[i]->GetChilds().size() == 0)
+			{
+				scene->AddGameObject("GameObject", nodes[i]->GetObject());
+			}
 			else
-				scene->AddGameObject("GameObject" + std::to_string((QXuint)nodes[i]->GetChilds().size()), nodes[i]->GetObject()->GetName());
+			{
+				std::string name = "GameObject" + std::to_string((QXuint)nodes[i]->GetChilds().size());
+				scene->AddGameObject(name, nodes[i]->GetObject());
+			}
 
 			select = false;
 			_selected = nullptr;
@@ -149,9 +148,14 @@ void Hierarchy::CreateEmptyObject(QXbool& selection, std::vector<Quantix::Physic
 	if (selection)
 	{
 		if (node.size() == 0)
+		{
 			scene->AddGameObject("GameObject");
+		}
 		else
-			scene->AddGameObject("GameObject" + std::to_string((QXuint)node.size()));
+		{
+			std::string name = "GameObject" + std::to_string((QXuint)node.size());
+			scene->AddGameObject(name);
+		}
 		selection = false;
 	}
 }

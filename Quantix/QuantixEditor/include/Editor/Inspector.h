@@ -26,13 +26,14 @@ public:
 
 	inline void												SetEnable(QXbool enable) { _enable = enable; };
 	inline void												SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
-	inline Quantix::Physic::Transform3D*	GetTransform() { return _transform; };
+	inline Quantix::Physic::Transform3D*					GetTransform() { return _transform; };
 
 	void													Update();
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 	void													ShowComponent();
 	void													AddComponent();
 	void													GetInstance(rttr::instance inst, rttr::type t);
+	void													ShowLightEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
 	void													DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type);
 
 private:

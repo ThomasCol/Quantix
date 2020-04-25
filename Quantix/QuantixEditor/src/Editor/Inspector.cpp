@@ -136,36 +136,73 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t)
 	}
 }
 
+static QXint GetValueLightEnum(Quantix::Core::Components::ELightType type)
+{
+	if (type == Quantix::Core::Components::ELightType::DEFAULT)
+		return 0;
+	else if (type == Quantix::Core::Components::ELightType::DIRECTIONAL)
+		return 1;
+	else if (type == Quantix::Core::Components::ELightType::POINT)
+		return 2;
+	else if (type == Quantix::Core::Components::ELightType::SPOT)
+		return 3;
+}
+
+static Quantix::Core::Components::ELightType SetValueLightEnum(QXint value)
+{
+	if (value == 0)
+		return Quantix::Core::Components::ELightType::DEFAULT;
+	else if (value == 1)
+		return Quantix::Core::Components::ELightType::DIRECTIONAL;
+	else if (value == 2)
+		return Quantix::Core::Components::ELightType::POINT;
+	else if (value == 3)
+		return Quantix::Core::Components::ELightType::SPOT;
+}
+
+void Inspector::ShowLightEnum(rttr::property currentProp, rttr::instance inst, rttr::type type)
+{
+	Quantix::Core::Components::ELightType LightType = currentProp.get_value(inst).get_value<Quantix::Core::Components::ELightType>();
+	const QXchar* items[] = { "Default", "Directonal", "Point", "Spot" };
+	QXint item_current = GetValueLightEnum(LightType);
+
+	ImGui::Text("Light Type"); ImGui::SameLine(150.f);
+	ImGui::Combo("##Light Type: ", &item_current, items, IM_ARRAYSIZE(items));
+
+	LightType = SetValueLightEnum(item_current);
+	currentProp.set_value(inst, LightType);
+}
+
 void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type)
 {
 	if (type == rttr::type::get<QXbool>())
 	{
 		QXbool enable = currentProp.get_value(inst).to_bool();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(); ImGui::Checkbox("", &enable);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::Checkbox("", &enable);
 		currentProp.set_value(inst, enable);
 	}
 	else if (type == rttr::type::get<QXfloat>())
 	{
 		QXfloat value = currentProp.get_value(inst).to_float();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::DragFloat("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXdouble>())
 	{
 		QXdouble value = currentProp.get_value(inst).to_double();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::InputDouble("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::InputDouble("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXint>())
 	{
 		QXint value = currentProp.get_value(inst).to_int();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::InputInt("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXsizei>())
 	{
 		int value = currentProp.get_value(inst).to_int();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::InputInt("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXstring>())
@@ -185,11 +222,11 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		if ((inst.get_type().get_raw_type() == rttr::type::get<Quantix::Resources::Material*>().get_raw_type())
 			|| (inst.get_type() == rttr::type::get<Quantix::Resources::Material>()))
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::ColorEdit3("", value.e);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::ColorEdit3("", value.e);
 		}
 		else
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::DragFloat3("", value.e);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat3("", value.e);
 		}
 		currentProp.set_value(inst, value);
 	}
@@ -209,7 +246,18 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 	}
 	else if (type == rttr::type::get<Math::QXquaternion>())
 	{
-		static Math::QXquaternion value = currentProp.get_value(inst).get_value<Math::QXquaternion>();
+		Math::QXquaternion q = currentProp.get_value(inst).get_value<Math::QXquaternion>();
+		Math::QXvec3 value = q.QuaternionToEuler();
+		
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat3("", value.e);
+
+
+		q = Math::QXquaternion::EulerToQuaternion(value);
+		currentProp.set_value(inst, q);
+	}
+	else if (type == rttr::type::get<Quantix::Core::Components::ELightType>())
+	{
+		ShowLightEnum(currentProp, inst, type);
 	}
 	else if (currentProp.get_type().is_class() || (currentProp.get_type().is_pointer() && currentProp.get_type().get_raw_type().is_class()))
 	{
