@@ -195,6 +195,7 @@ namespace Quantix::Core::DataStructure
 			}
 		}*/
 
+		virtual void Start(std::vector<Core::Components::Mesh*>& meshes);
 		virtual void Update(std::vector<Core::Components::Mesh*>& meshes);
 
 		#pragma endregion Template
