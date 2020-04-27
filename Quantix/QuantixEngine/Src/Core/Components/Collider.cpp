@@ -67,6 +67,18 @@ namespace Quantix::Core::Components
 		return *this;
 	}
 
+	void ICollider::Init(DataStructure::GameComponent* par)
+	{
+		_object = par;
+		_isDestroyed = false;
+		_isEnable = true;
+		
+		if (par->GetComponent<Rigidbody>())
+			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, true);
+		else
+			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
+	}
+
 	ICollider* ICollider::Copy() const
 	{
 		return new ICollider(*this);

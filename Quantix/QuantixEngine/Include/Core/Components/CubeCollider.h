@@ -31,6 +31,8 @@ namespace Quantix::Core::Components
 
 		CubeCollider* Copy() const override;
 
+		void Init(DataStructure::GameComponent* par) override;
+
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
 	};
 }
