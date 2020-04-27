@@ -23,9 +23,9 @@ namespace Quantix::Resources
 	public:
 #pragma region Attributes
 
-		Math::QXvec3	ambient;
-		Math::QXvec3	diffuse;
-		Math::QXvec3	specular;
+		Math::QXvec3	ambient{51, 51, 51};
+		Math::QXvec3	diffuse{ 1, 1, 1 };
+		Math::QXvec3	specular{ 1, 1, 1 };
 
 		QXfloat			shininess = 0;
 

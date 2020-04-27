@@ -109,7 +109,14 @@ void Explorer::PushId(QXuint img, QXstring name, QXint& index)
 	ImGui::BeginGroup();
 	ImGui::ImageButton((ImTextureID)(size_t)img, _folder.GetSizeFile(), ImVec2(0, 1), ImVec2(1, 0), -1, ImVec4(0, 0, 0, 0));
 	ImGui::TextWrapped(name.c_str());
-	ImGui::EndGroup();
+	ImGui::EndGroup(); 
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+	{
+		QXstring filePath = _path + "/" + name;
+		ImGui::Text(name.c_str());
+		ImGui::SetDragDropPayload("path", filePath.c_str(), filePath.size() + 1, ImGuiCond_Once);
+		ImGui::EndDragDropSource();
+	}
 	PopUpMenuItem(name);
 	PopUpMenu();
 	ImGui::PopID();

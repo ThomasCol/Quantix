@@ -242,6 +242,8 @@ namespace Quantix::Core::DataStructure
 
 
 		inline std::unordered_map<QXstring, ShaderProgram*>&			GetShaders() { return _programs; };
+		inline std::unordered_map<QXstring, Model*>&					GetModels() { return _models; };
+		inline std::unordered_map<QXstring, Material*>&					GetMaterials() { return _materials; };
 
 #pragma endregion
 	};

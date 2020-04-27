@@ -11,7 +11,7 @@ Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
 {
 }
 
-void Inspector::Update()
+void Inspector::Update(Quantix::Core::Platform::Application* app)
 {
 	if (_enable)
 	{
@@ -50,7 +50,7 @@ void Inspector::Update()
 			if (_transform->GetObject()->GetComponents()[i] != nullptr)
 			{
 				rttr::type t = _transform->GetObject()->GetComponents()[i]->get_type();
-				GetInstance(currentComp, t);
+				GetInstance(currentComp, t, app);
 			}
 
 			PopUpMenuItem(_transform->GetObject()->GetComponents()[i]);
@@ -112,7 +112,57 @@ void Inspector::AddComponent()
 	ShowComponent();
 }
 
-void Inspector::GetInstance(rttr::instance inst, rttr::type t)
+void Inspector::DrawMaterialPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
+{
+	/*for (auto it = app->manager.GetMaterials().begin(); it != app->manager.GetMaterials().end(); ++it)
+			{
+				rttr::variant tmpInst(it->second);
+				if (tmpInst == t.get_property("Material").get_value(inst))
+				{
+					ImGui::Text("Material Path: "); ImGui::SameLine(155.f);
+					QXstring path = it->first;
+					ImGui::ButtonEx(path.c_str(), ImVec2(0, 0), ImGuiButtonFlags_Disabled);
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
+						{
+							path = (const QXchar*)payload->Data;
+							if (path.find(".mat") == QXstring::npos)
+								path = it->first;
+							Quantix::Resources::Material* material = app->manager.CreateMaterial(path);
+							t.get_property("Material").set_value(inst, material);
+							ImGui::EndDragDropTarget();
+						}
+					}
+				}
+			}*/
+}
+
+void Inspector::DrawModelPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
+{
+	for (auto it = app->manager.GetModels().begin(); it != app->manager.GetModels().end(); ++it)
+	{
+		rttr::variant tmpInst(it->second);
+		if (tmpInst == t.get_property("Model").get_value(inst))
+		{
+			ImGui::Text("Model Path: "); ImGui::SameLine(155.f);
+			QXstring path = it->first;
+			ImGui::ButtonEx(path.c_str(), ImVec2(0,0), ImGuiButtonFlags_Disabled);
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
+				{
+					path = (const QXchar*)payload->Data;
+					Quantix::Resources::Model* model = app->manager.CreateModel(path);
+					t.get_property("Model").set_value(inst, model);
+					ImGui::EndDragDropTarget();
+				}
+			}
+		}
+	}
+}
+
+void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
 {
 	QXstring name;
 	if (t.is_pointer())
@@ -122,18 +172,26 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t)
 	}
 	else
 		name = t.get_name().to_string();
+
 	if (ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_Framed))
 	{
+		if (t == rttr::type::get<Quantix::Core::Components::Mesh>())
+		{
+			DrawMaterialPath(inst, t, app);
+			DrawModelPath(inst, t, app);
+		}
 		QXint index = 0;
 		for (auto it = t.get_properties().begin(); it != t.get_properties().end(); ++it)
 		{
 			rttr::property currentProp = *(it);
-
-			rttr::type type = currentProp.get_type();
-			ImGui::PushID(index);
-			DrawVariable(inst, currentProp, type);
-			ImGui::PopID();
-			index++;
+			if (currentProp.get_type() != rttr::type::get<Quantix::Resources::Model*>())
+			{
+				rttr::type type = currentProp.get_type();
+				ImGui::PushID(index);
+				DrawVariable(inst, currentProp, type, app);
+				ImGui::PopID();
+				index++;
+			}
 		}
 		ImGui::TreePop();
 	}
@@ -176,7 +234,7 @@ void Inspector::ShowLightEnum(rttr::property currentProp, rttr::instance inst, r
 	currentProp.set_value(inst, LightType);
 }
 
-void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type)
+void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
 {
 	if (type == rttr::type::get<QXbool>())
 	{
@@ -264,7 +322,7 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 	}
 	else if (currentProp.get_type().is_class() || (currentProp.get_type().is_pointer() && currentProp.get_type().get_raw_type().is_class()))
 	{
-		GetInstance(currentProp.get_value(inst), type);
+		GetInstance(currentProp.get_value(inst), type, app);
 	}
 	//	else
 	//		ImGui::Text("Type: % s\nName : % s\nValue : % s\n\n",  currentProp.get_type().get_name().to_string().c_str(), currentProp.get_name().to_string().c_str(), currentProp.get_value(inst).to_string().c_str());
