@@ -83,7 +83,7 @@ namespace Quantix::Core::Components
 		void SetShapeFlagVisualization(bool b);
 		bool GetShapeFlagVisualization();
 
-		void Remove();
+		void Destroy() override;
 
 #pragma endregion
 

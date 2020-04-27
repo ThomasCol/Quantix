@@ -152,7 +152,7 @@ namespace Quantix::Core::Components
 		return shapeFlag.visualization;
 	}
 
-	void ICollider::Remove()
+	void ICollider::Destroy()
 	{
 		shape->getActor()->detachShape(*shape);
 	}

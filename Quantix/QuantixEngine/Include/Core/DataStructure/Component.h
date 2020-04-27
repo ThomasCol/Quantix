@@ -118,7 +118,7 @@ namespace Quantix::Core::DataStructure
 		 * @brief virtual Method for Destroy the Component
 		 * 
 		 */
-		//inline virtual void					Destroy() {};
+		inline virtual void					Destroy() {};
 		#pragma endregion Inline
 		#pragma endregion Methods
 
