@@ -22,6 +22,8 @@ namespace Quantix::Resources
 			QXuint								_id;
 
 			std::vector<Core::DataStructure::GameObject3D*> _objects;
+			
+			std::atomic_bool					_isReady { false };
 
 			#pragma endregion
 
@@ -69,7 +71,7 @@ namespace Quantix::Resources
 			 * @brief method that init the scene
 			 *
 			 */
-			void	Init(Quantix::Core::DataStructure::ResourcesManager& manager);
+			void	Init(Core::DataStructure::ResourcesManager& manager);
 
 			/**
 			 * @brief method that update the world and its hierarchy
@@ -113,6 +115,10 @@ namespace Quantix::Resources
 			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
 
 			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name);
+
+			inline QXbool						IsReady() const { return _isReady.load(); }
+
+			inline void							SetReady(QXbool ready) { _isReady.store(ready); }
 
 			#pragma endregion
 

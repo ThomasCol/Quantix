@@ -56,6 +56,8 @@ namespace Quantix::Resources
 
 #pragma region Functions
 
+		QXbool	IsReady();
+
 		/**
 		 * @brief Send Material data to the shader
 		 */

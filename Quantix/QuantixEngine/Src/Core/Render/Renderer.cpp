@@ -35,8 +35,6 @@ namespace Quantix::Core::Render
 
 		InitPostProcessEffects(manager);
 
-		glViewport(0, 0, width, height);
-
 	}
 
 #pragma endregion
@@ -133,8 +131,7 @@ namespace Quantix::Core::Render
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 		}
 
-		Resources::Material* material;
-		Math::QXmat4								trs;
+		Resources::Material*						material;
 		Quantix::Core::DataStructure::GameObject3D* obj;
 
 		for (QXuint i = 0; i < mesh.size(); i++)
@@ -161,9 +158,7 @@ namespace Quantix::Core::Render
 			// Draw current mesh
 			obj = (Quantix::Core::DataStructure::GameObject3D*)mesh[i]->GetObject();
 
-			Math::QXmat4 trs = { obj->GetTransform()->GetTRS() };
-
-			material->SetMat4("TRS", trs);
+			material->SetMat4("TRS", obj->GetTransform()->GetTRS());
 
 			glBindVertexArray(mesh[i]->GetVAO());
 
@@ -173,8 +168,8 @@ namespace Quantix::Core::Render
 		}
 
 		glActiveTexture(0);
-		_effects->Render(info);
 
+		_effects->Render(info);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

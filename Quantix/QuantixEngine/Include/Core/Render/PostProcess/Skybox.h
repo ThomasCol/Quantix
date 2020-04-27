@@ -17,6 +17,8 @@ namespace Quantix::Core::Render::PostProcess
 		QXuint _captureFBO;
 		QXuint _envCubemap;
 
+		QXbool	_isCubemapReady = false;
+
 #pragma endregion
 
 #pragma region Functions

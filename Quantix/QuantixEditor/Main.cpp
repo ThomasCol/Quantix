@@ -133,6 +133,8 @@ void Init(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 
 void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights, Quantix::Core::Components::Camera* cam)
 {
+	static QXbool	sceneChange = false;
+	static Quantix::Resources::Scene* newScene = nullptr;
 	if (GetKey(QX_KEY_ESCAPE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		if (editor->_mouseInput->MouseCaptured)
@@ -154,9 +156,20 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 		editor->GetApp()->manager.SaveScene(editor->GetApp()->scene);
 	if (GetKey(QX_KEY_BACKSPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
-		editor->GetApp()->scene = editor->GetApp()->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
-		editor->SetRoot(editor->GetApp()->scene->GetRoot());
+		newScene = editor->GetApp()->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
+		sceneChange = true;
 	}
+
+	if (sceneChange)
+	{
+		if (newScene->IsReady())
+		{
+			editor->GetApp()->scene = newScene;
+			editor->SetRoot(editor->GetApp()->scene->GetRoot());
+			sceneChange = false;
+		}
+	}
+
 
 	START_PROFILING("Draw");
 	//Editor Update

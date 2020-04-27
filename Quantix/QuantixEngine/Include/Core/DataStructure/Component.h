@@ -101,7 +101,7 @@ namespace Quantix::Core::DataStructure
 		 * @return true 
 		 * @return false 
 		 */
-		inline virtual QXbool				IsEnable() const { return _isEnable; };
+		inline virtual QXbool				IsEnable() { return _isEnable; };
 
 		/**
 		 * @brief Set the Active object

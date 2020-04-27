@@ -1,8 +1,11 @@
 #include "Core/Platform/Application.h"
 
+#include <stb_image.h>
+
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
 #include "Physic/PhysicHandler.h"
+#include "Core/Threading/TaskSystem.hpp"
 
 namespace Quantix::Core::Platform
 {
@@ -26,12 +29,15 @@ namespace Quantix::Core::Platform
 		sceneManager {},
 		scene {new Resources::Scene()}
 	{
+		stbi_set_flip_vertically_on_load(true);
 		scene->Init(manager);
 		Physic::PhysicHandler::GetInstance()->InitSystem();
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes)
 	{
+		Threading::TaskSystem::GetInstance()->Update();
+		manager.UpdateResourcesState();
 		scene->Update(meshes);
 	}
 }

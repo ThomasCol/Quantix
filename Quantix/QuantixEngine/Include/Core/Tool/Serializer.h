@@ -15,15 +15,15 @@ namespace Quantix::Core::Tool
 		#pragma region Functions
 
 		void DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, const QXstring& parentName,
-			DataStructure::ResourcesManager& manager);
+			DataStructure::ResourcesManager* manager);
 
 		void ReadCamera(Components::Camera* camera, rapidjson::Value& val);
 
-		void ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager& manager);
+		void ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager* manager);
 
 		void ReadLight(Components::Light* light, rapidjson::Value& val);
 
-		void ReadMesh(Components::Mesh* Mesh, rapidjson::Value& val, DataStructure::ResourcesManager& manager);
+		void ReadMesh(Components::Mesh* Mesh, rapidjson::Value& val, DataStructure::ResourcesManager* manager);
 
 		void ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val);
 
@@ -55,7 +55,7 @@ namespace Quantix::Core::Tool
 
 		#pragma region Functions
 
-		QXbool		Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager& manager);
+		QXbool		Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager* manager);
 
 		QXstring	Serialize(Resources::Scene* scene);
 
