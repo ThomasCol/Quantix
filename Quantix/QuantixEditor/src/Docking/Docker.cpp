@@ -27,8 +27,8 @@ void Docker::Init()
 	_winEditor.push_back(CreateWindowEditorDock("Console", dock_id_log));
 	_winEditor.push_back(CreateWindowEditorDock("Explorer", dock_id_log));
 	_winEditor.push_back(CreateWindowEditorDock("Scene", dock_id_scene));
-	_winEditor.push_back(CreateWindowEditorDock("Hierarchy", dock_id_prop));
 	_winEditor.push_back(CreateWindowEditorDock("Shader", dock_id_prop));
+	_winEditor.push_back(CreateWindowEditorDock("Hierarchy", dock_id_prop));
 	_winEditor.push_back(CreateWindowEditorDock("Inspector", dock_id_right));
 
 	ImGui::DockBuilderFinish(_idDocker);
