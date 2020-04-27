@@ -146,7 +146,7 @@ namespace Quantix::Physic
 
 		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
 
-		PxShape* s = mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *aMaterial);
+		PxShape* s = mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *aMaterial, true);
 		
 		if (hasRigidbody)
 			physicType->GetObjectDynamic()->GetRigid()->attachShape(*s);

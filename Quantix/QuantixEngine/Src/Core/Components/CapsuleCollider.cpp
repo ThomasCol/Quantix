@@ -68,12 +68,12 @@ namespace Quantix::Core::Components
 
 		if (par->GetComponent<Rigidbody>())
 		{
-			shape = Physic::PhysicHandler::GetInstance()->CreateCubeCollider(par, true);
+			shape = Physic::PhysicHandler::GetInstance()->CreateCapsuleCollider(par, true);
 			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, true);
 		}
 		else
 		{
-			shape = Physic::PhysicHandler::GetInstance()->CreateCubeCollider(par, false);
+			shape = Physic::PhysicHandler::GetInstance()->CreateCapsuleCollider(par, false);
 			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
 		}
 	}
