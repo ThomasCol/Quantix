@@ -6,22 +6,22 @@ RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
 	rttr::registration::class_<Quantix::Core::Components::ICollider>("Collider")
-		.constructor<>()
-		.constructor<Quantix::Core::DataStructure::GameComponent*>()
-		.constructor<const Quantix::Core::Components::ICollider&>()
-		.constructor<Quantix::Core::Components::ICollider&&>()
+	.constructor<>()
+	.constructor<Quantix::Core::DataStructure::GameComponent*>()
+	.constructor<const Quantix::Core::Components::ICollider&>()
+	.constructor<Quantix::Core::Components::ICollider&&>()
 	.enumeration<Quantix::Core::Components::EPhysXType>("EPhysXType")
 		(rttr::value("Default", Quantix::Core::Components::EPhysXType::DEFAULT),
 		rttr::value("Directional", Quantix::Core::Components::EPhysXType::STATIC),
 		rttr::value("Point", Quantix::Core::Components::EPhysXType::DYNAMIC),
 		rttr::value("Spot", Quantix::Core::Components::EPhysXType::COUNT))
 	.property("physicType", &Quantix::Core::Components::ICollider::physicType)
-	.property("LocalPosition", &Quantix::Core::Components::ICollider::GetPosition, &Quantix::Core::Components::ICollider::SetPosition)
-		.property("LocalRotation", &Quantix::Core::Components::ICollider::GetRotation, &Quantix::Core::Components::ICollider::SetRotation)
-	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetShapeFlagSceneQuery, &Quantix::Core::Components::ICollider::SetShapeFlagSceneQuery)
-	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetShapeFlagSimulation, &Quantix::Core::Components::ICollider::SetShapeFlagSimulation)
-	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetShapeFlagTrigger, &Quantix::Core::Components::ICollider::SetShapeFlagTrigger)
-	.property("LocalRotation", &Quantix::Core::Components::ICollider::GetShapeFlagVisualization, &Quantix::Core::Components::ICollider::SetShapeFlagVisualization);
+	.property("Local Position", &Quantix::Core::Components::ICollider::GetPosition, &Quantix::Core::Components::ICollider::SetPosition)
+	.property("Local Rotation", &Quantix::Core::Components::ICollider::GetRotation, &Quantix::Core::Components::ICollider::SetRotation)
+	.property("Query Shape", &Quantix::Core::Components::ICollider::GetShapeFlagSceneQuery, &Quantix::Core::Components::ICollider::SetShapeFlagSceneQuery)
+	.property("Simulation Shape", &Quantix::Core::Components::ICollider::GetShapeFlagSimulation, &Quantix::Core::Components::ICollider::SetShapeFlagSimulation)
+	.property("Trigger Shape", &Quantix::Core::Components::ICollider::GetShapeFlagTrigger, &Quantix::Core::Components::ICollider::SetShapeFlagTrigger)
+	.property("Visualization Shape", &Quantix::Core::Components::ICollider::GetShapeFlagVisualization, &Quantix::Core::Components::ICollider::SetShapeFlagVisualization);
 }
 
 namespace Quantix::Core::Components
@@ -65,6 +65,18 @@ namespace Quantix::Core::Components
 		actorPhysic = std::move(other.actorPhysic);
 
 		return *this;
+	}
+
+	void ICollider::Init(DataStructure::GameComponent* par)
+	{
+		_object = par;
+		_isDestroyed = false;
+		_isEnable = true;
+		
+		if (par->GetComponent<Rigidbody>())
+			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, true);
+		else
+			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
 	}
 
 	ICollider* ICollider::Copy() const

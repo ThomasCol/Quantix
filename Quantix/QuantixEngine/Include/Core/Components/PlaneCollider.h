@@ -25,6 +25,7 @@ namespace Quantix::Core::Components
 #pragma endregion
 
 		PlaneCollider* Copy() const override;
+		void Init(DataStructure::GameComponent* par) override;
 
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
 	};

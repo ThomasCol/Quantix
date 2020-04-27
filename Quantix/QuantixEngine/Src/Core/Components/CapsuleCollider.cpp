@@ -59,4 +59,22 @@ namespace Quantix::Core::Components
 	{
 		return new CapsuleCollider(*this);
 	}
+
+	void CapsuleCollider::Init(DataStructure::GameComponent* par)
+	{
+		_object = par;
+		_isDestroyed = false;
+		_isEnable = true;
+
+		if (par->GetComponent<Rigidbody>())
+		{
+			shape = Physic::PhysicHandler::GetInstance()->CreateCubeCollider(par, true);
+			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, true);
+		}
+		else
+		{
+			shape = Physic::PhysicHandler::GetInstance()->CreateCubeCollider(par, false);
+			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
+		}
+	}
 }

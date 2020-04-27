@@ -33,6 +33,7 @@ namespace Quantix::Core::Components
 #pragma endregion
 
 		SphereCollider* Copy() const override;
+		void Init(DataStructure::GameComponent* par) override;
 
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider, Quantix::Core::DataStructure::Component);
 	};

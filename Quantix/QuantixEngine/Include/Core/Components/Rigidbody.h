@@ -46,6 +46,7 @@ namespace Quantix::Core::Components
 
 #pragma region Accessors 
 		Rigidbody* Copy() const;
+		void Init(DataStructure::GameComponent* par);
 
 		QXfloat GetMass();
 		void SetMass(QXfloat);
