@@ -94,7 +94,7 @@ namespace Quantix::Core::Components
 
 		#pragma	region Accessor
 
-		inline Math::QXmat4				GetLookAt() { return _lookAt; }
+		inline Math::QXmat4&			GetLookAt() { return _lookAt; }
 
 		inline void						SetPos(Math::QXvec3 pos) { _pos = pos; }
 

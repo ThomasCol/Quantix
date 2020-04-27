@@ -240,6 +240,9 @@ namespace Quantix::Core::DataStructure
 		 */
 		void				DeleteTexture(const QXstring& filePath) noexcept;
 
+
+		inline std::unordered_map<QXstring, ShaderProgram*>&			GetShaders() { return _programs; };
+
 #pragma endregion
 	};
 }

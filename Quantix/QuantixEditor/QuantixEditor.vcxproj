@@ -91,7 +91,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;GLAD_GLAPI_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;GLAD_GLAPI_EXPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)externals;$(ProjectDir)externals\GLFW;$(ProjectDir)externals\KHR;$(ProjectDir)externals\imgui;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;$(SolutionDir)\QuantixEngine\externals;$(SolutionDir)\QuantixEngine\externals\include;%(AdditionalIncludeDirectories)$(ProjectDir)externals;$(SolutionDir)\QuantixEngine\externals\physx\include;$(SolutionDir)\QuantixEngine\externals\pxshared\include;$(SolutionDir)\QuantixEngine\externals\physx\include\extensions</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)externals;$(ProjectDir)externals\GLFW;$(ProjectDir)externals\KHR;$(ProjectDir)externals\imgui;$(ProjectDir)externals\imguizmo;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;$(SolutionDir)\QuantixEngine\externals;$(SolutionDir)\QuantixEngine\externals\include;$(SolutionDir)\QuantixEngine\externals\cereal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -165,9 +165,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;GLAD_GLAPI_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;GLAD_GLAPI_EXPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)externals;$(ProjectDir)externals\GLFW;$(ProjectDir)externals\KHR;$(ProjectDir)externals\imgui;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;$(SolutionDir)\QuantixEngine\externals;$(SolutionDir)\QuantixEngine\externals\include;%(AdditionalIncludeDirectories)$(ProjectDir)externals;$(SolutionDir)\QuantixEngine\externals\physx\include;$(SolutionDir)\QuantixEngine\externals\pxshared\include;$(SolutionDir)\QuantixEngine\externals\physx\include\extensions</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\QuantixEngine\Include;$(SolutionDir)\QuantixEngine\Lib\Glad\include;$(SolutionDir)\QuantixEngine\Lib\GLFW\include;$(SolutionDir)\QuantixEngine\Lib\TinyObjLoader;$(SolutionDir)\QuantixEngine\Lib\MathLib\Solution\MathLib\Include;$(ProjectDir)include;$(ProjectDir)include\Docking;$(ProjectDir)include\Editor;$(ProjectDir)externals;$(ProjectDir)externals\GLFW;$(ProjectDir)externals\KHR;$(ProjectDir)externals\imgui;$(ProjectDir)externals\imguizmo;$(SolutionDir)\QuantixEngine\Include\Core\Debugger;$(SolutionDir)\QuantixEngine\Include\Core\Profiler;$(SolutionDir)\QuantixEngine\externals;$(SolutionDir)\QuantixEngine\externals\include;%(AdditionalIncludeDirectories)$(ProjectDir)externals;$(SolutionDir)\QuantixEngine\externals\physx\include;$(SolutionDir)\QuantixEngine\externals\pxshared\include;$(SolutionDir)\QuantixEngine\externals\physx\include\extensions</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
@@ -202,6 +202,7 @@
     <ClCompile Include="src\Editor\Hierarchy.cpp" />
     <ClCompile Include="src\Editor\Inspector.cpp" />
     <ClCompile Include="src\Editor\MenuBar.cpp" />
+    <ClCompile Include="src\opengl_helpers_imgui.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +216,7 @@
     <ClInclude Include="include\Editor\Inspector.h" />
     <ClInclude Include="include\Editor\MenuBar.h" />
     <ClInclude Include="include\Editor\Node.h" />
+    <ClInclude Include="include\opengl_helper.h" />
     <ClInclude Include="include\Window.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
