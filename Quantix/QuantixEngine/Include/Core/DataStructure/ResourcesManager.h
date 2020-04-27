@@ -12,6 +12,7 @@
 #include "Resources/Material.h"
 #include "Resources/Scene.h"
 #include "Core/Components/Mesh.h"
+#include "Core/Tool/Serializer.h"
 
 
 namespace Quantix::Core::DataStructure
@@ -92,8 +93,6 @@ namespace Quantix::Core::DataStructure
 		 */
 		void				LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept;
 
-		Scene*				LoadScene(const QXstring& filePath) noexcept;
-
 		/**
 		 * @brief Save a material to a cache file
 		 * 
@@ -109,8 +108,6 @@ namespace Quantix::Core::DataStructure
 		 * @param model model to save
 		 */
 		void				SaveModelToCache(const QXstring& filePath, Model* model) noexcept;
-
-		void				SaveScene(Scene* scene) noexcept;
 
 #pragma endregion
 		
@@ -239,6 +236,9 @@ namespace Quantix::Core::DataStructure
 		 * @param filePath path to the texture to delete
 		 */
 		void				DeleteTexture(const QXstring& filePath) noexcept;
+
+		void				SaveScene(Scene* scene);
+		Scene*				LoadScene(const QXstring& path);
 
 #pragma endregion
 	};

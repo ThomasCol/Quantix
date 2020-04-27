@@ -7,6 +7,11 @@ namespace Quantix::Resources
 {
 	#pragma region Constructors&Destructor
 
+	Scene::Scene()
+	{
+		_root = new Quantix::Core::DataStructure::GameObject3D("root");
+	}
+
 	Scene::Scene(const QXstring& name, Core::DataStructure::GameObject3D* root, const QXuint& id) noexcept :
 		_name{ name },
 		_root {root},
@@ -60,8 +65,6 @@ namespace Quantix::Resources
 
 	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept
 	{
-		_root = new Quantix::Core::DataStructure::GameObject3D("root");
-
 		AddGameObject("Mesh");
 		AddGameObject("Mesh2", GetGameObject("Mesh"));
 

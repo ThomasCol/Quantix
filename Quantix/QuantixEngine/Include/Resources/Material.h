@@ -18,6 +18,8 @@ namespace Quantix::Resources
 		ShaderProgram* 	_program = nullptr;
 		Texture*		_mainTexture = nullptr;
 
+		QXstring		_path;
+
 #pragma endregion
 
 	public:
@@ -182,7 +184,11 @@ namespace Quantix::Resources
 
 		inline std::vector<QXstring>	GetProgramPath() const { return _program->GetPath(); }
 
-		inline ShaderProgram*		GetShaderProgram() { return _program; }
+		inline ShaderProgram*			GetShaderProgram() { return _program; }
+
+		inline QXstring					GetPath() { return _path; }
+
+		inline void						SetPath(QXstring path) { _path = path; }
 
 		/**
 		 * @brief Set the Main Texture object

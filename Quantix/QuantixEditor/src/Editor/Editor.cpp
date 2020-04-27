@@ -72,6 +72,8 @@ Editor::~Editor()
 
 	//unload lib rttr
 	_lib.unload();
+
+	delete _app;
 }
 
 void Editor::Init()

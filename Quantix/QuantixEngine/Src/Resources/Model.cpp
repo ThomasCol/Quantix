@@ -5,11 +5,19 @@
 #include <cstdint>
 #include <iostream>
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Resources::Model>("Model")
+	.constructor<>()
+	.constructor<const std::vector<Quantix::Resources::Vertex>&, const std::vector<QXuint>&>()
+	.method("GetPath", &Quantix::Resources::Model::GetPath);
+}
+
 namespace Quantix::Resources
 {
 #pragma region Attributes
 
-	Model::Model(const std::vector<Vertex>& vertices, const std::vector<QXuint> indices) :
+	Model::Model(const std::vector<Vertex>& vertices, const std::vector<QXuint>& indices) :
 		_vertices {vertices},
 		_indices {indices}
 	{
