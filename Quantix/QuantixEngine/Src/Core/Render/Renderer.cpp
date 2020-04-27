@@ -8,6 +8,7 @@
 #include "Core/Render/PostProcess/Skybox.h"
 #include "Core/DataStructure/ResourcesManager.h"
 #include "Core/DataStructure/GameObject3D.h"
+#include "Core/UserEntry/InputManager.h"
 
 namespace Quantix::Core::Render
 {

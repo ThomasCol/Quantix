@@ -320,7 +320,7 @@ namespace Quantix::Physic
 
 			// =====================================================
 
-		mAccumulator += deltaTime;
+		mAccumulator += (physx::PxReal)deltaTime;
 		if (mAccumulator < mStepSize)
 			return;
 

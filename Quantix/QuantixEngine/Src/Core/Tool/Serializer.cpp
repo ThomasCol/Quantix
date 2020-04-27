@@ -33,7 +33,7 @@ namespace Quantix::Core::Tool
 
 		rapidjson::Value& root = ret->value.FindMember("GameObject0")->value;
 		rapidjson::Value& childs = root.FindMember("Childs")->value;
-		for (QXsizei i = 0; i < childs.Size(); ++i)
+		for (QXint i = 0; i < (QXint)childs.Size(); ++i)
 		{
 			DeserializeRecursive(scene, i, childs[i], nullptr, manager);
 		}
@@ -75,11 +75,11 @@ namespace Quantix::Core::Tool
 		ReadTransform(object->GetTransform(), cur_val.FindMember("Transform")->value);
 
 		rapidjson::Value& components = cur_val.FindMember("Components")->value;
-		for (QXsizei i = 0; i < components.Size(); ++i)
+		for (rapidjson::SizeType i = 0; i < components.Size(); ++i)
 			ReadComponent(object, components[i], manager);
 
 		rapidjson::Value& childs = cur_val.FindMember("Childs")->value;
-		for (QXsizei i = 0; i < childs.Size(); ++i)
+		for (QXint i = 0; i < (QXint)childs.Size(); ++i)
 			DeserializeRecursive(scene, i, childs[i], object, manager);
 	}
 
@@ -200,7 +200,7 @@ namespace Quantix::Core::Tool
 
 		writer.String("Childs");
 		writer.StartArray();
-		for (QXsizei i = 0; i < transform->GetChilds().size(); ++i)
+		for (QXint i = 0; i < transform->GetChilds().size(); ++i)
 		{
 			writer.StartObject();
 			SerializeRecursive(transform->GetChilds()[i], i, writer);
@@ -266,7 +266,7 @@ namespace Quantix::Core::Tool
 		else if (type == rttr::type::get<QXsizei>())
 		{
 			writer.String(currentProp.get_name().to_string());
-			writer.Uint(currentProp.get_value(inst).to_uint64());
+			writer.Uint(currentProp.get_value(inst).to_uint32());
 		}
 		else if (type == rttr::type::get<QXstring>())
 		{

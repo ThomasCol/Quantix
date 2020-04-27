@@ -17,6 +17,11 @@ namespace Quantix::Resources
 			stbi_image_free(_image);
 			_image = nullptr;
 		}
+		if (_HDRImage)
+		{
+			stbi_image_free(_image);
+			_HDRImage = nullptr;
+		}
 	}
 
 #pragma endregion

@@ -3,6 +3,8 @@
 #include <atomic>
 #include <string>
 
+#include "Core/DLLHeader.h"
+
 namespace Quantix::Resources
 {
 	enum class EResourceStatus
@@ -13,7 +15,7 @@ namespace Quantix::Resources
 		FAILED
 	};
 
-	class Resource
+	class QUANTIX_API Resource
 	{
 	protected:
 		std::atomic<EResourceStatus>	_status;

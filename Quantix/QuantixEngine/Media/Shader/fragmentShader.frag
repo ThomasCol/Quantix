@@ -42,6 +42,8 @@ uniform Material	material;
 /* light array with constant size */
 uniform Light		lightArray[10];
 
+uniform bool phong;
+
 out vec4			color;
 
 in vec2				UV;
@@ -166,10 +168,10 @@ vec3 calculateAmbient(vec3 ambient)
 
 vec3	calculateSpecular(vec3 lightDir, vec3 norm, vec3 specular)
 {
-	 // specular
+	// specular
     vec3 viewDir = normalize(viewPos - fragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);  
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-
+	vec3 halwayDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(norm, halwayDir), 0.0), material.shininess);
+	
     return specular * spec * material.specular;  
 }
