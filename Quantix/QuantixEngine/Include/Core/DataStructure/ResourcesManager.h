@@ -2,7 +2,6 @@
 #define __RESPURCESMANAGER_H__
 
 #include <unordered_map>
-#include <tiny_obj_loader.h>
 
 #include "Type.h"
 #include "Resources/Model.h"
@@ -31,6 +30,8 @@ namespace Quantix::Core::DataStructure
 		std::unordered_map<QXstring, Texture*>			_textures;
 		std::unordered_map<QXstring, Components::Mesh*>	_meshes;
 		std::unordered_map<QXstring, Scene*>			_scenes;
+
+		std::list<Resource*>							_resourcesToBind;
 			
 #pragma endregion
 
@@ -108,6 +109,7 @@ namespace Quantix::Core::DataStructure
 		 * @param model model to save
 		 */
 		void				SaveModelToCache(const QXstring& filePath, Model* model) noexcept;
+
 
 #pragma endregion
 		
@@ -239,6 +241,7 @@ namespace Quantix::Core::DataStructure
 
 		void				SaveScene(Scene* scene);
 		Scene*				LoadScene(const QXstring& path);
+		void				UpdateResourcesState();
 
 #pragma endregion
 	};

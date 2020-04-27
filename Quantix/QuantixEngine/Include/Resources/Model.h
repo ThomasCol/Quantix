@@ -5,9 +5,10 @@
 #include <vector>
 #include <Vec2.h>
 #include <Vec3.h>
-
 #include <Type.h>
 #include <Core/DLLHeader.h>
+
+#include "Resource.h"
 
 namespace Quantix::Resources
 {
@@ -28,16 +29,23 @@ namespace Quantix::Resources
 		}
 	};
 
-	class QUANTIX_API Model
+	class QUANTIX_API Model : public Resource
 	{
 	private:
 #pragma region Attributes
 
 		std::vector<Vertex> _vertices;
 		std::vector<QXuint>	_indices;
-		QXuint				_VAO;
+		QXuint				_VAO = 0;
 
 		QXstring			_path;
+
+#pragma endregion
+
+#pragma region Functions
+
+		QXbool LoadFromCache(const QXstring& file);
+		void LoadWithLib(const QXstring& file);
 
 #pragma endregion
 		
@@ -78,6 +86,11 @@ namespace Quantix::Resources
 
 #pragma endregion
 
+#pragma region Functions
+
+		void Load(const QXstring& file) override;
+		void Init() override;
+
 #pragma region Operators
 
 		/**
@@ -104,14 +117,14 @@ namespace Quantix::Resources
 		 * 
 		 * @return const std::vector<QXuint>& Indices array reference
 		 */
-		inline const std::vector<QXuint>& GetIndices() { return _indices; }
+		inline std::vector<QXuint>& GetIndices() { return _indices; }
 
 		/**
 		 * @brief Get the Indices array
 		 *
 		 * @return const std::vector<QXuint>& Indices array reference
 		 */
-		inline const std::vector<Vertex>& GetVertices() { return _vertices; }
+		inline std::vector<Vertex>& GetVertices() { return _vertices; }
 
 		inline QXstring					GetPath() { return _path; }
 

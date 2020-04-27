@@ -7,7 +7,7 @@
 
 namespace Quantix::Core::Tool
 {
-	QXbool Serializer::Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager& manager)
+	QXbool Serializer::Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager* manager)
 	{
 		//std::ifstream stream(path);
 		std::ifstream stream(path, std::ios::ate);
@@ -38,6 +38,8 @@ namespace Quantix::Core::Tool
 			DeserializeRecursive(scene, i, childs[i], nullptr, manager);
 		}
 
+		scene->SetReady(true);
+
 		return true;
 	}
 
@@ -59,7 +61,7 @@ namespace Quantix::Core::Tool
 		return sb.GetString();
 	}
 
-	void Serializer::DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, DataStructure::GameObject3D* parent, DataStructure::ResourcesManager& manager)
+	void Serializer::DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, DataStructure::GameObject3D* parent, DataStructure::ResourcesManager* manager)
 	{
 		rapidjson::Value::MemberIterator ret = val.FindMember("GameObject" + std::to_string(index));
 
@@ -92,7 +94,7 @@ namespace Quantix::Core::Tool
 		camera->SetDir(vec);
 	}
 
-	void Serializer::ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager& manager)
+	void Serializer::ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager* manager)
 	{
 		rapidjson::Value::MemberIterator ret = val.FindMember("Mesh");
 		if (ret != val.MemberEnd())
@@ -129,10 +131,10 @@ namespace Quantix::Core::Tool
 		light->type = (Components::ELightType)val.FindMember("type")->value.GetInt();
 	}
 
-	void Serializer::ReadMesh(Components::Mesh* mesh, rapidjson::Value& val, DataStructure::ResourcesManager& manager)
+	void Serializer::ReadMesh(Components::Mesh* mesh, rapidjson::Value& val, DataStructure::ResourcesManager* manager)
 	{
 		mesh->SetActive(val.FindMember("Enable")->value.GetBool());
-		manager.CreateMesh(mesh, val.FindMember("Model")->value.GetString(), val.FindMember("Material")->value.GetString());
+		manager->CreateMesh(mesh, val.FindMember("Model")->value.GetString(), val.FindMember("Material")->value.GetString());
 	}
 
 	void Serializer::WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)

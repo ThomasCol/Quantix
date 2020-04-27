@@ -74,14 +74,14 @@ namespace Quantix::Resources
 		/*_root->AddChild(gameObject);
 		gameObject->AddChild(gameObject2);*/
 
-		gameObject->AddComponent<Quantix::Core::Components::Mesh>();
-		gameObject2->AddComponent<Quantix::Core::Components::Mesh>();
+		gameObject->AddComponent<Core::Components::Mesh>();
+		gameObject2->AddComponent<Core::Components::Mesh>();
 
-		Quantix::Core::Components::Mesh* mesh = gameObject->GetComponent<Quantix::Core::Components::Mesh>();
+		Core::Components::Mesh* mesh = gameObject->GetComponent<Quantix::Core::Components::Mesh>();
 		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
 		mesh->SetMaterialMainTexture(manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 
-		mesh = gameObject2->GetComponent<Quantix::Core::Components::Mesh>();
+		mesh = gameObject2->GetComponent<Core::Components::Mesh>();
 		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
 	}
 

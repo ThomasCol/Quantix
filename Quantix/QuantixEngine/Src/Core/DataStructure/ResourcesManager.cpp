@@ -3,6 +3,7 @@
 #include <istream>
 
 #include "Core/Debugger/Logger.h"
+#include "Core/Threading/TaskSystem.hpp"
 
 namespace Quantix::Core::DataStructure
 {
@@ -125,9 +126,9 @@ namespace Quantix::Core::DataStructure
 
 		std::vector<Vertex> vertices;
 		std::vector<QXuint> indices;
-		LoadModel(filePath, vertices, indices);
-		Model* model = new Model(vertices, indices);
-		model->SetPath(filePath);
+		Model* model = new Model;
+		Threading::TaskSystem::GetInstance()->AddTask(&Model::Load, model, filePath);
+		_resourcesToBind.push_back(model);
 		_models[filePath] = model;
 		return model;
 	}
@@ -182,7 +183,8 @@ namespace Quantix::Core::DataStructure
 		}
 
 		Texture* texture = new Texture;
-		texture->Load(filePath.c_str());
+		Threading::TaskSystem::GetInstance()->AddTask(&Texture::Load, texture, filePath);
+		_resourcesToBind.push_back(texture);
 		_textures[filePath] = texture;
 		return texture;
 	}
@@ -196,7 +198,8 @@ namespace Quantix::Core::DataStructure
 		}
 
 		Texture* texture = new Texture;
-		texture->LoadHDRTexture(filePath.c_str());
+		Threading::TaskSystem::GetInstance()->AddTask(&Texture::LoadHDRTexture, texture, filePath);
+		_resourcesToBind.push_back(texture);
 		_textures[filePath] = texture;
 		return texture;
 	}
@@ -237,95 +240,6 @@ namespace Quantix::Core::DataStructure
 		fclose(file);
 
 		return material;
-	}
-
-	void ResourcesManager::LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
-	{
-		if (!LoadModelFromCache(filePath, vertices, indices))
-			LoadModelFromFile(filePath, vertices, indices);
-	}
-
-	QXbool ResourcesManager::LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
-	{
-		QXstring cache_file = filePath + ".quantix";
-		FILE* file;
-
-		fopen_s(&file, cache_file.c_str(), "rb");
-
-		if (file == nullptr)
-			return false;
-
-		QXsizei vertex_count, index_count;
-
-		fread(&vertex_count, sizeof(QXsizei), 1, file);
-		vertices.resize(vertex_count);
-		fread(vertices.data(), sizeof(Vertex), vertex_count, file);
-
-		fread(&index_count, sizeof(QXsizei), 1, file);
-		indices.resize(index_count);
-		fread(indices.data(), sizeof(QXuint), index_count, file);
-
-		fclose(file);
-
-		return true;
-	}
-
-	void ResourcesManager::LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
-	{
-		tinyobj::attrib_t attrib;
-		std::vector<tinyobj::shape_t> shapes;
-		std::vector<tinyobj::material_t> materials;
-		std::string warn, err;
-
-		if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, filePath.c_str()))
-		{
-			LOG(ERROR, warn + err);
-			return;
-		}
-
-		std::unordered_map<Vertex, QXuint> uniqueVertices;
-
-		bool has_normals = !attrib.normals.empty();
-		bool has_tex_coords = !attrib.texcoords.empty();
-
-		for (const auto& shape : shapes)
-		{
-			for (const auto& index : shape.mesh.indices)
-			{
-				Vertex vertex = {};
-
-				vertex.position = {
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 0],
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 1],
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 2]
-				};
-
-				if (has_tex_coords)
-				{
-					vertex.uv = {
-						attrib.texcoords[2 * (QXsizei)index.texcoord_index + 0],
-						attrib.texcoords[2 * (QXsizei)index.texcoord_index + 1]
-					};
-				}
-
-				if (has_normals)
-				{
-					vertex.normal = {
-						attrib.normals[3 * (QXsizei)index.normal_index + 0],
-						attrib.normals[3 * (QXsizei)index.normal_index + 1],
-						attrib.normals[3 * (QXsizei)index.normal_index + 2]
-					};
-				}
-
-				if (uniqueVertices.count(vertex) == 0)
-				{
-					uniqueVertices[vertex] = static_cast<QXuint>(vertices.size());
-					vertices.push_back(vertex);
-				}
-
-				indices.push_back(uniqueVertices[vertex]);
-			}
-		}
 	}
 
 	void ResourcesManager::SaveMaterialToCache(const QXstring& filePath, const Material* material) noexcept
@@ -441,10 +355,34 @@ namespace Quantix::Core::DataStructure
 
 	Scene* ResourcesManager::LoadScene(const QXstring& path)
 	{
-		Tool::Serializer serializer;
+		Tool::Serializer* serializer = new Tool::Serializer;
 		Scene* scene = new Scene();
-		serializer.Deserialize(path, scene, *this);
+		//serializer.Deserialize(path, scene, *this);
+		Threading::TaskSystem::GetInstance()->AddTask(&Tool::Serializer::Deserialize, serializer, path, scene, this);
 		return scene;
+	}
+
+	void ResourcesManager::UpdateResourcesState()
+	{
+		if (_resourcesToBind.size() == 0)
+			return;
+
+		auto it = _resourcesToBind.begin();
+
+		while (it != _resourcesToBind.end())
+		{
+			if ((*it)->IsLoaded())
+			{
+				(*it)->Init();
+				it = _resourcesToBind.erase(it);
+			}
+			else if ((*it)->IsFailed() || (*it)->IsReady())
+			{
+				it = _resourcesToBind.erase(it);
+			}
+			else
+				it++;
+		}
 	}
 
 #pragma endregion

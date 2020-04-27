@@ -7,7 +7,6 @@
     <ClCompile Include="Src\Core\Components\Camera.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
-    <ClCompile Include="Src\Core\TinyobjImplementation.cpp" />
     <ClCompile Include="Src\Core\Debugger\Assertion.cpp" />
     <ClCompile Include="Src\Core\Debugger\Logger.cpp" />
     <ClCompile Include="Src\Core\Profiler\Profiler.cpp" />
@@ -42,6 +41,8 @@
     <ClCompile Include="Src\Core\Components\Behaviour.cpp" />
     <ClCompile Include="Src\Physic\SimulationCallback.cpp" />
     <ClCompile Include="Src\Core\Tool\Serializer.cpp" />
+    <ClCompile Include="Src\Core\Threading\TaskSystem.cpp" />
+    <ClCompile Include="Src\Core\LibImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -84,6 +85,9 @@
     <ClInclude Include="Include\Physic\PhysicStatic.h" />
     <ClInclude Include="Include\Physic\PhysicHandler.h" />
     <ClInclude Include="Include\Core\Tool\Serializer.h" />
+    <ClInclude Include="Include\Core\Threading\Task.h" />
+    <ClInclude Include="Include\Core\Threading\TaskSystem.hpp" />
+    <ClInclude Include="Include\Resources\Resource.h" />
     <ClInclude Include="Include\Core\Components\Behaviour.h" />
     <ClInclude Include="Include\Physic\SimulationCallback.h" />
     <ClInclude Include="Include\Physic\PhysicSetting.h" />

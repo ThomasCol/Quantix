@@ -21,7 +21,9 @@ namespace Quantix::Resources
 			Core::DataStructure::GameObject3D*	_root;
 			QXuint												_id;
 
-			std::vector<Core::DataStructure::GameObject3D*>		_objects;
+			std::vector<Core::DataStructure::GameObject3D*> _objects;
+			
+			std::atomic_bool					_isReady { false };
 
 			#pragma endregion
 
@@ -125,6 +127,10 @@ namespace Quantix::Resources
 			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
 
 			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name) noexcept;
+
+			inline QXbool						IsReady() const { return _isReady.load(); }
+
+			inline void							SetReady(QXbool ready) { _isReady.store(ready); }
 
 			#pragma endregion
 

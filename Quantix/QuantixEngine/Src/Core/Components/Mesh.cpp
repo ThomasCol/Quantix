@@ -41,10 +41,16 @@ namespace Quantix::Core::Components
 		return new Mesh(*this);
 	}
 
-	QXbool	Mesh::IsEnable() const
+	QXbool	Mesh::IsEnable()
 	{
-		if (!_model)
+		if (!_model || !_model->IsReady())
 			return false;
+		else if (!_isMaterialInit && _material->IsReady())
+		{
+			if (_material->GetMainTexture())
+				textureID = _material->GetMainTexture()->GetId();
+			_isMaterialInit = true;
+		}
 		return _isEnable;
 	}
 

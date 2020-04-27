@@ -29,6 +29,13 @@ namespace Quantix::Resources
 #pragma endregion
 
 #pragma region Functions
+
+	QXbool	Material::IsReady()
+	{
+		if (!_mainTexture)
+			return true;
+		return _mainTexture->IsReady();
+	}
 	
 	void Material::SendData()
 	{
@@ -36,7 +43,7 @@ namespace Quantix::Resources
 		SetFloat3("material.diffuse", diffuse.e);
 		SetFloat3("material.specular", specular.e);
 		SetFloat("material.shininess", shininess);
-		if (_mainTexture != nullptr)
+		if (_mainTexture && _mainTexture->IsReady())
 		{
 			SetInt("material.textured", 1);
 			SetUint("material.texture", 0);

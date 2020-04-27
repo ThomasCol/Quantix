@@ -19,6 +19,8 @@ namespace Quantix::Core::Components
 		Resources::Model*		_model;
 		Resources::Material*	_material;
 
+		QXbool					_isMaterialInit;
+
 #pragma endregion
 		
 	public:
@@ -87,9 +89,9 @@ namespace Quantix::Core::Components
 		 *
 		 * @param texture new main texture pointer
 		 */
-		inline void SetMaterialMainTexture(Resources::Texture* texture) noexcept { _material->SetMainTexture(texture); textureID = texture->GetId(); }
+		inline void SetMaterialMainTexture(Resources::Texture* texture) noexcept { _material->SetMainTexture(texture); }
 
-		QXbool		IsEnable() const override;
+		QXbool		IsEnable() override;
 
 		void		SetActive(QXbool enable) override;
 
