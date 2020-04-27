@@ -74,6 +74,8 @@ namespace Quantix::Core::Components
 
 		Mesh*	Copy() const override;
 		
+		void	Init(Core::DataStructure::GameComponent* object) override;
+
 #pragma region Accessor
 
 		inline void	 SetModel(Resources::Model* model) { _model = model; };

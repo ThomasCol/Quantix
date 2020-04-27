@@ -69,7 +69,9 @@ namespace Quantix::Core::Components
 
 #pragma endregion
 
-		Light* Copy() const override;
+		Light*	Copy() const override;
+
+		void	Init(Core::DataStructure::GameComponent* object) override;
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};

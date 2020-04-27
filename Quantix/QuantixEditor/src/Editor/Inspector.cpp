@@ -88,7 +88,10 @@ void Inspector::ShowComponent()
 
 			ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
 			if (enable)
+			{
 				_transform->GetObject()->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+				_transform->GetObject()->GetComponents().back()->Init(_transform->GetObject());
+			}
 
 			ImGui::PopID();
 		}

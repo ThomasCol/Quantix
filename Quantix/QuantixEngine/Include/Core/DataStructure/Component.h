@@ -67,6 +67,8 @@ namespace Quantix::Core::DataStructure
 		 */
 		virtual Component*					Copy() const = 0;
 
+		virtual void						Init(GameComponent* object) = 0;
+
 		/**
 		 * @brief 
 		 * 
