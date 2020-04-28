@@ -34,8 +34,11 @@ namespace Quantix::Physic
 
 			if (cp.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
 			{
-				((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData);
-				((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData);
+				if (pairHeader.actors[2] && pairHeader.actors[1])
+				{
+					((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData);
+					((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData);
+				}
 			}
 		}
 	}

@@ -32,6 +32,8 @@ namespace Quantix::Core::Platform
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes)
 	{
+		Physic::PhysicHandler::GetInstance()->UpdateSystem(info.deltaTime);
 		scene->Update(meshes);
+		Physic::PhysicHandler::GetInstance()->UpdatePhysicActor();
 	}
 }

@@ -108,7 +108,7 @@ namespace Quantix::Physic
 
 		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
 
-		PxShape* s = mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *aMaterial);
+		PxShape* s = mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *aMaterial, true);
 
 		if (hasRigidbody)
 			physicType->GetObjectDynamic()->GetRigid()->attachShape(*s);
@@ -127,7 +127,7 @@ namespace Quantix::Physic
 
 		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
 
-		PxShape* s = mSDK->createShape(PxSphereGeometry(1.f), *aMaterial);
+		PxShape* s = mSDK->createShape(PxSphereGeometry(1.f), *aMaterial, true);
 
 		if (hasRigidbody)
 			physicType->GetObjectDynamic()->GetRigid()->attachShape(*s);
@@ -257,7 +257,7 @@ namespace Quantix::Physic
 		pDefaultFundation->release();
 	}
 
-	void PhysicHandler::UpdateSystem(std::vector<Core::DataStructure::GameComponent*> go, double deltaTime)
+	void PhysicHandler::UpdateSystem(double deltaTime)
 	{
 		/*PhysicStatic* tmp = _physObject.at(go[1])->GetObjectStatic();
 
@@ -341,8 +341,11 @@ namespace Quantix::Physic
 			if (currentActor)
 			{
 				PxTransform transformPhysic = currentActor->getGlobalPose();
-				Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
-
+				if (((Core::DataStructure::GameObject3D*)currentActor->userData))
+				{
+					std::cout << "synchro" << std::endl;
+					Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
+				}
 				//transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
 				//transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
 			}
