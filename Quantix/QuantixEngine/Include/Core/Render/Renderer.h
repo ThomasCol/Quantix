@@ -24,15 +24,19 @@ namespace Quantix::Core::Render
 		{
 			QXuint FBO = 0;
 			QXuint texture = 0;
-			QXuint depthStencilRenderbuffer = 0;
+			QXuint depthBuffer = 0;
 		};
 
 		Framebuffer	_mainBuffer;
+
+		Framebuffer	_shadowBuffer;
 
 		QXuint		_viewProjMatrixUBO = 0;
 		QXuint		_lightUBO = 0;
 
 		PostProcess::PostProcessEffect* _effects;
+
+		Resources::ShaderProgram* _shadowProgram;
 
 		#pragma endregion
 
@@ -45,6 +49,8 @@ namespace Quantix::Core::Render
 		 * @param height Height of the window
 		 */
 		void CreateFrameBuffer(QXuint width, QXuint height) noexcept;
+
+		void InitShadowBuffer() noexcept;
 
 		/**
 		 * @brief Create post process effects
@@ -124,7 +130,11 @@ namespace Quantix::Core::Render
 		 * @param info App info
 		 * @param cam Current camera for rendering
 		 */
-		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light>& lights, Quantix::Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
+		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light>& lights,
+				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
+
+		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
+			std::vector<Core::Components::Light> & lights);
 
 		#pragma endregion
 	};

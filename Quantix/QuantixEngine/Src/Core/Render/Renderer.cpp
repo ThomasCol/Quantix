@@ -18,11 +18,14 @@ namespace Quantix::Core::Render
 		_mainBuffer {}
 	{
 		CreateFrameBuffer(width, height);
+		InitShadowBuffer();
+
+		_shadowProgram = manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Shadow.vert", "../QuantixEngine/Media/Shader/Shadow.frag");
 
 		// Create uniform buffers
 		glGenBuffers(1, &_viewProjMatrixUBO);
 		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
-		glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(Math::QXmat4), nullptr, GL_STATIC_DRAW);
+		glBufferData(GL_UNIFORM_BUFFER, 4 * sizeof(Math::QXmat4), nullptr, GL_STATIC_DRAW);
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 		
 		glGenBuffers(1, &_lightUBO);
@@ -35,7 +38,6 @@ namespace Quantix::Core::Render
 		glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightUBO);
 
 		InitPostProcessEffects(manager);
-
 	}
 
 #pragma endregion
@@ -86,7 +88,33 @@ namespace Quantix::Core::Render
 
         _mainBuffer.FBO = FBO;
         _mainBuffer.texture = texture;
-		_mainBuffer.depthStencilRenderbuffer = depth_stencil_renderbuffer;
+		_mainBuffer.depthBuffer = depth_stencil_renderbuffer;
+	}
+
+	void Renderer::InitShadowBuffer() noexcept
+	{
+		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+		unsigned int depthMapFBO;
+		glGenFramebuffers(1, &depthMapFBO);
+		// create depth texture
+		unsigned int depthMap;
+		glGenTextures(1, &depthMap);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// attach depth texture as FBO's depth buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		_shadowBuffer.FBO = depthMapFBO;
+		_shadowBuffer.texture = depthMap;
 	}
 
 	void Renderer::InitPostProcessEffects(DataStructure::ResourcesManager& manager) noexcept
@@ -109,6 +137,8 @@ namespace Quantix::Core::Render
 		QXbyte last_texture_id = -1;
 		QXuint	light_size = (QXuint)lights.size();
 
+		RenderShadows(mesh, info, lights);
+
 		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
 
 		// Clear
@@ -117,13 +147,19 @@ namespace Quantix::Core::Render
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 
+
+		Math::QXmat4 proj = Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f);
+		Math::QXmat4 viewLight = Math::QXmat4::CreateLookAtMatrix({ 0, 10.0f, 10.0f }, { 0, 0.f, 0.f }, Math::QXvec3::up);
+
 		// Bind uniform buffer
 		{
-			Math::QXmat4 view{ cam->GetLookAt() };
+			Math::QXmat4 view = cam->GetLookAt();
 
 			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
 			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), view.array);
 			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), info.proj.array);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4) * 2, sizeof(Math::QXmat4), proj.array);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4) * 3, sizeof(Math::QXmat4), viewLight.array);
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
@@ -152,7 +188,7 @@ namespace Quantix::Core::Render
 			// Compare Meshes key for binding each texture once per shader
 			if (mesh[i]->textureID != last_texture_id)
 			{
-				material->SendData();
+				material->SendData(_shadowBuffer.texture);
 				last_texture_id = mesh[i]->textureID;
 			}
 
@@ -177,6 +213,45 @@ namespace Quantix::Core::Render
 		STOP_PROFILING("draw");
 
 		return _mainBuffer.texture;
+	}
+
+	void Renderer::RenderShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,
+		std::vector<Core::Components::Light>& lights)
+	{
+		_shadowProgram->Use();
+		glBindFramebuffer(GL_FRAMEBUFFER, _shadowBuffer.FBO);
+		glEnable(GL_DEPTH_TEST);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glViewport(0, 0, 1024, 1024);
+
+		QXbyte last_shader_id = -1;
+
+		Quantix::Core::DataStructure::GameObject3D* obj;
+		Math::QXmat4 proj = Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f);
+		Math::QXmat4 view = Math::QXmat4::CreateLookAtMatrix(lights[0].position, lights[0].position + lights[0].direction, Math::QXvec3::up);
+
+		glUniformMatrix4fv(_shadowProgram->GetLocation("view"), 1, false, view.array);
+		glUniformMatrix4fv(_shadowProgram->GetLocation("proj"), 1, false, proj.array);
+
+		for (QXuint i = 0; i < meshes.size(); i++)
+		{
+			if (!meshes[i]->IsEnable())
+				continue;
+
+			obj = (Quantix::Core::DataStructure::GameObject3D*)meshes[i]->GetObject();
+
+			glUniformMatrix4fv(_shadowProgram->GetLocation("model"), 1, false, obj->GetTransform()->GetTRS().array);
+
+			glBindVertexArray(meshes[i]->GetVAO());
+
+			glDrawElements(GL_TRIANGLES, (GLsizei)meshes[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
+
+			glBindVertexArray(0);
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		glViewport(0, 0, info.width, info.height);
 	}
 
 #pragma endregion

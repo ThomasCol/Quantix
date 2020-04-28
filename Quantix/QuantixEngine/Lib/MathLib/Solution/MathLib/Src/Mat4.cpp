@@ -336,12 +336,14 @@ namespace Math
 		bottom = -top;
 		right = (QXfloat)width / 2.f;
 		left = -right;
-		toReturn[0][0] = 1 / right - left;
+
+		toReturn[0][0] = 2 / right - left;
 		toReturn[1][1] = 2 / top - bottom;
 		toReturn[2][2] = -2 / (far - near);
 		toReturn[2][3] = - (far + near) / (far - near);
 		toReturn[0][3] = - (right + left) / (right - left);
 		toReturn[1][3] = - (top + bottom) / (top - bottom);
+
 		return toReturn;
 	}
 

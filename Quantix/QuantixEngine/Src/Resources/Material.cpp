@@ -37,22 +37,27 @@ namespace Quantix::Resources
 		return _mainTexture->IsReady();
 	}
 	
-	void Material::SendData()
+	void Material::SendData(QXuint shadowTexture)
 	{
 		SetFloat3("material.ambient", ambient.e);
 		SetFloat3("material.diffuse", diffuse.e);
 		SetFloat3("material.specular", specular.e);
 		SetFloat("material.shininess", shininess);
+
+		SetInt("material.shadowMap", 1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, shadowTexture);
+
 		if (_mainTexture && _mainTexture->IsReady())
 		{
 			SetInt("material.textured", 1);
-			SetUint("material.texture", 0);
+
+			SetInt("material.texture", 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _mainTexture->GetId());
-			return;
 		}
-
-		SetInt("material.textured", 0);
+		else
+			SetInt("material.textured", 0);
 	}
 
 	void Material::SetFloat(QXstring location, QXfloat value)

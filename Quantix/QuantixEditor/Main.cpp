@@ -15,7 +15,7 @@
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/UserEntry/InputManager.h>
 
-#define SPEED (0.1f)
+#define SPEED (0.5f)
 
 QXuint indexPackD;
 QXuint indexPackE;
@@ -65,10 +65,10 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	Quantix::Core::Components::Light light;
-	light.ambient = { 0.5f, 0.5f, 0.5f };
-	light.diffuse = { 0.7f, 0.7f, 0.7f };
+	light.ambient = { 0.3f, 0.3f, 0.3f };
+	light.diffuse = { 2.f, 2.f, 2.f };
 	light.specular = { 1.0f, 1.0f, 1.0f };
-	light.position = { 0.0f, 2.0f, 0.f };
+	light.position = { 0.0f, 5.0f, 12.f };
 	light.direction = { 0.0f, 0.0f, -1.f };
 	light.constant = 0.5f;
 	light.linear = 0.09f;
@@ -77,21 +77,21 @@ void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Light>& li
 	light.outerCutOff = cos(0.76f);
 	light.type = Quantix::Core::Components::ELightType::SPOT;
 
-	Quantix::Core::Components::Light light2;
-	light2.ambient = { 0.7f, 0.7f, 0.7f };
-	light2.diffuse = { 0.7f, 0.7f, 0.7f };
+	/*Quantix::Core::Components::Light light2;
+	light2.ambient = { 0.3f, 0.3f, 0.3f };
+	light2.diffuse = { 2.0f, 2.0f, 2.0f };
 	light2.specular = { 0.50f, 0.50f, 0.50f };
-	light2.position = { 0.0f, 12.f, 5.f };
-	light2.direction = { 0.0f, -1.0f, -1.f };
+	light2.position = { 0.0f, 1.f, 1.f };
+	light2.direction = { 0.0f, -1.f, -1.f };
 	light2.constant = 0.5f;
 	light2.linear = 0.09f;
 	light2.quadratic = 0.032f;
 	light2.cutOff = cos(0.70f);
 	light2.outerCutOff = cos(0.76f);
-	light2.type = Quantix::Core::Components::ELightType::DIRECTIONAL;
+	light2.type = Quantix::Core::Components::ELightType::DIRECTIONAL;*/
 
 	lights.push_back(light);
-	lights.push_back(light2);
+	//lights.push_back(light2);
 }
 
 void InitPack()

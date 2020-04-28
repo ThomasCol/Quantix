@@ -66,23 +66,23 @@ namespace Quantix::Resources
 	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept
 	{
 		AddGameObject("Mesh");
-		AddGameObject("Mesh2", GetGameObject("Mesh"));
+		//AddGameObject("Mesh2", GetGameObject("Mesh"));
 
 		Quantix::Core::DataStructure::GameObject3D* gameObject = GetGameObject("Mesh");//new Quantix::Core::DataStructure::GameObject3D("Mesh");
-		Quantix::Core::DataStructure::GameObject3D* gameObject2 = GetGameObject("Mesh2");// new Quantix::Core::DataStructure::GameObject3D("Mesh2");
+		//Quantix::Core::DataStructure::GameObject3D* gameObject2 = GetGameObject("Mesh2");// new Quantix::Core::DataStructure::GameObject3D("Mesh2");
 
 		/*_root->AddChild(gameObject);
 		gameObject->AddChild(gameObject2);*/
 
 		gameObject->AddComponent<Core::Components::Mesh>();
-		gameObject2->AddComponent<Core::Components::Mesh>();
+		//gameObject2->AddComponent<Core::Components::Mesh>();
 
 		Core::Components::Mesh* mesh = gameObject->GetComponent<Quantix::Core::Components::Mesh>();
-		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-		mesh->SetMaterialMainTexture(manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
-
-		mesh = gameObject2->GetComponent<Core::Components::Mesh>();
+		//mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
+		//mesh->SetMaterialMainTexture(manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
+
+		//mesh = gameObject2->GetComponent<Core::Components::Mesh>();
 	}
 
 	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes) noexcept
