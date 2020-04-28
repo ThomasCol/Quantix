@@ -10,6 +10,7 @@
 #include <Type.h>
 #include <Node.h>
 #include <Core/DataStructure/GameObject3D.h>
+#include <Core/Platform/Application.h>
 
 #include <rttr/registration.h>
 
@@ -28,17 +29,19 @@ public:
 	inline void												SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 	inline Quantix::Physic::Transform3D*					GetTransform() { return _transform; };
 
-	void													Update();
+	void													Update(Quantix::Core::Platform::Application* app);
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 	void													ShowComponent();
 	void													AddComponent();
-	void													GetInstance(rttr::instance inst, rttr::type t);
+	void													DrawMaterialPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
+	void													DrawModelPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
+	void													GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
 	void													ShowLightEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
-	void													DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type);
+	void													DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app);
 
 private:
-	Quantix::Physic::Transform3D*		_transform;
-	QXbool												_enable;
+	Quantix::Physic::Transform3D*							_transform;
+	QXbool													_enable;
 
 };
 

@@ -253,7 +253,7 @@ void Editor::DrawSimulation()
 
 void Editor::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp)
 {
-	Math::QXmat4 matrixTmp2 = Math::QXmat4::Identity();
+	Math::QXmat4 matrixTmp2 = Math::QXmat4::CreateTRSMatrix(transform->GetPosition(), Math::QXquaternion(1, 0, 0, 0), transform->GetScale());
 	Math::QXvec3 translation, transTmp, rotation, rotTmp, scale, scaleTmp;
 
 	if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
@@ -266,6 +266,7 @@ void Editor::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& m
 	else if (_guizmoType == ImGuizmo::OPERATION::ROTATE)
 	{
 		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::WORLD, matrixTmp2.array);
+		
 		ImGuizmo::DecomposeMatrixToComponents(matrixTmp2.array, translation.e, rotTmp.e, scale.e);
 		rotTmp = rotTmp * (Q_PI / 180);
 
@@ -288,13 +289,12 @@ void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 	Math::QXmat4 matrixTmp = transform->GetTRS();
 	ImVec2 size = ImGui::GetWindowSize();
 	ImVec2 pos = ImGui::GetWindowPos();
-	Math::QXvec3 vecLenght = transform->GetPosition() - _cameraEditor->GetPos();
 	ImGuiIO& io = ImGui::GetIO();
 
 	ImGuizmo::SetRect(pos.x, pos.y, size.x, size.y);
 	pos.y += 25;
 	ImGuizmo::DrawCube(_cameraEditor->GetLookAt().array, _app->info.proj.array, matrix.array);
-	ImGuizmo::ViewManipulate(_cameraEditor->GetLookAt().array, 10.f, pos, ImVec2(128,128), 0x10101010);
+	ImGuizmo::ViewManipulate(_cameraEditor->GetLookAt().array, 50.f, pos, ImVec2(128,128), 0x10101010);
 
 	MoveObject(transform, matrix, matrixTmp);
 }
@@ -339,7 +339,9 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 		}
-		ImGui::Image((ImTextureID)(size_t)_fbo, ImGui::GetWindowSize(), { 0.f, 1.f }, { 1.f, 0.f });
+		ImVec2 size = ImGui::GetWindowSize();
+		size.y -= 50;
+		ImGui::Image((ImTextureID)(size_t)_fbo, size, { 0.f, 1.f }, { 1.f, 0.f });
 		if (!_mouseInput->MouseCaptured)
 			DrawGuizmo();
 	}
@@ -400,7 +402,7 @@ void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		if (_hierarchy.GetInspector() != nullptr)
-			_hierarchy.GetInspector()->Update();
+			_hierarchy.GetInspector()->Update(_app);
 	}
 	ImGui::End();
 }
