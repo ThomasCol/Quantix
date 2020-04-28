@@ -234,6 +234,8 @@
     <ClCompile Include="Src\Resources\Model.cpp" />
     <ClCompile Include="Src\Resources\Shader.cpp" />
     <ClCompile Include="Src\Resources\ShaderProgram.cpp" />
+    <ClCompile Include="Src\Resources\Sound.cpp" />
+    <ClCompile Include="Src\Core\SoundCore.cpp" />
     <ClCompile Include="Src\Resources\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +270,8 @@
     <ClInclude Include="Include\Resources\Model.h" />
     <ClInclude Include="Include\Resources\Shader.h" />
     <ClInclude Include="Include\Resources\ShaderProgram.h" />
+    <ClInclude Include="Include\Resources\Sound.h" />
+    <ClInclude Include="Include\Core\SoundCore.h" />
     <ClInclude Include="Include\Resources\Texture.h" />
     <ClInclude Include="Include\Core\Components\SphereCollider.h" />
     <ClInclude Include="Include\Physic\IPhysicType.h" />

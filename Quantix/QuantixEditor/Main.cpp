@@ -19,6 +19,8 @@
 #include <Vec3.h>
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/UserEntry/InputManager.h>
+#include <Core/SoundCore.h>
+//#include <Resources\Sound.h>
 
 #define SPEED (0.1f)
 
@@ -109,42 +111,6 @@ void InitPack()
 	indexPackR = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_D, Quantix::Core::UserEntry::ETriggerType::DOWN);*/
 }
 
-void InitFMod(FMOD::System* system)
-{
-	FMOD_RESULT result;
-
-	result = FMOD::System_Create(&system);      // Create the main system object.
-	if (result != FMOD_OK)
-	{
-		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		return;
-	}
-
-	result = system->init(512, FMOD_INIT_NORMAL, 0);    // Initialize FMOD.
-	if (result != FMOD_OK)
-	{
-		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		return;
-	}
-
-	FMOD::Sound* backgroundHandler{ nullptr };
-	result = system->createSound("media/Sounds/BackgroundTest.wav", FMOD_DEFAULT, nullptr, &backgroundHandler);
-	if (result != FMOD_OK)
-	{
-		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		return;
-	}
-
-	result = system->playSound(backgroundHandler, nullptr, false, nullptr);
-	if (result != FMOD_OK)
-	{
-		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		return;
-	}
-
-	std::cout << "FMod init finished" << std::endl;
-}
-
 void	DebugMode()
 {
 	if (GetKey(QX_KEY_F1) == Quantix::Core::UserEntry::EKeyState::PRESSED)
@@ -214,12 +180,12 @@ int main()
 		Init(editor, lights);
 
 		//Tests for FMOD
-		FMOD::System* system = NULL;
-		InitFMod(system);
+		//Quantix::Resources::Sound s("media/Sounds/BackgroundTest.wav");
+		//s.Play();
 
 		while (!editor->GetWin().ShouldClose())
 		{
-			system->update(); //Update for FMOD
+			Quantix::Core::SoundCore::GetInstance()->Update(); //Update for FMOD
 			Update(editor, lights, cam);
 		}
 

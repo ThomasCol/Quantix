@@ -37,6 +37,8 @@
     <ClCompile Include="Src\Core\UserEntry\InputManager.cpp" />
     <ClCompile Include="Src\Core\Components\Rigidbody.cpp" />
     <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
+    <ClCompile Include="Src\Resources\Sound.cpp" />
+    <ClCompile Include="Src\Core\SoundCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -76,5 +78,7 @@
     <ClInclude Include="Include\Core\UserEntry\InputManager.h" />
     <ClInclude Include="Include\Core\Components\Rigidbody.h" />
     <ClInclude Include="Include\Physic\PhysicDynamic.h" />
+    <ClInclude Include="Include\Resources\Sound.h" />
+    <ClInclude Include="Include\Core\SoundCore.h" />
   </ItemGroup>
 </Project>
