@@ -72,7 +72,7 @@ namespace Quantix::Physic
 		void		InitScene();
 
 		void		UpdateSystem(double deltaTime);
-		void		UpdatePhysicActor();
+		void		UpdatePhysicActor(bool isPlaying = false);
 
 #pragma region Operators
 

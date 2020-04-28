@@ -79,7 +79,11 @@ namespace Quantix::Physic
 			std::cout << "attach one shape" << std::endl;
 			_static->attachShape(shape[i]);
 			physicDynamic->GetRigid()->detachShape(shape[i]);
+			
 		}
+
+		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicDynamic->GetRigid()->userData;
+		_static->userData = data;
 	}
 
 
