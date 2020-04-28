@@ -4,6 +4,9 @@
 #include <imgui_internal.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
+#include <filesystem>
+
+#define DEFAULTPATH "media"
 
 void MenuBar::FileButton()
 {
@@ -28,6 +31,17 @@ void MenuBar::EditButton()
 	}
 }
 
+void MenuBar::OpenExplorer(QXbool selection)
+{
+	if (selection)
+	{
+		QXstring cmd = "explorer ";
+		cmd += std::filesystem::current_path().string() + "\\" + DEFAULTPATH;
+		std::cout << cmd << std::endl;
+		system(cmd.c_str());
+	}
+}
+
 void MenuBar::AssetButton()
 {
 	if (ImGui::BeginMenu("Asset"))
@@ -40,7 +54,8 @@ void MenuBar::AssetButton()
 			ImGui::EndMenu();
 		}
 		static QXbool selection[2] = { false, false };
-		ImGui::Selectable("Show in Explorer", &selection[0]);
+		if (ImGui::Selectable("Show in Explorer", &selection[0]))
+			OpenExplorer(true);
 		ImGui::Selectable("Import Asset", &selection[1]);
 		ImGui::EndMenu();
 	}

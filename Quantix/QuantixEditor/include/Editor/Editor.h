@@ -35,6 +35,7 @@ public:
 	Editor(Editor&& editor) = default;
 	~Editor();
 
+	void												InitImg();
 	void												Init();
 	void												InitImGui();
 	void												Update(QXuint FBO);
@@ -44,6 +45,10 @@ public:
 	void												DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags);
 	void												DrawShader(const QXstring& name, ImGuiWindowFlags flags);
 	void												Simulation();
+	void												ChangeStateSimulation();
+	void												ChangeGuizmoOperation(QXuint index);
+	void												LocalWorldGuizmo(QXint pos);
+	void												GuizmoUI();
 	void												DrawSimulation();
 	void												MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp);
 	void												ShowGuizmoObject(Quantix::Physic::Transform3D* transform);
@@ -51,6 +56,8 @@ public:
 	void												DrawScene(const QXstring& name, ImGuiWindowFlags flags);
 
 	void												PrintLog();
+
+	void												ConsoleUI();
 
 	void												DrawConsole(const QXstring& name, ImGuiWindowFlags flags);
 	void												DrawExplorer(const QXstring& name, ImGuiWindowFlags flags);
@@ -87,7 +94,12 @@ private:
 	QXbool												_activateFocus;
 
 	QXuint												_fbo;
+	std::vector<bool>									_showTypeLog;
+	std::vector<Quantix::Resources::Texture*>			_imgTypeLog;
+	std::vector<Quantix::Resources::Texture*>			_imgGuizmo;
 	ImGuizmo::OPERATION									_guizmoType;
+	ImGuizmo::MODE										_guizmoMode;
+	QXuint												_sizeLog;
 	ImGuiWindowFlags									_flagsEditor;
 };
 

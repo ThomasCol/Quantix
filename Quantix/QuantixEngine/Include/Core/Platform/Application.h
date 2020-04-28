@@ -56,7 +56,7 @@ namespace Quantix::Core::Platform
 		/**
 		 * @brief Run Application
 		 */
-		void Update(std::vector<Core::Components::Mesh*>& meshes);
+		void Update(std::vector<Core::Components::Mesh*>& meshes, bool isPlaying = false);
 
 #pragma endregion
 	};

@@ -13,14 +13,16 @@ void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods
 
 Editor::Editor(QXuint width, QXuint height) :
 	_win{ width, height },
-	_lib{"QuantixEngine"},
+	_lib{ "QuantixEngine" },
 	_docker{},
 	_folder{},
 	_menuBar{},
 	_hierarchy{},
 	_play{ false },
-	_pause{ false },
+	_pause{ false }, 
 	_guizmoType{ ImGuizmo::OPERATION::TRANSLATE },
+	_guizmoMode{ ImGuizmo::MODE::WORLD },
+	_sizeLog{ 0 },
 	_flagsEditor{}
 {
 	_cameraEditor = new Quantix::Core::Components::Camera({ 0, 7, -10 }, { 0, -1, 1 }, Math::QXvec3::up);
@@ -49,20 +51,16 @@ Editor::Editor(QXuint width, QXuint height) :
 	ImGui_ImplGlfw_InitForOpenGL(_win.GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	GLFWimage icon;
-	icon.pixels = stbi_load("media/IconEditor/logo_6_1.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
-
-	glfwSetWindowIcon(_win.GetWindow(), 1, &icon);
-
 	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight());
 
 	_root = _app->scene->GetRoot();
 
-	_simImg.insert(std::make_pair("Play", _app->manager.CreateTexture("media/IconEditor/Play.png")));
-	_simImg.insert(std::make_pair("Pause", _app->manager.CreateTexture("media/IconEditor/Pause.png")));
-	_simState.insert(std::make_pair("Play", false));
-	_simState.insert(std::make_pair("Pause", false));
+	_showTypeLog.push_back(true);
+	_showTypeLog.push_back(true);
+	_showTypeLog.push_back(true);
+	InitImg();
 }
+
 
 Editor::~Editor()
 {
@@ -73,6 +71,25 @@ Editor::~Editor()
 
 	//unload lib rttr
 	_lib.unload();
+}
+
+void Editor::InitImg()
+{
+	GLFWimage icon;
+	icon.pixels = stbi_load("media/IconEditor/logo_6_1.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
+
+	glfwSetWindowIcon(_win.GetWindow(), 1, &icon);
+
+	_simImg.insert(std::make_pair("Play", _app->manager.CreateTexture("media/IconEditor/Simulation/Play.png")));
+	_simImg.insert(std::make_pair("Pause", _app->manager.CreateTexture("media/IconEditor/Simulation/Pause.png")));
+	_simState.insert(std::make_pair("Play", false));
+	_simState.insert(std::make_pair("Pause", false));
+	_imgGuizmo.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/Translate.png"));
+	_imgGuizmo.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/Rotate.png"));
+	_imgGuizmo.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/Scale.png"));
+	_imgTypeLog.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/info.png"));
+	_imgTypeLog.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/warning.png"));
+	_imgTypeLog.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/error.png"));
 }
 
 void Editor::Init()
@@ -119,6 +136,7 @@ void Editor::Update(QXuint FBO)
 	ImGui::SetNextWindowSize(viewport->Size);
 	ImGui::SetNextWindowViewport(viewport->ID);
 
+	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 6.f);
 	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(1, 1, 1, 1));
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 1, 1, 1));
 	ImGui::Begin("Editor", NULL, _flagsEditor);
@@ -127,6 +145,7 @@ void Editor::Update(QXuint FBO)
 
 	DrawMenuBar();
 	DrawSimulation();
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
 	ImGui::DockSpace(_docker.GetIDDockspace(), ImVec2(0, 0), ImGuiDockNodeFlags_NoTabBar);
 
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
@@ -134,11 +153,13 @@ void Editor::Update(QXuint FBO)
 	for (QXuint i{ 0 }; i < _docker.GetWindowsEditor().size(); i++)
 		Draw(_docker.GetWindowsEditor()[i], flags);
 
+	ImGui::PopStyleColor();
 	STOP_PROFILING("Editor");
 	ImGui::End();
 
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
+	ImGui::PopStyleVar();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -201,7 +222,7 @@ void Editor::Simulation()
 	for (auto it = _simState.rbegin(); it != _simState.rend(); ++it)
 	{
 		if (!it->second)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 1, 1));
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(128 / 255.f, 128 / 255.f, 128 / 255.f, 1));
 		else
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(44 / 255, 62 / 255, 80 / 255, 1));
 		ImGui::SetCursorPos(ImVec2(ImGui::GetWindowSize().x / 2 + pos, 0));
@@ -212,11 +233,8 @@ void Editor::Simulation()
 	}
 }
 
-void Editor::DrawSimulation()
+void Editor::ChangeStateSimulation()
 {
-	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
-	ImGui::BeginChild(ImGui::GetID("Editor"), ImVec2(0, 35), false, flags);
-	Simulation();
 	if (_simState["Play"])
 	{
 		if (!_simState["Pause"])
@@ -248,6 +266,72 @@ void Editor::DrawSimulation()
 		_simState["Pause"] = false;
 		_activateFocus = false;
 	}
+}
+
+void Editor::ChangeGuizmoOperation(QXuint index)
+{
+	if (index == 0)
+		_guizmoType = ImGuizmo::OPERATION::TRANSLATE;
+	else if (index == 1)
+		_guizmoType = ImGuizmo::OPERATION::ROTATE;
+	else
+		_guizmoType = ImGuizmo::OPERATION::SCALE;
+}
+
+void Editor::LocalWorldGuizmo(QXint pos)
+{
+	pos += 20;
+	ImGui::SetCursorPos(ImVec2(pos, 0));
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 1));
+
+	if (_guizmoMode == ImGuizmo::MODE::LOCAL)
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(44 / 255, 62 / 255, 80 / 255, 1));
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(128 / 255.f, 128 / 255.f, 128 / 255.f, 1));
+
+
+	if (ImGui::Button("Local"))
+		_guizmoMode = ImGuizmo::MODE::LOCAL;
+
+	ImGui::PopStyleColor();
+	pos += 50;
+	ImGui::SetCursorPos(ImVec2(pos, 0));
+
+	if (_guizmoMode == ImGuizmo::MODE::WORLD)
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(44 / 255, 62 / 255, 80 / 255, 1));
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(128 / 255.f, 128 / 255.f, 128 / 255.f, 1));
+
+	if (ImGui::Button("World"))
+		_guizmoMode = ImGuizmo::MODE::WORLD;
+
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
+}
+
+void Editor::GuizmoUI()
+{
+	QXint pos = 0;
+	for (QXuint i = 0; i < _imgGuizmo.size(); i++)
+	{
+		ImGui::SetCursorPos(ImVec2(pos, 0));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(128 / 255.f, 128 / 255.f, 128 / 255.f, 1));
+			if (ImGui::ImageButton((ImTextureID)_imgGuizmo[i]->GetId(), ImVec2(20, 20)))
+				ChangeGuizmoOperation(i);
+		pos += 30;
+		ImGui::PopStyleColor();
+	}
+
+	LocalWorldGuizmo(pos);
+}
+
+void Editor::DrawSimulation()
+{
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
+	ImGui::BeginChild(ImGui::GetID("Editor"), ImVec2(0, 35), false, flags);
+	GuizmoUI();
+	Simulation();
+	ChangeStateSimulation();
 	ImGui::EndChild();
 }
 
@@ -258,14 +342,14 @@ void Editor::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& m
 
 	if (_guizmoType == ImGuizmo::OPERATION::TRANSLATE)
 	{
-		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::MODE::WORLD, matrix.array);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::TRANSLATE, _guizmoMode, matrix.array);
 		ImGuizmo::DecomposeMatrixToComponents(matrixTmp.array, transTmp.e, rotation.e, scale.e);
 		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
 		transform->Translate(translation - transTmp);
 	}
 	else if (_guizmoType == ImGuizmo::OPERATION::ROTATE)
 	{
-		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::WORLD, matrixTmp2.array);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::ROTATE, _guizmoMode, matrixTmp2.array);
 		
 		ImGuizmo::DecomposeMatrixToComponents(matrixTmp2.array, translation.e, rotTmp.e, scale.e);
 		rotTmp = rotTmp * (Q_PI / 180);
@@ -274,7 +358,7 @@ void Editor::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& m
 	}
 	else
 	{
-		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::SCALE, ImGuizmo::MODE::WORLD, matrix.array);
+		ImGuizmo::Manipulate(_cameraEditor->GetLookAt().array, _app->info.proj.array, ImGuizmo::OPERATION::SCALE, _guizmoMode, matrix.array);
 		ImGuizmo::DecomposeMatrixToComponents(matrixTmp.array, translation.e, rotation.e, scaleTmp.e);
 		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
 		transform->Scale(scale - scaleTmp);
@@ -342,7 +426,7 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 		ImVec2 size = ImGui::GetWindowSize();
 		size.y -= 50;
 		ImGui::Image((ImTextureID)(size_t)_fbo, size, { 0.f, 1.f }, { 1.f, 0.f });
-		if (!_mouseInput->MouseCaptured)
+		if (!_mouseInput->MouseCaptured || _play)
 			DrawGuizmo();
 	}
 	ImGui::End();
@@ -353,14 +437,37 @@ void Editor::PrintLog()
 	ImGuiStyle& style = ImGui::GetStyle();
 	for (QXuint i = 0; i < Quantix::Core::Debugger::Logger::GetInstance()->GetData().size(); i++)
 	{
-		if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::INFOS)
+		if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::INFOS && _showTypeLog[0])
 			ImGui::TextColored(ImVec4(52 / 255.f, 152 / 255.f, 219 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
-		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::WARNING)
+		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::WARNING && _showTypeLog[1])
 			ImGui::TextColored(ImVec4(241 / 255.f, 196 / 255.f, 15 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
-		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::ERROR)
+		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::ERROR && _showTypeLog[2])
 			ImGui::TextColored(ImVec4(231 / 255.f, 76 / 255.f, 60 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
 		else if (Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._type == Quantix::Core::Debugger::TypeLog::PROFILING)
 			ImGui::TextColored(ImVec4(39 / 255.f, 174 / 255.f, 96 / 255.f, 1), "%s\n", Quantix::Core::Debugger::Logger::GetInstance()->GetData()[i]._message.c_str());
+	}
+	if (Quantix::Core::Debugger::Logger::GetInstance()->GetData().size() != _sizeLog)
+	{
+		_sizeLog = Quantix::Core::Debugger::Logger::GetInstance()->GetData().size();
+		ImGui::SetScrollHereY(1.f);
+	}
+}
+
+void Editor::ConsoleUI()
+{
+	if (ImGui::Button("Clear", ImVec2(75,0)))
+		Quantix::Core::Debugger::Logger::GetInstance()->ClearMessage();
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(20,20));
+	for (QXuint i = 0; i < _showTypeLog.size(); i++)
+	{
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		if (ImGui::ImageButton((ImTextureID)_imgTypeLog[i]->GetId(), ImVec2(20,20), ImVec2(0,1), ImVec2(1,0)))
+			_showTypeLog[i] = !_showTypeLog[i];
+		ImGui::SameLine();
+		ImGui::Text("%d", Quantix::Core::Debugger::Logger::GetInstance()->GetMessage()[i]);
+		ImGui::EndGroup();
 	}
 }
 
@@ -368,7 +475,6 @@ void Editor::DrawConsole(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		ImGui::BeginTabBar("GPU Infos");
 		static QXbool ShowDemoWindow = false;
 		// Display GPU infos
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -383,10 +489,12 @@ void Editor::DrawConsole(const QXstring& name, ImGuiWindowFlags flags)
 
 		if (ShowDemoWindow)
 			ImGui::ShowDemoWindow(&ShowDemoWindow);
-		ImGui::EndTabBar();
 
-		ImGui::BeginTabBar("Logger");
+		ImGui::BeginTabBar("Log");
+		ConsoleUI();
+		ImGui::BeginChild("Logger");
 		PrintLog();
+		ImGui::EndChild();
 		ImGui::EndTabBar();
 	}
 	ImGui::End();

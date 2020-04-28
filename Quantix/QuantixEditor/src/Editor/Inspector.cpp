@@ -153,6 +153,8 @@ void Inspector::DrawModelPath(rttr::instance inst, rttr::type t, Quantix::Core::
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
 				{
 					path = (const QXchar*)payload->Data;
+					if (path.find(".obj") == QXstring::npos)
+						path = it->first;
 					Quantix::Resources::Model* model = app->manager.CreateModel(path);
 					t.get_property("Model").set_value(inst, model);
 					ImGui::EndDragDropTarget();
