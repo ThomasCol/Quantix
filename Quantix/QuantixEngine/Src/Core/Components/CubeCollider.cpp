@@ -52,6 +52,7 @@ namespace Quantix::Core::Components
 
 	void CubeCollider::Init(DataStructure::GameComponent* par)
 	{
+		typeShape = ETypeShape::CUBE;
 		_object = par;
 		_isDestroyed = false;
 		_isEnable = true;

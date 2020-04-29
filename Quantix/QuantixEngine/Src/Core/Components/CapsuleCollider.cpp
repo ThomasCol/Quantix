@@ -64,6 +64,7 @@ namespace Quantix::Core::Components
 
 	void CapsuleCollider::Init(DataStructure::GameComponent* par)
 	{
+		typeShape = ETypeShape::CAPSULE;
 		_object = par;
 		_isDestroyed = false;
 		_isEnable = true;

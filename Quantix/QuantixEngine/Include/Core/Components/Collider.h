@@ -36,12 +36,14 @@ namespace Quantix::Core::Components
 	struct QUANTIX_API ICollider : public virtual Core::DataStructure::Component
 	{
 #pragma region Attributes
-
+		ETypeShape typeShape = ETypeShape::DEFAULT;
 		physx::PxShape* shape{ nullptr };
 		EPhysXType physicType { EPhysXType::DEFAULT };
 		Physic::IPhysicType* actorPhysic{ nullptr };
 
 		Physic::ShapeFlag shapeFlag;
+		bool toRender{ true };
+
 
 #pragma endregion
 

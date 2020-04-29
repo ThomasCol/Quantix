@@ -53,6 +53,7 @@ namespace Quantix::Core::Components
 
 	void SphereCollider::Init(DataStructure::GameComponent* par)
 	{
+		typeShape = ETypeShape::SPHERE;
 		_object = par;
 		_isDestroyed = false;
 		_isEnable = true;

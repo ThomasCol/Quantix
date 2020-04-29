@@ -37,6 +37,7 @@ namespace Quantix::Physic
 	{
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Static" << std::endl;
+		type = ETypePhysic::STATIC;
 
 		_static = SDK->createRigidStatic(PxTransform(PxVec3(0, -1, 0)));
 
