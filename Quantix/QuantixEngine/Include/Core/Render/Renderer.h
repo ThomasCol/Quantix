@@ -32,8 +32,11 @@ namespace Quantix::Core::Render
 		Framebuffer	_shadowBuffer;
 
 		QXuint		_viewProjMatrixUBO = 0;
+		QXuint		_viewProjShadowMatrixUBO = 0;
 		QXuint		_lightUBO = 0;
 
+
+		Math::QXmat4 _projLight;
 		PostProcess::PostProcessEffect* _effects;
 
 		Resources::ShaderProgram* _shadowProgram;

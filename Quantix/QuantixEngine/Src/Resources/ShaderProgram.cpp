@@ -30,10 +30,10 @@ namespace Quantix::Resources
 
 		int  success;
 		char info_log[512];
-		glGetShaderiv(_id, GL_LINK_STATUS, &success);
+		glGetProgramiv(_id, GL_LINK_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(_id, 512, NULL, info_log);
+			glGetProgramInfoLog(_id, 512, NULL, info_log);
 			LOG(ERROR, QXstring("ERROR::SHADER::PROGRAM::LINK_FAILED") + info_log);
 		}
 

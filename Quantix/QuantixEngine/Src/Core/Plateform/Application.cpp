@@ -30,8 +30,8 @@ namespace Quantix::Core::Platform
 		scene {new Resources::Scene()}
 	{
 		stbi_set_flip_vertically_on_load(true);
-		scene->Init(manager);
 		Physic::PhysicHandler::GetInstance()->InitSystem();
+		scene->Init(manager);
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, bool isPlaying)

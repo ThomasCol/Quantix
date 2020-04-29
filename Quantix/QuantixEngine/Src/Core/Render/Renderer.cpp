@@ -15,7 +15,8 @@ namespace Quantix::Core::Render
 #pragma region Constructors
 
 	Renderer::Renderer(QXuint width, QXuint height, DataStructure::ResourcesManager& manager) noexcept :
-		_mainBuffer {}
+		_mainBuffer {},
+		_projLight { Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f) }
 	{
 		CreateFrameBuffer(width, height);
 		InitShadowBuffer();
@@ -25,7 +26,12 @@ namespace Quantix::Core::Render
 		// Create uniform buffers
 		glGenBuffers(1, &_viewProjMatrixUBO);
 		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
-		glBufferData(GL_UNIFORM_BUFFER, 4 * sizeof(Math::QXmat4), nullptr, GL_STATIC_DRAW);
+		glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(Math::QXmat4), nullptr, GL_STATIC_DRAW);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+		glGenBuffers(1, &_viewProjShadowMatrixUBO);
+		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
+		glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(Math::QXmat4), nullptr, GL_STATIC_DRAW);
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 		
 		glGenBuffers(1, &_lightUBO);
@@ -35,7 +41,8 @@ namespace Quantix::Core::Render
 
 		// Set buffers binding
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, _viewProjMatrixUBO);
-		glBindBufferBase(GL_UNIFORM_BUFFER, 1, _lightUBO);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 1, _viewProjShadowMatrixUBO);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 2, _lightUBO);
 
 		InitPostProcessEffects(manager);
 	}
@@ -139,6 +146,26 @@ namespace Quantix::Core::Render
 		QXbyte last_texture_id = -1;
 		QXuint	light_size = (QXuint)lights.size();
 
+		Math::QXmat4 viewLight = Math::QXmat4::CreateLookAtMatrix(lights[0].position, lights[0].position + lights[0].direction, Math::QXvec3::up);
+
+		// Bind uniform buffer
+		{
+			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), cam->GetLookAt().array);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), info.proj.array);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), viewLight.array);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), _projLight.array);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 2, light_size * sizeof(Core::Components::Light), &lights[0]);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		}
+
 		RenderShadows(mesh, info, lights);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _mainBuffer.FBO);
@@ -148,27 +175,6 @@ namespace Quantix::Core::Render
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
-
-
-		Math::QXmat4 proj = Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f);
-		Math::QXmat4 viewLight = Math::QXmat4::CreateLookAtMatrix(lights[0].position, {0, 0, 0}, Math::QXvec3::up);
-
-		// Bind uniform buffer
-		{
-			Math::QXmat4 view = cam->GetLookAt();
-
-			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
-			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), view.array);
-			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), info.proj.array);
-			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4) * 2, sizeof(Math::QXmat4), proj.array);
-			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4) * 3, sizeof(Math::QXmat4), viewLight.array);
-			glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
-			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
-			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 2, light_size * sizeof(Core::Components::Light), &lights[0]);
-			glBindBuffer(GL_UNIFORM_BUFFER, 0);
-		}
 
 		Resources::Material*						material;
 		Quantix::Core::DataStructure::GameObject3D* obj;
@@ -183,6 +189,7 @@ namespace Quantix::Core::Render
 			if (mesh[i]->shaderID != last_shader_id)
 			{
 				material->UseShader();
+				std::cout << "Use :" << material->GetShaderProgram()->GetID() << std::endl;
 				material->SetFloat3("viewPos", cam->GetPos().e);
 				last_shader_id = mesh[i]->shaderID;
 			}
@@ -198,8 +205,9 @@ namespace Quantix::Core::Render
 			obj = (Quantix::Core::DataStructure::GameObject3D*)mesh[i]->GetObject();
 
 			material->SetMat4("TRS", obj->GetTransform()->GetTRS());
-
+			std::cout << "Draw" << std::endl;
 			glBindVertexArray(mesh[i]->GetVAO());
+			material->UseShader();
 
 			glDrawElements(GL_TRIANGLES, (GLsizei)mesh[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
 
@@ -221,6 +229,8 @@ namespace Quantix::Core::Render
 		std::vector<Core::Components::Light>& lights)
 	{
 		_shadowProgram->Use();
+		std::cout << "Use 2 :" << _shadowProgram->GetID() << std::endl;
+
 		glCullFace(GL_FRONT);
 		glBindFramebuffer(GL_FRAMEBUFFER, _shadowBuffer.FBO);
 		glEnable(GL_DEPTH_TEST);
@@ -230,13 +240,6 @@ namespace Quantix::Core::Render
 		QXbyte last_shader_id = -1;
 
 		Quantix::Core::DataStructure::GameObject3D* obj;
-		Math::QXmat4 proj = Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f);
-		Math::QXmat4 view = Math::QXmat4::CreateLookAtMatrix(lights[0].position, { 0, 0, 0 }, Math::QXvec3::up);
-
-		LOG(INFOS, view.ToString());
-
-		glUniformMatrix4fv(_shadowProgram->GetLocation("view"), 1, false, view.array);
-		glUniformMatrix4fv(_shadowProgram->GetLocation("proj"), 1, false, proj.array);
 
 		for (QXuint i = 0; i < meshes.size(); i++)
 		{
@@ -246,6 +249,7 @@ namespace Quantix::Core::Render
 			obj = (Quantix::Core::DataStructure::GameObject3D*)meshes[i]->GetObject();
 
 			glUniformMatrix4fv(_shadowProgram->GetLocation("model"), 1, false, obj->GetTransform()->GetTRS().array);
+			std::cout << "Draw" << std::endl;
 
 			glBindVertexArray(meshes[i]->GetVAO());
 
@@ -257,7 +261,11 @@ namespace Quantix::Core::Render
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		glViewport(0, 0, info.width, info.height);
+
 		glCullFace(GL_BACK);
+
+		_shadowProgram->Unuse();
+		std::cout << "Unuse 2 :" << _shadowProgram->GetID() << std::endl;
 	}
 
 #pragma endregion
