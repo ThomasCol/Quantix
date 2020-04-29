@@ -64,7 +64,7 @@ namespace Quantix::Core::Components
 
 #pragma endregion
 
-		void Init(DataStructure::GameComponent* par) override;
+		virtual void Init(DataStructure::GameComponent* par) override;
 
 #pragma region Acessors 
 		ICollider* Copy() const override;

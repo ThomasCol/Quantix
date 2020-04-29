@@ -9,6 +9,27 @@
 
 #define PVD_HOST "127.0.0.1"	//Set this to the IP address of the system running the PhysX Visual Debugger that you want to connect to.
 
+RTTR_PLUGIN_REGISTRATION
+{
+	using namespace Quantix::Core::Components;
+rttr::registration::class_<Quantix::Physic::PhysicHandler>("Collider")
+.constructor<>()
+.property("AdaptiveForce", &Quantix::Physic::PhysicHandler::GetFlagAdaptiveForce, &Quantix::Physic::PhysicHandler::SetFlagAdaptiveForce)
+.property("DisableCCDResweep", &Quantix::Physic::PhysicHandler::GetFlagDisableCCDResweep, &Quantix::Physic::PhysicHandler::SetFlagDisableCCDResweep)
+.property("DisableContactCache", &Quantix::Physic::PhysicHandler::GetFlagDisableContactCache, &Quantix::Physic::PhysicHandler::SetFlagDisableContactCache)
+.property("DisableContactReport", &Quantix::Physic::PhysicHandler::GetFlagDisableContactReport, &Quantix::Physic::PhysicHandler::SetFlagDisableContactReport)
+.property("ActiveActors", &Quantix::Physic::PhysicHandler::GetFlagActiveActors, &Quantix::Physic::PhysicHandler::SetFlagActiveActors)
+.property("AveragePoint", &Quantix::Physic::PhysicHandler::GetFlagAveragePoint, &Quantix::Physic::PhysicHandler::SetFlagAveragePoint)
+.property("CCD", &Quantix::Physic::PhysicHandler::GetFlagCCD, &Quantix::Physic::PhysicHandler::SetFlagCCD)
+.property("EnhancedDeterminism", &Quantix::Physic::PhysicHandler::GetFlagEnhancedDeterminism, &Quantix::Physic::PhysicHandler::SetFlagEnhancedDeterminism)
+.property("FrictionEveryIt", &Quantix::Physic::PhysicHandler::GetFlagFrictionEveryIt, &Quantix::Physic::PhysicHandler::SetFlagFrictionEveryIt)
+.property("GPUDynamics", &Quantix::Physic::PhysicHandler::GetFlagGPUDynamics, &Quantix::Physic::PhysicHandler::SetFlagGPUDynamics)
+.property("PCM", &Quantix::Physic::PhysicHandler::GetFlagPCM, &Quantix::Physic::PhysicHandler::SetFlagPCM)
+.property("Stabilization", &Quantix::Physic::PhysicHandler::GetFlagStabilization, &Quantix::Physic::PhysicHandler::SetFlagStabilization)
+.property("ExcludeKineActiverActors", &Quantix::Physic::PhysicHandler::GetFlagExcludeKineActiverActors, &Quantix::Physic::PhysicHandler::SetFlagExcludeKineActiverActors)
+.property("Mutable", &Quantix::Physic::PhysicHandler::GetFlagMutable, &Quantix::Physic::PhysicHandler::SetFlagMutable)
+.property("RequireRWLock", &Quantix::Physic::PhysicHandler::GetFlagRequireRWLock, &Quantix::Physic::PhysicHandler::SetFlagRequireRWLock);
+}
 
 using namespace physx;
 namespace Quantix::Physic
@@ -235,6 +256,8 @@ namespace Quantix::Physic
 		mScene = mSDK->createScene(sceneDesc);
 		if (!mScene)
 			std::cerr << "createScene failed!";
+
+		//mScene->setFlag()
 	}
 
 	void PhysicHandler::ReleaseSystem()
@@ -382,5 +405,95 @@ namespace Quantix::Physic
 				}
 			}
 		}
+	}
+
+	void PhysicHandler::SetFlagAdaptiveForce(bool b)
+	{
+		sceneFlag.adaptiveForce = b;
+		mScene->setFlag(PxSceneFlag::eADAPTIVE_FORCE, b);
+	}
+
+	void PhysicHandler::SetFlagDisableCCDResweep(bool b)
+	{
+		sceneFlag.disableCCDResweep = b;
+		mScene->setFlag(PxSceneFlag::eDISABLE_CCD_RESWEEP, b);
+	}
+
+	void PhysicHandler::SetFlagDisableContactCache(bool b)
+	{
+		sceneFlag.disableContactCache = b;
+		mScene->setFlag(PxSceneFlag::eDISABLE_CONTACT_CACHE, b);
+	}
+
+	void PhysicHandler::SetFlagDisableContactReport(bool b)
+	{
+		sceneFlag.disableContactReportResize = b;
+		mScene->setFlag(PxSceneFlag::eDISABLE_CONTACT_REPORT_BUFFER_RESIZE, b);
+	}
+
+	void PhysicHandler::SetFlagActiveActors(bool b)
+	{
+		sceneFlag.activeActors = b;
+		mScene->setFlag(PxSceneFlag::eENABLE_ACTIVE_ACTORS, b);
+	}
+
+	void PhysicHandler::SetFlagAveragePoint(bool b)
+	{
+		sceneFlag.averagePoint = b;
+		mScene->setFlag(PxSceneFlag::eENABLE_AVERAGE_POINT, b);
+	}
+
+	void PhysicHandler::SetFlagCCD(bool b)
+	{
+		sceneFlag.ccd = b;
+		mScene->setFlag(PxSceneFlag::eENABLE_CCD, b);
+	}
+
+	void PhysicHandler::SetFlagEnhancedDeterminism(bool b)
+	{
+		sceneFlag.enhancedDeterminism = b;
+		mScene->setFlag(PxSceneFlag::eENABLE_ENHANCED_DETERMINISM, b);
+	}
+
+	void PhysicHandler::SetFlagFrictionEveryIt(bool b)
+	{
+		sceneFlag.frictionEveryIteration = b;
+		mScene->setFlag(PxSceneFlag::eENABLE_FRICTION_EVERY_ITERATION, b);
+	}
+
+	void PhysicHandler::SetFlagGPUDynamics(bool b)
+	{
+		sceneFlag.gpuDynamics = b;
+		mScene->setFlag(PxSceneFlag::eENABLE_GPU_DYNAMICS, b);
+	}
+
+	void PhysicHandler::SetFlagPCM(bool b)
+	{
+		sceneFlag.pcm = b;
+		mScene->setFlag(PxSceneFlag::eENABLE_PCM, b);
+	}
+
+	void PhysicHandler::SetFlagStabilization(bool b)
+	{
+		sceneFlag.stabilization = b;
+		mScene->setFlag(PxSceneFlag::eENABLE_STABILIZATION, b);
+	}
+
+	void PhysicHandler::SetFlagExcludeKineActiverActors(bool b)
+	{
+		sceneFlag.excludeKineActiveActors = b;
+		mScene->setFlag(PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS, b);
+	}
+
+	void PhysicHandler::SetFlagMutable(bool b)
+	{
+		sceneFlag.mutableFlags = b;
+		mScene->setFlag(PxSceneFlag::eMUTABLE_FLAGS, b);
+	}
+
+	void PhysicHandler::SetFlagRequireRWLock(bool b)
+	{
+		sceneFlag.requireRWLock = b;
+		mScene->setFlag(PxSceneFlag::eREQUIRE_RW_LOCK, b);
 	}
 }
