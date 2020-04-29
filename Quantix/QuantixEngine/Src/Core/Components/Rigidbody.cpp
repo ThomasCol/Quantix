@@ -75,7 +75,9 @@ namespace Quantix::Core::Components
 
 	QXfloat Rigidbody::GetMass()
 	{
+		//std::cout << actorPhysic->GetRigid()->getMass
 		return mass;
+
 	}
 
 	void Rigidbody::SetMass(QXfloat m)
@@ -84,11 +86,12 @@ namespace Quantix::Core::Components
 			m = 0.1f;
 		mass = m;
 		physx::PxRigidBodyExt::updateMassAndInertia(*actorPhysic->GetRigid(), m);
+		actorPhysic->GetRigid()->setMass(m);
 	}
 
 	Math::QXvec3 Rigidbody::GetLinearVelocity()
 	{
-		physx::PxVec3 v = actorPhysic->GetRigid()->getAngularVelocity();
+		physx::PxVec3 v = actorPhysic->GetRigid()->getLinearVelocity();
 		return 	Math::QXvec3(v.x, v.y, v.z);
 	}
 
