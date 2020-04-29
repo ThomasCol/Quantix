@@ -26,8 +26,8 @@ namespace Quantix::Core::Platform
 		sceneManager {},
 		scene {new Resources::Scene()}
 	{
-		scene->Init(manager);
 		Physic::PhysicHandler::GetInstance()->InitSystem();
+		scene->Init(manager);
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, bool isPlaying)

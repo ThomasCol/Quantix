@@ -28,6 +28,7 @@ namespace Quantix::Core::Render
 		};
 
 		Framebuffer	_mainBuffer;
+		Framebuffer	_gameBuffer;
 
 		QXuint		_viewProjMatrixUBO = 0;
 		QXuint		_lightUBO = 0;
@@ -44,7 +45,7 @@ namespace Quantix::Core::Render
 		 * @param width Width of the window
 		 * @param height Height of the window
 		 */
-		void CreateFrameBuffer(QXuint width, QXuint height) noexcept;
+		void CreateFrameBuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept;
 
 		/**
 		 * @brief Create post process effects
@@ -122,9 +123,19 @@ namespace Quantix::Core::Render
 		 * @param meshes Meshes to render
 		 * @param lights Lights for the scene
 		 * @param info App info
-		 * @param cam Current camera for rendering
+		 * @param cam Scene camera for rendering
 		 */
 		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light>& lights, Quantix::Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
+
+		/**
+		 * @brief
+		 *
+		 * @param meshes Meshes to render
+		 * @param lights Lights for the scene
+		 * @param info App info
+		 * @param cam Game camera for rendering
+		 */
+		QXuint DrawGame(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
 
 		#pragma endregion
 	};

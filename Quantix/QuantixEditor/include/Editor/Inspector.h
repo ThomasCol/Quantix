@@ -16,6 +16,9 @@
 
 #include "Type.h"
 
+#define PATHIMG "media/IconEditor/Simulation/"
+#define PNG ".png"
+
 class Inspector
 {
 public:
@@ -29,7 +32,7 @@ public:
 	inline void												SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
 	inline Quantix::Physic::Transform3D*					GetTransform() { return _transform; };
 
-	void													Update(Quantix::Core::Platform::Application* app);
+	void													Update(Quantix::Core::Platform::Window& win, Quantix::Core::Platform::Application* app);
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 	void													ShowComponent();
 	void													AddComponent();

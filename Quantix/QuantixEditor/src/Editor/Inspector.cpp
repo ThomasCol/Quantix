@@ -4,6 +4,9 @@
 #include <Core/DataStructure/Component.h>
 
 #include "Inspector.h"
+#include <Core/UserEntry/InputManager.h>
+#include <filesystem>
+
 
 Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
 	_transform{ transform },
@@ -11,7 +14,25 @@ Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
 {
 }
 
-void Inspector::Update(Quantix::Core::Platform::Application* app)
+static void TreeNodeImage(const QXstring& name, const QXstring& imgPath, Quantix::Core::Platform::Application* app, ImVec2 pos)
+{
+	QXuint		idImg;
+
+	pos.x += 25.f;
+
+	if (std::filesystem::exists(imgPath))
+	{
+		ImGui::SetCursorPos(pos);
+		idImg = app->manager.CreateTexture(imgPath)->GetId();
+		ImGui::Image((ImTextureID)idImg, ImVec2(25, 25), ImVec2(0, 1), ImVec2(1, 0));
+		pos.x += 30.f;
+	}
+	pos.y += 4.f;
+	ImGui::SetCursorPos(pos);
+	ImGui::Text(name.c_str());
+}
+
+void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Platform::Application* app)
 {
 	if (_enable)
 	{
@@ -23,20 +44,23 @@ void Inspector::Update(Quantix::Core::Platform::Application* app)
 		if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
 			_transform->GetObject()->SetName(currName);
 
-		if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_Framed))
-		{
-			Math::QXvec3	pos = _transform->GetPosition();
-			Math::QXvec3	rot = _transform->GetRotation().QuaternionToEuler();
-			Math::QXvec3	scale = _transform->GetScale();
+		ImVec2 cursorPos = ImGui::GetCursorPos();
+		QXbool open = ImGui::TreeNodeEx("##Transform", ImGuiTreeNodeFlags_Framed);
+		TreeNodeImage("Transform", "media/IconEditor/Simulation/Transform.png", app, cursorPos);
 
-			ImGui::Text("Position");	ImGui::SameLine(150.f);	ImGui::DragFloat3("##Position", pos.e, 0.25f);
+		if (open)
+		{
+			Math::QXvec3		pos = _transform->GetPosition();
+			Math::QXvec3		rot = _transform->GetRotation().QuaternionToEuler();
+			Math::QXvec3		rotTmp = _transform->GetRotation().QuaternionToEuler();
+			Math::QXvec3		scale = _transform->GetScale();
+
+			ImGui::Text("Position");	ImGui::SameLine(150.f); ImGui::DragFloat3("##Position", pos.e, 0.25f);
 			ImGui::Text("Rotation");	ImGui::SameLine(150.f); ImGui::DragFloat3("##Rotation", rot.e, 0.25f);
 			ImGui::Text("Scale");		ImGui::SameLine(150.f); ImGui::DragFloat3("##Scale", scale.e, 0.25f);
 
-			//Math::QXquaternion q = Math::QXquaternion::EulerToQuaternion(rot);
-
 			_transform->SetPosition(pos);
-			_transform->SetRotation(Math::QXquaternion::EulerToQuaternion(rot));
+			_transform->Rotate(Math::QXquaternion::EulerToQuaternion(rot - rotTmp));
 			_transform->SetScale(scale);
 
 			ImGui::TreePop();
@@ -175,13 +199,19 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 	else
 		name = t.get_name().to_string();
 
-	if (ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_Framed))
+	std::cout << name << std::endl;
+	ImVec2 pos = ImGui::GetCursorPos();
+	QXbool open = ImGui::TreeNodeEx(("##" + name).c_str(), ImGuiTreeNodeFlags_Framed);
+	TreeNodeImage(name, PATHIMG + name + PNG, app, pos);
+	
+	if (open)
 	{
 		if (t == rttr::type::get<Quantix::Core::Components::Mesh>())
 		{
 			DrawMaterialPath(inst, t, app);
 			DrawModelPath(inst, t, app);
 		}
+
 		QXint index = 0;
 		for (auto it = t.get_properties().begin(); it != t.get_properties().end(); ++it)
 		{
@@ -229,7 +259,7 @@ void Inspector::ShowLightEnum(rttr::property currentProp, rttr::instance inst, r
 	const QXchar* items[] = { "Default", "Directonal", "Point", "Spot" };
 	QXint item_current = GetValueLightEnum(LightType);
 
-	ImGui::Text("Light Type"); ImGui::SameLine(150.f);
+	ImGui::Text("Light Type"); ImGui::SameLine(155.f);
 	ImGui::Combo("##Light Type: ", &item_current, items, IM_ARRAYSIZE(items));
 
 	LightType = SetValueLightEnum(item_current);

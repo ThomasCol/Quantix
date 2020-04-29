@@ -38,7 +38,7 @@ public:
 	void												InitImg();
 	void												Init();
 	void												InitImGui();
-	void												Update(QXuint FBO);
+	void												Update(QXuint FBOGame, QXuint FBOScene);
 
 	void												Draw(const QXstring& name, ImGuiWindowFlags flags);
 	void												DrawMenuBar();
@@ -53,6 +53,8 @@ public:
 	void												MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp);
 	void												ShowGuizmoObject(Quantix::Physic::Transform3D* transform);
 	void												DrawGuizmo();
+	void												FocusScene();
+	void												DrawGame(const QXstring& name, ImGuiWindowFlags flags);
 	void												DrawScene(const QXstring& name, ImGuiWindowFlags flags);
 
 	void												PrintLog();
@@ -93,7 +95,8 @@ private:
 	QXbool												_pause;
 	QXbool												_activateFocus;
 
-	QXuint												_fbo;
+	QXuint												_fboScene;
+	QXuint												_fboGame;
 	std::vector<bool>									_showTypeLog;
 	std::vector<Quantix::Resources::Texture*>			_imgTypeLog;
 	std::vector<Quantix::Resources::Texture*>			_imgGuizmo;

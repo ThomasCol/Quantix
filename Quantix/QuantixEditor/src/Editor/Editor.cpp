@@ -125,11 +125,12 @@ void Editor::InitImGui()
 		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
 }
 
-void Editor::Update(QXuint FBO)
+void Editor::Update(QXuint FBOGame, QXuint FBOScene)
 {
 	InitImGui();
 
-	_fbo = FBO;
+	_fboScene = FBOScene;
+	_fboGame = FBOGame;
 	static QXint i = 0;
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
@@ -173,6 +174,8 @@ void Editor::Draw(const QXstring& name, ImGuiWindowFlags flags)
 		DrawExplorer(name, flags);
 	else if (name == "Scene")
 		DrawScene(name, flags);
+	else if (name == "Game")
+		DrawGame(name, flags);
 	else if (name == "Hierarchy")
 		DrawHierarchy(name, flags);
 	else if (name == "Shader")
@@ -375,10 +378,11 @@ void Editor::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 	ImVec2 pos = ImGui::GetWindowPos();
 	ImGuiIO& io = ImGui::GetIO();
 
+	QXfloat dist = (transform->GetPosition() - _cameraEditor->GetPos()).Length();
+
 	ImGuizmo::SetRect(pos.x, pos.y, size.x, size.y);
 	pos.y += 25;
-	ImGuizmo::DrawCube(_cameraEditor->GetLookAt().array, _app->info.proj.array, matrix.array);
-	ImGuizmo::ViewManipulate(_cameraEditor->GetLookAt().array, 50.f, pos, ImVec2(128,128), 0x10101010);
+	ImGuizmo::ViewManipulate(_cameraEditor->GetLookAt().array, dist, pos, ImVec2(128,128), 0x10101010);
 
 	MoveObject(transform, matrix, matrixTmp);
 }
@@ -399,10 +403,62 @@ void Editor::DrawGuizmo()
 		ShowGuizmoObject(_hierarchy.GetInspector()->GetTransform());
 }
 
+void Editor::FocusScene()
+{
+	if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
+	{
+		_mouseInput->MouseCaptured = true;
+		glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+		Math::QXvec2 mousePos = GetMousePos();
+		_mouseInput->MouseX = mousePos.x;
+		_mouseInput->MouseY = mousePos.y;
+
+		ImGui::CloseCurrentPopup();
+		ImGui::EndPopup();
+	}
+}
+
+void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
+{
+	static QXbool focus = false;
+
+	if (!focus)
+	{
+		if (_play)
+		{
+			ImGui::SetWindowFocus(name.c_str());
+			focus = true;
+		}
+	}
+	else if (!_play)
+		focus = false;
+
+	ImGui::Begin(name.c_str(), NULL, flags);
+	{
+		FocusScene();
+		ImVec2 size = ImGui::GetWindowSize();
+		size.y -= 50;
+		ImGui::Image((ImTextureID)(size_t)_fboGame, size, { 0.f, 1.f }, { 1.f, 0.f });
+	}
+	ImGui::End();
+}
+
 void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 {
-	static QXint i = 0;
+	static QXbool focus = false;
 
+	if (!focus)
+	{
+		if (!_play)
+		{
+			ImGui::SetWindowFocus(name.c_str());
+			focus = true;
+		}
+	}
+	else if (_play)
+		focus = false;
+	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		ImGuizmo::SetDrawlist();
@@ -411,23 +467,11 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");
 			i++;
 		}
-		if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
-		{
-			_mouseInput->MouseCaptured = true;
-			glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-			Math::QXvec2 mousePos = GetMousePos();
-			_mouseInput->MouseX = mousePos.x;
-			_mouseInput->MouseY = mousePos.y;
-
-			ImGui::CloseCurrentPopup();
-			ImGui::EndPopup();
-		}
+		FocusScene();
 		ImVec2 size = ImGui::GetWindowSize();
 		size.y -= 50;
-		ImGui::Image((ImTextureID)(size_t)_fbo, size, { 0.f, 1.f }, { 1.f, 0.f });
-		if (!_mouseInput->MouseCaptured || _play)
-			DrawGuizmo();
+		ImGui::Image((ImTextureID)(size_t)_fboScene, size, { 0.f, 1.f }, { 1.f, 0.f });
+		DrawGuizmo();
 	}
 	ImGui::End();
 }
@@ -455,8 +499,10 @@ void Editor::PrintLog()
 
 void Editor::ConsoleUI()
 {
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(192 / 255.f, 57 / 255.f, 43 / 255.f, 1.f));
 	if (ImGui::Button("Clear", ImVec2(75,0)))
 		Quantix::Core::Debugger::Logger::GetInstance()->ClearMessage();
+	ImGui::PopStyleColor();
 	ImGui::SameLine();
 	ImGui::Dummy(ImVec2(20,20));
 	for (QXuint i = 0; i < _showTypeLog.size(); i++)
@@ -510,7 +556,7 @@ void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		if (_hierarchy.GetInspector() != nullptr)
-			_hierarchy.GetInspector()->Update(_app);
+			_hierarchy.GetInspector()->Update(_win, _app);
 	}
 	ImGui::End();
 }

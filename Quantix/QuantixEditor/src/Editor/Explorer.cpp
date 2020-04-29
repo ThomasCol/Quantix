@@ -83,7 +83,7 @@ void	Explorer::OpenSoftware(QXstring name)
 		filePath.erase(found, 2);
 	findAndReplaceAll(filePath, "/", "\\");
 
-	QXstring cmd = "openwith " + filePath;
+	QXstring cmd = "explorer " + filePath;
 	std::cout << cmd << std::endl;
 	system(cmd.c_str());
 }
@@ -134,6 +134,9 @@ void Explorer::DrawFile(QXint& index)
 			PushId(_folder.GetIDSLN(), name, index);
 		else if (name.find(".vcxproj") != std::string::npos)
 			PushId(_folder.GetIDVCXPROJ(), name, index);
+		else if (name.find(".png") != std::string::npos || name.find(".jpg") != std::string::npos
+				|| name.find(".jpeg") != std::string::npos)
+			PushId(_folder.GetIDImg(), name, index);
 		else
 			PushId(_folder.GetIDFile(), name, index);
 
