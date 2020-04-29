@@ -118,6 +118,7 @@ void main()
 
 float	ComputeShadow(vec4 fragPosLightSpace)
 {
+	vec3 lightDir = normalize(light[0].position - fragPos);
 	// perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range
@@ -126,8 +127,22 @@ float	ComputeShadow(vec4 fragPosLightSpace)
     float closestDepth = texture(material.shadowMap, projCoords.xy).r; 
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
+	float bias = max(0.05 * (1.0 - dot(normalize(outNormal), lightDir)), 0.005);
     // check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(material.shadowMap, 0);
+	for(int x = -1; x <= 1; ++x)
+	{
+    	for(int y = -1; y <= 1; ++y)
+    	{
+      		float pcfDepth = texture(material.shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+        	shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+    	}    
+	}
+	shadow /= 9.0;
+
+	if (projCoords.z > 1.0)
+		shadow = 0.0;
 
     return shadow;
 }

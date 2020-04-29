@@ -28,4 +28,11 @@ namespace Quantix::Core::Components
 	{
 		return new Behaviour(*this);
 	}
+
+	void Behaviour::Init(Core::DataStructure::GameComponent* object)
+	{
+		_object = object;
+		_isDestroyed = false;
+		_isEnable = true;
+	}
 }

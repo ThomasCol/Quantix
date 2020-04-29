@@ -37,6 +37,8 @@ namespace Quantix::Core::Components
 
 		Behaviour* Copy() const;
 
+		void Init(Core::DataStructure::GameComponent* object) override;
+
 
 		CLASS_REGISTRATION(Quantix::Core::DataStructure::Component)
 	};

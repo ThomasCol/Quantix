@@ -34,6 +34,7 @@ namespace Quantix::Core::Components
 #pragma endregion
 
 		CapsuleCollider* Copy() const override;
+		void Init(DataStructure::GameComponent* par) override;
 
 
 		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);

@@ -31,5 +31,5 @@ void 	main()
 
 	outNormal = mat3(transpose(inverse(TRS))) * normal;
 
-	fragPosLightSpace = lightProj * lightView * TRS * vec4(position, 1.0);
+	fragPosLightSpace = lightProj * lightView * vec4(fragPos, 1.0);
 }

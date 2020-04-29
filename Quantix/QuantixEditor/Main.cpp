@@ -68,7 +68,7 @@ void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Light>& li
 	light.ambient = { 0.3f, 0.3f, 0.3f };
 	light.diffuse = { 2.f, 2.f, 2.f };
 	light.specular = { 1.0f, 1.0f, 1.0f };
-	light.position = { 0.0f, 5.0f, 12.f };
+	light.position = { -2.0f, 4.0f, -1.0f };
 	light.direction = { 0.0f, 0.0f, -1.f };
 	light.constant = 0.5f;
 	light.linear = 0.09f;

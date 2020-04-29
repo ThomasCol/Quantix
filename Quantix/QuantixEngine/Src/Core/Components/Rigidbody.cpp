@@ -66,6 +66,15 @@ namespace Quantix::Core::Components
 		return new Rigidbody(*this);
 	}
 
+	void Rigidbody::Init(DataStructure::GameComponent* par)
+	{
+		_object = par;
+		_isDestroyed = false;
+		_isEnable = true;
+
+		actorPhysic = (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(par, true);
+	}
+
 	QXfloat Rigidbody::GetMass()
 	{
 		return (QXfloat)actorPhysic->GetRigid()->getMass();

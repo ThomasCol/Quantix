@@ -62,8 +62,11 @@ namespace Quantix::Core::Components
 
 #pragma endregion
 
+		void Init(DataStructure::GameComponent* par) override;
+
 #pragma region Acessors 
 		ICollider* Copy() const override;
+
 
 		Math::QXvec3 GetPosition();
 		void SetPosition(Math::QXvec3);
@@ -80,7 +83,7 @@ namespace Quantix::Core::Components
 		void SetShapeFlagVisualization(bool b);
 		bool GetShapeFlagVisualization();
 
-		void Remove();
+		void Destroy() override;
 
 #pragma endregion
 

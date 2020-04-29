@@ -49,8 +49,6 @@ namespace Quantix::Physic
 			std::cout << "type set: Dynamic" << std::endl;
 
 		_dynamic = SDK->createRigidDynamic(PxTransform(PxVec3(0, 10, 0)));
-		//_dynamic->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
-		//_dynamic->setRigidBodyFlag(PxRigidBodyFlag::, true);
 
 		PxMaterial* aMaterial = SDK->createMaterial(1.f, 1.f, 1.f);
 		PxShape* aShape = nullptr;
@@ -99,6 +97,8 @@ namespace Quantix::Physic
 			_dynamic->attachShape(shape[i]);
 			physicStatic->GetRigid()->detachShape(shape[i]);
 		}
+		void* data = physicStatic->GetRigid()->userData;
+		_dynamic->userData = data;
 		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);
 	}
 

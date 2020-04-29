@@ -31,11 +31,6 @@ namespace Quantix::Physic
 			std::cout << "type set: Static" << std::endl;
 
 		_static = SDK->createRigidStatic(PxTransform(PxVec3(0, -2, 0)));
-
-		PxMaterial* aMaterial = SDK->createMaterial(0.5f, 0.5f, 0.1f);
-
-		PxShape* aCubeShape = SDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *aMaterial);
-		_static->attachShape(*aCubeShape);
 	}
 
 	PhysicStatic::PhysicStatic(PxPhysics* SDK, EPhysXShape physXShape)
@@ -51,8 +46,6 @@ namespace Quantix::Physic
 		if (physXShape == EPhysXShape::CUBE)
 		{
 			aShape = SDK->createShape(PxBoxGeometry(1000.f, 1.f, 1000.f), *aMaterial);
-			aShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
-			aShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 			std::cout << "shape: Cube" << std::endl;
 		}
 		else if (physXShape == EPhysXShape::SPHERE)

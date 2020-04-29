@@ -41,6 +41,15 @@ namespace Quantix::Core::Components
 		return new Mesh(*this);
 	}
 
+	void Mesh::Init(Core::DataStructure::GameComponent* object)
+	{
+		_object = object;
+		object->SetRender(true);
+		_isDestroyed = false;
+		_isEnable = true;
+		_material = new Resources::Material();
+	}
+
 	QXbool	Mesh::IsEnable()
 	{
 		if (!_model || !_model->IsReady())

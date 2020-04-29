@@ -3,6 +3,11 @@
 #include <glad/glad.h>
 #include <stdexcept>
 #include <array>
+#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Core/Profiler/Profiler.h"
 #include "Core/Render/PostProcess/Skybox.h"
@@ -103,8 +108,10 @@ namespace Quantix::Core::Render
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 		// attach depth texture as FBO's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
@@ -149,7 +156,7 @@ namespace Quantix::Core::Render
 
 
 		Math::QXmat4 proj = Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f);
-		Math::QXmat4 viewLight = Math::QXmat4::CreateLookAtMatrix({ 0, 10.0f, 10.0f }, { 0, 0.f, 0.f }, Math::QXvec3::up);
+		Math::QXmat4 viewLight = Math::QXmat4::CreateLookAtMatrix(lights[0].position, {0, 0, 0}, Math::QXvec3::up);
 
 		// Bind uniform buffer
 		{
@@ -219,6 +226,7 @@ namespace Quantix::Core::Render
 		std::vector<Core::Components::Light>& lights)
 	{
 		_shadowProgram->Use();
+		glCullFace(GL_FRONT);
 		glBindFramebuffer(GL_FRAMEBUFFER, _shadowBuffer.FBO);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -228,10 +236,14 @@ namespace Quantix::Core::Render
 
 		Quantix::Core::DataStructure::GameObject3D* obj;
 		Math::QXmat4 proj = Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f);
-		Math::QXmat4 view = Math::QXmat4::CreateLookAtMatrix(lights[0].position, lights[0].position + lights[0].direction, Math::QXvec3::up);
+		glm::mat4 mat = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+		Math::QXmat4 view = Math::QXmat4::CreateLookAtMatrix(lights[0].position, { 0, 0, 0 }, Math::QXvec3::up);
+		glm::mat4 mat2 = glm::lookAt(glm::vec3{ -2.0f, 4.0f, -1.0f }, glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 });
 
-		glUniformMatrix4fv(_shadowProgram->GetLocation("view"), 1, false, view.array);
-		glUniformMatrix4fv(_shadowProgram->GetLocation("proj"), 1, false, proj.array);
+		LOG(INFOS, view.ToString());
+
+		glUniformMatrix4fv(_shadowProgram->GetLocation("view"), 1, false, view.array/*glm::value_ptr(mat2)*/);
+		glUniformMatrix4fv(_shadowProgram->GetLocation("proj"), 1, false, proj.array/*glm::value_ptr(mat)*/);
 
 		for (QXuint i = 0; i < meshes.size(); i++)
 		{
@@ -252,6 +264,7 @@ namespace Quantix::Core::Render
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		glViewport(0, 0, info.width, info.height);
+		glCullFace(GL_BACK);
 	}
 
 #pragma endregion

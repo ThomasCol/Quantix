@@ -87,6 +87,9 @@
     <ClCompile Include="externals\imguizmo\ImSequencer.cpp">
       <Filter>Fichiers sources\Ext\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="src\opengl_helpers_imgui.cpp">
+      <Filter>Fichiers sources\Ext</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\Editor.h">
@@ -123,6 +126,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="externals\stb_image.h">
+      <Filter>Fichiers d%27en-tête\Ext</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opengl_helper.h">
       <Filter>Fichiers d%27en-tête\Ext</Filter>
     </ClInclude>
   </ItemGroup>

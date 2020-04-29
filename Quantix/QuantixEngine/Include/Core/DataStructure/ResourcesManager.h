@@ -243,6 +243,10 @@ namespace Quantix::Core::DataStructure
 		Scene*				LoadScene(const QXstring& path);
 		void				UpdateResourcesState();
 
+		inline std::unordered_map<QXstring, ShaderProgram*>&			GetShaders() { return _programs; };
+		inline std::unordered_map<QXstring, Model*>&					GetModels() { return _models; };
+		inline std::unordered_map<QXstring, Material*>&					GetMaterials() { return _materials; };
+
 #pragma endregion
 	};
 }

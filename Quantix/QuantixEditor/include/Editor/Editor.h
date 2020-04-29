@@ -42,6 +42,7 @@ public:
 	void												Draw(const QXstring& name, ImGuiWindowFlags flags);
 	void												DrawMenuBar();
 	void												DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags);
+	void												DrawShader(const QXstring& name, ImGuiWindowFlags flags);
 	void												Simulation();
 	void												DrawSimulation();
 	void												MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp);

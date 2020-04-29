@@ -76,9 +76,12 @@ namespace Quantix::Core::Components
 
 		Mesh*	Copy() const override;
 		
+		void	Init(Core::DataStructure::GameComponent* object) override;
+
 #pragma region Accessor
 
 		inline void	 SetModel(Resources::Model* model) { _model = model; };
+		inline Resources::Model* GetModel() { return _model; };
 		inline QXuint GetVAO() { return _model->GetVAO(); }
 		inline const std::vector<QXuint>& GetIndices() { return _model->GetIndices(); }
 		inline Resources::Material* GetMaterial() { return _material; }

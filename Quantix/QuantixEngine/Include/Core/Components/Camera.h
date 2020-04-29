@@ -64,14 +64,7 @@ namespace Quantix::Core::Components
 		#pragma region Methods
 		Camera* Copy() const override;
 
-		/**
-		 * @brief Init the camera component
-		 * 
-		 * @param pos Vector
-		 * @param dir Vector
-		 * @param up Vector
-		 */
-		void							Init(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up);
+		void	Init(Core::DataStructure::GameComponent* object) override;
 
 		/**
 		 * @brief Update the LookAtMatrix of the Camera
@@ -101,7 +94,7 @@ namespace Quantix::Core::Components
 
 		#pragma	region Accessor
 
-		inline Math::QXmat4				GetLookAt() { return _lookAt; }
+		inline Math::QXmat4&			GetLookAt() { return _lookAt; }
 
 		inline void						SetPos(Math::QXvec3 pos) { _pos = pos; }
 

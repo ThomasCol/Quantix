@@ -65,11 +65,14 @@ namespace Quantix::Core::Components
 		return new Camera(*this);
 	}
 
-	void			Camera::Init(Math::QXvec3 pos, Math::QXvec3 dir, Math::QXvec3 up)
+	void Camera::Init(Core::DataStructure::GameComponent* object)
 	{
-		_pos = pos;
-		_dir = dir;
-		_up = up;
+		_object = object;
+		_isDestroyed = false;
+		_isEnable = true;
+		_pos = Math::QXvec3(0, 0, 0);
+		_dir = Math::QXvec3(0, 0, 1);
+		_up = Math::QXvec3(0, 1, 0);
 		_angle = Math::QXvec3(0, 0, 0);
 	}
 

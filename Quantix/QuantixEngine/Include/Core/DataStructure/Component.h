@@ -67,6 +67,8 @@ namespace Quantix::Core::DataStructure
 		 */
 		virtual Component*					Copy() const = 0;
 
+		virtual void						Init(GameComponent* object) = 0;
+
 		/**
 		 * @brief 
 		 * 
@@ -116,7 +118,7 @@ namespace Quantix::Core::DataStructure
 		 * @brief virtual Method for Destroy the Component
 		 * 
 		 */
-		//inline virtual void					Destroy() {};
+		inline virtual void					Destroy() {};
 		#pragma endregion Inline
 		#pragma endregion Methods
 
