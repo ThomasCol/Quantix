@@ -69,7 +69,6 @@ namespace Quantix::Physic
 			else if (it != _physObject.end()
 				&& (it->second->GetType() == ETypePhysic::DYNAMIC))
 			{
-				// creer a partir dun dyna plus tard
 				PhysicStatic* tmp = new PhysicStatic(mSDK, dynamic_cast<PhysicDynamic*>(_physObject[object]));
 				mScene->removeActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
 				mScene->addActor(*tmp->GetRigid());
@@ -90,7 +89,7 @@ namespace Quantix::Physic
 				_physObject.erase(object);
 				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
 			}
-			else
+			else if (it == _physObject.end())
 			{
 				PhysicDynamic* tmp = new PhysicDynamic(mSDK);
 				mScene->addActor(*tmp->GetRigid());
@@ -215,8 +214,6 @@ namespace Quantix::Physic
 		sceneDesc.kineKineFilteringMode = PxPairFilteringMode::eKEEP;
 		sceneDesc.flags = PxSceneFlag::eENABLE_CCD;*/
 
-		//sceneDesc.simulationEventCallback = new MySimulationCallback();
-
 		sceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
 		sceneDesc.flags |= PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS;
 		//sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
@@ -235,7 +232,6 @@ namespace Quantix::Physic
 			std::cerr << "PxDefaultCpuDispatcherCreate failed!";
 		sceneDesc.cpuDispatcher = mCpuDispatcher;
 
-		//sceneDesc.simulationEventCallback = new MySimulationCallback();
 		mScene = mSDK->createScene(sceneDesc);
 		if (!mScene)
 			std::cerr << "createScene failed!";
@@ -346,11 +342,9 @@ namespace Quantix::Physic
 
 					if (((Core::DataStructure::GameObject3D*)currentActor->userData))
 					{
-						std::cout << "synchro" << std::endl;
 						Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
 						transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
 						transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
-						std::cout << transformPhysic.p.x << " " << transformPhysic.p.y << std::endl;
 					}
 				}
 			}
@@ -372,7 +366,6 @@ namespace Quantix::Physic
 						transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
 
 						it->second->GetObjectDynamic()->GetRigid()->setGlobalPose(transform);
-						std::cout << pos.ToString() << std::endl;
 					}
 					else
 					{
@@ -385,7 +378,6 @@ namespace Quantix::Physic
 						transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
 
 						it->second->GetObjectStatic()->GetRigid()->setGlobalPose(transform);
-						std::cout << pos.ToString() << std::endl;
 					}
 				}
 			}
