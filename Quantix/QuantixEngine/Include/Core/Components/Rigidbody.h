@@ -25,6 +25,7 @@ namespace Quantix::Core::Components
 
 		Physic::ActorFlag actorFlag;
 		Physic::RigidBodyFlag rigidFlag;
+		QXfloat mass {1.f};
 
 #pragma endregion
 

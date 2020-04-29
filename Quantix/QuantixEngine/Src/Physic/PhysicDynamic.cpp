@@ -34,13 +34,6 @@ namespace Quantix::Physic
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Dynamic" << std::endl;
 		_dynamic = SDK->createRigidDynamic(PxTransform(PxVec3(0, 2, 0)));
-
-		PxMaterial* aMaterial = SDK->createMaterial(0.5f, 0.5f, 0.1f);
-
-		PxShape* aCubeShape = SDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *aMaterial);
-		std::cout << "Dynamic ==> position: {" << _dynamic->getGlobalPose().p.x << ", " << _dynamic->getGlobalPose().p.y << ", " << _dynamic->getGlobalPose().p.z << "}" << std::endl;
-		_dynamic->attachShape(*aCubeShape);
-		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 0.5f);
 	}
 
 	PhysicDynamic::PhysicDynamic(PxPhysics* SDK, EPhysXShape physXShape) noexcept : IPhysicType(ETypePhysic::DYNAMIC)
@@ -56,22 +49,16 @@ namespace Quantix::Physic
 		if (physXShape == EPhysXShape::CUBE)
 		{
 			aShape = SDK->createShape(PxBoxGeometry(1.f, 1.f, 1.f), *aMaterial);
-			aShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
-			aShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 			std::cout << "shape: Cube" << std::endl;
 		}
 		else if (physXShape == EPhysXShape::SPHERE)
 		{
 			aShape = SDK->createShape(PxSphereGeometry(1.f), *aMaterial);
-			aShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-			aShape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
 			std::cout << "shape: Sphere" << std::endl;
 		}
 		else if (physXShape == EPhysXShape::CAPSULE)
 		{
 			aShape = SDK->createShape(PxCapsuleGeometry(1.f, 1.f), *aMaterial);
-			aShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, true);
-			aShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 			std::cout << "shape: Capsule" << std::endl;
 		}
 		std::cout << "Dynamic ==> position: {" << _dynamic->getGlobalPose().p.x << ", " << _dynamic->getGlobalPose().p.y << ", " << _dynamic->getGlobalPose().p.z << "}" << std::endl;
@@ -97,7 +84,7 @@ namespace Quantix::Physic
 			_dynamic->attachShape(shape[i]);
 			physicStatic->GetRigid()->detachShape(shape[i]);
 		}
-		void* data = physicStatic->GetRigid()->userData;
+		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicStatic->GetRigid()->userData;
 		_dynamic->userData = data;
 		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);
 	}

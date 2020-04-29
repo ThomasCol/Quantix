@@ -37,6 +37,7 @@ namespace Quantix::Physic
 	{
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Static" << std::endl;
+		type = ETypePhysic::STATIC;
 
 		_static = SDK->createRigidStatic(PxTransform(PxVec3(0, -1, 0)));
 
@@ -79,7 +80,11 @@ namespace Quantix::Physic
 			std::cout << "attach one shape" << std::endl;
 			_static->attachShape(shape[i]);
 			physicDynamic->GetRigid()->detachShape(shape[i]);
+			
 		}
+
+		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicDynamic->GetRigid()->userData;
+		_static->userData = data;
 	}
 
 

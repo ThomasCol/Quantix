@@ -171,8 +171,14 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 
 
 	START_PROFILING("Draw");
-	if (!editor->GetPause() || editor->GetPlay())
-	editor->GetApp()->Update(meshes);
+	if (!editor->GetPause() && editor->GetPlay())
+	{
+		editor->GetApp()->Update(meshes, true);	
+	}
+	else
+	{
+		editor->GetApp()->Update(meshes);
+	}
 	//Editor Update
 	if (editor->GetPlay())
 		editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, editor->GetMainCamera()));

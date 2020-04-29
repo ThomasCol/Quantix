@@ -62,8 +62,8 @@ namespace Quantix::Physic
 			if (it == _physObject.end())
 			{
 				PhysicStatic* tmp = new PhysicStatic(mSDK);
-				mScene->addActor(*tmp->GetRigid());
 				tmp->GetRigid()->userData = dynamic_cast<Core::DataStructure::GameObject3D*>(object);
+				mScene->addActor(*tmp->GetRigid());
 				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
 			}
 			else if (it != _physObject.end()
@@ -72,7 +72,7 @@ namespace Quantix::Physic
 				// creer a partir dun dyna plus tard
 				PhysicStatic* tmp = new PhysicStatic(mSDK, dynamic_cast<PhysicDynamic*>(_physObject[object]));
 				mScene->removeActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
-				mScene->addActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
+				mScene->addActor(*tmp->GetRigid());
 				_physObject.erase(object);
 				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
 			}
@@ -86,7 +86,7 @@ namespace Quantix::Physic
 			{
 				PhysicDynamic* tmp = new PhysicDynamic(mSDK, dynamic_cast<PhysicStatic*>(_physObject[object]));
 				mScene->removeActor(*_physObject[object]->GetObjectStatic()->GetRigid());
-				mScene->addActor(*_physObject[object]->GetObjectStatic()->GetRigid());
+				mScene->addActor(*tmp->GetRigid());
 				_physObject.erase(object);
 				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
 			}
@@ -257,7 +257,7 @@ namespace Quantix::Physic
 		pDefaultFundation->release();
 	}
 
-	void PhysicHandler::UpdateSystem(std::vector<Core::DataStructure::GameComponent*> go, double deltaTime)
+	void PhysicHandler::UpdateSystem(double deltaTime)
 	{
 		/*PhysicStatic* tmp = _physObject.at(go[1])->GetObjectStatic();
 
@@ -330,21 +330,64 @@ namespace Quantix::Physic
 		mScene->fetchResults(true);
 	}
 
-	void PhysicHandler::UpdatePhysicActor()
+	void PhysicHandler::UpdatePhysicActor(bool isPlaying)
 	{
-		PxU32 nbActors;
-		PxActor** listActor = mScene->getActiveActors(nbActors);
-
-		for (PxU32 index = 0; index < nbActors; index++)
+		if (isPlaying)
 		{
-			PxRigidDynamic* currentActor = (PxRigidDynamic*)listActor[index];
-			if (currentActor)
-			{
-				PxTransform transformPhysic = currentActor->getGlobalPose();
-				Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
+			PxU32 nbActors;
+			PxActor** listActor = mScene->getActiveActors(nbActors);
 
-				//transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
-				//transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
+			for (PxU32 index = 0; index < nbActors; index++)
+			{
+				PxRigidDynamic* currentActor = (PxRigidDynamic*)listActor[index];
+				if (currentActor)
+				{
+					PxTransform transformPhysic = currentActor->getGlobalPose();
+
+					if (((Core::DataStructure::GameObject3D*)currentActor->userData))
+					{
+						std::cout << "synchro" << std::endl;
+						Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
+						transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
+						transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
+						std::cout << transformPhysic.p.x << " " << transformPhysic.p.y << std::endl;
+					}
+				}
+			}
+		}
+		else
+		{		
+			for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
+			{
+				if (it->second && it->first)
+				{
+					if (it->second->GetType() == ETypePhysic::DYNAMIC)
+					{	
+						PxTransform transform = it->second->GetObjectDynamic()->GetRigid()->getGlobalPose();
+
+						Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
+						transform.p = PxVec3(pos.x, pos.y, pos.z);
+
+						Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
+						transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
+
+						it->second->GetObjectDynamic()->GetRigid()->setGlobalPose(transform);
+						std::cout << pos.ToString() << std::endl;
+					}
+					else
+					{
+						PxTransform transform = it->second->GetObjectStatic()->GetRigid()->getGlobalPose();
+
+						Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
+						transform.p = PxVec3(pos.x, pos.y, pos.z);
+
+						Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
+						transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
+
+						it->second->GetObjectStatic()->GetRigid()->setGlobalPose(transform);
+						std::cout << pos.ToString() << std::endl;
+					}
+				}
 			}
 		}
 	}

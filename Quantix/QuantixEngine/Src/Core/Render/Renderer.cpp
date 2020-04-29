@@ -3,11 +3,6 @@
 #include <glad/glad.h>
 #include <stdexcept>
 #include <array>
-#include <glm/glm.hpp>
-#include <glm/mat4x4.hpp>
-#include <glm/ext/matrix_clip_space.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "Core/Profiler/Profiler.h"
 #include "Core/Render/PostProcess/Skybox.h"
@@ -236,14 +231,12 @@ namespace Quantix::Core::Render
 
 		Quantix::Core::DataStructure::GameObject3D* obj;
 		Math::QXmat4 proj = Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f);
-		glm::mat4 mat = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
 		Math::QXmat4 view = Math::QXmat4::CreateLookAtMatrix(lights[0].position, { 0, 0, 0 }, Math::QXvec3::up);
-		glm::mat4 mat2 = glm::lookAt(glm::vec3{ -2.0f, 4.0f, -1.0f }, glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 });
 
 		LOG(INFOS, view.ToString());
 
-		glUniformMatrix4fv(_shadowProgram->GetLocation("view"), 1, false, view.array/*glm::value_ptr(mat2)*/);
-		glUniformMatrix4fv(_shadowProgram->GetLocation("proj"), 1, false, proj.array/*glm::value_ptr(mat)*/);
+		glUniformMatrix4fv(_shadowProgram->GetLocation("view"), 1, false, view.array);
+		glUniformMatrix4fv(_shadowProgram->GetLocation("proj"), 1, false, proj.array);
 
 		for (QXuint i = 0; i < meshes.size(); i++)
 		{

@@ -34,10 +34,14 @@ namespace Quantix::Core::Platform
 		Physic::PhysicHandler::GetInstance()->InitSystem();
 	}
 
-	void Application::Update(std::vector<Core::Components::Mesh*>& meshes)
+	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, bool isPlaying)
 	{
 		Threading::TaskSystem::GetInstance()->Update();
 		manager.UpdateResourcesState();
 		scene->Update(meshes);
+
+		// Updatye Physic
+		Physic::PhysicHandler::GetInstance()->UpdateSystem(info.deltaTime);
+		Physic::PhysicHandler::GetInstance()->UpdatePhysicActor(isPlaying);
 	}
 }

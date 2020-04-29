@@ -9,7 +9,9 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<>()
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const Quantix::Core::Components::CapsuleCollider&>()
-	.constructor<Quantix::Core::Components::CapsuleCollider&&>();
+	.constructor<Quantix::Core::Components::CapsuleCollider&&>()
+	.property("Radius", &Quantix::Core::Components::CapsuleCollider::GetRadius, &Quantix::Core::Components::CapsuleCollider::SetRadius)
+	.property("Height", &Quantix::Core::Components::CapsuleCollider::GetHalfHeight, &Quantix::Core::Components::CapsuleCollider::SetHalfHeight);
 }
 
 namespace Quantix::Core::Components
@@ -62,6 +64,7 @@ namespace Quantix::Core::Components
 
 	void CapsuleCollider::Init(DataStructure::GameComponent* par)
 	{
+		typeShape = ETypeShape::CAPSULE;
 		_object = par;
 		_isDestroyed = false;
 		_isEnable = true;

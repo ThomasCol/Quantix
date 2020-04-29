@@ -23,8 +23,8 @@ RTTR_PLUGIN_REGISTRATION
 	.property("AngularVelocity", &Quantix::Core::Components::Rigidbody::GetAngularVelocity, &Quantix::Core::Components::Rigidbody::SetAngularVelocity)
 	.property("Position", &Quantix::Core::Components::Rigidbody::GetTransformPosition, &Quantix::Core::Components::Rigidbody::SetTransformPosition)
 	.property("Rotation", &Quantix::Core::Components::Rigidbody::GetTransformRotation, &Quantix::Core::Components::Rigidbody::SetTransformRotation)
-	.property("Gravity", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableGravity, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableGravity)
-	.property("Simulation", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableSimulation, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableSimulation)
+	.property("DisableGravity", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableGravity, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableGravity)
+	.property("DisableSimulation", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableSimulation, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableSimulation)
 	.property("Visualization", &Quantix::Core::Components::Rigidbody::GetActorFlagVisualization, &Quantix::Core::Components::Rigidbody::SetActorFlagVisualization)
 	.property("CCD", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCD, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCD)
 	.property("CCDFriction", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCDFriction, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCDFriction)
@@ -47,8 +47,6 @@ namespace Quantix::Core::Components
 		Core::DataStructure::Component(src),
 		actorPhysic{ src.actorPhysic }
 	{
-		if (!actorPhysic)
-			actorPhysic = (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(src._object, true);
 	}
 
 	Rigidbody::Rigidbody(Rigidbody&& by_ref) noexcept :
@@ -77,12 +75,15 @@ namespace Quantix::Core::Components
 
 	QXfloat Rigidbody::GetMass()
 	{
-		return (QXfloat)actorPhysic->GetRigid()->getMass();
+		return mass;
 	}
 
 	void Rigidbody::SetMass(QXfloat m)
 	{
-		actorPhysic->GetRigid()->setMass(m);
+		if (m == 0.f)
+			m = 0.1f;
+		mass = m;
+		physx::PxRigidBodyExt::updateMassAndInertia(*actorPhysic->GetRigid(), m);
 	}
 
 	Math::QXvec3 Rigidbody::GetLinearVelocity()

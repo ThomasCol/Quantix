@@ -9,7 +9,8 @@ RTTR_PLUGIN_REGISTRATION
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
 		.constructor<const Quantix::Core::Components::CubeCollider&>()
-		.constructor<Quantix::Core::Components::CubeCollider&&>();
+		.constructor<Quantix::Core::Components::CubeCollider&&>()
+		.property("HalfExtent", &Quantix::Core::Components::CubeCollider::GetHalfExtents, &Quantix::Core::Components::CubeCollider::SetHalfExtents);
 }
 
 namespace Quantix::Core::Components
@@ -51,6 +52,7 @@ namespace Quantix::Core::Components
 
 	void CubeCollider::Init(DataStructure::GameComponent* par)
 	{
+		typeShape = ETypeShape::CUBE;
 		_object = par;
 		_isDestroyed = false;
 		_isEnable = true;
