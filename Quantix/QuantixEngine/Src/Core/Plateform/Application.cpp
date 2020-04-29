@@ -41,7 +41,8 @@ namespace Quantix::Core::Platform
 		scene->Update(meshes);
 
 		// Updatye Physic
-		Physic::PhysicHandler::GetInstance()->UpdateSystem(info.deltaTime);
+		if (isPlaying)
+			Physic::PhysicHandler::GetInstance()->UpdateSystem(info.deltaTime);
 		Physic::PhysicHandler::GetInstance()->UpdatePhysicActor(isPlaying);
 	}
 }

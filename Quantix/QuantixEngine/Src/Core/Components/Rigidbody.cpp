@@ -75,9 +75,7 @@ namespace Quantix::Core::Components
 
 	QXfloat Rigidbody::GetMass()
 	{
-		//std::cout << actorPhysic->GetRigid()->getMass
 		return mass;
-
 	}
 
 	void Rigidbody::SetMass(QXfloat m)
