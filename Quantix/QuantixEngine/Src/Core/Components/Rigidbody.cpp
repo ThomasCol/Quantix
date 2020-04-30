@@ -84,7 +84,6 @@ namespace Quantix::Core::Components
 			m = 0.1f;
 		mass = m;
 		physx::PxRigidBodyExt::updateMassAndInertia(*actorPhysic->GetRigid(), m);
-		actorPhysic->GetRigid()->setMass(m);
 	}
 
 	Math::QXvec3 Rigidbody::GetLinearVelocity()
