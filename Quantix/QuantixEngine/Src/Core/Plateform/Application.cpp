@@ -34,11 +34,11 @@ namespace Quantix::Core::Platform
 		scene->Init(manager);
 	}
 
-	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, bool isPlaying)
+	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, bool isPlaying)
 	{
 		Threading::TaskSystem::GetInstance()->Update();
 		manager.UpdateResourcesState();
-		scene->Update(meshes);
+		scene->Update(meshes, colliders);
 
 		// Updatye Physic
 		Physic::PhysicHandler::GetInstance()->UpdateSystem(info.deltaTime);

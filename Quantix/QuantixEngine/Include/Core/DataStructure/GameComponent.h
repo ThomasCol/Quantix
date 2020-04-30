@@ -12,6 +12,7 @@
 #include "Component.h"
 #include "Core/Components/Mesh.h"
 #include "Core/Components/Behaviour.h"
+#include "Core/Components/Collider.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -78,14 +79,27 @@ namespace Quantix::Core::DataStructure
 		 * @return T* the component of that type
 		 */
 		template<typename T>
-		inline T*				GetComponent()
+		inline T*				GetComponent(QXbool usePolymorphism = false)
 		{
-			for (Component* comp : _component)
+			if (!usePolymorphism)
 			{
-				rttr::type t = comp->get_type();
+				for (Component* comp : _component)
+				{
+					rttr::type t = comp->get_type();
 
-				if (rttr::type::get<T>() == t)
-					return dynamic_cast<T*>(comp);
+					if (rttr::type::get<T>() == t)
+						return dynamic_cast<T*>(comp);
+				}
+			}
+			else
+			{
+				for (Component* comp : _component)
+				{
+					rttr::type t = comp->get_type();
+
+					if (rttr::type::get<T>().is_base_of(t))
+						return dynamic_cast<T*>(comp);
+				}
 			}
 			return nullptr;
 		}
@@ -197,7 +211,7 @@ namespace Quantix::Core::DataStructure
 		}*/
 
 		virtual void Start(std::vector<Core::Components::Mesh*>& meshes);
-		virtual void Update(std::vector<Core::Components::Mesh*>& meshes);
+		virtual void Update(std::vector<Core::Components::Mesh*>& meshes, std::vector < Core::Components::ICollider* > & colliders);
 
 		#pragma endregion Template
 

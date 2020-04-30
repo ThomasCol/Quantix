@@ -21,6 +21,11 @@ namespace Quantix::Core::Render
 		CreateFrameBuffer(width, height);
 		InitShadowBuffer();
 
+		_cube = manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj");
+		_sphere = manager.CreateModel("../QuantixEngine/Media/Mesh/sphere.obj");
+		_caps = manager.CreateModel("../QuantixEngine/Media/Mesh/capsule.obj");
+		_wireFrameProgram = manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Wireframe.vert", "../QuantixEngine/Media/Shader/Wireframe.frag");
+
 		_shadowProgram = manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Shadow.vert", "../QuantixEngine/Media/Shader/Shadow.frag");
 
 		// Create uniform buffers
@@ -134,7 +139,8 @@ namespace Quantix::Core::Render
 			manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj"), manager.CreateHDRTexture("../QuantixEngine/Media/Textures/skybox.hdr"));
 	}
 
-	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept
+	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
+		Core::Platform::AppInfo& info, Components::Camera* cam) noexcept
 	{
 		START_PROFILING("draw");
 
@@ -213,6 +219,47 @@ namespace Quantix::Core::Render
 
 			glBindVertexArray(0);
 		}
+
+		_wireFrameProgram->Use();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		Math::QXmat4 trs;
+
+		for (QXuint i = 0; i < colliders.size(); ++i)
+		{
+			obj = (Quantix::Core::DataStructure::GameObject3D*)colliders[i]->GetObject();
+			/*trs = Math::QXmat4::CreateTRSMatrix(obj->GetLocalPosition() + colliders[i]->GetPosition(), obj->GetLocalRotation() * colliders[i]->GetRotation(),
+				colliders[i]->GetScale());*/
+
+			glUniformMatrix4fv(_wireFrameProgram->GetLocation("TRS"), 1, false, obj->GetTransform()->GetTRS().array /*trs.array*/);
+
+			if (colliders[i]->typeShape == Components::ETypeShape::CUBE && _cube->IsReady())
+			{
+				glBindVertexArray(_cube->GetVAO());
+
+				glDrawElements(GL_TRIANGLES, (GLsizei)_cube->GetIndices().size(), GL_UNSIGNED_INT, 0);
+
+				glBindVertexArray(0);
+			}
+			else if (colliders[i]->typeShape == Components::ETypeShape::SPHERE && _sphere->IsReady())
+			{
+				glBindVertexArray(_sphere->GetVAO());
+
+				glDrawElements(GL_TRIANGLES, (GLsizei)_sphere->GetIndices().size(), GL_UNSIGNED_INT, 0);
+
+				glBindVertexArray(0);
+			}
+			else if (colliders[i]->typeShape == Components::ETypeShape::CAPSULE && _caps->IsReady())
+			{
+				glBindVertexArray(_caps->GetVAO());
+
+				glDrawElements(GL_TRIANGLES, (GLsizei)_caps->GetIndices().size(), GL_UNSIGNED_INT, 0);
+
+				glBindVertexArray(0);
+			}
+		}
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		glActiveTexture(0);
 

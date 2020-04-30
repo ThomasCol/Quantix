@@ -29,9 +29,10 @@ namespace Quantix::Core::DataStructure
 
 		inline void								AddChild(const GameObject3D* object) { _transform->AddChild(object->GetTransform()); }
 
-		void									Update(std::vector<Core::Components::Mesh*>& meshes) override;
+		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders) override;
 
-		void									Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject);
+		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
+													const GameObject3D* parentObject);
 
 		template<class Archive>
 		void save(Archive& archive) const

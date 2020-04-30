@@ -150,6 +150,7 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	DebugMode();
 
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
+	std::vector<Quantix::Core::Components::ICollider*>	colliders;
 
 	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 		editor->GetApp()->manager.SaveScene(editor->GetApp()->scene);
@@ -173,17 +174,17 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	START_PROFILING("Draw");
 	if (!editor->GetPause() && editor->GetPlay())
 	{
-		editor->GetApp()->Update(meshes, true);	
+		editor->GetApp()->Update(meshes, colliders, true);
 	}
 	else
 	{
-		editor->GetApp()->Update(meshes);
+		editor->GetApp()->Update(meshes, colliders);
 	}
 	//Editor Update
 	if (editor->GetPlay())
-		editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, editor->GetMainCamera()));
+		editor->Update(editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetMainCamera()));
 	else
-		editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, editor->GetEditorCamera()));
+		editor->Update(editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetEditorCamera()));
 	STOP_PROFILING("Draw");
 	START_PROFILING("Refresh");
 	editor->GetWin().Refresh(editor->GetApp()->info);
