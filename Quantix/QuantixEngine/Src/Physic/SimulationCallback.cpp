@@ -46,9 +46,10 @@ namespace Quantix::Physic
 	void SimulationCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 	{
 		std::cout << "OnTrigger" << std::endl;
+
 		for (PxU32 i = 0; i < count; i++)
 		{
-			((Core::DataStructure::GameObject3D*)pairs->triggerActor->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairs->otherActor->userData);
+			((Core::DataStructure::GameObject3D*)pairs->triggerActor->userData)->CallOnTrigger((Core::DataStructure::GameObject3D*)pairs->otherActor->userData);
 		}
 	}
 	void SimulationCallback::onAdvance(const PxRigidBody* const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count)
