@@ -11,7 +11,7 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<const Quantix::Core::Components::CapsuleCollider&>()
 	.constructor<Quantix::Core::Components::CapsuleCollider&&>()
 	.property("Radius", &Quantix::Core::Components::CapsuleCollider::GetRadius, &Quantix::Core::Components::CapsuleCollider::SetRadius)
-	.property("Height", &Quantix::Core::Components::CapsuleCollider::GetHalfHeight, &Quantix::Core::Components::CapsuleCollider::SetHalfHeight);
+	.property("HalfHeight", &Quantix::Core::Components::CapsuleCollider::GetHalfHeight, &Quantix::Core::Components::CapsuleCollider::SetHalfHeight);
 }
 
 namespace Quantix::Core::Components
@@ -57,7 +57,7 @@ namespace Quantix::Core::Components
 
 	void CapsuleCollider::SetHalfHeight(QXfloat f)
 	{
-		scale.y = GetRadius()* 2 * f;
+		scale.y = 2 * GetRadius() * f;
 		shape->setGeometry(physx::PxCapsuleGeometry(physx::PxReal(GetRadius()), physx::PxReal(f)));
 	}
 

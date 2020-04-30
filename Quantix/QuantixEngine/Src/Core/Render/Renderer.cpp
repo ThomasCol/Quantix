@@ -228,10 +228,10 @@ namespace Quantix::Core::Render
 		for (QXuint i = 0; i < colliders.size(); ++i)
 		{
 			obj = (Quantix::Core::DataStructure::GameObject3D*)colliders[i]->GetObject();
-			/*trs = Math::QXmat4::CreateTRSMatrix(obj->GetLocalPosition() + colliders[i]->GetPosition(), obj->GetLocalRotation() * colliders[i]->GetRotation(),
-				colliders[i]->GetScale());*/
+			trs = Math::QXmat4::CreateTRSMatrix(obj->GetLocalPosition() + colliders[i]->GetPosition(), obj->GetLocalRotation() * colliders[i]->GetRotation(),
+				colliders[i]->scale);
 
-			glUniformMatrix4fv(_wireFrameProgram->GetLocation("TRS"), 1, false, obj->GetTransform()->GetTRS().array /*trs.array*/);
+			glUniformMatrix4fv(_wireFrameProgram->GetLocation("TRS"), 1, false, /*obj->GetTransform()->GetTRS().array*/ trs.array);
 
 			if (colliders[i]->typeShape == Components::ETypeShape::CUBE && _cube->IsReady())
 			{
