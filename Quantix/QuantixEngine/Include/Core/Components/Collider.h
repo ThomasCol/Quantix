@@ -43,7 +43,7 @@ namespace Quantix::Core::Components
 
 		Physic::ShapeFlag shapeFlag;
 		bool toRender{ true };
-
+		Math::QXvec3 scale{ 1.f, 1.f, 1.f };
 
 #pragma endregion
 
@@ -69,12 +69,12 @@ namespace Quantix::Core::Components
 #pragma region Acessors 
 		ICollider* Copy() const override;
 
-
 		Math::QXvec3 GetPosition();
 		void SetPosition(Math::QXvec3);
 
 		Math::QXquaternion GetRotation();
 		void SetRotation(Math::QXquaternion);
+
 
 		void SetShapeFlagSceneQuery(bool b);
 		bool GetShapeFlagSceneQuery();

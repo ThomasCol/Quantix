@@ -42,6 +42,7 @@ namespace Quantix::Core::Components
 
 	void CubeCollider::SetHalfExtents(Math::QXvec3 vec)
 	{
+		scale = vec * 2;
 		shape->setGeometry(physx::PxBoxGeometry(vec.x, vec.y, vec.z));
 	}
 

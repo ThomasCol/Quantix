@@ -42,6 +42,9 @@ namespace Quantix::Core::Components
 
 	void CapsuleCollider::SetRadius(QXfloat f)
 	{
+		scale.x = f;
+		scale.z = f;
+
 		shape->setGeometry(physx::PxCapsuleGeometry(physx::PxReal(f), physx::PxReal(GetHalfHeight())));
 	}
 
@@ -54,6 +57,7 @@ namespace Quantix::Core::Components
 
 	void CapsuleCollider::SetHalfHeight(QXfloat f)
 	{
+		scale.y = GetRadius()* 2 * f;
 		shape->setGeometry(physx::PxCapsuleGeometry(physx::PxReal(GetRadius()), physx::PxReal(f)));
 	}
 

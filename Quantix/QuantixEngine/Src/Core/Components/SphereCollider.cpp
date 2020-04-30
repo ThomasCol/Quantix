@@ -43,6 +43,10 @@ namespace Quantix::Core::Components
 
 	void SphereCollider::SetRadius(QXfloat f)
 	{
+		scale.x = f;
+		scale.y = f;
+		scale.z = f;
+
 		shape->setGeometry(physx::PxSphereGeometry(f));
 	}
 
