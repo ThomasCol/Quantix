@@ -199,7 +199,6 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 	else
 		name = t.get_name().to_string();
 
-	std::cout << name << std::endl;
 	ImVec2 pos = ImGui::GetCursorPos();
 	QXbool open = ImGui::TreeNodeEx(("##" + name).c_str(), ImGuiTreeNodeFlags_Framed);
 	TreeNodeImage(name, PATHIMG + name + PNG, app, pos);
