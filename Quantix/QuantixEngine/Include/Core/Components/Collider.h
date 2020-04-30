@@ -36,12 +36,14 @@ namespace Quantix::Core::Components
 	struct QUANTIX_API ICollider : public virtual Core::DataStructure::Component
 	{
 #pragma region Attributes
-
+		ETypeShape typeShape = ETypeShape::DEFAULT;
 		physx::PxShape* shape{ nullptr };
 		EPhysXType physicType { EPhysXType::DEFAULT };
 		Physic::IPhysicType* actorPhysic{ nullptr };
 
 		Physic::ShapeFlag shapeFlag;
+		bool toRender{ true };
+		Math::QXvec3 scale{ 1.f, 1.f, 1.f };
 
 #pragma endregion
 
@@ -62,17 +64,17 @@ namespace Quantix::Core::Components
 
 #pragma endregion
 
-		void Init(DataStructure::GameComponent* par) override;
+		virtual void Init(DataStructure::GameComponent* par) override;
 
 #pragma region Acessors 
 		ICollider* Copy() const override;
-
 
 		Math::QXvec3 GetPosition();
 		void SetPosition(Math::QXvec3);
 
 		Math::QXquaternion GetRotation();
 		void SetRotation(Math::QXquaternion);
+
 
 		void SetShapeFlagSceneQuery(bool b);
 		bool GetShapeFlagSceneQuery();

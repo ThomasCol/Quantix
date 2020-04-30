@@ -43,6 +43,10 @@ namespace Quantix::Core::Components
 
 	void SphereCollider::SetRadius(QXfloat f)
 	{
+		scale.x = f;
+		scale.y = f;
+		scale.z = f;
+
 		shape->setGeometry(physx::PxSphereGeometry(f));
 	}
 
@@ -53,6 +57,7 @@ namespace Quantix::Core::Components
 
 	void SphereCollider::Init(DataStructure::GameComponent* par)
 	{
+		typeShape = ETypeShape::SPHERE;
 		_object = par;
 		_isDestroyed = false;
 		_isEnable = true;
@@ -67,5 +72,7 @@ namespace Quantix::Core::Components
 			shape = Physic::PhysicHandler::GetInstance()->CreateSphereCollider(par, false);
 			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
 		}
+
+		
 	}
 }

@@ -27,7 +27,7 @@ namespace Quantix::Core::Components
 		PlaneCollider* Copy() const override;
 		void Init(DataStructure::GameComponent* par) override;
 
-		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
+		CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::ICollider);
 	};
 }
 #endif

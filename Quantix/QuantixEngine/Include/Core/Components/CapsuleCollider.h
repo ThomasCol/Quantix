@@ -37,7 +37,7 @@ namespace Quantix::Core::Components
 		void Init(DataStructure::GameComponent* par) override;
 
 
-		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
+		CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::ICollider);
 	};
 }
 #endif

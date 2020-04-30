@@ -12,7 +12,7 @@ namespace Quantix::Core::DataStructure
 
 namespace Quantix::Core::Components
 {
-	struct QUANTIX_API CubeCollider : public ICollider
+	struct QUANTIX_API CubeCollider : public virtual ICollider
 	{
 #pragma region Constructors
 		CubeCollider() = default;
@@ -33,7 +33,7 @@ namespace Quantix::Core::Components
 
 		void Init(DataStructure::GameComponent* par) override;
 
-		CLASS_REGISTRATION(Quantix::Core::Components::ICollider);
+		CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::ICollider);
 	};
 }
 #endif

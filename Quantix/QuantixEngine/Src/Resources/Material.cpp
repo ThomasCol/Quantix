@@ -10,7 +10,9 @@ RTTR_PLUGIN_REGISTRATION
 	.property("ambient", &Quantix::Resources::Material::ambient)
 	.property("diffuse", &Quantix::Resources::Material::diffuse)
 	.property("specular", &Quantix::Resources::Material::specular)
-	.property("shininess", &Quantix::Resources::Material::shininess);
+	.property("shininess", &Quantix::Resources::Material::shininess)
+	.property("Texture", &Quantix::Resources::Material::GetMaterialTexture, &Quantix::Resources::Material::SetMaterialTexture)
+	.method("GetPath", &Quantix::Resources::Material::GetPath);
 }
 
 namespace Quantix::Resources
@@ -28,23 +30,35 @@ namespace Quantix::Resources
 #pragma endregion
 
 #pragma region Functions
+
+	QXbool	Material::IsReady()
+	{
+		if (!_mainTexture)
+			return true;
+		return _mainTexture->IsReady();
+	}
 	
-	void Material::SendData()
+	void Material::SendData(QXuint shadowTexture)
 	{
 		SetFloat3("material.ambient", ambient.e);
 		SetFloat3("material.diffuse", diffuse.e);
 		SetFloat3("material.specular", specular.e);
 		SetFloat("material.shininess", shininess);
-		if (_mainTexture != nullptr)
+
+		SetInt("material.shadowMap", 1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, shadowTexture);
+
+		if (_mainTexture && _mainTexture->IsReady())
 		{
 			SetInt("material.textured", 1);
-			SetUint("material.texture", 0);
+
+			SetInt("material.texture", 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _mainTexture->GetId());
-			return;
 		}
-
-		SetInt("material.textured", 0);
+		else
+			SetInt("material.textured", 0);
 	}
 
 	void Material::SetFloat(QXstring location, QXfloat value)

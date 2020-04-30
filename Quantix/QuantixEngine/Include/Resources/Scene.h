@@ -3,6 +3,7 @@
 
 #include "Core/DataStructure/GameObject3D.h"
 #include "../Core/DataStructure/GameComponent.h"
+#include "Core/Components/Collider.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -17,11 +18,13 @@ namespace Quantix::Resources
 
 			#pragma region Attributes
 
-			QXstring											_name;
+			QXstring							_name = "Default";
 			Core::DataStructure::GameObject3D*	_root;
 			QXuint												_id;
 
-			std::vector<Core::DataStructure::GameObject3D*>		_objects;
+			std::vector<Core::DataStructure::GameObject3D*> _objects;
+			
+			std::atomic_bool					_isReady { false };
 
 			#pragma endregion
 
@@ -33,7 +36,7 @@ namespace Quantix::Resources
 			 * @brief Construct a new Scene object
 			 *
 			 */
-			Scene() = default;
+			Scene();
 
 			Scene(const QXstring& name, Core::DataStructure::GameObject3D* root, const QXuint& id) noexcept;
 
@@ -75,7 +78,7 @@ namespace Quantix::Resources
 			 * @brief method that update the world and its hierarchy
 			 *
 			 */
-			void	Update(std::vector<Core::Components::Mesh*>& meshes) noexcept;
+			void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders) noexcept;
 
 			void Reset()noexcept;
 
@@ -125,6 +128,10 @@ namespace Quantix::Resources
 			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
 
 			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name) noexcept;
+
+			inline QXbool						IsReady() const { return _isReady.load(); }
+
+			inline void							SetReady(QXbool ready) { _isReady.store(ready); }
 
 			#pragma endregion
 

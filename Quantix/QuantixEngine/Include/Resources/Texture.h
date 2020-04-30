@@ -3,13 +3,14 @@
 
 #include <Type.h>
 #include "Core/DLLHeader.h"
+#include "Resource.h"
 
 #define RGB_CHANNEL 3
 #define RGBA_CHANNEL 4
 
 namespace Quantix::Resources
 {
-	class QUANTIX_API Texture
+	class QUANTIX_API Texture : public Resource
 	{
 	private:
 #pragma region Attributes
@@ -17,6 +18,10 @@ namespace Quantix::Resources
 		QXfloat*	_HDRImage;
 		QXbyte*		_image;
 		QXuint		_id;
+
+		QXint		_width { 0 };
+		QXint		_height { 0 };
+		QXint		_channel { 0 };
 
 #pragma endregion
 
@@ -56,7 +61,9 @@ namespace Quantix::Resources
 	 * 
 	 * @param file Path to the texture file
 	 */
-	void Load(const QXchar* file) noexcept;
+	void Load(const QXstring& file) noexcept override;
+
+	void Init() noexcept override;
 
 	/**
 	 * @brief Load an HDR texture

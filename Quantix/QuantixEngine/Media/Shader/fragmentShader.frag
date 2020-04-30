@@ -29,10 +29,12 @@ struct Material
 
 	float	shininess;
 	bool	textured;
+
+	sampler2D	shadowMap;
 	sampler2D	texture;
 };
 
-layout (std140, binding = 1) uniform lights
+layout (std140, binding = 2) uniform lights
 {
 	uint count;
 	Light light[10];
@@ -42,13 +44,15 @@ uniform Material	material;
 /* light array with constant size */
 uniform Light		lightArray[10];
 
-out vec4			color;
+uniform bool phong;
+
+out vec4			fragColor;
 
 in vec2				UV;
 in vec3				outNormal;
 in vec3				fragPos;
+in vec4				fragPosLightSpace;
 
-uniform sampler2D	textureSampler;
 uniform vec3		viewPos;
 
 /* calculate light react */
@@ -57,9 +61,10 @@ vec3	calculateAmbient(vec3 ambient);
 vec3	calculateSpecular(vec3 lightDir, vec3 norm, vec3 specular);
 
 /* calculate type light */
-vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm);
+vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm, float shadow);
 vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm);
-vec3	calculateSpotLight(Light light, vec3 lightDir, vec3 norm);
+vec3	calculateSpotLight(Light light, vec3 lightDir, vec3 norm, float shadow);
+float	ComputeShadow(vec4 fragPosLightSpace, vec3 lightDir, vec3 normal);
 
 void main()
 {
@@ -67,26 +72,84 @@ void main()
 	vec3	lightDir;
 	vec3	output = vec3(0.0);
 
-	for (int i = 0; i < count; ++i)
+	float shadow = ComputeShadow(fragPosLightSpace, normalize(light[0].position - fragPos), norm);
+
+	output += calculateDirectional(light[0], lightDir, norm, shadow);
+
+	for (int i = 1; i < count; ++i)
 	{
 		/* calculate influence of all lights */
 		if (light[i].type == 1)
-			output += calculateDirectional(light[i], lightDir, norm);
+			output += calculateDirectional(light[i], lightDir, norm, 0.0);
 
 		if (light[i].type == 2)
 			output += calculatePointLight(light[i], lightDir, norm);
 
 		if (light[i].type == 3)
-			output += calculateSpotLight(light[i], lightDir, norm);
+			output += calculateSpotLight(light[i], lightDir, norm, 0.0);
 	}
 
 	if (material.textured)
-		color = vec4(output, 1.0) * texture(material.texture, UV);
+		fragColor = vec4(output, 1.0) * texture(material.texture, UV);
 	else
-		color = vec4(output, 1.0);
+		fragColor = vec4(output, 1.0);
+
+	/*vec3 color = vec3(1.0);
+	if (material.textured)
+		color = texture(material.texture, UV).rgb;
+    vec3 normal = normalize(outNormal);
+    vec3 lightColor = vec3(0.3);
+    // ambient
+    vec3 ambient = 0.3 * color;
+    // diffuse
+    vec3 lightDir = normalize(light[0].position - fragPos);
+    float diff = max(dot(lightDir, normal), 0.0);
+    vec3 diffuse = diff * lightColor;
+    // specular
+    vec3 viewDir = normalize(viewPos - fragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = 0.0;
+    vec3 halfwayDir = normalize(lightDir + viewDir);  
+    spec = pow(max(dot(normal, halfwayDir), 0.0), 64.0);
+    vec3 specular = spec * lightColor;    
+    // calculate shadow
+    float shadow = ComputeShadow(fragPosLightSpace);                      
+    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;    
+    
+    FragColor = vec4(lighting, 1.0);*/
 }
 
-vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm)
+float	ComputeShadow(vec4 fragPosLightSpace, vec3 lightDir, vec3 normal)
+{
+	// perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(material.shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+	float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    // check whether current frag pos is in shadow
+    float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(material.shadowMap, 0);
+	for(int x = -1; x <= 1; ++x)
+	{
+    	for(int y = -1; y <= 1; ++y)
+    	{
+      		float pcfDepth = texture(material.shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+        	shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+    	}    
+	}
+	shadow /= 9.0;
+
+	if (projCoords.z > 1.0)
+		shadow = 0.0;
+
+    return shadow;
+}
+
+vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm, float shadow)
 {
 	/* direction only */
 	lightDir = normalize(-light.direction);
@@ -98,7 +161,7 @@ vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm)
 	vec3	specular = calculateSpecular(lightDir, norm, light.specular);
 
 	/* return all light composant */
-	return (ambient + diffuse + specular);
+	return (ambient + (1.0 - shadow) * (diffuse + specular));
 }
 
 vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm)
@@ -124,7 +187,7 @@ vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm)
 	return (ambient + diffuse + specular);
 }
 
-vec3	calculateSpotLight(Light light, vec3 lightDir, vec3 norm)
+vec3	calculateSpotLight(Light light, vec3 lightDir, vec3 norm, float shadow)
 {
 	lightDir = normalize(light.position - fragPos);
 
@@ -146,7 +209,7 @@ vec3	calculateSpotLight(Light light, vec3 lightDir, vec3 norm)
 		vec3	specular = calculateSpecular(lightDir, norm, light.specular)
 																		* intensity;
 
-		return (ambient + diffuse + specular);
+		return (ambient + (1.0 - shadow) * (diffuse + specular));
 	}
 	else
 		return calculateAmbient(light.ambient);
@@ -166,10 +229,10 @@ vec3 calculateAmbient(vec3 ambient)
 
 vec3	calculateSpecular(vec3 lightDir, vec3 norm, vec3 specular)
 {
-	 // specular
+	// specular
     vec3 viewDir = normalize(viewPos - fragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);  
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-
+	vec3 halwayDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(norm, halwayDir), 0.0), material.shininess);
+	
     return specular * spec * material.specular;  
 }

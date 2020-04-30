@@ -2,7 +2,6 @@
 #define __RESPURCESMANAGER_H__
 
 #include <unordered_map>
-#include <tiny_obj_loader.h>
 
 #include "Type.h"
 #include "Resources/Model.h"
@@ -12,6 +11,7 @@
 #include "Resources/Material.h"
 #include "Resources/Scene.h"
 #include "Core/Components/Mesh.h"
+#include "Core/Tool/Serializer.h"
 
 
 namespace Quantix::Core::DataStructure
@@ -30,6 +30,8 @@ namespace Quantix::Core::DataStructure
 		std::unordered_map<QXstring, Texture*>			_textures;
 		std::unordered_map<QXstring, Components::Mesh*>	_meshes;
 		std::unordered_map<QXstring, Scene*>			_scenes;
+
+		std::list<Resource*>							_resourcesToBind;
 			
 #pragma endregion
 
@@ -92,8 +94,6 @@ namespace Quantix::Core::DataStructure
 		 */
 		void				LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept;
 
-		Scene*				LoadScene(const QXstring& filePath) noexcept;
-
 		/**
 		 * @brief Save a material to a cache file
 		 * 
@@ -110,7 +110,6 @@ namespace Quantix::Core::DataStructure
 		 */
 		void				SaveModelToCache(const QXstring& filePath, Model* model) noexcept;
 
-		void				SaveScene(Scene* scene) noexcept;
 
 #pragma endregion
 		
@@ -240,10 +239,14 @@ namespace Quantix::Core::DataStructure
 		 */
 		void				DeleteTexture(const QXstring& filePath) noexcept;
 
+		void				SaveScene(Scene* scene);
+		Scene*				LoadScene(const QXstring& path);
+		void				UpdateResourcesState();
 
 		inline std::unordered_map<QXstring, ShaderProgram*>&			GetShaders() { return _programs; };
 		inline std::unordered_map<QXstring, Model*>&					GetModels() { return _models; };
 		inline std::unordered_map<QXstring, Material*>&					GetMaterials() { return _materials; };
+		inline std::unordered_map<QXstring, Texture*>&					GetTextures() { return _textures; };
 
 #pragma endregion
 	};

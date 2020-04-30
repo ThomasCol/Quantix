@@ -2,10 +2,16 @@
 #include "Mat4.h"
 
 #include "Core/DataStructure/ResourcesManager.h"
+#include "Core/Components/CubeCollider.h"
 
 namespace Quantix::Resources
 {
 	#pragma region Constructors&Destructor
+
+	Scene::Scene()
+	{
+		_root = new Quantix::Core::DataStructure::GameObject3D("root");
+	}
 
 	Scene::Scene(const QXstring& name, Core::DataStructure::GameObject3D* root, const QXuint& id) noexcept :
 		_name{ name },
@@ -60,33 +66,33 @@ namespace Quantix::Resources
 
 	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept
 	{
-		_root = new Quantix::Core::DataStructure::GameObject3D("root");
-
 		AddGameObject("Mesh");
-		AddGameObject("Mesh2", GetGameObject("Mesh"));
+		//AddGameObject("Mesh2", GetGameObject("Mesh"));
 
 		Quantix::Core::DataStructure::GameObject3D* gameObject = GetGameObject("Mesh");//new Quantix::Core::DataStructure::GameObject3D("Mesh");
-		Quantix::Core::DataStructure::GameObject3D* gameObject2 = GetGameObject("Mesh2");// new Quantix::Core::DataStructure::GameObject3D("Mesh2");
+		//Quantix::Core::DataStructure::GameObject3D* gameObject2 = GetGameObject("Mesh2");// new Quantix::Core::DataStructure::GameObject3D("Mesh2");
 
 		/*_root->AddChild(gameObject);
 		gameObject->AddChild(gameObject2);*/
 
-		gameObject->AddComponent<Quantix::Core::Components::Mesh>();
-		gameObject2->AddComponent<Quantix::Core::Components::Mesh>();
+		gameObject->AddComponent<Core::Components::Mesh>();
+		//gameObject2->AddComponent<Core::Components::Mesh>();
 
-		Quantix::Core::Components::Mesh* mesh = gameObject->GetComponent<Quantix::Core::Components::Mesh>();
-		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
-		mesh->SetMaterialMainTexture(manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
-
-		mesh = gameObject2->GetComponent<Quantix::Core::Components::Mesh>();
+		Core::Components::Mesh* mesh = gameObject->GetComponent<Quantix::Core::Components::Mesh>();
+		//mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
+		//mesh->SetMaterialMainTexture(manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
+
+		gameObject->AddComponent<Core::Components::CubeCollider>()->Init(gameObject);
+
+		//mesh = gameObject2->GetComponent<Core::Components::Mesh>();
 	}
 
-	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes) noexcept
+	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders) noexcept
 	{
 		// TODO pas complet update mesh et update gameobject
 		if (_root)
-			_root->Update(meshes);
+			_root->Update(meshes, colliders);
 	}
 
 	void Scene::Rename(const QXstring& str) noexcept

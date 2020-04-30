@@ -47,8 +47,6 @@ namespace Quantix::Core::Components
 		Core::DataStructure::Component(src),
 		actorPhysic{ src.actorPhysic }
 	{
-		if (!actorPhysic)
-			actorPhysic = (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(src._object, true);
 	}
 
 	Rigidbody::Rigidbody(Rigidbody&& by_ref) noexcept :
@@ -77,17 +75,21 @@ namespace Quantix::Core::Components
 
 	QXfloat Rigidbody::GetMass()
 	{
-		return (QXfloat)actorPhysic->GetRigid()->getMass();
+		return mass;
 	}
 
 	void Rigidbody::SetMass(QXfloat m)
 	{
+		if (m == 0.f)
+			m = 0.1f;
+		mass = m;
+		physx::PxRigidBodyExt::updateMassAndInertia(*actorPhysic->GetRigid(), m);
 		actorPhysic->GetRigid()->setMass(m);
 	}
 
 	Math::QXvec3 Rigidbody::GetLinearVelocity()
 	{
-		physx::PxVec3 v = actorPhysic->GetRigid()->getAngularVelocity();
+		physx::PxVec3 v = actorPhysic->GetRigid()->getLinearVelocity();
 		return 	Math::QXvec3(v.x, v.y, v.z);
 	}
 

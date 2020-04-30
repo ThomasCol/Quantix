@@ -138,93 +138,136 @@ void Inspector::AddComponent()
 
 void Inspector::DrawMaterialPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
 {
-	/*for (auto it = app->manager.GetMaterials().begin(); it != app->manager.GetMaterials().end(); ++it)
-			{
-				rttr::variant tmpInst(it->second);
-				if (tmpInst == t.get_property("Material").get_value(inst))
-				{
-					ImGui::Text("Material Path: "); ImGui::SameLine(155.f);
-					QXstring path = it->first;
-					ImGui::ButtonEx(path.c_str(), ImVec2(0, 0), ImGuiButtonFlags_Disabled);
-					if (ImGui::BeginDragDropTarget())
-					{
-						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
-						{
-							path = (const QXchar*)payload->Data;
-							if (path.find(".mat") == QXstring::npos)
-								path = it->first;
-							Quantix::Resources::Material* material = app->manager.CreateMaterial(path);
-							t.get_property("Material").set_value(inst, material);
-							ImGui::EndDragDropTarget();
-						}
-					}
-				}
-			}*/
+	ImGui::PushID(0);
+	ImGui::Text("Material Path: "); ImGui::SameLine(155.f);
+	Quantix::Resources::Material* mat = t.get_property("Material").get_value(inst).get_value<Quantix::Resources::Material*>();
+	QXstring path;
+	for (auto it = app->manager.GetMaterials().begin(); it != app->manager.GetMaterials().end(); ++it)
+	{
+		if (it->second == mat)
+			path = it->first;
+	}
+	if (path.empty())
+		ImGui::ButtonEx(path.c_str(), ImVec2(100, 0), ImGuiButtonFlags_Disabled);
+	else
+		ImGui::ButtonEx(path.c_str(), ImVec2(0, 0), ImGuiButtonFlags_Disabled);
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			QXstring pathTmp = (const QXchar*)payload->Data;
+			if (pathTmp.find(".mat") != QXstring::npos)
+				path = pathTmp;
+			Quantix::Resources::Material* material = app->manager.CreateMaterial(path);
+			t.get_property("Material").set_value(inst, material);
+			ImGui::EndDragDropTarget();
+		}
+	}
+	ImGui::PopID();
 }
 
 void Inspector::DrawModelPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
 {
+	ImGui::PushID(1);
+	ImGui::Text("Model Path: "); ImGui::SameLine(155.f);
+	Quantix::Resources::Model* mod = t.get_property("Model").get_value(inst).get_value<Quantix::Resources::Model*>();
+	QXstring path;
 	for (auto it = app->manager.GetModels().begin(); it != app->manager.GetModels().end(); ++it)
 	{
-		rttr::variant tmpInst(it->second);
-		if (tmpInst == t.get_property("Model").get_value(inst))
+		if (it->second == mod)
+			path = it->first;
+	}
+	if (path.empty())
+		ImGui::ButtonEx(path.c_str(), ImVec2(100, 0), ImGuiButtonFlags_Disabled);
+	else
+		ImGui::ButtonEx(path.c_str(), ImVec2(0, 0), ImGuiButtonFlags_Disabled);
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
 		{
-			ImGui::Text("Model Path: "); ImGui::SameLine(155.f);
-			QXstring path = it->first;
-			ImGui::ButtonEx(path.c_str(), ImVec2(0,0), ImGuiButtonFlags_Disabled);
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
-				{
-					path = (const QXchar*)payload->Data;
-					if (path.find(".obj") == QXstring::npos)
-						path = it->first;
-					Quantix::Resources::Model* model = app->manager.CreateModel(path);
-					t.get_property("Model").set_value(inst, model);
-					ImGui::EndDragDropTarget();
-				}
-			}
+			QXstring pathTmp = (const QXchar*)payload->Data;
+			if (pathTmp.find(".obj") != QXstring::npos)
+				path = pathTmp;
+			Quantix::Resources::Model* model = app->manager.CreateModel(path);
+			t.get_property("Model").set_value(inst, model);
+			ImGui::EndDragDropTarget();
 		}
 	}
+	ImGui::PopID();
+}
+
+void Inspector::DrawMTexturePath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
+{
+	ImGui::PushID(2);
+	ImGui::Text("Texture Path: "); ImGui::SameLine(155.f);
+	Quantix::Resources::Texture* text = t.get_property("Texture").get_value(inst).get_value<Quantix::Resources::Texture*>();
+	QXstring path;
+	for (auto it = app->manager.GetTextures().begin(); it != app->manager.GetTextures().end(); ++it)
+	{
+		if (it->second == text)
+			path = it->first;
+	}
+	if (path.empty())
+		ImGui::ButtonEx(path.c_str(), ImVec2(100, 0), ImGuiButtonFlags_Disabled);
+	else
+		ImGui::ButtonEx(path.c_str(), ImVec2(0, 0), ImGuiButtonFlags_Disabled);
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			QXstring pathTmp = (const QXchar*)payload->Data;
+			if (pathTmp.find(".png") != QXstring::npos)
+				path = pathTmp;
+			Quantix::Resources::Texture* texture = app->manager.CreateTexture(path);
+			t.get_property("Texture").set_value(inst, texture);
+			ImGui::EndDragDropTarget();
+		}
+	}
+	ImGui::PopID();
 }
 
 void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
 {
-	QXstring name;
-	if (t.is_pointer())
+	if (t != rttr::type::get<Quantix::Resources::Texture*>())
 	{
-		name = t.get_name().to_string();
-		name.pop_back();
-	}
-	else
-		name = t.get_name().to_string();
-
-	ImVec2 pos = ImGui::GetCursorPos();
-	QXbool open = ImGui::TreeNodeEx(("##" + name).c_str(), ImGuiTreeNodeFlags_Framed);
-	TreeNodeImage(name, PATHIMG + name + PNG, app, pos);
-	
-	if (open)
-	{
-		if (t == rttr::type::get<Quantix::Core::Components::Mesh>())
+		QXstring name;
+		if (t.is_pointer())
 		{
-			DrawMaterialPath(inst, t, app);
-			DrawModelPath(inst, t, app);
+			name = t.get_name().to_string();
+			name.pop_back();
 		}
+		else
+			name = t.get_name().to_string();
 
-		QXint index = 0;
-		for (auto it = t.get_properties().begin(); it != t.get_properties().end(); ++it)
+		ImVec2 pos = ImGui::GetCursorPos();
+		QXbool open = ImGui::TreeNodeEx(("##" + name).c_str(), ImGuiTreeNodeFlags_Framed);
+		TreeNodeImage(name, PATHIMG + name + PNG, app, pos);
+
+		if (open)
 		{
-			rttr::property currentProp = *(it);
-			if (currentProp.get_type() != rttr::type::get<Quantix::Resources::Model*>())
+			if (t == rttr::type::get<Quantix::Core::Components::Mesh>())
 			{
-				rttr::type type = currentProp.get_type();
-				ImGui::PushID(index);
-				DrawVariable(inst, currentProp, type, app);
-				ImGui::PopID();
-				index++;
+				DrawModelPath(inst, t, app);
+				DrawMaterialPath(inst, t, app);
 			}
+			if (t == rttr::type::get<Quantix::Resources::Material*>())
+				DrawMTexturePath(inst, t, app);
+
+			QXint index = 0;
+			for (auto it = t.get_properties().begin(); it != t.get_properties().end(); ++it)
+			{
+				rttr::property currentProp = *(it);
+				if (currentProp.get_type() != rttr::type::get<Quantix::Resources::Model*>())
+				{
+					rttr::type type = currentProp.get_type();
+					ImGui::PushID(index);
+					DrawVariable(inst, currentProp, type, app);
+					ImGui::PopID();
+					index++;
+				}
+			}
+			ImGui::TreePop();
 		}
-		ImGui::TreePop();
 	}
 }
 

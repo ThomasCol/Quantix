@@ -1,5 +1,7 @@
 #include "Core/DataStructure/GameObject3D.h"
 
+#include "Core/Components/CubeCollider.h"
+
 RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::DataStructure::GameObject3D>("GameObject3D")
@@ -42,7 +44,7 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
-	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes)
+	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders)
 	{
 		if (_toRender)
 		{
@@ -56,10 +58,10 @@ namespace Quantix::Core::DataStructure
 		}
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
-			child->GetObject()->Update(meshes, this);
+			child->GetObject()->Update(meshes, colliders, this);
 	}
 
-	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, const GameObject3D* parentObject)
+	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, const GameObject3D* parentObject)
 	{
 		if (_toRender)
 		{
@@ -69,6 +71,12 @@ namespace Quantix::Core::DataStructure
 				meshes.push_back(mesh);
 		}
 
+		Core::Components::ICollider* collider = GetComponent<Core::Components::ICollider>(true);
+		if (collider && collider->toRender)
+		{
+			colliders.push_back(collider);
+		}
+
 		// Update All Behaviours
 		for (QXint i = 0; i < _behaviours.size(); i++)
 			_behaviours[i]->Update();
@@ -76,16 +84,16 @@ namespace Quantix::Core::DataStructure
 		_transform->Update(parentObject->GetTransform());
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
-			child->GetObject()->Update(meshes, this);
+			child->GetObject()->Update(meshes, colliders, this);
 	}
 
-	void									GameObject3D::CallOnTrigger(GameObject3D* other)
+	void	GameObject3D::CallOnTrigger(GameObject3D* other)
 	{
 		for (QXuint i = 0; i < _behaviours.size(); i++)
 			_behaviours[i]->OnTrigger(this, other);
 	}
 
-	void									GameObject3D::CallOnContact(GameObject3D* other)
+	void	GameObject3D::CallOnContact(GameObject3D* other)
 	{
 		for (QXuint i = 0; i < _behaviours.size(); i++)
 			_behaviours[i]->OnContact(this, other);

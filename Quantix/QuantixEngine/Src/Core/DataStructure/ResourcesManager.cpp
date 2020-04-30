@@ -1,6 +1,9 @@
 #include "Core/DataStructure/ResourcesManager.h"
 
+#include <istream>
+
 #include "Core/Debugger/Logger.h"
+#include "Core/Threading/TaskSystem.hpp"
 
 namespace Quantix::Core::DataStructure
 {
@@ -49,6 +52,7 @@ namespace Quantix::Core::DataStructure
 		if (_materials.size() == 0)
 		{
 			_materials[path + std::to_string(0) + ".mat"] = material;
+			material->SetPath(path + std::to_string(0) + ".mat");
 			return material;
 		}
 
@@ -70,6 +74,8 @@ namespace Quantix::Core::DataStructure
 			_materials[tmp_path] = material;
 		}
 
+		material->SetPath(tmp_path);
+
 		return material;
 	}
 
@@ -88,7 +94,6 @@ namespace Quantix::Core::DataStructure
 		{
 			return it->second;
 		}
-
 		return LoadMaterial(filePath);
 	}
 
@@ -103,6 +108,8 @@ namespace Quantix::Core::DataStructure
 		_meshes[key] = mesh;
 
 		mesh->shaderID = mesh->GetMaterial()->GetShaderProgram()->GetID();
+		if (mesh->GetMaterial()->GetMainTexture())
+			mesh->textureID = mesh->GetMaterial()->GetMainTexture()->GetId();
 		
 			
 		return mesh;
@@ -118,8 +125,9 @@ namespace Quantix::Core::DataStructure
 
 		std::vector<Vertex> vertices;
 		std::vector<QXuint> indices;
-		LoadModel(filePath, vertices, indices);
-		Model* model = new Model(vertices, indices);
+		Model* model = new Model;
+		Threading::TaskSystem::GetInstance()->AddTask(&Model::Load, model, filePath);
+		_resourcesToBind.push_back(model);
 		_models[filePath] = model;
 		return model;
 	}
@@ -174,7 +182,8 @@ namespace Quantix::Core::DataStructure
 		}
 
 		Texture* texture = new Texture;
-		texture->Load(filePath.c_str());
+		Threading::TaskSystem::GetInstance()->AddTask(&Texture::Load, texture, filePath);
+		_resourcesToBind.push_back(texture);
 		_textures[filePath] = texture;
 		return texture;
 	}
@@ -188,7 +197,8 @@ namespace Quantix::Core::DataStructure
 		}
 
 		Texture* texture = new Texture;
-		texture->LoadHDRTexture(filePath.c_str());
+		Threading::TaskSystem::GetInstance()->AddTask(&Texture::LoadHDRTexture, texture, filePath);
+		_resourcesToBind.push_back(texture);
 		_textures[filePath] = texture;
 		return texture;
 	}
@@ -231,100 +241,6 @@ namespace Quantix::Core::DataStructure
 		return material;
 	}
 
-	void ResourcesManager::LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
-	{
-		if (!LoadModelFromCache(filePath, vertices, indices))
-			LoadModelFromFile(filePath, vertices, indices);
-	}
-
-	QXbool ResourcesManager::LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
-	{
-		QXstring cache_file = filePath + ".quantix";
-		FILE* file;
-
-		fopen_s(&file, cache_file.c_str(), "rb");
-
-		if (file == nullptr)
-			return false;
-
-		QXsizei vertex_count, index_count;
-
-		fread(&vertex_count, sizeof(QXsizei), 1, file);
-		vertices.resize(vertex_count);
-		fread(vertices.data(), sizeof(Vertex), vertex_count, file);
-
-		fread(&index_count, sizeof(QXsizei), 1, file);
-		indices.resize(index_count);
-		fread(indices.data(), sizeof(QXuint), index_count, file);
-
-		fclose(file);
-
-		return true;
-	}
-
-	void ResourcesManager::LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept
-	{
-		tinyobj::attrib_t attrib;
-		std::vector<tinyobj::shape_t> shapes;
-		std::vector<tinyobj::material_t> materials;
-		std::string warn, err;
-
-		if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, filePath.c_str()))
-		{
-			LOG(ERROR, warn + err);
-			return;
-		}
-
-		std::unordered_map<Vertex, QXuint> uniqueVertices;
-
-		bool has_normals = !attrib.normals.empty();
-		bool has_tex_coords = !attrib.texcoords.empty();
-
-		for (const auto& shape : shapes)
-		{
-			for (const auto& index : shape.mesh.indices)
-			{
-				Vertex vertex = {};
-
-				vertex.position = {
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 0],
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 1],
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 2]
-				};
-
-				if (has_tex_coords)
-				{
-					vertex.uv = {
-						attrib.texcoords[2 * (QXsizei)index.texcoord_index + 0],
-						attrib.texcoords[2 * (QXsizei)index.texcoord_index + 1]
-					};
-				}
-
-				if (has_normals)
-				{
-					vertex.normal = {
-						attrib.normals[3 * (QXsizei)index.normal_index + 0],
-						attrib.normals[3 * (QXsizei)index.normal_index + 1],
-						attrib.normals[3 * (QXsizei)index.normal_index + 2]
-					};
-				}
-
-				if (uniqueVertices.count(vertex) == 0)
-				{
-					uniqueVertices[vertex] = static_cast<QXuint>(vertices.size());
-					vertices.push_back(vertex);
-				}
-
-				indices.push_back(uniqueVertices[vertex]);
-			}
-		}
-	}
-
-	Scene* ResourcesManager::LoadScene(const QXstring& filePath) noexcept
-	{
-		return new Scene();
-	}
-
 	void ResourcesManager::SaveMaterialToCache(const QXstring& filePath, const Material* material) noexcept
 	{
 		FILE* file;
@@ -349,16 +265,18 @@ namespace Quantix::Core::DataStructure
 
 		const Texture* texture = material->GetMainTexture();
 
-		for (auto it = _textures.begin(); it != _textures.begin(); ++it)
+		for (auto it = _textures.begin(); it != _textures.end(); ++it)
 		{
 			if (it->second == texture)
 			{
 				char_count = it->first.length();
 
 				fwrite(&char_count, sizeof(QXsizei), 1, file);
-				fwrite(&it->first, sizeof(QXstring), char_count, file);
+				fwrite(it->first.data(), sizeof(QXchar), char_count, file);
+				break;
 			}
 		}
+		fclose(file);
 	}
 
 	void ResourcesManager::SaveModelToCache(const QXstring& filePath, Model* model) noexcept
@@ -378,25 +296,6 @@ namespace Quantix::Core::DataStructure
 		fwrite(model->GetIndices().data(), sizeof(QXuint), index_count, file);
 
 		fclose(file);
-	}
-
-	void ResourcesManager::SaveScene(Scene* scene) noexcept
-	{
-		QXstring cache_file;
-		for (auto it = _scenes.begin(); it != _scenes.end(); ++it)
-		{
-			if (it->second == scene)
-				cache_file = it->first + ".quantix";
-		}
-
-		if (cache_file == "")
-			return;
-
-		FILE* file;
-
-		fopen_s(&file, cache_file.c_str(), "wb");
-
-
 	}
 
 	void ResourcesManager::DeleteMaterial(const QXstring& filePath) noexcept
@@ -443,6 +342,46 @@ namespace Quantix::Core::DataStructure
 
 		delete texture;
 		_textures[filePath] = nullptr;
+	}
+
+	void ResourcesManager::SaveScene(Scene* scene)
+	{
+		std::ofstream stream("../QuantixEngine/Media/scene.quantix");
+
+		Tool::Serializer serializer;
+		stream << serializer.Serialize(scene);
+	}
+
+	Scene* ResourcesManager::LoadScene(const QXstring& path)
+	{
+		Tool::Serializer* serializer = new Tool::Serializer;
+		Scene* scene = new Scene();
+		//serializer.Deserialize(path, scene, *this);
+		Threading::TaskSystem::GetInstance()->AddTask(&Tool::Serializer::Deserialize, serializer, path, scene, this);
+		return scene;
+	}
+
+	void ResourcesManager::UpdateResourcesState()
+	{
+		if (_resourcesToBind.size() == 0)
+			return;
+
+		auto it = _resourcesToBind.begin();
+
+		while (it != _resourcesToBind.end())
+		{
+			if ((*it)->IsLoaded())
+			{
+				(*it)->Init();
+				it = _resourcesToBind.erase(it);
+			}
+			else if ((*it)->IsFailed() || (*it)->IsReady())
+			{
+				it = _resourcesToBind.erase(it);
+			}
+			else
+				it++;
+		}
 	}
 
 #pragma endregion

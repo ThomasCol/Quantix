@@ -13,7 +13,6 @@ namespace Quantix::Core::Render::PostProcess
 		_skyboxTexture {skyTexture}
 	{
 		Init();
-		CaptureCubemap();
 	}
 
 	Skybox::~Skybox()
@@ -67,6 +66,7 @@ namespace Quantix::Core::Render::PostProcess
 		};
 
 		_cubemapProgram->Use();
+		glDisable(GL_CULL_FACE);
 		glDepthFunc(GL_LEQUAL);
 
 		glUniformMatrix4fv(_cubemapProgram->GetLocation("projection"), 1, false, proj.array);
@@ -89,6 +89,7 @@ namespace Quantix::Core::Render::PostProcess
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDeleteFramebuffers(1, &_captureFBO);
+		_cubemapProgram->Unuse();
 	}
 
 	void Skybox::renderCube() noexcept
@@ -103,6 +104,18 @@ namespace Quantix::Core::Render::PostProcess
 
 	void Skybox::Render(Platform::AppInfo& info) noexcept
 	{
+		if (!_isCubemapReady)
+		{
+			if (_model->IsReady() && _skyboxTexture->IsReady())
+			{
+				CaptureCubemap();
+				_isCubemapReady = true;
+				glViewport(0, 0, info.width, info.height);
+			}
+			else
+				return;
+		}
+
 		// Render skybox
 		glDisable(GL_CULL_FACE);
 		_program->Use();

@@ -16,6 +16,7 @@ RTTR_PLUGIN_REGISTRATION
 		rttr::value("Point", Quantix::Core::Components::EPhysXType::DYNAMIC),
 		rttr::value("Spot", Quantix::Core::Components::EPhysXType::COUNT))
 	.property("physicType", &Quantix::Core::Components::ICollider::physicType)
+	.property("ToRender", &Quantix::Core::Components::ICollider::toRender)
 	.property("Local Position", &Quantix::Core::Components::ICollider::GetPosition, &Quantix::Core::Components::ICollider::SetPosition)
 	.property("Local Rotation", &Quantix::Core::Components::ICollider::GetRotation, &Quantix::Core::Components::ICollider::SetRotation)
 	.property("Query Shape", &Quantix::Core::Components::ICollider::GetShapeFlagSceneQuery, &Quantix::Core::Components::ICollider::SetShapeFlagSceneQuery)

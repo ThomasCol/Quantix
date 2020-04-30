@@ -84,7 +84,7 @@ namespace Quantix::Physic
 			_dynamic->attachShape(shape[i]);
 			physicStatic->GetRigid()->detachShape(shape[i]);
 		}
-		void* data = physicStatic->GetRigid()->userData;
+		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicStatic->GetRigid()->userData;
 		_dynamic->userData = data;
 		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);
 	}

@@ -40,6 +40,25 @@ namespace Quantix::Physic
 		bool trigger = false;
 		bool visualization = false;
 	};
+
+	struct QUANTIX_API SceneFlag
+	{
+		bool adaptiveForce = false;
+		bool disableCCDResweep = false;
+		bool disableContactCache = false;
+		bool disableContactReportResize = false;
+		bool activeActors = true;
+		bool averagePoint = false;
+		bool ccd = false;
+		bool enhancedDeterminism = false;
+		bool frictionEveryIteration = false;
+		bool gpuDynamics = false;
+		bool pcm = false;
+		bool stabilization = false;
+		bool excludeKineActiveActors = false;
+		bool mutableFlags = false;
+		bool requireRWLock = false;
+	};
 }
 
 #endif // !__PHYSICSETTING_H__

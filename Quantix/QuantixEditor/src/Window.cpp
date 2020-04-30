@@ -10,6 +10,11 @@ extern "C"
 
 namespace Quantix::Core::Platform
 {
+
+	void OpenGLErrorCallback(GLenum Source, GLenum Type, GLuint Id, GLenum Severity, GLsizei Length, const GLchar* Message, const void* UserParam)
+	{
+		fprintf(stderr, "OpenGL log (0x%x): %s\n", Id, Message);
+	}
 #pragma region Constructors
 
 	Window::Window(QXuint width, QXuint height):
@@ -35,6 +40,13 @@ namespace Quantix::Core::Platform
 		{
 			throw std::runtime_error("Failed to init openGL");
 		}
+
+		glDebugMessageCallback(OpenGLErrorCallback, nullptr);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PERFORMANCE, GL_DONT_CARE, 0, nullptr, GL_FALSE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_OTHER, GL_DONT_CARE, 0, nullptr, GL_FALSE);
+
 
 		printf("GL_VERSION: %s\n", glGetString(GL_VERSION));
 		printf("GL_VENDOR: %s\n", glGetString(GL_VENDOR));

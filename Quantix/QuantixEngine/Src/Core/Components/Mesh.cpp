@@ -13,8 +13,8 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<const Quantix::Core::Components::Mesh&>()
 	.constructor<Quantix::Core::Components::Mesh&&>()
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
-	.property("Material", &Quantix::Core::Components::Mesh::GetMaterial, &Quantix::Core::Components::Mesh::SetMaterial)
-	.property("Model", &Quantix::Core::Components::Mesh::GetModel, &Quantix::Core::Components::Mesh::SetModel);
+	.property("Model", &Quantix::Core::Components::Mesh::_model)
+	.property("Material", &Quantix::Core::Components::Mesh::GetMaterial, &Quantix::Core::Components::Mesh::SetMaterial);
 }
 
 namespace Quantix::Core::Components
@@ -50,10 +50,16 @@ namespace Quantix::Core::Components
 		_material = new Resources::Material();
 	}
 
-	QXbool	Mesh::IsEnable() const
+	QXbool	Mesh::IsEnable()
 	{
-		if (!_model)
+		if (!_model || !_model->IsReady())
 			return false;
+		else if (!_isMaterialInit && _material->IsReady())
+		{
+			if (_material->GetMainTexture())
+				textureID = _material->GetMainTexture()->GetId();
+			_isMaterialInit = true;
+		}
 		return _isEnable;
 	}
 

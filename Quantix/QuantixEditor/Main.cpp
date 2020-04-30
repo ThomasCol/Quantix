@@ -6,7 +6,6 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_internal.h>
-
 #include <Core/Components/Camera.h>
 
 #include <Editor.h>
@@ -16,7 +15,7 @@
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/UserEntry/InputManager.h>
 
-#define SPEED (0.1f)
+#define SPEED (0.5f)
 
 QXuint indexPackD;
 QXuint indexPackE;
@@ -66,30 +65,30 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	Quantix::Core::Components::Light light;
-	light.ambient = { 0.5f, 0.5f, 0.5f };
+	light.ambient = { 0.3f, 0.3f, 0.3f };
 	light.diffuse = { 0.7f, 0.7f, 0.7f };
-	light.specular = { 1.0f, 1.0f, 1.0f };
-	light.position = { 0.0f, 0.0f, 10.f };
-	light.direction = { 0.0f, 0.0f, -1.f };
+	light.specular = { 0.7f, 0.7f, 0.7f };
+	light.position = { -2.0f, 4.0f, -1.0f };
+	light.direction = { 2.0f, -4.0f, 1.f };
 	light.constant = 0.5f;
 	light.linear = 0.09f;
 	light.quadratic = 0.032f;
 	light.cutOff = cos(0.70f);
 	light.outerCutOff = cos(0.76f);
-	light.type = Quantix::Core::Components::ELightType::SPOT;
+	light.type = Quantix::Core::Components::ELightType::DIRECTIONAL;
 
 	Quantix::Core::Components::Light light2;
-	light2.ambient = { 0.5f, 0.5f, 0.5f };
-	light2.diffuse = { 0.7f, 0.7f, 0.7f };
-	light2.specular = { 1.0f, 1.0f, 1.0f };
-	light2.position = { 0.0f, 12.f, 5.f };
-	light2.direction = { 0.0f, 0.0f, -1.f };
+	light2.ambient = { 0.3f, 0.3f, 0.3f };
+	light2.diffuse = { 1.0f, 1.0f, 1.0f };
+	light2.specular = { 0.50f, 0.50f, 0.50f };
+	light2.position = { 0.0f, 2.f, 7.f };
+	light2.direction = { 0.0f, 0.f, -1.f };
 	light2.constant = 0.5f;
 	light2.linear = 0.09f;
 	light2.quadratic = 0.032f;
 	light2.cutOff = cos(0.70f);
 	light2.outerCutOff = cos(0.76f);
-	light2.type = Quantix::Core::Components::ELightType::POINT;
+	light2.type = Quantix::Core::Components::ELightType::SPOT;
 
 	lights.push_back(light);
 	lights.push_back(light2);
@@ -133,6 +132,8 @@ void Init(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 
 void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights, Quantix::Core::Components::Camera* cam)
 {
+	static QXbool	sceneChange = false;
+	static Quantix::Resources::Scene* newScene = nullptr;
 	if (GetKey(QX_KEY_ESCAPE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		if (editor->_mouseInput->MouseCaptured)
@@ -148,19 +149,43 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	DebugMode();
 
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
+	std::vector<Quantix::Core::Components::ICollider*>	colliders;
+
+	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+		editor->GetApp()->manager.SaveScene(editor->GetApp()->scene);
+	if (GetKey(QX_KEY_BACKSPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+	{
+		newScene = editor->GetApp()->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
+		sceneChange = true;
+	}
+
+	if (sceneChange)
+	{
+		if (newScene->IsReady())
+		{
+			editor->GetApp()->scene = newScene;
+			editor->SetRoot(editor->GetApp()->scene->GetRoot());
+			sceneChange = false;
+		}
+	}
+
 
 	START_PROFILING("Draw");
-	if (editor->GetPlay() && !editor->GetPause())
-		editor->GetApp()->Update(meshes, true);
+	if (!editor->GetPause() && editor->GetPlay())
+	{
+		editor->GetApp()->Update(meshes, colliders, true);
+	}
 	else
-		editor->GetApp()->Update(meshes);
+	{
+		editor->GetApp()->Update(meshes, colliders);
+	}
 	//Editor Update
 	if (editor->GetPlay())
 		editor->Update(editor->GetApp()->renderer.DrawGame(meshes, lights, editor->GetApp()->info, editor->GetMainCamera()), 
-						editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, editor->GetEditorCamera()));
+						editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetEditorCamera()));
 	else
 		editor->Update(editor->GetApp()->renderer.DrawGame(meshes, lights, editor->GetApp()->info, editor->GetMainCamera()), 
-						editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, editor->GetEditorCamera()));
+						editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetEditorCamera()));
 	STOP_PROFILING("Draw");
 	START_PROFILING("Refresh");
 	editor->GetWin().Refresh(editor->GetApp()->info);
@@ -189,6 +214,7 @@ int main()
 			Update(editor, lights, cam);
 
 		delete cam;
+		delete editor;
 	}
 	catch (const std::exception& e)
 	{
@@ -197,5 +223,6 @@ int main()
 	}
 
 	Quantix::Core::Debugger::Logger::GetInstance()->CloseLogger();
+	
 	return 0;
 }

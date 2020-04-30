@@ -16,6 +16,7 @@ RTTR_PLUGIN_REGISTRATION
 namespace Quantix::Core::Components
 {
 	CubeCollider::CubeCollider(DataStructure::GameComponent* par):
+		Component(par),
 		ICollider(par)
 	{
 		if (par->GetComponent<Rigidbody>())
@@ -42,6 +43,7 @@ namespace Quantix::Core::Components
 
 	void CubeCollider::SetHalfExtents(Math::QXvec3 vec)
 	{
+		scale = vec * 2;
 		shape->setGeometry(physx::PxBoxGeometry(vec.x, vec.y, vec.z));
 	}
 
@@ -52,6 +54,7 @@ namespace Quantix::Core::Components
 
 	void CubeCollider::Init(DataStructure::GameComponent* par)
 	{
+		typeShape = ETypeShape::CUBE;
 		_object = par;
 		_isDestroyed = false;
 		_isEnable = true;

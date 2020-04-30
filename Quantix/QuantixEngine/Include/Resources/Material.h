@@ -18,6 +18,8 @@ namespace Quantix::Resources
 		ShaderProgram* 	_program = nullptr;
 		Texture*		_mainTexture = nullptr;
 
+		QXstring		_path;
+
 #pragma endregion
 
 	public:
@@ -54,10 +56,12 @@ namespace Quantix::Resources
 
 #pragma region Functions
 
+		QXbool	IsReady();
+
 		/**
 		 * @brief Send Material data to the shader
 		 */
-		void SendData();
+		void SendData(QXuint shadowTexture);
 
 		/**
 		 * @brief Set a float in a shader
@@ -182,7 +186,15 @@ namespace Quantix::Resources
 
 		inline std::vector<QXstring>	GetProgramPath() const { return _program->GetPath(); }
 
-		inline ShaderProgram*		GetShaderProgram() { return _program; }
+		inline ShaderProgram*			GetShaderProgram() { return _program; }
+
+		inline QXstring					GetPath() { return _path; }
+
+		inline void						SetPath(QXstring path) { _path = path; }
+
+		inline  Texture* GetMaterialTexture() noexcept { return _mainTexture; }
+
+		inline void SetMaterialTexture(Texture* texture) noexcept { _mainTexture = texture; }
 
 		/**
 		 * @brief Set the Main Texture object

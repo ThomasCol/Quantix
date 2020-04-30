@@ -336,12 +336,14 @@ namespace Math
 		bottom = -top;
 		right = (QXfloat)width / 2.f;
 		left = -right;
-		toReturn[0][0] = 1 / right - left;
-		toReturn[1][1] = 2 / top - bottom;
-		toReturn[2][2] = -2 / (far - near);
-		toReturn[2][3] = - (far + near) / (far - near);
-		toReturn[0][3] = - (right + left) / (right - left);
-		toReturn[1][3] = - (top + bottom) / (top - bottom);
+
+		toReturn[0][0] = 1.f / right;
+		toReturn[1][1] = 1.f / top;
+		toReturn[2][2] = -2.f / (far - near);
+		toReturn[3][2] = - (far + near) / (far - near);
+		toReturn[0][3] = 0;
+		toReturn[1][3] = 0;
+
 		return toReturn;
 	}
 
@@ -358,6 +360,13 @@ namespace Math
 		X.Normalize();
 		Y = (Z.Cross(X));
 		Y.Normalize();
+
+		/*{
+			X.x,				Y.x,				Z.x,				0,
+			X.y,				Y.y,				Z.z,				0,
+			X.z,				Y.z,				Z.z,				0,
+			-X.Dot(position),	-Y.Dot(position),	-Z.Dot(position),	1,
+		}*/
 
 		lookAt[0][0] = X.x;
 		lookAt[1][0] = X.y;

@@ -8,6 +8,7 @@ out vec2 UV;
 out vec3 outNormal;
 out vec3 fragPos;
 out vec3 viewPos;
+out vec4 fragPosLightSpace;
 
 uniform mat4 TRS;
 
@@ -15,6 +16,12 @@ layout (std140, binding = 0) uniform ViewProj
 {
 	mat4 view;
 	mat4 proj;
+};
+
+layout (std140, binding = 1) uniform ViewProjLight
+{
+	mat4 lightView;
+	mat4 lightProj;
 };
 
 void 	main()
@@ -27,4 +34,6 @@ void 	main()
 	UV = uv;
 
 	outNormal = mat3(transpose(inverse(TRS))) * normal;
+
+	fragPosLightSpace = lightProj * lightView * vec4(fragPos, 1.0);
 }
