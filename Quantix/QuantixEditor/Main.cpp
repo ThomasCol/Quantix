@@ -66,32 +66,32 @@ void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Light>& li
 {
 	Quantix::Core::Components::Light light;
 	light.ambient = { 0.3f, 0.3f, 0.3f };
-	light.diffuse = { 2.f, 2.f, 2.f };
-	light.specular = { 1.0f, 1.0f, 1.0f };
+	light.diffuse = { 0.7f, 0.7f, 0.7f };
+	light.specular = { 0.7f, 0.7f, 0.7f };
 	light.position = { -2.0f, 4.0f, -1.0f };
-	light.direction = { 0.0f, 0.0f, -1.f };
+	light.direction = { 2.0f, -4.0f, 1.f };
 	light.constant = 0.5f;
 	light.linear = 0.09f;
 	light.quadratic = 0.032f;
 	light.cutOff = cos(0.70f);
 	light.outerCutOff = cos(0.76f);
-	light.type = Quantix::Core::Components::ELightType::SPOT;
+	light.type = Quantix::Core::Components::ELightType::DIRECTIONAL;
 
-	/*Quantix::Core::Components::Light light2;
+	Quantix::Core::Components::Light light2;
 	light2.ambient = { 0.3f, 0.3f, 0.3f };
-	light2.diffuse = { 2.0f, 2.0f, 2.0f };
+	light2.diffuse = { 1.0f, 1.0f, 1.0f };
 	light2.specular = { 0.50f, 0.50f, 0.50f };
-	light2.position = { 0.0f, 1.f, 1.f };
-	light2.direction = { 0.0f, -1.f, -1.f };
+	light2.position = { 0.0f, 2.f, 7.f };
+	light2.direction = { 0.0f, 0.f, -1.f };
 	light2.constant = 0.5f;
 	light2.linear = 0.09f;
 	light2.quadratic = 0.032f;
 	light2.cutOff = cos(0.70f);
 	light2.outerCutOff = cos(0.76f);
-	light2.type = Quantix::Core::Components::ELightType::DIRECTIONAL;*/
+	light2.type = Quantix::Core::Components::ELightType::SPOT;
 
 	lights.push_back(light);
-	//lights.push_back(light2);
+	lights.push_back(light2);
 }
 
 void InitPack()
@@ -150,6 +150,7 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	DebugMode();
 
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
+	std::vector<Quantix::Core::Components::ICollider*>	colliders;
 
 	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 		editor->GetApp()->manager.SaveScene(editor->GetApp()->scene);
@@ -173,17 +174,17 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	START_PROFILING("Draw");
 	if (!editor->GetPause() && editor->GetPlay())
 	{
-		editor->GetApp()->Update(meshes, true);	
+		editor->GetApp()->Update(meshes, colliders, true);
 	}
 	else
 	{
-		editor->GetApp()->Update(meshes);
+		editor->GetApp()->Update(meshes, colliders);
 	}
 	//Editor Update
 	if (editor->GetPlay())
-		editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, editor->GetMainCamera()));
+		editor->Update(editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetMainCamera()));
 	else
-		editor->Update(editor->GetApp()->renderer.Draw(meshes, lights, editor->GetApp()->info, editor->GetEditorCamera()));
+		editor->Update(editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetEditorCamera()));
 	STOP_PROFILING("Draw");
 	START_PROFILING("Refresh");
 	editor->GetWin().Refresh(editor->GetApp()->info);

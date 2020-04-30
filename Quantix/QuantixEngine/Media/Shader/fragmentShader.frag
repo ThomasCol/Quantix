@@ -34,7 +34,7 @@ struct Material
 	sampler2D	texture;
 };
 
-layout (std140, binding = 1) uniform lights
+layout (std140, binding = 2) uniform lights
 {
 	uint count;
 	Light light[10];
@@ -46,7 +46,7 @@ uniform Light		lightArray[10];
 
 uniform bool phong;
 
-out vec4			FragColor;
+out vec4			fragColor;
 
 in vec2				UV;
 in vec3				outNormal;
@@ -62,36 +62,39 @@ vec3	calculateSpecular(vec3 lightDir, vec3 norm, vec3 specular);
 
 /* calculate type light */
 vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm, float shadow);
-vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm, float shadow);
+vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm);
 vec3	calculateSpotLight(Light light, vec3 lightDir, vec3 norm, float shadow);
-float	ComputeShadow(vec4 fragPosLightSpace);
+float	ComputeShadow(vec4 fragPosLightSpace, vec3 lightDir, vec3 normal);
 
 void main()
 {
-	/*vec3	norm = normalize(outNormal);
+	vec3	norm = normalize(outNormal);
 	vec3	lightDir;
 	vec3	output = vec3(0.0);
 
-	float shadow = ComputeShadow(fragPosLightSpace);
+	float shadow = ComputeShadow(fragPosLightSpace, normalize(light[0].position - fragPos), norm);
 
-	for (int i = 0; i < count; ++i)
-	{*/
+	output += calculateDirectional(light[0], lightDir, norm, shadow);
+
+	for (int i = 1; i < count; ++i)
+	{
 		/* calculate influence of all lights */
-		/*if (light[i].type == 1)
-			output += calculateDirectional(light[i], lightDir, norm, shadow);
+		if (light[i].type == 1)
+			output += calculateDirectional(light[i], lightDir, norm, 0.0);
 
 		if (light[i].type == 2)
-			output += calculatePointLight(light[i], lightDir, norm, shadow);
+			output += calculatePointLight(light[i], lightDir, norm);
 
 		if (light[i].type == 3)
-			output += calculateSpotLight(light[i], lightDir, norm, shadow);
+			output += calculateSpotLight(light[i], lightDir, norm, 0.0);
 	}
 
 	if (material.textured)
-		color = vec4(output, 1.0) * texture(material.texture, UV);
+		fragColor = vec4(output, 1.0) * texture(material.texture, UV);
 	else
-		color = vec4(output, 1.0);*/
-	vec3 color = vec3(1.0);
+		fragColor = vec4(output, 1.0);
+
+	/*vec3 color = vec3(1.0);
 	if (material.textured)
 		color = texture(material.texture, UV).rgb;
     vec3 normal = normalize(outNormal);
@@ -113,12 +116,11 @@ void main()
     float shadow = ComputeShadow(fragPosLightSpace);                      
     vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;    
     
-    FragColor = vec4(lighting, 1.0);
+    FragColor = vec4(lighting, 1.0);*/
 }
 
-float	ComputeShadow(vec4 fragPosLightSpace)
+float	ComputeShadow(vec4 fragPosLightSpace, vec3 lightDir, vec3 normal)
 {
-	vec3 lightDir = normalize(light[0].position - fragPos);
 	// perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range
@@ -127,7 +129,7 @@ float	ComputeShadow(vec4 fragPosLightSpace)
     float closestDepth = texture(material.shadowMap, projCoords.xy).r; 
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
-	float bias = max(0.05 * (1.0 - dot(normalize(outNormal), lightDir)), 0.005);
+	float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
     // check whether current frag pos is in shadow
     float shadow = 0.0;
 	vec2 texelSize = 1.0 / textureSize(material.shadowMap, 0);
@@ -162,7 +164,7 @@ vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm, float shadow)
 	return (ambient + (1.0 - shadow) * (diffuse + specular));
 }
 
-vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm, float shadow)
+vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm)
 {
 	lightDir = normalize(light.position - fragPos);
 
@@ -182,7 +184,7 @@ vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm, float shadow)
 	ambient *= attenuation;
 	specular *= attenuation;
 
-	return (ambient + (1.0 - shadow) * (diffuse + specular));
+	return (ambient + diffuse + specular);
 }
 
 vec3	calculateSpotLight(Light light, vec3 lightDir, vec3 norm, float shadow)

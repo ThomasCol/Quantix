@@ -12,7 +12,7 @@ namespace Quantix::Core::DataStructure
 
 namespace Quantix::Core::Components
 {
-	struct QUANTIX_API CubeCollider : public ICollider
+	struct QUANTIX_API CubeCollider : public virtual ICollider
 	{
 #pragma region Constructors
 		CubeCollider() = default;

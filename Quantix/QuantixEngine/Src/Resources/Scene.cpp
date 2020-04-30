@@ -2,6 +2,7 @@
 #include "Mat4.h"
 
 #include "Core/DataStructure/ResourcesManager.h"
+#include "Core/Components/CubeCollider.h"
 
 namespace Quantix::Resources
 {
@@ -82,14 +83,16 @@ namespace Quantix::Resources
 		//mesh->SetMaterialMainTexture(manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
 
+		gameObject->AddComponent<Core::Components::CubeCollider>()->Init(gameObject);
+
 		//mesh = gameObject2->GetComponent<Core::Components::Mesh>();
 	}
 
-	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes) noexcept
+	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders) noexcept
 	{
 		// TODO pas complet update mesh et update gameobject
 		if (_root)
-			_root->Update(meshes);
+			_root->Update(meshes, colliders);
 	}
 
 	void Scene::Rename(const QXstring& str) noexcept

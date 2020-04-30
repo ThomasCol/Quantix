@@ -16,8 +16,12 @@ layout (std140, binding = 0) uniform ViewProj
 {
 	mat4 view;
 	mat4 proj;
-	mat4 lightProj;
+};
+
+layout (std140, binding = 1) uniform ViewProjLight
+{
 	mat4 lightView;
+	mat4 lightProj;
 };
 
 void 	main()

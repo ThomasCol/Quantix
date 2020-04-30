@@ -77,7 +77,7 @@ namespace Quantix::Core::DataStructure
 			_behaviours[i]->Start();
 	}
 
-	void GameComponent::Update(std::vector<Core::Components::Mesh*>& meshes)
+	void GameComponent::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders)
 	{
 		for (QXint i = 0; i < _behaviours.size(); i++)
 			_behaviours[i]->Update();

@@ -16,6 +16,7 @@ RTTR_PLUGIN_REGISTRATION
 namespace Quantix::Core::Components
 {
 	CubeCollider::CubeCollider(DataStructure::GameComponent* par):
+		Component(par),
 		ICollider(par)
 	{
 		if (par->GetComponent<Rigidbody>())

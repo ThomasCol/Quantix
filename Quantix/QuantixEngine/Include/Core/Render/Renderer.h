@@ -7,6 +7,7 @@
 #include "Core/Components/Light.h"
 #include "../../../QuantixEditor/include/Window.h"
 #include "PostProcess/PostProcessEffect.h"
+#include "Core/Components/Collider.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -32,11 +33,19 @@ namespace Quantix::Core::Render
 		Framebuffer	_shadowBuffer;
 
 		QXuint		_viewProjMatrixUBO = 0;
+		QXuint		_viewProjShadowMatrixUBO = 0;
 		QXuint		_lightUBO = 0;
 
+
+		Math::QXmat4 _projLight;
 		PostProcess::PostProcessEffect* _effects;
 
 		Resources::ShaderProgram* _shadowProgram;
+
+		Resources::Model* _cube;
+		Resources::Model* _sphere;
+		Resources::Model* _caps;
+		Resources::ShaderProgram* _wireFrameProgram;
 
 		#pragma endregion
 
@@ -130,7 +139,7 @@ namespace Quantix::Core::Render
 		 * @param info App info
 		 * @param cam Current camera for rendering
 		 */
-		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::Light>& lights,
+		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
 				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
 
 		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
