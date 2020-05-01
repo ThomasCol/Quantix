@@ -25,8 +25,11 @@ namespace Quantix::Physic
 
 #pragma region Attributes
 
+#pragma region Singleton
 		static PhysicHandler* _instance;
+#pragma endregion
 
+#pragma region PhysX
 		bool recordMemoryAllocations = true;
 		PxPhysics* mSDK = NULL;
 		PxCooking* mCooking = NULL;
@@ -41,12 +44,16 @@ namespace Quantix::Physic
 
 		PxCollection* collection;
 
+		// To Delete
 		PxReal mAccumulator = 0.0f;
 		PxReal mStepSize = 1.0f / 60.0f;
+#pragma endregion
 
 		std::map<Core::DataStructure::GameComponent*, IPhysicType*>		_physObject;
 
+#pragma region Flag
 		SceneFlag sceneFlag;
+#pragma endregion
 
 #pragma endregion
 	public:
@@ -58,25 +65,37 @@ namespace Quantix::Physic
 
 #pragma region Functions
 
+		// To get singleton
 		static PhysicHandler* GetInstance();
 
-
-		void		Print(std::vector<Core::DataStructure::GameComponent*> go);
-
-		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody = false);
-
-		PxShape* CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
-
-		PxShape* CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
-
-		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
-
+		// Init Physic
 		void		InitSystem();
-		void		ReleaseSystem();
 		void		InitScene();
 
+		// Release
+		void		ReleaseSystem();
+
+		// Return PhysicType Linked to the GameComponent
+		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody = false);
+
+		// Create Actor
+		IPhysicType* CreateAndLinkActorPhysic(Core::DataStructure::GameComponent* object, bool dynamic);
+		IPhysicType* SwapActorPhysicStaticToDynamic(Core::DataStructure::GameComponent* object, PhysicStatic* staticActor);
+		IPhysicType* SwapActorPhysicDynamicToStatic(Core::DataStructure::GameComponent* object, PhysicDynamic* dynamicActor);
+
+
+		// Create Shape
+		PxShape* CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+		PxShape* CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+
+
+		// Update
 		void		UpdateSystem(double deltaTime);
 		void		UpdatePhysicActor(bool isPlaying = false);
+
+		void UpdatePlayingActor();
+		void UpdateEditorActor();
 
 #pragma region Operators
 

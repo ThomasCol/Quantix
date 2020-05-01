@@ -31,18 +31,22 @@ namespace Quantix::Physic
 	class IPhysicType
 	{
 	protected:
+#pragma region Attributes
+		// To know if PxActor is static or Dynamic
 		ETypePhysic		type = ETypePhysic::NONE;
-
+#pragma endregion
 	public:
 
+#pragma region Constructors	
 		IPhysicType() noexcept;
 		IPhysicType(ETypePhysic oType) noexcept;
 		IPhysicType(const IPhysicType&) noexcept;
 		IPhysicType(IPhysicType&&) noexcept;
 		virtual ~IPhysicType() = default;
+#pragma endregion
 
-		void		print();
-
+#pragma region Functions
+#pragma region Accessors
 		ETypePhysic&		GetType();
 		void		SetType(ETypePhysic& nt) { type = nt; };
 		
@@ -64,7 +68,8 @@ namespace Quantix::Physic
 		{
 			return (PhysicStatic*)this;
 		}
-
+#pragma endregion
+#pragma endregion
 		CLASS_REGISTRATION()
 	};
 }

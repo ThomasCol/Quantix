@@ -39,6 +39,7 @@ namespace Quantix::Physic
 		PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
 
 	{
+		// If it is a trigger
 		if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 		{
 			pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
@@ -49,8 +50,6 @@ namespace Quantix::Physic
 		std::cout << "Not Trigger" << std::endl;
 		pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 		pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
-		//pairFlags |= physx::PxPairFlag::eDETECT_DISCRETE_CONTACT;
-		//pairFlags |= physx::PxPairFlag::eDETECT_CCD_CONTACT;
 
 		return physx::PxFilterFlag::eDEFAULT;
 	}
@@ -66,129 +65,143 @@ namespace Quantix::Physic
 		return _instance;
 	}
 
-	void		PhysicHandler::Print(std::vector<Core::DataStructure::GameComponent*> go)
-	{
-		for (size_t i = 0; i < go.size(); i++)
-		{
-			std::cout << "Object" << i << " ";
-			_physObject[go[i]]->print();
-		}
-	}
-
 	IPhysicType* PhysicHandler::GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
 		auto it = _physObject.find(object);
+
 		if (!hasRigidbody)
 		{
+			// None ActorPhysic link at this GameObject
 			if (it == _physObject.end())
-			{
-				PhysicStatic* tmp = new PhysicStatic(mSDK);
-				tmp->GetRigid()->userData = dynamic_cast<Core::DataStructure::GameObject3D*>(object);
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
+				return CreateAndLinkActorPhysic(object, false);
+
+			// One ActorPhysic link at this GameObject but it is Dynamic
 			else if (it != _physObject.end()
 				&& (it->second->GetType() == ETypePhysic::DYNAMIC))
-			{
-				PhysicStatic* tmp = new PhysicStatic(mSDK, dynamic_cast<PhysicDynamic*>(_physObject[object]));
-				mScene->removeActor(*_physObject[object]->GetObjectDynamic()->GetRigid());
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.erase(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
-
-			return _physObject[object];
+				return SwapActorPhysicDynamicToStatic(object, it->second->GetObjectDynamic());
 		}
 		else
 		{
-			if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::STATIC))
-			{
-				PhysicDynamic* tmp = new PhysicDynamic(mSDK, dynamic_cast<PhysicStatic*>(_physObject[object]));
-				mScene->removeActor(*_physObject[object]->GetObjectStatic()->GetRigid());
-				mScene->addActor(*tmp->GetRigid());
-				_physObject.erase(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
-			else if (it == _physObject.end())
-			{
-				PhysicDynamic* tmp = new PhysicDynamic(mSDK);
-				mScene->addActor(*tmp->GetRigid());
-				tmp->GetRigid()->userData = dynamic_cast<Core::DataStructure::GameObject3D*>(object);
-				_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
-			}
+			// None ActorPhysic link at this GameObject
+			if (it == _physObject.end())
+				return CreateAndLinkActorPhysic(object, true);
 
-			return _physObject[object];
+			// One ActorPhysic link at this GameObject but it is Static
+			else if (it != _physObject.end()
+				&& (it->second->GetType() == ETypePhysic::STATIC))
+				return SwapActorPhysicStaticToDynamic(object, it->second->GetObjectStatic());
+		}
+
+		// Return PhysicActor Link to this GameComponent
+		return it->second;
+	}
+
+	IPhysicType* PhysicHandler::CreateAndLinkActorPhysic(Core::DataStructure::GameComponent* object, bool dynamic)
+	{
+		if (dynamic)
+		{
+			// Create a ActorPhysic static linked to this GameComponent
+			PhysicDynamic* tmp = new PhysicDynamic(mSDK);
+			mScene->addActor(*tmp->GetRigid());
+			tmp->GetRigid()->userData = dynamic_cast<Core::DataStructure::GameObject3D*>(object);
+			_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
+			return tmp;
+		}
+		else
+		{
+			// Create a ActorPhysic static linked to this GameComponent
+			PhysicStatic* tmp = new PhysicStatic(mSDK);
+			tmp->GetRigid()->userData = dynamic_cast<Core::DataStructure::GameObject3D*>(object);
+			mScene->addActor(*tmp->GetRigid());
+			_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
+			return tmp;
 		}
 	}
-	//ADD ENUM + Constructor type of shape
+
+	IPhysicType* PhysicHandler::SwapActorPhysicStaticToDynamic(Core::DataStructure::GameComponent* object, PhysicStatic* staticActor)
+	{
+		PhysicDynamic* tmp = new PhysicDynamic(mSDK, staticActor);
+		mScene->removeActor(*staticActor->GetRigid());
+		mScene->addActor(*tmp->GetRigid());
+		_physObject.erase(object);
+		_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
+		return tmp;
+	}
+
+	IPhysicType* PhysicHandler::SwapActorPhysicDynamicToStatic(Core::DataStructure::GameComponent* object, PhysicDynamic* dynamicActor)
+	{
+		PhysicStatic* tmp = new PhysicStatic(mSDK, dynamicActor);
+		mScene->removeActor(*dynamicActor->GetRigid());
+		mScene->addActor(*tmp->GetRigid());
+		_physObject.erase(object);
+		_physObject.insert(std::make_pair((Core::DataStructure::GameComponent*)object, tmp));
+		return tmp;
+	}
+
 	PxShape* PhysicHandler::CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
+		// Take ActorPhysic Link to the GameComponent
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
-		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
+		// Create Shape With BoxGeometrie
+		PxShape* s = mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *mMaterial, true);
 
-		PxShape* s = mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *aMaterial, true);
-
+		// Attach the shape to the actor
 		if (hasRigidbody)
 			physicType->GetObjectDynamic()->GetRigid()->attachShape(*s);
 		else
 			physicType->GetObjectStatic()->GetRigid()->attachShape(*s);
 
 		return s;
-
-		// Set un ID pour la suppression dans le collider
-		// a la suppression, detacher la shape situer a l'id stocker
 	}
 
 	PxShape* PhysicHandler::CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
+		// Take ActorPhysic Link to the GameComponent
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
-		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
+		// Create Shape With SphereGeometrie
+		PxShape* s = mSDK->createShape(PxSphereGeometry(1.f), *mMaterial, true);
 
-		PxShape* s = mSDK->createShape(PxSphereGeometry(1.f), *aMaterial, true);
-
+		// Attach the shape to the actor
 		if (hasRigidbody)
 			physicType->GetObjectDynamic()->GetRigid()->attachShape(*s);
 		else
 			physicType->GetObjectStatic()->GetRigid()->attachShape(*s);
 
 		return s;
-
-		// Set un ID pour la suppression dans le collider et le get set de donné
-		// a la suppression, detacher la shape situer a l'id stocker
 	}
 
 	PxShape* PhysicHandler::CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
+		// Take ActorPhysic Link to the GameComponent
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
-		PxMaterial* aMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
-
-		PxShape* s = mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *aMaterial, true);
+		// Create Shape With CapsuleGeometrie
+		PxShape* s = mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *mMaterial, true);
 		
+		// Attach the shape to the actor
 		if (hasRigidbody)
 			physicType->GetObjectDynamic()->GetRigid()->attachShape(*s);
 		else
 			physicType->GetObjectStatic()->GetRigid()->attachShape(*s);
 
 		return s;
-		// Set un ID pour la suppression dans le collider et le get set de donné
-		// a la suppression, detacher la shape situer a l'id stocker
 	}
 
 	void PhysicHandler::InitSystem()
 	{
+		// Init Foundation
 		pDefaultFundation = PxCreateFoundation(PX_PHYSICS_VERSION, pDefaultAllocatorCallback, pDefaultErrorCallback);
-
 		if (!pDefaultFundation)
 			std::cerr << "PxCreateFoundation failed!" << std::endl;
 
+		// Init PVD
 		pPvd = PxCreatePvd(*pDefaultFundation);
 		PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
 		pPvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
 
+		// Init Physic
 		mSDK = PxCreatePhysics(PX_PHYSICS_VERSION, *pDefaultFundation, PxTolerancesScale(), recordMemoryAllocations, pPvd);
 		if (!mSDK)
 		{
@@ -196,12 +209,14 @@ namespace Quantix::Physic
 			exit(1);
 		}
 
+		// Init Extensions
 		if (!PxInitExtensions(*mSDK, pPvd))
 		{
 			std::cerr << "An error has happened." << std::endl;
 			exit(1);
 		}
 
+		// Create Cooking
 		mCooking = PxCreateCooking(PX_PHYSICS_VERSION, mSDK->getFoundation(), PxCookingParams(mSDK->getTolerancesScale()));
 		if (!mCooking)
 		{
@@ -209,14 +224,17 @@ namespace Quantix::Physic
 			exit(1);
 		}
 
-		collection = PxCreateCollection();            // Create a collection
+		// Create a collection
+		collection = PxCreateCollection();            
 
 		InitScene();
 
+		// Init Default Material
 		mMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
 		if (!mMaterial)
 			std::cerr << "createMaterial failed!";
 
+		// Link PVD
 		PxPvdSceneClient* pvdClient = mScene->getScenePvdClient();
 		if (pvdClient)
 		{
@@ -231,15 +249,8 @@ namespace Quantix::Physic
 		PxSceneDesc sceneDesc(mSDK->getTolerancesScale());
 		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
 
-		/*sceneDesc.staticKineFilteringMode = PxPairFilteringMode::eKEEP;
-		sceneDesc.kineKineFilteringMode = PxPairFilteringMode::eKEEP;
-		sceneDesc.flags = PxSceneFlag::eENABLE_CCD;*/
-
 		sceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
 		sceneDesc.flags |= PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS;
-		//sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
-		//sceneDesc.flags |= PxSceneFlag::eENABLE_PCM;
-		//sceneDesc.flags |= PxSceneFlag::eENABLE_FRICTION_EVERY_ITERATION;
 
 		//physx::PxCudaContextManagerDesc cudaContextManagerDesc;
 		//sceneDesc.cudaContextManager = PxCreateCudaContextManager(*pDefaultFundation, cudaContextManagerDesc);
@@ -256,8 +267,6 @@ namespace Quantix::Physic
 		mScene = mSDK->createScene(sceneDesc);
 		if (!mScene)
 			std::cerr << "createScene failed!";
-
-		//mScene->setFlag()
 	}
 
 	void PhysicHandler::ReleaseSystem()
@@ -265,6 +274,7 @@ namespace Quantix::Physic
 		mCooking->release();
 		PxCloseExtensions();
 		mSDK->release();
+
 		if (pPvd)
 		{
 			PxPvdTransport* transport = pPvd->getTransport();
@@ -273,6 +283,7 @@ namespace Quantix::Physic
 			transport->release();
 			transport = NULL;
 		}
+
 		pDefaultFundation->release();
 	}
 
@@ -339,12 +350,12 @@ namespace Quantix::Physic
 
 			// =====================================================
 
-		mAccumulator += (physx::PxReal)deltaTime;
+		/*mAccumulator += (physx::PxReal)deltaTime;
 		if (mAccumulator < mStepSize)
 			return;
 
-		mAccumulator -= 0.0f;
-		mScene->simulate(mStepSize);
+		mAccumulator -= 0.0f;*/
+		mScene->simulate(deltaTime);
 
 		mScene->fetchResults(true);
 	}
@@ -407,6 +418,63 @@ namespace Quantix::Physic
 		}
 	}
 
+	void PhysicHandler::UpdatePlayingActor()
+	{
+		PxU32 nbActors;
+		PxActor** listActor = mScene->getActiveActors(nbActors);
+
+		for (PxU32 index = 0; index < nbActors; index++)
+		{
+			PxRigidDynamic* currentActor = (PxRigidDynamic*)listActor[index];
+			if (currentActor)
+			{
+				PxTransform transformPhysic = currentActor->getGlobalPose();
+
+				if (((Core::DataStructure::GameObject3D*)currentActor->userData))
+				{
+					// Set Transform GameObject On PhysicActor Transform
+					Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
+
+					transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
+					transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
+				}
+			}
+		}
+	}
+
+	void PhysicHandler::UpdateEditorActor()
+	{
+		for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
+		{
+			if (it->second && it->first)
+			{
+				// Set RigidBody Transform On GameOject Transform
+				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
+				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
+				
+				if (it->second->GetType() == ETypePhysic::DYNAMIC)
+				{
+					PxTransform transform = it->second->GetObjectDynamic()->GetRigid()->getGlobalPose();
+
+					transform.p = PxVec3(pos.x, pos.y, pos.z);
+					transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
+
+					it->second->GetObjectDynamic()->GetRigid()->setGlobalPose(transform);
+				}
+				else
+				{
+					PxTransform transform = it->second->GetObjectStatic()->GetRigid()->getGlobalPose();
+
+					transform.p = PxVec3(pos.x, pos.y, pos.z);
+					transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
+
+					it->second->GetObjectStatic()->GetRigid()->setGlobalPose(transform);
+				}
+			}
+		}
+	}
+
+#pragma region FlagSetters
 	void PhysicHandler::SetFlagAdaptiveForce(bool b)
 	{
 		sceneFlag.adaptiveForce = b;
@@ -496,4 +564,5 @@ namespace Quantix::Physic
 		sceneFlag.requireRWLock = b;
 		mScene->setFlag(PxSceneFlag::eREQUIRE_RW_LOCK, b);
 	}
+#pragma endregion
 }

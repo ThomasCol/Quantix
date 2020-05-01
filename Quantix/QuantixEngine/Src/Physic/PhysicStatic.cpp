@@ -6,7 +6,6 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<Quantix::Physic::PhysicStatic>("PhysicDynamic")
 	.constructor<>()
 	.constructor<physx::PxPhysics*>()
-	.constructor<physx::PxPhysics*, Quantix::Physic::EPhysXShape>()
 	.constructor<physx::PxPhysics*, Quantix::Physic::PhysicDynamic*>()
 	.constructor<const Quantix::Physic::PhysicStatic&>()
 	.constructor<Quantix::Physic::PhysicStatic&&>()
@@ -30,40 +29,13 @@ namespace Quantix::Physic
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Static" << std::endl;
 
+		// Create Actor Physic Static
 		_static = SDK->createRigidStatic(PxTransform(PxVec3(0, -2, 0)));
-	}
-
-	PhysicStatic::PhysicStatic(PxPhysics* SDK, EPhysXShape physXShape)
-	{
-		if (type != ETypePhysic::NONE)
-			std::cout << "type set: Static" << std::endl;
-		type = ETypePhysic::STATIC;
-
-		_static = SDK->createRigidStatic(PxTransform(PxVec3(0, -1, 0)));
-
-		PxMaterial* aMaterial = SDK->createMaterial(0.5f, 0.5f, 0.1f);
-		PxShape* aShape = nullptr;
-
-		if (physXShape == EPhysXShape::CUBE)
-		{
-			aShape = SDK->createShape(PxBoxGeometry(1000.f, 1.f, 1000.f), *aMaterial);
-			std::cout << "shape: Cube" << std::endl;
-		}
-		else if (physXShape == EPhysXShape::SPHERE)
-		{
-			aShape = SDK->createShape(PxSphereGeometry(1.f), *aMaterial);
-			std::cout << "shape: Sphere" << std::endl;
-		}
-		else if (physXShape == EPhysXShape::CAPSULE)
-		{
-			aShape = SDK->createShape(PxCapsuleGeometry(1.f, 1.f), *aMaterial);
-			std::cout << "shape: Capsule" << std::endl;
-		}
-		_static->attachShape(*aShape);
 	}
 
 	PhysicStatic::PhysicStatic(PxPhysics* SDK, PhysicDynamic* physicDynamic)
 	{
+		// Set Type
 		type = ETypePhysic::STATIC;
 
 		int nb = physicDynamic->GetRigid()->getNbShapes();
@@ -100,11 +72,6 @@ namespace Quantix::Physic
 
 	PhysicStatic::~PhysicStatic()
 	{
-	}
-
-	void PhysicStatic::print()
-	{
-		std::cout << "Je suis static" << std::endl;
 	}
 
 	PxRigidStatic* PhysicStatic::GetRigid()

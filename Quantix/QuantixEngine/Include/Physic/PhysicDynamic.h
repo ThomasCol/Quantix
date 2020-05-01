@@ -15,15 +15,16 @@ namespace Quantix::Physic
 	private:
 #pragma region Attributes
 
+		// Actor PhysX
 		PxRigidDynamic* _dynamic = nullptr;
 
 #pragma endregion
 
 	public:
 #pragma region Constructors
+
 		PhysicDynamic() noexcept;
 		PhysicDynamic(PxPhysics* SDK) noexcept;
-		PhysicDynamic(PxPhysics* SDK, EPhysXShape physXShape) noexcept;
 		PhysicDynamic(PxPhysics* SDK, PhysicStatic* physicStatic) noexcept;
 		PhysicDynamic(const PhysicDynamic&) noexcept;
 		PhysicDynamic(PhysicDynamic&&) noexcept;
@@ -32,8 +33,6 @@ namespace Quantix::Physic
 #pragma endregion
 
 #pragma region Functions
-		void	print();
-
 #pragma region Operators
 #pragma endregion
 

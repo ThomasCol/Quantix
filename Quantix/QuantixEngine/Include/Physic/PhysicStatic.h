@@ -13,13 +13,13 @@ namespace Quantix::Physic
 	{
 	private:
 #pragma region Attributes
+		// Actor Physic
 		PxRigidStatic* _static = nullptr;
 #pragma endregion
 	public:
 #pragma region Constructors
 		PhysicStatic();
 		PhysicStatic(PxPhysics* SDK);
-		PhysicStatic(PxPhysics* SDK, EPhysXShape physXShape);
 		PhysicStatic(PxPhysics* SDK, PhysicDynamic* physicDynamic);
 		PhysicStatic(const PhysicStatic&);
 		PhysicStatic(PhysicStatic&&);
@@ -27,10 +27,10 @@ namespace Quantix::Physic
 #pragma endregion
 
 #pragma region Functions
-		void	print();
-
+#pragma region Accessors
 		PxRigidStatic* GetRigid();
 		void SetRigid(PxRigidStatic* rigid);
+#pragma endregion
 #pragma endregion
 		CLASS_REGISTRATION(Quantix::Physic::IPhysicType)
 	};
