@@ -1,6 +1,7 @@
 #include <rttr/registration>
 #include <Core/MathHeader.h>
-#include <Resources/Material.h>
+#include <Resources/Sound.h>
+#include <Core/Components/SoundEmitter.h>
 #include <Core/DataStructure/Component.h>
 
 #include "Inspector.h"
@@ -226,6 +227,62 @@ void Inspector::DrawMTexturePath(rttr::instance inst, rttr::type t, Quantix::Cor
 	ImGui::PopID();
 }
 
+void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
+{
+	ImGui::PushID(1);
+	ImGui::Text("Sound Path: "); ImGui::SameLine(155.f);
+	QXstring path = t.get_property("Path").get_value(inst).get_value<QXstring>();
+	if (path == "")
+		ImGui::ButtonEx(path.c_str(), ImVec2(100, 0), ImGuiButtonFlags_Disabled);
+	else
+		ImGui::ButtonEx(path.c_str(), ImVec2(100, 0), ImGuiButtonFlags_Disabled);
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			QXstring pathTmp = (const QXchar*)payload->Data;
+			if (pathTmp.find(".mp3") != QXstring::npos)
+				path = pathTmp;
+			Quantix::Resources::Sound* sound = new Quantix::Resources::Sound(path.c_str());
+			//Quantix::Resources::Model* model = app->manager.CreateModel(path);
+			t.get_property("Path").set_value(inst, path);
+			t.get_property("Sound").set_value(inst, sound);
+			ImGui::EndDragDropTarget();
+		}
+	}
+
+	/*QXstring path;
+	for (auto it = app->manager.GetModels().begin(); it != app->manager.GetModels().end(); ++it)
+	{
+		if (it->second == mod)
+			path = it->first;
+	}
+	if (path.empty())
+		ImGui::ButtonEx(path.c_str(), ImVec2(100, 0), ImGuiButtonFlags_Disabled);
+	else
+		ImGui::ButtonEx(path.c_str(), ImVec2(0, 0), ImGuiButtonFlags_Disabled);
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			QXstring pathTmp = (const QXchar*)payload->Data;
+			if (pathTmp.find(".obj") != QXstring::npos && pathTmp.find(".quantix") == QXstring::npos)
+				path = pathTmp;
+			Quantix::Resources::Model* model = app->manager.CreateModel(path);
+			t.get_property("Model").set_value(inst, model);
+			ImGui::EndDragDropTarget();
+		}
+	}*/
+	ImGui::PopID();
+}
+
+static void PlaySound(rttr::instance inst, rttr::type t)
+{
+	if (ImGui::Button("Play"))
+		t.invoke("PlaySound", inst, {}).get_value<QXbool>();
+}
+
 void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
 {
 	if (t != rttr::type::get<Quantix::Resources::Texture*>())
@@ -252,6 +309,12 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 			}
 			if (t == rttr::type::get<Quantix::Resources::Material*>())
 				DrawMTexturePath(inst, t, app);
+
+			if (t == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
+			{
+				DrawSoundEmitterPath(inst, t, app);
+				PlaySound(inst, t);
+			}
 
 			QXint index = 0;
 			for (auto it = t.get_properties().begin(); it != t.get_properties().end(); ++it)
@@ -308,6 +371,41 @@ void Inspector::ShowLightEnum(rttr::property currentProp, rttr::instance inst, r
 	currentProp.set_value(inst, LightType);
 }
 
+static QXint GetValueSoundModeEnum(Quantix::Resources::ESoundMode type)
+{
+	if (type == Quantix::Resources::ESoundMode::QX_2D)
+		return 0;
+	else if (type == Quantix::Resources::ESoundMode::QX_3D)
+		return 1;
+}
+
+static Quantix::Resources::ESoundMode SetValueSoundModeEnum(QXint value)
+{
+	if (value == 0)
+		return Quantix::Resources::ESoundMode::QX_2D;
+	else if (value == 1)
+		return Quantix::Resources::ESoundMode::QX_3D;
+}
+
+void Inspector::ShowSoundModeEnum(rttr::property currentProp, rttr::instance inst, rttr::type type)
+{
+	Quantix::Resources::ESoundMode SoundMode = currentProp.get_value(inst).get_value<Quantix::Resources::ESoundMode>();
+	if (SoundMode == Quantix::Resources::ESoundMode::QX_3D)
+	{
+		auto tmpInst = inst.get_derived_type();
+
+		tmpInst.invoke("Attributes", inst, {});
+	}
+	const QXchar* items[] = { "QX_2D", "QX_3D" };
+	QXint item_current = GetValueSoundModeEnum(SoundMode);
+
+	ImGui::Text("Sound Mode"); ImGui::SameLine(155.f);
+	ImGui::Combo("##Sound Mode: ", &item_current, items, IM_ARRAYSIZE(items));
+
+	SoundMode = SetValueSoundModeEnum(item_current);
+	currentProp.set_value(inst, SoundMode);
+}
+
 void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
 {
 	if (type == rttr::type::get<QXbool>())
@@ -319,7 +417,14 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 	else if (type == rttr::type::get<QXfloat>())
 	{
 		QXfloat value = currentProp.get_value(inst).to_float();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat("", &value);
+		if (currentProp.get_name().to_string() == "Volume")
+		{
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::SliderFloat("", &value, 0.f, 1.f);
+		}
+		else
+		{
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat("", &value);
+		}
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXdouble>())
@@ -340,7 +445,7 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
 	}
-	else if (type == rttr::type::get<QXstring>())
+	else if (type == rttr::type::get<QXstring>() && currentProp.get_name() != "Path")
 	{
 		QXstring value = currentProp.get_value(inst).to_string();
 		ImGui::Text(value.c_str());
@@ -386,9 +491,12 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat3("", value.e);
 
-
 		q = Math::QXquaternion::EulerToQuaternion(value);
 		currentProp.set_value(inst, q);
+	}
+	else if (type == rttr::type::get<Quantix::Resources::ESoundMode>())
+	{
+		ShowSoundModeEnum(currentProp, inst, type);
 	}
 	else if (type == rttr::type::get<Quantix::Core::Components::ELightType>())
 	{
@@ -396,7 +504,8 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 	}
 	else if (currentProp.get_type().is_class() || (currentProp.get_type().is_pointer() && currentProp.get_type().get_raw_type().is_class()))
 	{
-		GetInstance(currentProp.get_value(inst), type, app);
+		if (type != rttr::type::get<QXstring>() && type != rttr::type::get<Quantix::Resources::Sound*>() && type != rttr::type::get<FMOD::ChannelGroup*>())
+			GetInstance(currentProp.get_value(inst), type, app);
 	}
 	//	else
 	//		ImGui::Text("Type: % s\nName : % s\nValue : % s\n\n",  currentProp.get_type().get_name().to_string().c_str(), currentProp.get_name().to_string().c_str(), currentProp.get_value(inst).to_string().c_str());

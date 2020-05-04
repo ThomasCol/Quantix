@@ -82,6 +82,7 @@ private:
 	Quantix::Core::DataStructure::GameObject3D*			_root;
 	Quantix::Core::Components::Camera*					_cameraEditor;
 	Quantix::Core::Components::Camera*					_mainCamera;
+	Quantix::Core::Components::Camera*					_defaultCamera;
 
 	Docker												_docker;
 	Folder												_folder;

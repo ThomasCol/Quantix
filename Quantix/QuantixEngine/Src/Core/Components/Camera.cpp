@@ -1,5 +1,5 @@
 #include "Core/Components/Camera.h"
-#include "Core/DataStructure/GameComponent.h"
+#include "Core/DataStructure/GameObject3D.h"
 #include "MathDefines.h"
 
 #define SENSIBILITY 0.05f
@@ -70,16 +70,28 @@ namespace Quantix::Core::Components
 		_object = object;
 		_isDestroyed = false;
 		_isEnable = true;
-		_pos = Math::QXvec3(0, 0, 0);
 		_dir = Math::QXvec3(0, 0, 1);
 		_up = Math::QXvec3(0, 1, 0);
-		_angle = Math::QXvec3(0, 0, 0);
+		if (_object)
+		{
+			_pos = ((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetPosition();
+			_angle = ((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation().QuaternionToEuler();
+		}
+		else
+		{
+			_pos = Math::QXvec3(0, 0, 0);
+			_angle = Math::QXvec3(0, 0, 0);
+		}
 	}
 
 	void	Camera::UpdateLookAt(Math::QXvec3 pos)
 	{
 		_pos = pos;
 		_lookAt = Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up);
+		if (_object)
+		{
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(_pos);
+		}
 	}
 
 	void			Camera::ChangeView(QXfloat posX, QXfloat posY, QXint width, QXint height, QXdouble frameTime)
@@ -101,5 +113,10 @@ namespace Quantix::Core::Components
 		_dir.z = cos(_angle.x) * cos(_angle.y);
 		_dir.y = sin(_angle.x);
 		_dir.x = cos(_angle.x) * sin(_angle.y);
+		if (_object)
+		{
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(_angle));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
+		}
 	}
 }

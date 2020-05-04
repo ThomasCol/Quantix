@@ -26,6 +26,7 @@ Editor::Editor(QXuint width, QXuint height) :
 	_flagsEditor{}
 {
 	_cameraEditor = new Quantix::Core::Components::Camera({ 0, 7, -10 }, { 0, -1, 1 }, Math::QXvec3::up);
+	_defaultCamera = _mainCamera = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 	_lib.load();
 	if (!_lib.is_loaded())
 		std::cout << _lib.get_error_string() << std::endl;
@@ -557,8 +558,25 @@ void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
+		static bool setCamera = false;
+
 		if (_hierarchy.GetInspector() != nullptr)
+		{
 			_hierarchy.GetInspector()->Update(_win, _app);
+			if (!setCamera)
+			{
+				if (_hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponents().size() > 0)
+				{
+					rttr::type type = _hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponents().back()->get_type();
+					if (type == rttr::type::get<Quantix::Core::Components::Camera*>().get_raw_type())
+					{
+						_mainCamera = dynamic_cast<Quantix::Core::Components::Camera*>(_hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponents().back());
+						setCamera = true;
+					}
+				}
+			}
+		}
+
 	}
 	ImGui::End();
 }

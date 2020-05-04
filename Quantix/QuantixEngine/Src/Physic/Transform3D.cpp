@@ -9,6 +9,7 @@ namespace Quantix::Physic
 		_position {0.f, 0.f, 0.f},
 		_rotation {1.0f, 0.f, 0.f, 0.f},
 		_scale {1.f, 1.f, 1.f},
+		_forward{0.f, 0.f, 1.f},
 		_trs {},
 		_childs {}
 	{}
@@ -17,6 +18,7 @@ namespace Quantix::Physic
 		_position{ t._position },
 		_rotation{ t._rotation },
 		_scale{ t._scale },
+		_forward{ t._forward },
 		_trs{ t._trs }
 	{
 		for (QXsizei i = 0; i < t._childs.size(); ++i)
@@ -26,7 +28,8 @@ namespace Quantix::Physic
 	Transform3D::Transform3D(Transform3D&& t) noexcept:
 		_position{ std::move(t._position) },
 		_rotation{ std::move(t._rotation) },
-		_scale{ std::move(t._scale) }, 
+		_scale{ std::move(t._scale) },
+		_forward{ std::move(t._forward) },
 		_trs{ std::move(t._trs) },
 		_childs{ std::move(t._childs) },
 		_gameObject {std::move(t._gameObject)}
@@ -34,12 +37,18 @@ namespace Quantix::Physic
 
 	Transform3D::Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca, Quantix::Core::DataStructure::GameObject3D* object) :
 		_position{ pos }, _rotation{ rot }, _scale{ sca }, _trs{ Math::QXmat4::CreateTRSMatrix(pos, rot, sca)}, _childs{}, _gameObject{ object }
-	{}
+	{
+		_forward = _rotation * Math::QXvec3::forward;
+		_up = _forward.Cross(Math::QXvec3(pos.z, 0, pos.x));
+	}
 
 	Transform3D::Transform3D(Math::QXvec3&& pos, Math::QXquaternion&& rot, Math::QXvec3&& sca) :
 		_position{ std::move(pos) }, _rotation{ std::move(rot) }, _scale{ std::move(sca) }, 
 		_trs{ Math::QXmat4::CreateTRSMatrix(std::move(pos), std::move(rot), std::move(sca)) }, _childs{}
-	{}
+	{
+		_forward = _rotation * Math::QXvec3::forward;
+		_up = _forward.Cross(Math::QXvec3(pos.z, 0, pos.x));
+	}
 
 	Transform3D::~Transform3D()
 	{}
@@ -65,6 +74,16 @@ namespace Quantix::Physic
 		return _scale;
 	}
 
+	const Math::QXvec3& Transform3D::GetForward()
+	{
+		return _forward;
+	}
+
+	const Math::QXvec3& Transform3D::GetUp()
+	{
+		return _up;
+	}
+
 	const Math::QXmat4& Transform3D::GetTRS()
 	{
 		return _trs;
@@ -88,6 +107,16 @@ namespace Quantix::Physic
 	void	Transform3D::SetScale(const Math::QXvec3& newSca)
 	{
 		_scale = newSca;
+	}
+
+	void	Transform3D::SetForward(const Math::QXvec3& newFor)
+	{
+		_forward = newFor;
+	}
+
+	void Transform3D::SetUp(const Math::QXvec3& newUp)
+	{
+		_up = newUp;
 	}
 
 	#pragma endregion

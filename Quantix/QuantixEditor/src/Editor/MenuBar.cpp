@@ -5,6 +5,7 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <filesystem>
+#include <Physic/PhysicHandler.h>
 
 #define DEFAULTPATH "media"
 
@@ -20,13 +21,43 @@ void MenuBar::FileButton()
 	}
 }
 
+void MenuBar::PhysXSettings()
+{
+	if (ImGui::Begin("PhysX Settings", &_winPhysX))
+	{
+		rttr::instance inst(Quantix::Physic::PhysicHandler::GetInstance());
+		for (auto it = Quantix::Physic::PhysicHandler::GetInstance()->get_type().get_properties().begin(); it != Quantix::Physic::PhysicHandler::GetInstance()->get_type().get_properties().end(); ++it)
+		{
+			rttr::property currentProp = *(it);
+			ImGui::PushID(currentProp.get_name().to_string().c_str());
+			QXbool enable = currentProp.get_value(inst).to_bool();
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(300.f); ImGui::Checkbox("", &enable);
+			currentProp.set_value(inst, enable);
+			ImGui::PopID();
+		}
+		ImGui::End();
+	}
+	else
+		_winPhysX = false;
+}
+
+void MenuBar::Settings(QXbool* selection)
+{
+	if (selection[0])
+	{
+		_winPhysX = true;
+		selection[0] = false;
+	}
+}
+
 void MenuBar::EditButton()
 {
 	if (ImGui::BeginMenu("Edit"))
 	{
 		static QXbool selection[2] = { false, false };
-		ImGui::Selectable("Project Settings", &selection[0]);
+		ImGui::Selectable("PhysX Settings", &selection[0]);
 		ImGui::Selectable("Preferences", &selection[1]);
+		Settings(selection);
 		ImGui::EndMenu();
 	}
 }
@@ -75,6 +106,8 @@ void MenuBar::Update(Quantix::Core::Platform::Application* app)
 		ImGui::EndMenuBar();
 	}
 	ImGui::PopStyleColor();
+	if (_winPhysX)
+		PhysXSettings();
 }
 
 void MenuBar::CreateGameObject(QXstring name, QXbool& selection, Quantix::Core::Platform::Application* app)

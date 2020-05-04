@@ -6,6 +6,10 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_internal.h>
+
+#include <fmod.hpp>
+#include <fmod_errors.h>
+
 #include <Core/Components/Camera.h>
 
 #include <Editor.h>
@@ -14,6 +18,8 @@
 #include <Vec3.h>
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/UserEntry/InputManager.h>
+#include <Core/SoundCore.h>
+//#include <Resources\Sound.h>
 
 #define SPEED (0.5f)
 
@@ -130,7 +136,7 @@ void Init(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 	editor->Init();
 }
 
-void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights, Quantix::Core::Components::Camera* cam)
+void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	static QXbool	sceneChange = false;
 	static Quantix::Resources::Scene* newScene = nullptr;
@@ -201,19 +207,18 @@ int main()
 	try
 	{
 		Editor*											editor = new Editor(1920, 900);
-		//Init Camera
-		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 		
-		editor->SetMainCamera(cam);
 
 		std::vector<Quantix::Core::Components::Light>	lights;
 
 		Init(editor, lights);
 
 		while (!editor->GetWin().ShouldClose())
-			Update(editor, lights, cam);
+		{
+			Quantix::Core::SoundCore::GetInstance()->Update(); //Update for FMOD
+			Update(editor, lights);
+		}
 
-		delete cam;
 		delete editor;
 	}
 	catch (const std::exception& e)

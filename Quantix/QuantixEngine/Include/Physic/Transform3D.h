@@ -22,6 +22,8 @@ namespace Quantix::Physic
 			Math::QXvec3								_position;
 			Math::QXquaternion							_rotation;
 			Math::QXvec3								_scale;
+			Math::QXvec3								_forward;
+			Math::QXvec3								_up;
 
 			Math::QXmat4								_trs;
 
@@ -112,6 +114,11 @@ namespace Quantix::Physic
 			 */
 			const Math::QXvec3&								GetScale();
 
+
+			const Math::QXvec3&								GetForward();
+
+			const Math::QXvec3&								GetUp();
+
 			/**
 			 * @brief Get the trs of the current transform
 			 *
@@ -142,7 +149,11 @@ namespace Quantix::Physic
 			 */
 			void											SetScale(const Math::QXvec3& newSca);
 
-			inline Core::DataStructure::GameObject3D*	GetObject() const { return _gameObject; };
+			void											SetForward(const Math::QXvec3& newFor);
+
+			void											SetUp(const Math::QXvec3& newUp);
+
+			inline Core::DataStructure::GameObject3D*		GetObject() const { return _gameObject; };
 
 			inline std::vector<Transform3D*>&				GetChilds() { return _childs; };
 		#pragma endregion

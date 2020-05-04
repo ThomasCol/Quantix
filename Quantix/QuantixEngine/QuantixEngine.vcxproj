@@ -93,14 +93,15 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\FMod\include\Core;$(ProjectDir)\Lib\FMod\include\Studio;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib;$(ProjectDir)\Lib\Shaderc\Lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\FMod\lib\Core;$(ProjectDir)\Lib\FMod\lib\Studio;$(ProjectDir)\Lib\SPIRV-Cross\Lib;$(ProjectDir)\Lib\Shaderc\Lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
@@ -116,7 +117,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)externals\rapidjson\include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions;$(ProjectDir)external\physx\include\task;$(ProjectDir)external\physx\include\foundation;$(ProjectDir)external\physx\include\common;$(ProjectDir)external\physx\include\characterkinematic;$(ProjectDir)external\physx\include\collision;$(ProjectDir)external\physx\include\cooking;$(ProjectDir)external\physx\include\cudamanager;$(ProjectDir)external\physx\include\extensions;$(ProjectDir)external\physx\include\filebuf;$(ProjectDir)external\physx\include\geometry;$(ProjectDir)external\physx\include\geomutils;$(ProjectDir)external\physx\include\gpu;$(ProjectDir)external\physx\include\pvd;$(ProjectDir)external\physx\include\solver;$(ProjectDir)external\physx\include\vehicle;$(ProjectDir)external\physx\Source\GeomUtils\src;$(ProjectDir)external/physx/Source/PhysX/src;$(ProjectDir)external/physx/Source/PhysX/src/buffering;$(ProjectDir)external/physx/Source/PvdRuntime/src;$(ProjectDir)external/physx/Source/GeomUtils/headers;$(ProjectDir)external/physx/Source/GeomUtils/include;$(ProjectDir)external/physx/Source/GeomUtils/opcode;$(ProjectDir)external/physx/Source/RepX/include;$(ProjectDir)external/physx/Source/RepXUpgrader/include;$(ProjectDir)external/physx/Source/foundation/source;$(ProjectDir)external/physx/Source/foundation/include;$(ProjectDir)external/physx/Source/Common/src;$(ProjectDir)external/physx/Source/LowLevel/software/include;$(ProjectDir)external/physx/Source/LowLevel/api/include;$(ProjectDir)external/physx/Source/SimulationController/include;$(ProjectDir)external/physx/Source/SceneQuery;$(ProjectDir)external/physx/Include;$(ProjectDir)external/physx/Samples/PxToolkit/include;$(ProjectDir)external/physx/Include/physxprofilesdk;$(ProjectDir)external/physx/Include/physxvisualdebuggersdk;$(ProjectDir)external/physx/Include/RepX;$(ProjectDir)external/physx/Include/RepXUpgrader;$(ProjectDir)external/pxshared/include;$(ProjectDir)external/cg/2.2/include;$(ProjectDir)external/hbao+3.0/include;$(ProjectDir)external/glew-1.13.0/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\FMod\include\Core;$(ProjectDir)\Lib\FMod\include\Studio;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)externals\rapidjson\include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions;$(ProjectDir)external\physx\include\task;$(ProjectDir)external\physx\include\foundation;$(ProjectDir)external\physx\include\common;$(ProjectDir)external\physx\include\characterkinematic;$(ProjectDir)external\physx\include\collision;$(ProjectDir)external\physx\include\cooking;$(ProjectDir)external\physx\include\cudamanager;$(ProjectDir)external\physx\include\extensions;$(ProjectDir)external\physx\include\filebuf;$(ProjectDir)external\physx\include\geometry;$(ProjectDir)external\physx\include\geomutils;$(ProjectDir)external\physx\include\gpu;$(ProjectDir)external\physx\include\pvd;$(ProjectDir)external\physx\include\solver;$(ProjectDir)external\physx\include\vehicle;$(ProjectDir)external\physx\Source\GeomUtils\src;$(ProjectDir)external/physx/Source/PhysX/src;$(ProjectDir)external/physx/Source/PhysX/src/buffering;$(ProjectDir)external/physx/Source/PvdRuntime/src;$(ProjectDir)external/physx/Source/GeomUtils/headers;$(ProjectDir)external/physx/Source/GeomUtils/include;$(ProjectDir)external/physx/Source/GeomUtils/opcode;$(ProjectDir)external/physx/Source/RepX/include;$(ProjectDir)external/physx/Source/RepXUpgrader/include;$(ProjectDir)external/physx/Source/foundation/source;$(ProjectDir)external/physx/Source/foundation/include;$(ProjectDir)external/physx/Source/Common/src;$(ProjectDir)external/physx/Source/LowLevel/software/include;$(ProjectDir)external/physx/Source/LowLevel/api/include;$(ProjectDir)external/physx/Source/SimulationController/include;$(ProjectDir)external/physx/Source/SceneQuery;$(ProjectDir)external/physx/Include;$(ProjectDir)external/physx/Samples/PxToolkit/include;$(ProjectDir)external/physx/Include/physxprofilesdk;$(ProjectDir)external/physx/Include/physxvisualdebuggersdk;$(ProjectDir)external/physx/Include/RepX;$(ProjectDir)external/physx/Include/RepXUpgrader;$(ProjectDir)external/pxshared/include;$(ProjectDir)external/cg/2.2/include;$(ProjectDir)external/hbao+3.0/include;$(ProjectDir)external/glew-1.13.0/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableSpecificWarnings>4251;4312</DisableSpecificWarnings>
@@ -126,8 +127,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Debug_x64;$(ProjectDir)\Lib\MathLib\Lib\Debug_x64;$(ProjectDir)externals\debug\lib;$(ProjectDir)Lib\physx\debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>rttr_core_d.lib;glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXVehicle_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\FMod\lib\Core;$(ProjectDir)\Lib\FMod\lib\Studio;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Debug_x64;$(ProjectDir)\Lib\MathLib\Lib\Debug_x64;$(ProjectDir)externals\debug\lib;$(ProjectDir)Lib\physx\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;rttr_core_d.lib;glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXVehicle_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
@@ -148,7 +149,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\FMod\include\Core;$(ProjectDir)\Lib\FMod\include\Studio;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -157,7 +158,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib;$(ProjectDir)\Lib\Shaderc\Lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\FMod\lib\Core;$(ProjectDir)\Lib\FMod\lib\Studio;$(ProjectDir)\Lib\SPIRV-Cross\Lib;$(ProjectDir)\Lib\Shaderc\Lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
@@ -175,7 +177,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\FMod\include\Core;$(ProjectDir)\Lib\FMod\include\Studio;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
@@ -187,8 +189,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Win64\Release;$(ProjectDir)\Lib\MathLib\Lib\Release_x64;$(ProjectDir)externals\release\lib;$(ProjectDir)Lib\physx\release</AdditionalLibraryDirectories>
-      <AdditionalDependencies>rttr_core_s.lib;glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXVehicle_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\FMod\lib\Core;$(ProjectDir)\Lib\FMod\lib\Studio;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Win64\Release;$(ProjectDir)\Lib\MathLib\Lib\Release_x64;$(ProjectDir)externals\release\lib;$(ProjectDir)Lib\physx\release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;rttr_core_s.lib;glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXVehicle_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>
@@ -204,6 +206,8 @@
     <ClCompile Include="Src\Core\Components\Behaviour.cpp" />
     <ClCompile Include="Src\Physic\PhysicHandler.cpp" />
     <ClCompile Include="Src\Physic\PhysicStatic.cpp" />
+    <ClCompile Include="Src\Core\Components\SoundEmitter.cpp" />
+    <ClCompile Include="Src\Core\Components\SoundListener.cpp" />
     <ClCompile Include="Src\Physic\PhysicDynamic.cpp" />
     <ClCompile Include="Src\Core\Components\Rigidbody.cpp" />
     <ClCompile Include="Src\Core\Components\PlaneCollider.cpp" />
@@ -239,6 +243,8 @@
     <ClCompile Include="Src\Resources\Model.cpp" />
     <ClCompile Include="Src\Resources\Shader.cpp" />
     <ClCompile Include="Src\Resources\ShaderProgram.cpp" />
+    <ClCompile Include="Src\Resources\Sound.cpp" />
+    <ClCompile Include="Src\Core\SoundCore.cpp" />
     <ClCompile Include="Src\Resources\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +253,8 @@
     <ClInclude Include="Include\Core\Components\CubeCollider.h" />
     <ClInclude Include="externals\rttrEnabled.h" />
     <ClInclude Include="Include\Core\Components\Collider.h" />
+    <ClInclude Include="Include\Core\Components\SoundEmitter.h" />
+    <ClInclude Include="Include\Core\Components\SoundListener.h" />
     <ClInclude Include="Include\Core\DataStructure\GameComponent.h" />
     <ClInclude Include="Include\Core\DataStructure\ResourcesManager.h" />
     <ClInclude Include="Include\Core\DataStructure\SceneManager.h" />
@@ -279,6 +287,8 @@
     <ClInclude Include="Include\Resources\Model.h" />
     <ClInclude Include="Include\Resources\Shader.h" />
     <ClInclude Include="Include\Resources\ShaderProgram.h" />
+    <ClInclude Include="Include\Resources\Sound.h" />
+    <ClInclude Include="Include\Core\SoundCore.h" />
     <ClInclude Include="Include\Resources\Texture.h" />
     <ClInclude Include="Include\Core\Components\SphereCollider.h" />
     <ClInclude Include="Include\Physic\IPhysicType.h" />

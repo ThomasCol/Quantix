@@ -12,23 +12,23 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
-rttr::registration::class_<Quantix::Physic::PhysicHandler>("Collider")
-.constructor<>()
-.property("AdaptiveForce", &Quantix::Physic::PhysicHandler::GetFlagAdaptiveForce, &Quantix::Physic::PhysicHandler::SetFlagAdaptiveForce)
-.property("DisableCCDResweep", &Quantix::Physic::PhysicHandler::GetFlagDisableCCDResweep, &Quantix::Physic::PhysicHandler::SetFlagDisableCCDResweep)
-.property("DisableContactCache", &Quantix::Physic::PhysicHandler::GetFlagDisableContactCache, &Quantix::Physic::PhysicHandler::SetFlagDisableContactCache)
-.property("DisableContactReport", &Quantix::Physic::PhysicHandler::GetFlagDisableContactReport, &Quantix::Physic::PhysicHandler::SetFlagDisableContactReport)
-.property("ActiveActors", &Quantix::Physic::PhysicHandler::GetFlagActiveActors, &Quantix::Physic::PhysicHandler::SetFlagActiveActors)
-.property("AveragePoint", &Quantix::Physic::PhysicHandler::GetFlagAveragePoint, &Quantix::Physic::PhysicHandler::SetFlagAveragePoint)
-.property("CCD", &Quantix::Physic::PhysicHandler::GetFlagCCD, &Quantix::Physic::PhysicHandler::SetFlagCCD)
-.property("EnhancedDeterminism", &Quantix::Physic::PhysicHandler::GetFlagEnhancedDeterminism, &Quantix::Physic::PhysicHandler::SetFlagEnhancedDeterminism)
-.property("FrictionEveryIt", &Quantix::Physic::PhysicHandler::GetFlagFrictionEveryIt, &Quantix::Physic::PhysicHandler::SetFlagFrictionEveryIt)
-.property("GPUDynamics", &Quantix::Physic::PhysicHandler::GetFlagGPUDynamics, &Quantix::Physic::PhysicHandler::SetFlagGPUDynamics)
-.property("PCM", &Quantix::Physic::PhysicHandler::GetFlagPCM, &Quantix::Physic::PhysicHandler::SetFlagPCM)
-.property("Stabilization", &Quantix::Physic::PhysicHandler::GetFlagStabilization, &Quantix::Physic::PhysicHandler::SetFlagStabilization)
-.property("ExcludeKineActiverActors", &Quantix::Physic::PhysicHandler::GetFlagExcludeKineActiverActors, &Quantix::Physic::PhysicHandler::SetFlagExcludeKineActiverActors)
-.property("Mutable", &Quantix::Physic::PhysicHandler::GetFlagMutable, &Quantix::Physic::PhysicHandler::SetFlagMutable)
-.property("RequireRWLock", &Quantix::Physic::PhysicHandler::GetFlagRequireRWLock, &Quantix::Physic::PhysicHandler::SetFlagRequireRWLock);
+	rttr::registration::class_<Quantix::Physic::PhysicHandler>("Collider")
+	.constructor<>()
+	.property("AdaptiveForce", &Quantix::Physic::PhysicHandler::GetFlagAdaptiveForce, &Quantix::Physic::PhysicHandler::SetFlagAdaptiveForce)
+	.property("DisableCCDResweep", &Quantix::Physic::PhysicHandler::GetFlagDisableCCDResweep, &Quantix::Physic::PhysicHandler::SetFlagDisableCCDResweep)
+	.property("DisableContactCache", &Quantix::Physic::PhysicHandler::GetFlagDisableContactCache, &Quantix::Physic::PhysicHandler::SetFlagDisableContactCache)
+	.property("DisableContactReport", &Quantix::Physic::PhysicHandler::GetFlagDisableContactReport, &Quantix::Physic::PhysicHandler::SetFlagDisableContactReport)
+	.property("ActiveActors", &Quantix::Physic::PhysicHandler::GetFlagActiveActors, &Quantix::Physic::PhysicHandler::SetFlagActiveActors)
+	.property("AveragePoint", &Quantix::Physic::PhysicHandler::GetFlagAveragePoint, &Quantix::Physic::PhysicHandler::SetFlagAveragePoint)
+	.property("CCD", &Quantix::Physic::PhysicHandler::GetFlagCCD, &Quantix::Physic::PhysicHandler::SetFlagCCD)
+	.property("EnhancedDeterminism", &Quantix::Physic::PhysicHandler::GetFlagEnhancedDeterminism, &Quantix::Physic::PhysicHandler::SetFlagEnhancedDeterminism)
+	.property("FrictionEveryIt", &Quantix::Physic::PhysicHandler::GetFlagFrictionEveryIt, &Quantix::Physic::PhysicHandler::SetFlagFrictionEveryIt)
+	.property("GPUDynamics", &Quantix::Physic::PhysicHandler::GetFlagGPUDynamics, &Quantix::Physic::PhysicHandler::SetFlagGPUDynamics)
+	.property("PCM", &Quantix::Physic::PhysicHandler::GetFlagPCM, &Quantix::Physic::PhysicHandler::SetFlagPCM)
+	.property("Stabilization", &Quantix::Physic::PhysicHandler::GetFlagStabilization, &Quantix::Physic::PhysicHandler::SetFlagStabilization)
+	.property("ExcludeKineActiverActors", &Quantix::Physic::PhysicHandler::GetFlagExcludeKineActiverActors, &Quantix::Physic::PhysicHandler::SetFlagExcludeKineActiverActors)
+	.property("Mutable", &Quantix::Physic::PhysicHandler::GetFlagMutable, &Quantix::Physic::PhysicHandler::SetFlagMutable)
+	.property("RequireRWLock", &Quantix::Physic::PhysicHandler::GetFlagRequireRWLock, &Quantix::Physic::PhysicHandler::SetFlagRequireRWLock);
 }
 
 using namespace physx;

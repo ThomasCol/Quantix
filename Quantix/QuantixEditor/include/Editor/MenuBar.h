@@ -25,12 +25,15 @@ public:
 	void CreateLightObject(bool* selection, std::vector<std::string> objectName, Quantix::Core::Platform::Application* app);
 
 	void FileButton();
+	void PhysXSettings();
+	void Settings(QXbool* selection);
 	void EditButton();
 	void OpenExplorer(QXbool selection);
 	void AssetButton();
 	void GameObjectButton(Quantix::Core::Platform::Application* app);
 
 private:
+	QXbool		_winPhysX{ false };
 
 };
 
