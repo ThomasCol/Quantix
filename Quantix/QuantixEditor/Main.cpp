@@ -144,7 +144,6 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	}
 
 	Quantix::Core::UserEntry::InputManager::GetInstance()->Update(editor->GetWin().GetWindow());
-
 	Quantix::Core::UserEntry::EKeyState state = GetKey(QX_MOUSE_BUTTON_LEFT);
 
 	DebugMode();
@@ -182,9 +181,11 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	}
 	//Editor Update
 	if (editor->GetPlay())
-		editor->Update(editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetMainCamera()));
+		editor->Update(editor->GetApp()->renderer.DrawGame(meshes, lights, editor->GetApp()->info, editor->GetMainCamera()), 
+						editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetEditorCamera()));
 	else
-		editor->Update(editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetEditorCamera()));
+		editor->Update(editor->GetApp()->renderer.DrawGame(meshes, lights, editor->GetApp()->info, editor->GetMainCamera()), 
+						editor->GetApp()->renderer.Draw(meshes, colliders, lights, editor->GetApp()->info, editor->GetEditorCamera()));
 	STOP_PROFILING("Draw");
 	START_PROFILING("Refresh");
 	editor->GetWin().Refresh(editor->GetApp()->info);
@@ -201,7 +202,7 @@ int main()
 	{
 		Editor*											editor = new Editor(1920, 900);
 		//Init Camera
-		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, -10 }, { 0, -1, 1 }, Math::QXvec3::up);
+		Quantix::Core::Components::Camera*				cam = new Quantix::Core::Components::Camera({ 0, 7, 10 }, { 0, -1, -1 }, Math::QXvec3::up);
 		
 		editor->SetMainCamera(cam);
 

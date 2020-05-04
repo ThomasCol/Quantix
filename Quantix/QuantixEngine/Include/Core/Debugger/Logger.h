@@ -80,6 +80,8 @@ namespace Quantix::Core::Debugger
 		 */
 		void							CloseLogger();
 
+		void							ClearMessage();
+
 		#pragma region Accessors
 
 		inline const std::vector<Data>&	GetData() const { return _data; };
@@ -113,6 +115,8 @@ namespace Quantix::Core::Debugger
 		 * @param msg String
 		 */
 		void							SetProfiling(const QXstring& msg);
+
+		std::vector<QXuint>				GetMessage() const { return _nbMessage; };
 		#pragma endregion Accessors
 
 		#pragma region Static
@@ -122,12 +126,14 @@ namespace Quantix::Core::Debugger
 		 * @return Logger* 
 		 */
 		static Logger*					GetInstance();
+
 		#pragma endregion Static
 		#pragma endregion Methods
 	private:
 		#pragma region Attributes
 		static Logger*				_instance;
 		std::vector<Data>			_data;
+		std::vector<QXuint>			_nbMessage;
 		#pragma endregion Attributes
 	};
 }

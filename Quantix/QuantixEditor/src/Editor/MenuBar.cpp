@@ -4,6 +4,9 @@
 #include <imgui_internal.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
+#include <filesystem>
+
+#define DEFAULTPATH "media"
 
 void MenuBar::FileButton()
 {
@@ -28,6 +31,17 @@ void MenuBar::EditButton()
 	}
 }
 
+void MenuBar::OpenExplorer(QXbool selection)
+{
+	if (selection)
+	{
+		QXstring cmd = "explorer ";
+		cmd += std::filesystem::current_path().string() + "\\" + DEFAULTPATH;
+		std::cout << cmd << std::endl;
+		system(cmd.c_str());
+	}
+}
+
 void MenuBar::AssetButton()
 {
 	if (ImGui::BeginMenu("Asset"))
@@ -40,7 +54,8 @@ void MenuBar::AssetButton()
 			ImGui::EndMenu();
 		}
 		static QXbool selection[2] = { false, false };
-		ImGui::Selectable("Show in Explorer", &selection[0]);
+		if (ImGui::Selectable("Show in Explorer", &selection[0]))
+			OpenExplorer(true);
 		ImGui::Selectable("Import Asset", &selection[1]);
 		ImGui::EndMenu();
 	}
@@ -93,7 +108,7 @@ void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, 
 
 void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app)
 {
-	static QXuint j[2] = { 0, 0 };
+	static QXuint j[3] = { 0, 0, 0 };
 	for (QXuint i{ 0 }; i < objectName.size(); i++)
 	{
 		if (selection[i])
@@ -108,8 +123,10 @@ void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectN
 			Quantix::Core::Components::Mesh* mesh = obj->GetComponent<Quantix::Core::Components::Mesh>();
 			if (i == 0)
 				mesh = app->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
-			else
+			else if (i == 1)
 				mesh = app->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/sphere.obj");
+			else
+				mesh = app->manager.CreateMesh(mesh, "./media/Mesh/capsule.obj");
 
 			selection[i] = false;
 			j[i]++;
@@ -162,10 +179,11 @@ void MenuBar::GameObjectButton(Quantix::Core::Platform::Application* app)
 			CreateGameObject("GameObject", selection, app);
 		if (ImGui::BeginMenu("3D Object"))
 		{
-			static QXbool selection[2] = { false, false };
+			static QXbool selection[3] = { false, false };
 			ImGui::Selectable("Cube", &selection[0]);
 			ImGui::Selectable("Sphere", &selection[1]);
-			CreateShapeObject(selection, { "Cube", "Sphere" }, app);
+			ImGui::Selectable("Capsule", &selection[2]);
+			CreateShapeObject(selection, { "Cube", "Sphere", "Capsule" }, app);
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Light"))

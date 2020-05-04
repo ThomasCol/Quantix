@@ -18,7 +18,8 @@ namespace Quantix::Core::Render
 		_mainBuffer {},
 		_projLight { Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f) }
 	{
-		CreateFrameBuffer(width, height);
+		CreateFrameBuffer(width, height, _mainBuffer);
+		CreateFrameBuffer(width, height, _gameBuffer);
 		InitShadowBuffer();
 
 		_cube = manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj");
@@ -56,7 +57,7 @@ namespace Quantix::Core::Render
 
 #pragma region Functions
 
-	void Renderer::CreateFrameBuffer(QXuint width, QXuint height) noexcept
+	void Renderer::CreateFrameBuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept
 	{
 		QXint previous_framebuffer;
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_framebuffer);
@@ -98,9 +99,9 @@ namespace Quantix::Core::Render
 
         glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
 
-        _mainBuffer.FBO = FBO;
-        _mainBuffer.texture = texture;
-		_mainBuffer.depthBuffer = depth_stencil_renderbuffer;
+		fbo.FBO = FBO;
+		fbo.texture = texture;
+		fbo.depthBuffer = depth_stencil_renderbuffer;
 	}
 
 	void Renderer::InitShadowBuffer() noexcept
@@ -195,7 +196,6 @@ namespace Quantix::Core::Render
 			if (mesh[i]->shaderID != last_shader_id)
 			{
 				material->UseShader();
-				std::cout << "Use :" << material->GetShaderProgram()->GetID() << std::endl;
 				material->SetFloat3("viewPos", cam->GetPos().e);
 				last_shader_id = mesh[i]->shaderID;
 			}
@@ -211,7 +211,6 @@ namespace Quantix::Core::Render
 			obj = (Quantix::Core::DataStructure::GameObject3D*)mesh[i]->GetObject();
 
 			material->SetMat4("TRS", obj->GetTransform()->GetTRS());
-			std::cout << "Draw" << std::endl;
 			glBindVertexArray(mesh[i]->GetVAO());
 			material->UseShader();
 
@@ -272,11 +271,95 @@ namespace Quantix::Core::Render
 		return _mainBuffer.texture;
 	}
 
+	QXuint Renderer::DrawGame(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept
+	{
+		START_PROFILING("draw");
+
+		std::sort(mesh.begin(), mesh.end(), [](const Components::Mesh* a, const Components::Mesh* b) {
+			return a->key < b->key;
+		});
+
+		QXbyte last_shader_id = -1;
+		QXbyte last_texture_id = -1;
+		QXuint	light_size = (QXuint)lights.size();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, _gameBuffer.FBO);
+
+		// Clear
+		glClearColor(0.0f, 0.0f, 0.0f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
+
+		// Bind uniform buffer
+		{
+			Math::QXmat4 view{ cam->GetLookAt() };
+
+			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), view.array);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), info.proj.array);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
+			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
+			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 2, light_size * sizeof(Core::Components::Light), &lights[0]);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		}
+
+		Resources::Material* material;
+		Math::QXmat4								trs;
+		Quantix::Core::DataStructure::GameObject3D* obj;
+
+		for (QXuint i = 0; i < mesh.size(); i++)
+		{
+			if (!mesh[i]->IsEnable())
+				continue;
+			material = mesh[i]->GetMaterial();
+
+			// Compare Meshes key for binding each shader one time
+			if (mesh[i]->shaderID != last_shader_id)
+			{
+				material->UseShader();
+				material->SetFloat3("viewPos", cam->GetPos().e);
+				last_shader_id = mesh[i]->shaderID;
+			}
+
+			// Compare Meshes key for binding each texture once per shader
+			if (mesh[i]->textureID != last_texture_id)
+			{
+				material->SendData(_shadowBuffer.texture);
+				last_texture_id = mesh[i]->textureID;
+			}
+
+			// Draw current mesh
+			obj = (Quantix::Core::DataStructure::GameObject3D*)mesh[i]->GetObject();
+
+			Math::QXmat4 trs = { obj->GetTransform()->GetTRS() };
+
+			material->SetMat4("TRS", trs);
+
+			glBindVertexArray(mesh[i]->GetVAO());
+
+			glDrawElements(GL_TRIANGLES, (GLsizei)mesh[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
+
+			glBindVertexArray(0);
+		}
+
+		glActiveTexture(0);
+		_effects->Render(info);
+
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		STOP_PROFILING("draw");
+
+		return _gameBuffer.texture;
+	}
+	
 	void Renderer::RenderShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,
 		std::vector<Core::Components::Light>& lights)
 	{
 		_shadowProgram->Use();
-		std::cout << "Use 2 :" << _shadowProgram->GetID() << std::endl;
 
 		glCullFace(GL_FRONT);
 		glBindFramebuffer(GL_FRAMEBUFFER, _shadowBuffer.FBO);
@@ -296,23 +379,21 @@ namespace Quantix::Core::Render
 			obj = (Quantix::Core::DataStructure::GameObject3D*)meshes[i]->GetObject();
 
 			glUniformMatrix4fv(_shadowProgram->GetLocation("model"), 1, false, obj->GetTransform()->GetTRS().array);
-			std::cout << "Draw" << std::endl;
 
 			glBindVertexArray(meshes[i]->GetVAO());
 
 			glDrawElements(GL_TRIANGLES, (GLsizei)meshes[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
-
+			
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			
 			glBindVertexArray(0);
 		}
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		glViewport(0, 0, info.width, info.height);
 
 		glCullFace(GL_BACK);
 
 		_shadowProgram->Unuse();
-		std::cout << "Unuse 2 :" << _shadowProgram->GetID() << std::endl;
 	}
 
 #pragma endregion

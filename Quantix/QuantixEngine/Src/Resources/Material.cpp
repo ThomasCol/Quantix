@@ -11,6 +11,7 @@ RTTR_PLUGIN_REGISTRATION
 	.property("diffuse", &Quantix::Resources::Material::diffuse)
 	.property("specular", &Quantix::Resources::Material::specular)
 	.property("shininess", &Quantix::Resources::Material::shininess)
+	.property("Texture", &Quantix::Resources::Material::GetMaterialTexture, &Quantix::Resources::Material::SetMaterialTexture)
 	.method("GetPath", &Quantix::Resources::Material::GetPath);
 }
 

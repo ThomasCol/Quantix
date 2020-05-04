@@ -29,6 +29,7 @@ namespace Quantix::Core::Render
 		};
 
 		Framebuffer	_mainBuffer;
+		Framebuffer	_gameBuffer;
 
 		Framebuffer	_shadowBuffer;
 
@@ -57,7 +58,7 @@ namespace Quantix::Core::Render
 		 * @param width Width of the window
 		 * @param height Height of the window
 		 */
-		void CreateFrameBuffer(QXuint width, QXuint height) noexcept;
+		void CreateFrameBuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept;
 
 		void InitShadowBuffer() noexcept;
 
@@ -137,13 +138,23 @@ namespace Quantix::Core::Render
 		 * @param meshes Meshes to render
 		 * @param lights Lights for the scene
 		 * @param info App info
-		 * @param cam Current camera for rendering
+		 * @param cam Scene camera for rendering
 		 */
 		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
 				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
 
 		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
 			std::vector<Core::Components::Light> & lights);
+
+		/**
+		 * @brief
+		 *
+		 * @param meshes Meshes to render
+		 * @param lights Lights for the scene
+		 * @param info App info
+		 * @param cam Game camera for rendering
+		 */
+		QXuint DrawGame(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
 
 		#pragma endregion
 	};

@@ -26,6 +26,7 @@ public:
 
 	void FileButton();
 	void EditButton();
+	void OpenExplorer(QXbool selection);
 	void AssetButton();
 	void GameObjectButton(Quantix::Core::Platform::Application* app);
 

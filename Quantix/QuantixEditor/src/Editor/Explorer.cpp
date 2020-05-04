@@ -24,7 +24,7 @@ static void findAndReplaceAll(std::string& data, std::string toSearch, std::stri
 
 Explorer::Explorer() :
 	_folder{},
-	_path{"./"}
+	_path{"./media"}
 {
 }
 
@@ -32,13 +32,11 @@ int Explorer::InitFormatFolder()
 {
 	static QXint folderSize = _folder.GetSizeFolder();
 	ImGui::SliderInt("Size", &folderSize, 1, 100);
-
 	_folder.SetSizeFolder(folderSize);
 
 	ImVec2 size = _folder.GetSizeFile();
 
 	size.x = size.y = 70.f + folderSize * 1.3f;
-
 	_folder.SetSizeFile(size);
 
 	QXint lines = 8;
@@ -54,7 +52,7 @@ int Explorer::InitFormatFolder()
 
 void Explorer::CheckRootFolder(QXint& index)
 {
-	if (_path != "./" && index == 0)
+	if (_path != "./media" && index == 0)
 	{
 		QXstring name = "..";
 		PushId(_folder.GetIDFolder(), name, index);
@@ -70,35 +68,22 @@ void	Explorer::ModifyFolder(QXstring name)
 	if (name != "")
 	{
 		if (name == "..")
-		{
 			_path = fs::path(_path).parent_path().string();
-			if (_path.size() == 1 || _path == "./.")
-				_path = "./";
-		}
 		else
-		{
-			if (_path == "./")
-				_path = _path + name;
-			else
-				_path = _path + "/" + name;
-		}
+			_path = _path + "/" + name;
 	}
 }
 
 void	Explorer::OpenSoftware(QXstring name)
 {
 	QXstring filePath;
-	if (_path == "./")
-		filePath = _path + name;
-	else
-		filePath = _path + "/" + name;
-	std::size_t found = filePath.find("./");
+	filePath = _path + "/" + name;
+	std::size_t found = filePath.find("./media");
 	if (found != QXstring::npos)
 		filePath.erase(found, 2);
 	findAndReplaceAll(filePath, "/", "\\");
-	filePath = (fs::current_path() / filePath).string();
 
-	QXstring cmd = "openwith " + filePath;
+	QXstring cmd = "explorer " + filePath;
 	std::cout << cmd << std::endl;
 	system(cmd.c_str());
 }
@@ -149,6 +134,9 @@ void Explorer::DrawFile(QXint& index)
 			PushId(_folder.GetIDSLN(), name, index);
 		else if (name.find(".vcxproj") != std::string::npos)
 			PushId(_folder.GetIDVCXPROJ(), name, index);
+		else if (name.find(".png") != std::string::npos || name.find(".jpg") != std::string::npos
+				|| name.find(".jpeg") != std::string::npos)
+			PushId(_folder.GetIDImg(), name, index);
 		else
 			PushId(_folder.GetIDFile(), name, index);
 
@@ -190,7 +178,7 @@ void Explorer::MenuRename(QXstring file)
 	{
 		if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
-			std::filesystem::rename(std::filesystem::current_path().string() + "\\" + file, std::filesystem::current_path().string() + "\\" + currName);
+			std::filesystem::rename(_path + "\\" + file, _path + "\\" + currName);
 			ImGui::CloseCurrentPopup();
 		}
 
@@ -206,7 +194,7 @@ void Explorer::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, QXstr
 		{
 			if (itemMenu[i] == "Open")
 			{
-				if (!fs::is_directory(std::filesystem::current_path().string() + "\\" + file))
+				if (!fs::is_directory(_path + "\\" + file))
 					OpenSoftware(file);
 				else
 					ModifyFolder(file);
@@ -214,7 +202,7 @@ void Explorer::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, QXstr
 			}
 			else if (itemMenu[i] == "Delete")
 			{
-				std::filesystem::remove_all(std::filesystem::current_path().string() + "\\" + file);
+				std::filesystem::remove_all(_path + "\\" + file);
 				selection[i] = false;
 			}
 		}
@@ -238,13 +226,12 @@ void Explorer::PopUpMenuItem(QXstring& itemFile)
 void Explorer::CreateItemFolder(QXstring item)
 {
 	QXchar currName[64];
-
 	memset(currName, 0, 64);
 	if (ImGui::BeginMenu(item.c_str()))
 	{
 		if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
-			std::filesystem::create_directory(std::filesystem::current_path().string() + "\\" + currName);
+			std::filesystem::create_directory(_path + "\\" + currName);
 			ImGui::CloseCurrentPopup();
 		}
 
@@ -261,7 +248,7 @@ void Explorer::CreateItemFile(QXstring item)
 	{
 		if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
-			std::string cmd = "echo off > " + fs::current_path().string() + "\\" + currName;
+			std::string cmd = "echo off > " + _path + "\\" + currName;
 			std::cout << "Create File: " << cmd << std::endl;
 			system(cmd.c_str());
 			ImGui::CloseCurrentPopup();

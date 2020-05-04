@@ -62,18 +62,21 @@ namespace Quantix::Core::Debugger
 	{
 		Data d = { std::string("[INFOS] ") + __TIME__ + std::string(": ") + msg, TypeLog::INFOS };
 		_data.push_back(d);
+		_nbMessage[0] += 1;
 	}
 
 	void Logger::SetWarning(const QXstring& msg)
 	{
 		Data d = { std::string("[WARNING] ") + __TIME__ + std::string(": ") + msg, TypeLog::WARNING };
 		_data.push_back(d);
+		_nbMessage[1] += 1;
 	}
 
 	void Logger::SetError(const QXstring& msg)
 	{
 		Data d = { std::string("[ERROR] ") + __TIME__ + std::string(": ") + msg, TypeLog::ERROR };
 		_data.push_back(d);
+		_nbMessage[2] += 1;
 	}
 
 	void Logger::SetProfiling(const QXstring& msg)
@@ -103,10 +106,22 @@ namespace Quantix::Core::Debugger
 		myfile.close();
 	}
 
+	void Logger::ClearMessage()
+	{
+		_data.clear();
+		for (QXuint i = 0; i < _nbMessage.size(); i++)
+			_nbMessage[i] = 0;
+	}
+
 	Logger* Logger::GetInstance()
 	{
 		if (!_instance)
+		{
 			_instance = new Logger();
+			_instance->_nbMessage.push_back(0);
+			_instance->_nbMessage.push_back(0);
+			_instance->_nbMessage.push_back(0);
+		}
 		return _instance;
 	}
 }

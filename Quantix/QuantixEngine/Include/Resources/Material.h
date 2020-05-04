@@ -192,6 +192,10 @@ namespace Quantix::Resources
 
 		inline void						SetPath(QXstring path) { _path = path; }
 
+		inline  Texture* GetMaterialTexture() noexcept { return _mainTexture; }
+
+		inline void SetMaterialTexture(Texture* texture) noexcept { _mainTexture = texture; }
+
 		/**
 		 * @brief Set the Main Texture object
 		 * 
