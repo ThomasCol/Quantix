@@ -3,7 +3,6 @@
 #include "Core\SoundCore.h"
 
 #include <stdio.h>
-#include <fmod_errors.h>
 
 namespace Quantix::Resources
 {
@@ -12,7 +11,7 @@ namespace Quantix::Resources
 	Sound::Sound(const char* path) : 
 	_clip {nullptr}
 	{
-		Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->createSound(path, FMOD_CREATESAMPLE, nullptr, &_clip));
+		Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->createSound(path, FMOD_DEFAULT, nullptr, &_clip));
 	}
 
 	Sound::Sound(const Sound& copy) noexcept :
@@ -93,9 +92,28 @@ namespace Quantix::Resources
 
 	#pragma endregion
 
-	bool Sound::Play()
+	const QXbool Sound::Play()
 	{
 		return Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->playSound(_clip, nullptr, false, nullptr));
+	}
+
+	const QXbool Sound::Play(FMOD::ChannelGroup* channel)
+	{
+		return Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->playSound(_clip, channel, false, nullptr));
+	}
+
+	const QXbool Sound::Is3D()
+	{
+		FMOD_MODE	clipMode;
+
+		if (Core::SoundCore::GetInstance()->Try(_clip->getMode(&clipMode)))
+			return (clipMode == FMOD_3D);
+		return false;
+	}
+
+	const QXbool Sound::ChangeMode(FMOD_MODE mode)
+	{
+		return (Core::SoundCore::GetInstance()->Try(_clip->setMode(mode)));
 	}
 
 	#pragma endregion

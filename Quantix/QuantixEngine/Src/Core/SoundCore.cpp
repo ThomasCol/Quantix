@@ -15,7 +15,7 @@ namespace Quantix::Core
 		if (!Try(FMOD::System_Create(&_system))) // Create the main system object.
 			return;
 
-		if (!Try(_system->init(512, FMOD_INIT_NORMAL, 0)))    // Initialize FMOD.
+		if (!Try(_system->init(512, FMOD_INIT_3D_RIGHTHANDED, 0)))    // Initialize FMOD.
 			return;
 	}
 
@@ -33,7 +33,7 @@ namespace Quantix::Core
 		_system->update();
 	}
 
-	bool SoundCore::Try(FMOD_RESULT result)
+	QXbool SoundCore::Try(FMOD_RESULT result)
 	{
 		if (result != FMOD_OK)
 		{
@@ -42,6 +42,28 @@ namespace Quantix::Core
 		}
 
 		return true;
+	}
+
+	QXuint SoundCore::AddListener()
+	{
+		for (QXuint index = 0; index < _listeners.size(); index++)
+		{
+			if (!_listeners[index])
+			{
+				_listeners[index] = true;
+				return index;
+			}
+		}
+
+		_listeners.push_back(true);
+		return static_cast<QXuint>(_listeners.size()) - 1;
+
+		//TODO : Maybe manage with _system->Set3DNumListener() and _system->Get3DNumListener() ?
+	}
+
+	void SoundCore::SuppListener(const QXuint ID)
+	{
+		_listeners[ID] = false;
 	}
 
 	#pragma endregion

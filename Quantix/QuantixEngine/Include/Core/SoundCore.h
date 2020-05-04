@@ -1,8 +1,11 @@
 #ifndef __SOUNDCORE_H__
 #define __SOUNDCORE_H__
 
-#include "Core/DLLHeader.h"
+#include <vector>
 #include <fmod.hpp>
+
+#include "Core/DLLHeader.h"
+#include "Type.h"
 
 namespace Quantix::Core
 {
@@ -14,6 +17,7 @@ namespace Quantix::Core
 
 			static SoundCore*	_instance;
 			FMOD::System*		_system;
+			std::vector<QXbool>	_listeners;
 
 			#pragma endregion
 
@@ -47,7 +51,28 @@ namespace Quantix::Core
 			inline static SoundCore*	GetInstance()	{ _instance == nullptr ? _instance = new SoundCore : _instance; return _instance; }
 			inline FMOD::System*		GetSystem()		{ return _system; }
 			void						Update();
-			bool						Try(FMOD_RESULT result);
+
+			/**
+			 * @brief Try the FMOD method and manage FMOD errors
+			 *
+			 * @param FMOD_RESULT result of the FMOD method
+			 * @return QXbool method succeeding value
+			 */
+			QXbool						Try(FMOD_RESULT result);
+
+			/**
+			 * @brief Add a listener to the list
+			 *
+			 * @return QXuint listener ID
+			 */
+			QXuint						AddListener();
+
+			/**
+			 * @brief Supp the listener of the list
+			 *
+			 * @param const QXuint listener ID
+			 */
+			void						SuppListener(const QXuint ID);
 
 			#pragma endregion
 

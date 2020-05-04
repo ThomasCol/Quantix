@@ -2,11 +2,18 @@
 #define __SOUND_H__
 
 #include <fmod.hpp>
+
 #include "Type.h"
 #include "Core\DLLHeader.h"
 
 namespace Quantix::Resources
 {
+	enum class QUANTIX_API ESoundMode
+	{
+		QX_2D = FMOD_2D,
+		QX_3D = FMOD_3D,
+	};
+
 	class QUANTIX_API Sound
 	{
 		private:
@@ -35,6 +42,7 @@ namespace Quantix::Resources
 			/**
 			 * @brief Construct a new Sound object
 			 *
+			 * @param path path of the sound
 			 */
 			Sound(const char* path);
 
@@ -99,9 +107,32 @@ namespace Quantix::Resources
 			/**
 			 * @brief Play Sound's clip
 			 *
-			 * @return bool played value
+			 * @return QXbool played successfully value
 			 */
-			bool	Play();
+			const QXbool	Play();
+
+			/**
+			 * @brief Play Sound's clip
+			 *
+			 * @param channel to manage the clip
+			 * @return QXbool played successfully value
+			 */
+			const QXbool	Play(FMOD::ChannelGroup* channel);
+
+			/**
+			 * @brief Check if the sound is in 3D
+			 *
+			 * @return QXbool is in 3D value
+			 */
+			const QXbool	Is3D();
+
+			/**
+			 * @brief Change the mode of the sound
+			 *
+			 * @param mode the sound will have
+			 * @return QXbool changed successfully value
+			 */
+			const QXbool	ChangeMode(FMOD_MODE mode);
 
 			#pragma endregion
 	};
