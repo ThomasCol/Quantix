@@ -94,12 +94,16 @@ namespace Quantix::Core::DataStructure
 		{
 			return it->second;
 		}
-		return LoadMaterial(filePath);
+
+		Material* material = LoadMaterial(filePath);
+
+		_materials[filePath] = material;
+
+		return material;
 	}
 
 	Components::Mesh* ResourcesManager::CreateMesh(Components::Mesh* mesh, const QXstring& modelPath, const QXstring& materialPath) noexcept
 	{
-
 		QXstring key = modelPath + materialPath;
 
 		mesh->SetModel(CreateModel(modelPath));
