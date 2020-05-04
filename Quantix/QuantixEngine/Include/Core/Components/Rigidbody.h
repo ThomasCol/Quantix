@@ -76,6 +76,13 @@ namespace Quantix::Core::Components
 		void AddForce(Math::QXvec3 vec) noexcept;
 
 		/**
+		 * @brief Add Torque On The Rigidbody
+		 *
+		 * @param vec Torque To Add
+		 */
+		void AddTorque(Math::QXvec3 vec) noexcept;
+
+		/**
 		 * @brief Copy a Rigidbody
 		 * 
 		 * @return Rigidbody* new Rigidbody

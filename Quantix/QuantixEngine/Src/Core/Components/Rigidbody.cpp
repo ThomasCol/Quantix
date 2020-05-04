@@ -59,6 +59,11 @@ namespace Quantix::Core::Components
 		actorPhysic->GetObjectDynamic()->GetRigid()->addForce(physx::PxVec3(vec.x, vec.y, vec.z));
 	}
 
+	void Rigidbody::AddTorque(Math::QXvec3 vec) noexcept
+	{
+		actorPhysic->GetObjectDynamic()->GetRigid()->addTorque(physx::PxVec3(vec.x, vec.y, vec.z));
+	}
+
 	Rigidbody* Rigidbody::Copy() const
 	{
 		return new Rigidbody(*this);
