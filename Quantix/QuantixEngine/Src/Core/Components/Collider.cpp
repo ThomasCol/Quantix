@@ -85,6 +85,19 @@ namespace Quantix::Core::Components
 		return new ICollider(*this);
 	}
 
+	void ICollider::UpdateActorPhysic()
+	{
+		if (_object->GetComponent<Rigidbody>())
+			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(_object, true);
+		else
+			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(_object, false);
+	}
+
+	void ICollider::Destroy()
+	{
+		shape->getActor()->detachShape(*shape);
+	}
+
 	Math::QXvec3 ICollider::GetPosition()
 	{
 		physx::PxVec3 tmp = shape->getLocalPose().p;
@@ -151,10 +164,5 @@ namespace Quantix::Core::Components
 	bool ICollider::GetShapeFlagVisualization()
 	{
 		return shapeFlag.visualization;
-	}
-
-	void ICollider::Destroy()
-	{
-		shape->getActor()->detachShape(*shape);
 	}
 }

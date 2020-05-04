@@ -76,6 +76,14 @@ namespace Quantix::Core::Components
 	void Rigidbody::Destroy()
 	{
 		std::cout << "destroy rigidbody" << std::endl;
+
+		Physic::PhysicHandler::GetInstance()->GetObject(_object, false);
+		
+		std::vector<ICollider*> vector{ _object->GetComponents<ICollider>() };
+		for (QXuint i = 0; i < vector.size(); i++)
+		{
+			vector[i]->UpdateActorPhysic();
+		}
 	}
 
 	QXfloat Rigidbody::GetMass()

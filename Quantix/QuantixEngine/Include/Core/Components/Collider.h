@@ -120,6 +120,12 @@ namespace Quantix::Core::Components
 		virtual void Init(DataStructure::GameComponent* par) override;
 
 		/**
+		 * @brief Actualize actorPhysic
+		 *
+		 */
+		void UpdateActorPhysic();
+
+		/**
 		 * @brief Destroy Collider
 		 * 
 		 */
