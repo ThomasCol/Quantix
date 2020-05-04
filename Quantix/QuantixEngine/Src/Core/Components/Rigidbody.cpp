@@ -73,6 +73,10 @@ namespace Quantix::Core::Components
 		actorPhysic = (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(par, true);
 	}
 
+	void Rigidbody::Destroy()
+	{
+	}
+
 	QXfloat Rigidbody::GetMass()
 	{
 		return mass;

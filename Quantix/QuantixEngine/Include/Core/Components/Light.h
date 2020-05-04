@@ -72,6 +72,7 @@ namespace Quantix::Core::Components
 		Light*	Copy() const override;
 
 		void	Init(Core::DataStructure::GameComponent* object) override;
+		void Destroy() override {};
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};

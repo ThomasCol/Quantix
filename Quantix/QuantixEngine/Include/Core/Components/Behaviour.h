@@ -29,11 +29,9 @@ namespace Quantix::Core::Components
 		virtual void	Update() { /*std::cout << "update" << std::endl;*/ };
 		virtual void    OnContact(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) { std::cout << "OnContact" << std::endl; }
 		virtual void    OnTrigger(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) { std::cout << "OnTrigger" << std::endl; }
-
+		virtual void	Destroy() override {}
 
 		//inline virtual void	OnCollision(Physics::Collision::Collider * collider) {};
-
-		//virtual void				Destroy() = 0;
 
 		Behaviour* Copy() const;
 

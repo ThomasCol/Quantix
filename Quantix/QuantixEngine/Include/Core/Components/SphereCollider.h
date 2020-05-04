@@ -34,6 +34,7 @@ namespace Quantix::Core::Components
 
 		SphereCollider* Copy() const override;
 		void Init(DataStructure::GameComponent* par) override;
+		void Destroy() override {};
 
 		CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::ICollider);
 	};

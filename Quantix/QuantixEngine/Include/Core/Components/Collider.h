@@ -65,6 +65,7 @@ namespace Quantix::Core::Components
 #pragma endregion
 
 		virtual void Init(DataStructure::GameComponent* par) override;
+		virtual void Destroy() override;
 
 #pragma region Acessors 
 		ICollider* Copy() const override;
@@ -84,8 +85,6 @@ namespace Quantix::Core::Components
 		bool GetShapeFlagTrigger();
 		void SetShapeFlagVisualization(bool b);
 		bool GetShapeFlagVisualization();
-
-		void Destroy() override;
 
 #pragma endregion
 

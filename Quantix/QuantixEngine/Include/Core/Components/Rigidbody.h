@@ -42,12 +42,13 @@ namespace Quantix::Core::Components
 #pragma region Functions
 
 		void AddForce(Math::QXvec3 vec) noexcept;
+		Rigidbody* Copy() const;
+		void Init(DataStructure::GameComponent* par);
+		void Destroy() override;
 
 #pragma endregion
 
 #pragma region Accessors 
-		Rigidbody* Copy() const;
-		void Init(DataStructure::GameComponent* par);
 
 		QXfloat GetMass();
 		void SetMass(QXfloat);
@@ -70,8 +71,9 @@ namespace Quantix::Core::Components
 		bool GetActorFlagDisableSimulation();
 		void SetActorFlagSendSleepNotifies(bool b);
 		bool GetActorFlagSendSleepNotifies();
-		void SetActorFlagVisualization(bool b);
-		bool GetActorFlagVisualization();
+		
+		void SetActorFlagVisualization(bool b); // to delete
+		bool GetActorFlagVisualization(); // to delete
 
 		void SetRigidFlagCCD(bool b);
 		bool GetRigidFlagCCD();
