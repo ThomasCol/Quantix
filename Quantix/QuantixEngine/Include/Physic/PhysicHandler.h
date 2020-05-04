@@ -20,6 +20,10 @@ namespace Quantix::Physic
 	class QUANTIX_API PhysicHandler
 	{
 	private:
+		/**
+		 * @brief Construct a new Physic Handler object
+		 * 
+		 */
 		PhysicHandler() = default;
 
 
@@ -58,43 +62,136 @@ namespace Quantix::Physic
 #pragma endregion
 	public:
 #pragma region Constructors
+
 		PhysicHandler(const PhysicHandler& src) = delete;
 		PhysicHandler(PhysicHandler&& src) = delete;
+
+		/**
+		 * @brief Destroy the Physic Handler object
+		 * 
+		 */
 		~PhysicHandler() = default;
+
 #pragma endregion
 
 #pragma region Functions
 
-		// To get singleton
+		/**
+		 * @brief Get the Instance object
+		 * 
+		 * @return PhysicHandler* return a pointer on the PhysicHandler Instance
+		 */
 		static PhysicHandler* GetInstance();
 
-		// Init Physic
+		/**
+		 * @brief Init Physic System
+		 * 
+		 */
 		void		InitSystem();
+		
+		/**
+		 * @brief Init Physic Scene
+		 * 
+		 */
 		void		InitScene();
 
-		// Release
+		/**
+		 * @brief Release System Physic
+		 * 
+		 */
 		void		ReleaseSystem();
 
-		// Return PhysicType Linked to the GameComponent
+		// 
+		/**
+		 * @brief Return PhysicType Linked to the GameComponent
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param hasRigidbody 
+		 * @return IPhysicType* PhysicType Linked
+		 */
 		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody = false);
 
-		// Create Actor
+		/**
+		 * @brief Create a And Link Actor Physic object
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param dynamic 
+		 * @return IPhysicType* Pointer on IPhysicType Linked in map
+		 */
 		IPhysicType* CreateAndLinkActorPhysic(Core::DataStructure::GameComponent* object, bool dynamic);
+
+		/**
+		 * @brief Swap ActorPhysic in static to dynamic
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param staticActor ActorPhysic Static
+		 * @return IPhysicType* Pointer on IPhysicType Linked in map
+		 */
 		IPhysicType* SwapActorPhysicStaticToDynamic(Core::DataStructure::GameComponent* object, PhysicStatic* staticActor);
+
+		/**
+		 * @brief  Swap ActorPhysic in dynamic to static
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param dynamicActor ActorPhysic dynamic
+		 * @return IPhysicType* Pointer on IPhysicType Linked in map
+		 */
 		IPhysicType* SwapActorPhysicDynamicToStatic(Core::DataStructure::GameComponent* object, PhysicDynamic* dynamicActor);
 
 
-		// Create Shape
+		/**
+		 * @brief Create a Cube Collider object
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param hasRigidbody 
+		 * @return PxShape* New Shape
+		 */
 		PxShape* CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+
+		/**
+		 * @brief Create a Sphere Collider object
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param hasRigidbody 
+		 * @return PxShape* New Shape
+		 */
 		PxShape* CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+
+		/**
+		 * @brief Create a Capsule Collider object
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param hasRigidbody 
+		 * @return PxShape* New Shape
+		 */
 		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
 
 
 		// Update
+		/**
+		 * @brief Update and simulate System Physic
+		 * 
+		 * @param deltaTime 
+		 */
 		void		UpdateSystem(double deltaTime);
+
+		/**
+		 * @brief Synchronize Physic Actor with GameObject
+		 * 
+		 * @param isPlaying 
+		 */
 		void		UpdatePhysicActor(bool isPlaying = false);
 
+		/**
+		 * @brief Update Actor in playing
+		 * 
+		 */
 		void UpdatePlayingActor();
+
+		/**
+		 * @brief Update Actor in Editor
+		 * 
+		 */
 		void UpdateEditorActor();
 
 #pragma region Operators
@@ -107,9 +204,15 @@ namespace Quantix::Physic
 
 #pragma region Accessors
 
+		/**
+		 * @brief Get the Flag Adaptive Force object
+		 * 
+		 * @return Value of the Flag
+		 */
 		bool GetFlagAdaptiveForce()				{ return sceneFlag.adaptiveForce; }
+
 		bool GetFlagDisableCCDResweep()			{ return sceneFlag.disableCCDResweep; }
-		bool GetFlagDisableContactCache()		{ return sceneFlag.disableContactCache; }
+		bool GetFlagDisableContactCache()		{ return sceneFlag.disableContactCache; }	
 		bool GetFlagDisableContactReport()		{ return sceneFlag.disableContactReportResize; }
 		bool GetFlagActiveActors()				{ return sceneFlag.activeActors; }
 		bool GetFlagAveragePoint()				{ return sceneFlag.averagePoint; }
