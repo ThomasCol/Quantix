@@ -75,6 +75,7 @@ namespace Quantix::Core::Components
 
 	void Rigidbody::Destroy()
 	{
+		std::cout << "destroy rigidbody" << std::endl;
 	}
 
 	QXfloat Rigidbody::GetMass()

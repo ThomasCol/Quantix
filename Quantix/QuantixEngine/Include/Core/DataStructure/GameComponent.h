@@ -153,6 +153,7 @@ namespace Quantix::Core::DataStructure
 				if ((*it) == component)
 				{
 					(*it)->EraseEndOfFrame();
+					(*it)->Destroy();
 					_component.erase(it);
 					return;
 				}
@@ -166,6 +167,7 @@ namespace Quantix::Core::DataStructure
 				if ((*it) == behaviour)
 				{
 					(*it)->EraseEndOfFrame();
+					(*it)->Destroy();
 					_component.erase(it);
 					return;
 				}
