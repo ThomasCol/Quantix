@@ -48,7 +48,7 @@ void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Plat
 
 		ImVec2 cursorPos = ImGui::GetCursorPos();
 		QXbool open = ImGui::TreeNodeEx("##Transform", ImGuiTreeNodeFlags_Framed);
-		TreeNodeImage("Transform", "media/IconEditor/Simulation/Transform.png", app, cursorPos);
+		TreeNodeImage("Transform", "Other/IconEditor/Simulation/Transform.png", app, cursorPos);
 
 		if (open)
 		{

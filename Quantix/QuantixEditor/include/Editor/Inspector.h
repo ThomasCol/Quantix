@@ -16,7 +16,7 @@
 
 #include "Type.h"
 
-#define PATHIMG "media/IconEditor/Simulation/"
+#define PATHIMG "Other/IconEditor/Simulation/"
 #define PNG ".png"
 
 class Inspector
