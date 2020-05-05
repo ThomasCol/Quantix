@@ -21,7 +21,8 @@ namespace Quantix::Core::Components
 
 	struct QUANTIX_API Light : public Quantix::Core::DataStructure::Component
 	{
-#pragma region Attributes
+		#pragma region Attributes
+
 		QXfloat				_pad0[4] {0};
 		Math::QXvec3		direction; QXfloat _pad1{0};
 		Math::QXvec3		position; QXfloat _pad2{ 0 };
@@ -38,14 +39,16 @@ namespace Quantix::Core::Components
 		QXfloat				outerCutOff{0};
 
 		ELightType			type { ELightType::DEFAULT };
-#pragma endregion
 
-#pragma region Constructors
+		#pragma endregion
+
+		#pragma region Constructors
 
 		/**
 		 * @brief Construct a new Light object
 		 */
 		Light() = default;
+
 		/**
 		 * @brief Construct a new Light object
 		 * 
@@ -60,19 +63,36 @@ namespace Quantix::Core::Components
 		 */
 		Light(Light&& light) = default;
 
-		Light(Core::DataStructure::GameComponent* obj);
-
 		/**
 		 * @brief Destroy the Light object
 		 */
 		~Light() = default;
 
-#pragma endregion
+		#pragma endregion
 
-		Light*	Copy() const override;
+		#pragma region Functions
 
-		void	Init(Core::DataStructure::GameComponent* object) override;
-		void Destroy() override {};
+		/**
+		 * @brief Copy light object
+		 * 
+		 * @return Light* new light
+		 */
+		Light*	Copy() const noexcept override;
+
+		/**
+		 * @brief Init Light and Game component
+		 * 
+		 * @param object Game component attached
+		 */
+		void	Init(Core::DataStructure::GameComponent* object) noexcept override;
+
+		/**
+		 * @brief Destroy object
+		 * 
+		 */
+		void	Destroy() noexcept override {};
+
+		#pragma endregion
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};

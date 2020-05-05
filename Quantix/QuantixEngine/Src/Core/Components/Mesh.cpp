@@ -9,39 +9,20 @@ RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::Components::Mesh>("Mesh")
 	.constructor<>()
-	.constructor<Quantix::Resources::Model*, Quantix::Resources::Material*>()
 	.constructor<const Quantix::Core::Components::Mesh&>()
 	.constructor<Quantix::Core::Components::Mesh&&>()
-	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.property("Model", &Quantix::Core::Components::Mesh::_model)
 	.property("Material", &Quantix::Core::Components::Mesh::_material);
 }
 
 namespace Quantix::Core::Components
 {
-	Mesh::Mesh(Resources::Model* model, Resources::Material* material):
-		_model {model},
-		_material {material}
-	{}
-
-	Mesh::Mesh(Core::DataStructure::GameComponent* object): 
-		Quantix::Core::DataStructure::Component(object)
-	{
-		object->SetRender(true);
-	}
-
-	Mesh::Mesh(const Mesh& mesh)
-	{
-		_model = mesh._model;
-		_material = mesh._material;
-	}
-
-	Mesh* Mesh::Copy() const
+	Mesh* Mesh::Copy() const noexcept
 	{
 		return new Mesh(*this);
 	}
 
-	void Mesh::Init(Core::DataStructure::GameComponent* object)
+	void Mesh::Init(Core::DataStructure::GameComponent* object) noexcept
 	{
 		_object = object;
 		object->SetRender(true);
@@ -50,7 +31,7 @@ namespace Quantix::Core::Components
 		_material = new Resources::Material();
 	}
 
-	QXbool	Mesh::IsEnable()
+	QXbool	Mesh::IsEnable() noexcept
 	{
 		if (!_model || !_model->IsReady())
 			return false;
@@ -63,7 +44,7 @@ namespace Quantix::Core::Components
 		return _isEnable;
 	}
 
-	void Mesh::SetActive(QXbool enable)
+	void Mesh::SetActive(QXbool enable) noexcept
 	{
 		_isEnable = enable;
 		_object->SetRender(enable);

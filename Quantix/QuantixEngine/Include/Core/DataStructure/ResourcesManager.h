@@ -22,7 +22,7 @@ namespace Quantix::Core::DataStructure
 	class QUANTIX_API ResourcesManager
 	{
 	private:
-#pragma region Attributes
+		#pragma region Attributes
 
 		std::unordered_map<QXstring, Material*>			_materials;
 		std::unordered_map<QXstring, Model*>			_models;
@@ -35,21 +35,9 @@ namespace Quantix::Core::DataStructure
 
 		std::list<Resource*>							_resourcesToBind;
 			
-#pragma endregion
+		#pragma endregion
 
-#pragma region Functions
-
-		/*template<class Archive>
-		void save(Archive& archive) const
-		{
-			archive(x, vec.y, vec.z);
-		}
-
-		template<class Archive>
-		void load(Archive& archive)
-		{
-			archive(data._name, data._objects);
-		}*/
+		#pragma region Functions
 
 		/**
 		 * @brief Create a Default Material object
@@ -58,6 +46,11 @@ namespace Quantix::Core::DataStructure
 		 */
 		Material*			CreateDefaultMaterial() noexcept;
 
+		/**
+		 * @brief Create a Default Scene object
+		 * 
+		 * @return Scene* new Scene
+		 */
 		Scene*				CreateDefaultScene() noexcept;
 
 		/**
@@ -174,6 +167,12 @@ namespace Quantix::Core::DataStructure
 		 */
 		Material*			CreateMaterial(const QXstring& filePath) noexcept;
 
+		/**
+		 * @brief Create a Sound object
+		 * 
+		 * @param filePath Path to the sound to load
+		 * @return Sound* new sound
+		 */
 		Sound*				CreateSound(const QXstring & filePath) noexcept;
 
 		/**
@@ -193,6 +192,12 @@ namespace Quantix::Core::DataStructure
 		 */
 		Model*				CreateModel(const QXstring& filePath) noexcept;
 
+		/**
+		 * @brief Create a Scene object
+		 * 
+		 * @param filePath Path to the scene
+		 * @return Scene* new scene
+		 */
 		Scene*				CreateScene(const QXstring& filePath);
 
 		/**
@@ -243,17 +248,67 @@ namespace Quantix::Core::DataStructure
 		 */
 		void				DeleteTexture(const QXstring& filePath) noexcept;
 
-		void				SaveScene(Scene* scene);
+		/**
+		 * @brief Load and create scene from file
+		 * 
+		 * @param path path to the scene
+		 * @return Scene* new scene
+		 */
 		Scene*				LoadScene(const QXstring& path);
+
+		/**
+		 * @brief Save scene to a file
+		 * 
+		 * @param scene Scene to save
+		 */
+		void				SaveScene(Scene* scene);
+
+		/**
+		 * @brief Update resources to bind
+		 * 
+		 */
 		void				UpdateResourcesState();
 
-		inline std::unordered_map<QXstring, ShaderProgram*>&			GetShaders() { return _programs; };
-		inline std::unordered_map<QXstring, Model*>&					GetModels() { return _models; };
-		inline std::unordered_map<QXstring, Material*>&					GetMaterials() { return _materials; };
-		inline std::unordered_map<QXstring, Texture*>&					GetTextures() { return _textures; };
-		inline std::unordered_map<QXstring, Sound*>&					GetSounds() { return _sounds; };
+		#pragma region Accessor
 
-#pragma endregion
+		/**
+		 * @brief Get the Shaders object
+		 * 
+		 * @return std::unordered_map<QXstring, ShaderProgram*>&  shader map
+		 */
+		inline std::unordered_map<QXstring, ShaderProgram*>&			GetShaders() { return _programs; }
+
+		/**
+		 * @brief Get the Models object
+		 * 
+		 * @return std::unordered_map<QXstring, Model*>& model map
+		 */
+		inline std::unordered_map<QXstring, Model*>&					GetModels() { return _models; }
+
+		/**
+		 * @brief Get the Materials object
+		 * 
+		 * @return std::unordered_map<QXstring, Material*>& material map
+		 */
+		inline std::unordered_map<QXstring, Material*>&					GetMaterials() { return _materials; }
+
+		/**
+		 * @brief Get the Textures object
+		 * 
+		 * @return std::unordered_map<QXstring, Texture*>&  texture map
+		 */
+		inline std::unordered_map<QXstring, Texture*>&					GetTextures() { return _textures; }
+
+		/**
+		 * @brief Get the Sounds object
+		 * 
+		 * @return std::unordered_map<QXstring, Sound*>& sound map
+		 */
+		inline std::unordered_map<QXstring, Sound*>&					GetSounds() { return _sounds; }
+
+		#pragma endregion
+
+		#pragma endregion
 	};
 }
 

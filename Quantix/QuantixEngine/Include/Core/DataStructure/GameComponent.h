@@ -54,7 +54,7 @@ namespace Quantix::Core::DataStructure
 		template<typename T>
 		inline T*				AddComponent()
 		{
-			T* comp = new T(this);
+			T* comp = new T;
 			_component.push_back(comp);
 			return comp;
 		}

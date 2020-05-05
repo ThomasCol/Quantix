@@ -33,15 +33,7 @@ namespace Quantix::Core::Platform
 
 		Application() = default;
 
-		/**
-		 * @brief Construct a new Application object
-		 * 
-		 * @param width Width of the window
-		 * @param height Height of the window
-		 */
-		//Application(QXuint width, QXuint height);
-
-		//Application(QXstring name, QXuint width, QXuint height);
+		
 		Application(QXuint width, QXuint height);
 
 		/**

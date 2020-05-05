@@ -102,18 +102,21 @@ namespace Quantix::Core::Tool
 		if (ret != val.MemberEnd())
 		{
 			Components::Mesh* mesh = object->AddComponent<Components::Mesh>();
+			mesh->Init(object);
 			ReadMesh(mesh, ret->value, manager);
 		}
 		ret = val.FindMember("Light");
 		if (ret != val.MemberEnd())
 		{
 			Components::Light* light = object->AddComponent<Components::Light>();
+			light->Init(object);
 			ReadLight(light, ret->value);
 		}
 		ret = val.FindMember("Camera");
 		if (ret != val.MemberEnd())
 		{
 			Components::Camera* camera = object->AddComponent<Components::Camera>();
+			camera->Init(object);
 			ReadCamera(camera, ret->value);
 		}
 		ret = val.FindMember("Rigidbody");

@@ -18,9 +18,11 @@ namespace Quantix::Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
+
 		GameComponent*	_object;
 		QXbool			_isDestroyed;
 		QXbool			_isEnable;
+		
 		#pragma endregion Attributes
 
 	public:

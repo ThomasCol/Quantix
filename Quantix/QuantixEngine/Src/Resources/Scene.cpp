@@ -79,6 +79,7 @@ namespace Quantix::Resources
 		//gameObject2->AddComponent<Core::Components::Mesh>();
 
 		Core::Components::Mesh* mesh = gameObject->GetComponent<Quantix::Core::Components::Mesh>();
+		mesh->Init(gameObject);
 		//mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/fantasy_game_inn.obj");
 		//mesh->SetMaterialMainTexture(manager.CreateTexture("../QuantixEngine/Media/Textures/fantasy_game_inn_diffuse.png"));
 		mesh = manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");

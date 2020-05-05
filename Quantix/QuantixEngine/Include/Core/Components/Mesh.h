@@ -14,16 +14,17 @@ namespace Quantix::Core::Components
 	class QUANTIX_API Mesh : public virtual Core::DataStructure::Component
 	{
 	private:
-#pragma region Attributes
+		#pragma region Attributes
 
 		Resources::Model*		_model;
 		Resources::Material*	_material;
 
 		QXbool					_isMaterialInit;
 
-#pragma endregion
+		#pragma endregion
 		
 	public:
+		#pragma region Attributes
 
 		union
 		{
@@ -36,25 +37,23 @@ namespace Quantix::Core::Components
 
 			QXuint32 key;
 		};
-#pragma region Constructors
 
-		Mesh() = default;
+		#pragma endregion
+
+		#pragma region Constructors
 
 		/**
 		 * @brief Construct a new Mesh object
 		 * 
-		 * @param objFile Path to the model
-		 * @param vertexShader Path to the vertex shader
-		 * @param fragmentShader Path to the fragment shader
 		 */
-		Mesh(Resources::Model* model, Resources::Material* material);
+		Mesh() = default;
 
 		/**
 		 * @brief Construct a new Mesh object
 		 * 
 		 * @param mesh Mesh to copy
 		 */
-		Mesh(const Mesh& mesh);
+		Mesh(const Mesh& mesh) = default;
 
 		/**
 		 * @brief Construct a new Mesh object
@@ -63,45 +62,103 @@ namespace Quantix::Core::Components
 		 */
 		Mesh(Mesh&& mesh) = default;
 
-		Mesh(Core::DataStructure::GameComponent* object);
-
 		/**
 		 * @brief Destroy the Mesh object
 		 */
 		~Mesh() = default;
 
-#pragma endregion
+		#pragma endregion
 
-#pragma region Functions
+		#pragma region Functions
 
-		Mesh*	Copy() const override;
+		/**
+		 * @brief Copy mesh
+		 * 
+		 * @return Mesh* new mesh
+		 */
+		Mesh*	Copy() const noexcept override;
 		
-		void	Init(Core::DataStructure::GameComponent* object) override;
-		void Destroy() override {};
+		/**
+		 * @brief Init mesh
+		 * 
+		 * @param object Game component attached
+		 */
+		void	Init(Core::DataStructure::GameComponent* object) noexcept override;
 
-#pragma region Accessor
+		/**
+		 * @brief Destroy Mesh
+		 * 
+		 */
+		void 	Destroy() noexcept override {};
 
-		inline void	 SetModel(Resources::Model* model) { _model = model; };
-		inline Resources::Model* GetModel() { return _model; };
-		inline QXuint GetVAO() { return _model->GetVAO(); }
-		inline const std::vector<QXuint>& GetIndices() { return _model->GetIndices(); }
-		inline Resources::Material* GetMaterial() { return _material; }
-		inline void SetMaterial(Resources::Material* material) { _material = material; }
+		#pragma region Accessor
+
+		/**
+		 * @brief Set the Model
+		 * 
+		 * @param model model to use
+		 */
+		inline void							SetModel(Resources::Model* model) noexcept { _model = model; }
+
+		/**
+		 * @brief Get the Model
+		 * 
+		 * @return Resources::Model* current model
+		 */
+		inline Resources::Model*			GetModel() noexcept { return _model; }
+
+		/**
+		 * @brief Get model VAO
+		 * 
+		 * @return QXuint VAO value
+		 */
+		inline QXuint 						GetVAO() noexcept { return _model->GetVAO(); }
+
+		/**
+		 * @brief Get the Indices vector
+		 * 
+		 * @return const std::vector<QXuint>& vector of indices
+		 */
+		inline const std::vector<QXuint>&	GetIndices() noexcept { return _model->GetIndices(); }
+
+		/**
+		 * @brief Get the Material object
+		 * 
+		 * @return Resources::Material* current material
+		 */
+		inline Resources::Material* 		GetMaterial() noexcept { return _material; }
+
+		/**
+		 * @brief Set the Material
+		 * 
+		 * @param material material to use
+		 */
+		inline void 						SetMaterial(Resources::Material* material) noexcept { _material = material; }
 
 		/**
 		 * @brief Set the Main Texture object
 		 *
 		 * @param texture new main texture pointer
 		 */
-		inline void SetMaterialDiffuseTexture(Resources::Texture* texture) noexcept { _material->SetDiffuseTexture(texture); }
+		inline void 						SetMaterialDiffuseTexture(Resources::Texture* texture) noexcept { _material->SetDiffuseTexture(texture); }
 
-		QXbool		IsEnable() override;
+		/**
+		 * @brief Check if mesh is enabled
+		 * 
+		 * @return QXbool true mesh is enabled false it's not
+		 */
+		QXbool								IsEnable() noexcept override;
 
-		void		SetActive(QXbool enable) override;
+		/**
+		 * @brief Set the Active object
+		 * 
+		 * @param enable Value to use
+		 */
+		void								SetActive(QXbool enable) noexcept override;
 
-#pragma endregion
+		#pragma endregion
 
-#pragma endregion
+		#pragma endregion
 
 		CLASS_REGISTRATION(Core::DataStructure::Component)
 	};

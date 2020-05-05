@@ -7,7 +7,6 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<>()
 	.constructor<const Quantix::Core::Components::Light&>()
 	.constructor<Quantix::Core::Components::Light&&>()
-	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.enumeration<Quantix::Core::Components::ELightType>("ELightType")
 					 (rttr::value("Default", Quantix::Core::Components::ELightType::DEFAULT),
 					 rttr::value("Directional", Quantix::Core::Components::ELightType::DIRECTIONAL),
@@ -29,16 +28,11 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::Components
 {
-	Light::Light(Core::DataStructure::GameComponent* obj) :
-		Component(obj)
-	{
-	}
-
-	Light* Light::Copy() const
+	Light* Light::Copy() const noexcept
 	{
 		return new Light(*this);
 	}
-	void Light::Init(Core::DataStructure::GameComponent* object)
+	void Light::Init(Core::DataStructure::GameComponent* object) noexcept
 	{
 		_object = object;
 		_isDestroyed = false;
