@@ -259,7 +259,7 @@ namespace Quantix::Physic
 
 		sceneDesc.filterShader = &contactReportFilterShader;
 		sceneDesc.simulationEventCallback = new SimulationCallback();
-		sceneDesc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
+		//sceneDesc.broadPhaseType = physx::PxBroadPhaseType::;
 
 		mCpuDispatcher = PxDefaultCpuDispatcherCreate(4);
 		if (!mCpuDispatcher)
