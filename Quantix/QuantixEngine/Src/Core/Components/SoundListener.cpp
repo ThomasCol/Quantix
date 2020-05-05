@@ -32,9 +32,9 @@ namespace Quantix::Core::Components
 	{}
 
 	SoundListener::SoundListener(Core::DataStructure::GameComponent * object) :
-		Quantix::Core::DataStructure::Component(object)
-	{
-	}
+	Quantix::Core::DataStructure::Component(object),
+	_listenerID { Quantix::Core::SoundCore::GetInstance()->AddListener() }
+	{}
 
 	SoundListener::~SoundListener()
 	{

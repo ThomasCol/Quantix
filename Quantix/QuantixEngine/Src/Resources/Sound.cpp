@@ -22,22 +22,27 @@ namespace Quantix::Resources
 	#pragma region Constructors & Destructor
 
 	Sound::Sound(const char* path) : 
-	_clip {nullptr}
+	_clip{ nullptr },
+	_channel {nullptr}
 	{
 		Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->createSound(path, FMOD_DEFAULT, nullptr, &_clip));
 	}
 
 	Sound::Sound(const Sound& copy) noexcept :
-	_clip {copy._clip}
+	_clip {copy._clip},
+	_channel { copy._channel }
 	{}
 
 	Sound::Sound(Sound&& copy) noexcept :
-	_clip {copy._clip}
+	_clip { std::move(copy._clip) },
+	_channel { std::move(copy._channel) }
 	{}
 
 	Sound::~Sound()
 	{
 		_clip->release();
+		delete _clip;
+		delete _channel;
 	}
 
 	#pragma endregion
@@ -103,17 +108,32 @@ namespace Quantix::Resources
 			return 0;
 	}
 
+	const QXfloat Sound::GetVolume()
+	{
+		QXfloat	volume	{ 0.f };
+		if (this && _channel)
+			if (Core::SoundCore::GetInstance()->Try(_channel->getVolume(&volume)))
+				return volume;
+		return 0;
+	}
+
+	void Sound::SetVolume(QXfloat newVolume)
+	{
+		if (this && _channel)
+			Core::SoundCore::GetInstance()->Try(_channel->setVolume(newVolume));
+	}
+
 	#pragma endregion
 
 	const QXbool Sound::Play()
 	{
-		return Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->playSound(_clip, nullptr, false, nullptr));
+		return Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->playSound(_clip, nullptr, false, &_channel));
 	}
 
 	const QXbool Sound::Play(FMOD::ChannelGroup* channel)
 	{
 		if (this != nullptr && _clip)
-			return Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->playSound(_clip, channel, false, nullptr));
+			return Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->playSound(_clip, channel, false, &_channel));
 		return false;
 	}
 
@@ -126,10 +146,14 @@ namespace Quantix::Resources
 
 	const QXbool Sound::Is3D()
 	{
-		FMOD_MODE	clipMode;
+		if (this && _clip)
+		{
+			FMOD_MODE	clipMode;
 
-		if (Core::SoundCore::GetInstance()->Try(_clip->getMode(&clipMode)))
-			return ((clipMode & FMOD_3D) == FMOD_3D);
+			if (Core::SoundCore::GetInstance()->Try(_clip->getMode(&clipMode)))
+				return ((clipMode & FMOD_3D) == FMOD_3D);
+		}
+
 		return false;
 	}
 
