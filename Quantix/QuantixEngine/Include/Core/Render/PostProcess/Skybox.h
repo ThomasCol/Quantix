@@ -9,19 +9,19 @@ namespace Quantix::Core::Render::PostProcess
 	class Skybox : public PostProcessEffect
 	{
 	private:
-#pragma region Attributes
+		#pragma region Attributes
 
-		Resources::Texture* _skyboxTexture;
-		Resources::ShaderProgram* _cubemapProgram;
+		Resources::Texture*			_skyboxTexture;
+		Resources::ShaderProgram*	_cubemapProgram;
 
-		QXuint _captureFBO;
-		QXuint _envCubemap;
+		QXuint						_captureFBO;
+		QXuint						_envCubemap;
 
-		QXbool	_isCubemapReady = false;
+		QXbool						_isCubemapReady = false;
 
-#pragma endregion
+		#pragma endregion
 
-#pragma region Functions
+		#pragma region Functions
 
 		/**
 		 * @brief Init the data for the skybox rendering
@@ -41,10 +41,10 @@ namespace Quantix::Core::Render::PostProcess
 		 */
 		void renderCube() noexcept;
 
-#pragma endregion
+		#pragma endregion
 
 	public:
-#pragma region Constructors
+		#pragma region Constructors
 
 		/**
 		 * @brief Construct a new Skybox object
@@ -80,18 +80,13 @@ namespace Quantix::Core::Render::PostProcess
 		 */
 		~Skybox();
 
-#pragma endregion
+		#pragma endregion
 
-#pragma region Functions
+		#pragma region Functions
 
-		/**
-		 * @brief Render the skybox
-		 * 
-		 * @param info info of the application
-		 */
 		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
 
-#pragma endregion
+		#pragma endregion
 	};
 }
 

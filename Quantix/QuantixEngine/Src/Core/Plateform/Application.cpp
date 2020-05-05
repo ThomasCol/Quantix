@@ -9,20 +9,6 @@
 
 namespace Quantix::Core::Platform
 {
-	//window{width, height},
-		//renderer{ width, height, window.GetResizeCallback() },
-	/*Application::Application(QXuint width, QXuint height) :
-		info {width, height}
-	{
-	}*/
-
-/*	Application::Application(QXstring name, QXuint width, QXuint height) :
-		//window{ name, width, height },
-		//renderer{ width, height, window.GetResizeCallback() },
-		info{ width, height }
-	{
-	}*/
-
 	Application::Application(QXuint width, QXuint height) :
 		info{ width, height },
 		renderer { info, manager },
@@ -32,6 +18,10 @@ namespace Quantix::Core::Platform
 		stbi_set_flip_vertically_on_load(true);
 		Physic::PhysicHandler::GetInstance()->InitSystem();
 		scene->Init(manager);
+	}
+
+	Application::~Application()
+	{
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, bool isPlaying)

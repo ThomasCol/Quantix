@@ -8,33 +8,55 @@ namespace Quantix::Core::Render::PostProcess
 	class Bloom : public PostProcessEffect
 	{
 	private:
-		Resources::ShaderProgram* _bloomProgram;
+		#pragma region Attributes
 
-		struct BlurFramebuffer
-		{
-			QXuint FBO[2];
-			QXuint texture[2];
-		};
+		Resources::ShaderProgram*	_bloomProgram;
 
-		struct BloomFramebuffer
-		{
-			QXuint FBO = 0;
-			QXuint texture = 0;
-			QXuint depthBuffer = 0;
-		};
+		BlurFramebuffer				_blurBuffer;
+		Framebuffer					_bloomBuffer;
 
-		BlurFramebuffer _blurBuffer;
-		BloomFramebuffer _bloomBuffer;
+		QXuint						_VAO;
 
+		#pragma endregion
+
+		#pragma region Functions
+
+		/**
+		 * @brief Init buffers for the bloom
+		 * 
+		 * @param info app info
+		 */
 		void Init(Platform::AppInfo& info) noexcept;
 
+		#pragma endregion
+
 	public:
+		#pragma region Constructors
+
+		/**
+		 * @brief Construct a new Bloom object
+		 * 
+		 * @param blurProgram shader program for blur
+		 * @param bloomProgram shader program for bloom
+		 * @param model model to use
+		 * @param info app info
+		 */
 		Bloom(Resources::ShaderProgram* blurProgram, Resources::ShaderProgram* bloomProgram, Resources::Model* model, Platform::AppInfo& info);
+
+		/**
+		 * @brief Destroy the Bloom object
+		 * 
+		 */
 		~Bloom() = default;
 
+		#pragma endregion
+
+		#pragma region Functions
+
+		
 		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
 
-
+		#pragma endregion
 	};
 }
 

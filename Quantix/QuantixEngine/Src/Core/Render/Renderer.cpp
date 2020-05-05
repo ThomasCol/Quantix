@@ -18,15 +18,15 @@ namespace Quantix::Core::Render
 		_mainBuffer {},
 		_projLight { Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f) }
 	{
-		CreateFrameBuffer(info.width, info.height, _mainBuffer);
-		CreateFrameBuffer(info.width, info.height, _gameBuffer);
-		InitFinalBuffer(info.width, info.height, _finalGameBuffer);
-		InitFinalBuffer(info.width, info.height, _finalSceneBuffer);
+		CreateRenderFramebuffer(info.width, info.height, _mainBuffer);
+		CreateRenderFramebuffer(info.width, info.height, _gameBuffer);
+		CreateFramebuffer(info.width, info.height, _finalGameBuffer);
+		CreateFramebuffer(info.width, info.height, _finalSceneBuffer);
 		InitShadowBuffer();
 
-		_cube = manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj");
-		_sphere = manager.CreateModel("../QuantixEngine/Media/Mesh/sphere.obj");
-		_caps = manager.CreateModel("../QuantixEngine/Media/Mesh/capsule.obj");
+		_cube = manager.CreateModel("media/Mesh/cube.obj");
+		_sphere = manager.CreateModel("media/Mesh/sphere.obj");
+		_caps = manager.CreateModel("media/Mesh/capsule.obj");
 		_wireFrameProgram = manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Wireframe.vert", "../QuantixEngine/Media/Shader/Wireframe.frag");
 
 		_shadowProgram = manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Shadow.vert", "../QuantixEngine/Media/Shader/Shadow.frag");
@@ -59,7 +59,7 @@ namespace Quantix::Core::Render
 
 #pragma region Functions
 
-	void Renderer::CreateFrameBuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept
+	void Renderer::CreateRenderFramebuffer(QXuint width, QXuint height, RenderFramebuffer& fbo) noexcept
 	{
 		QXint previous_framebuffer;
         glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_framebuffer);
@@ -110,7 +110,7 @@ namespace Quantix::Core::Render
 		fbo.depthBuffer = depth_stencil_renderbuffer;
 	}
 
-	void Renderer::InitFinalBuffer(QXuint width, QXuint height, ShadowFramebuffer& fbo) noexcept
+	void Renderer::CreateFramebuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept
 	{
 		QXint previous_framebuffer;
 		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_framebuffer);
@@ -190,11 +190,11 @@ namespace Quantix::Core::Render
 		// create Skybox effect
 		_effects = new PostProcess::Skybox(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/SkyboxShader.vert", "../QuantixEngine/Media/Shader/SkyboxShader.frag"),
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/CubemapShader.vert", "../QuantixEngine/Media/Shader/CubemapShader.frag"),
-			manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj"), manager.CreateHDRTexture("../QuantixEngine/Media/Textures/skybox.hdr"));
+			manager.CreateModel("media/Mesh/cube.obj"), manager.CreateHDRTexture("media/Textures/skybox.hdr"));
 
 		_bloom = new PostProcess::Bloom(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Blur.frag"),
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Bloom.frag"),
-			manager.CreateModel("../QuantixEngine/Media/Mesh/quad.obj"), info);
+			manager.CreateModel("media/Mesh/quad.obj"), info);
 	}
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
@@ -444,10 +444,9 @@ namespace Quantix::Core::Render
 
 			glDrawElements(GL_TRIANGLES, (GLsizei)meshes[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
 			
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			
 			glBindVertexArray(0);
 		}
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		glViewport(0, 0, info.width, info.height);
 

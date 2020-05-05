@@ -45,7 +45,7 @@ namespace Quantix::Core::DataStructure
 		material->ambient = { 0.2f, 0.2f, 0.2f };
 		material->shininess = 32.f;
 
-		QXstring	path = "../QuantixEngine/Media/Material/DefaultMaterial";
+		QXstring	path = "media/Material/DefaultMaterial";
 		QXstring	tmp_path;
 		bool		not_found = true;
 

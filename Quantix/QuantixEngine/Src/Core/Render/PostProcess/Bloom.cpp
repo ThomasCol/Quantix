@@ -2,7 +2,14 @@
 
 #include <glad/glad.h>
 #include "Core/Debugger/Logger.h"
+
 #define OFFSETOF(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
+
+struct quad_vertex
+{
+    Math::QXvec2 Position;
+    Math::QXvec2 UV;
+};
 
 namespace Quantix::Core::Render::PostProcess
 {
@@ -11,6 +18,37 @@ namespace Quantix::Core::Render::PostProcess
 		_bloomProgram {bloomProgram}
 	{
         Init(info);
+
+        QXuint VBO;
+        // Gen unit quad
+        {
+            quad_vertex Quad[6] =
+            {
+                { {-1.f,-1.f }, { 0.f, 0.f } }, // bl
+                { { 1.f,-1.f }, { 1.f, 0.f } }, // br
+                { { 1.f, 1.f }, { 1.f, 1.f } }, // tr
+
+                { {-1.f, 1.f }, { 0.f, 1.f } }, // tl
+                { {-1.f,-1.f }, { 0.f, 0.f } }, // bl
+                { { 1.f, 1.f }, { 1.f, 1.f } }, // tr
+            };
+
+            // Upload mesh to gpu
+            glGenBuffers(1, &VBO);
+            glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(quad_vertex), Quad, GL_STATIC_DRAW);
+        }
+
+        // Create a vertex array and bind it
+        glGenVertexArrays(1, &_VAO);
+
+        glBindVertexArray(_VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(quad_vertex), (void*)OFFSETOF(quad_vertex, Position));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(quad_vertex), (void*)OFFSETOF(quad_vertex, UV));
+        glBindVertexArray(0);
 	}
 
 	void Bloom::Init(Platform::AppInfo& info) noexcept
@@ -83,49 +121,8 @@ namespace Quantix::Core::Render::PostProcess
         _bloomBuffer.depthBuffer = depth_stencil_renderbuffer;
 	}
 
-    struct quad_vertex
-    {
-        Math::QXvec2 Position;
-        Math::QXvec2 UV;
-    };
-
     void Bloom::Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept
     {
-        QXuint VBO;
-        QXuint VAO;
-        // Gen unit quad
-        {
-            quad_vertex Quad[6] =
-            {
-                { {-1.f,-1.f }, { 0.f, 0.f } }, // bl
-                { { 1.f,-1.f }, { 1.f, 0.f } }, // br
-                { { 1.f, 1.f }, { 1.f, 1.f } }, // tr
-
-                { {-1.f, 1.f }, { 0.f, 1.f } }, // tl
-                { {-1.f,-1.f }, { 0.f, 0.f } }, // bl
-                { { 1.f, 1.f }, { 1.f, 1.f } }, // tr
-            };
-
-            // Upload mesh to gpu
-            glGenBuffers(1, &VBO);
-            glBindBuffer(GL_ARRAY_BUFFER, VBO);
-            glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(quad_vertex), Quad, GL_STATIC_DRAW);
-        }
-
-        // Create a vertex array and bind it
-        glGenVertexArrays(1, &VAO);
-
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(quad_vertex), (void*)OFFSETOF(quad_vertex, Position));
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(quad_vertex), (void*)OFFSETOF(quad_vertex, UV));
-        glBindVertexArray(0);
-
-        if (!_model->IsReady())
-            return;
-
         glDisable(GL_DEPTH_TEST);
         QXbool horizontal = true, first_iteration = true;
 
@@ -145,7 +142,7 @@ namespace Quantix::Core::Render::PostProcess
                 glUniform1f(glGetUniformLocation(_program->GetID(), (std::string("weight[") + std::to_string(i) + "]").c_str()), weight[i]);
             }
             glBindTexture(GL_TEXTURE_2D, first_iteration ? otherTexture : _blurBuffer.texture[!horizontal]);  // bind texture of other framebuffer (or scene if first iteration)
-            glBindVertexArray(VAO);
+            glBindVertexArray(_VAO);
 
             glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -173,9 +170,9 @@ namespace Quantix::Core::Render::PostProcess
 
             glUniform1i(glGetUniformLocation(_bloomProgram->GetID(), "bloom"), true);
             glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "exposure"), 0.5);
-            glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "gamma"), 2.200);
+            glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "gamma"), 1.7);
 
-            glBindVertexArray(VAO);
+            glBindVertexArray(_VAO);
 
             glDrawArrays(GL_TRIANGLES, 0, 6);
 

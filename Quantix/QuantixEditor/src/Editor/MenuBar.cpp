@@ -154,12 +154,13 @@ void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectN
 			
 			obj->AddComponent<Quantix::Core::Components::Mesh>();
 			Quantix::Core::Components::Mesh* mesh = obj->GetComponent<Quantix::Core::Components::Mesh>();
+			mesh->Init(obj);
 			if (i == 0)
-				mesh = app->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/cube.obj");
+				mesh = app->manager.CreateMesh(mesh, "media/Mesh/cube.obj");
 			else if (i == 1)
-				mesh = app->manager.CreateMesh(mesh, "../QuantixEngine/Media/Mesh/sphere.obj");
+				mesh = app->manager.CreateMesh(mesh, "media/Mesh/sphere.obj");
 			else
-				mesh = app->manager.CreateMesh(mesh, "./media/Mesh/capsule.obj");
+				mesh = app->manager.CreateMesh(mesh, "media/Mesh/capsule.obj");
 
 			selection[i] = false;
 			j[i]++;
@@ -172,6 +173,7 @@ void MenuBar::CreateComponentLight(Quantix::Core::DataStructure::GameObject3D* o
 {
 	obj->AddComponent<Quantix::Core::Components::Light>();
 	Quantix::Core::Components::Light* light = obj->GetComponent<Quantix::Core::Components::Light>();
+	light->Init(obj);
 	if (objectName[i] == "Spot Light")
 		light->type = Quantix::Core::Components::ELightType::SPOT;
 	if (objectName[i] == "Point Light")

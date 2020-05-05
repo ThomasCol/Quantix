@@ -106,10 +106,10 @@ namespace Quantix::Core::DataStructure
 		void				SaveModelToCache(const QXstring& filePath, Model* model) noexcept;
 
 
-#pragma endregion
+		#pragma endregion
 		
 	public:
-#pragma region Constructors
+		#pragma region Constructors
 
 		/**
 		 * @brief Construct a new Resources Manager object
@@ -135,9 +135,9 @@ namespace Quantix::Core::DataStructure
 		 */
 		~ResourcesManager();
 
-#pragma endregion
+		#pragma endregion
 
-#pragma region Operators
+		#pragma region Operators
 
 		/**
 		 * @brief Operator for copy (DELETED)
@@ -155,9 +155,9 @@ namespace Quantix::Core::DataStructure
 		 */
 		ResourcesManager& operator=(ResourcesManager&& manager) = delete;
 
-#pragma endregion
+		#pragma endregion
 
-#pragma region Functions
+		#pragma region Functions
 		
 		/**
 		 * @brief Create a Material object

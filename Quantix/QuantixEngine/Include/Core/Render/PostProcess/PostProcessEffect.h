@@ -4,6 +4,7 @@
 #include "Resources/ShaderProgram.h"
 #include "Resources/Model.h"
 #include "Core/Platform/Appinfo.h"
+#include "Core/Render/Framebuffers.h"
 
 namespace Quantix::Core::Render::PostProcess
 {
@@ -77,9 +78,12 @@ namespace Quantix::Core::Render::PostProcess
 		#pragma region Function
 
 		/**
-		 * @brief Render the post postprecess effect
+		 * @brief Render the post process effect
 		 * 
-		 * @param info info of the application
+		 * @param info app info
+		 * @param sceneTexture current texture of the scene
+		 * @param otherTexture additionnal texture if needed
+		 * @param FBO FBO to use to render
 		 */
 		virtual void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept = 0;
 

@@ -40,7 +40,7 @@ Editor::Editor(QXuint width, QXuint height) :
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
-	io.Fonts->AddFontFromFileTTF("media/Font/Roboto-Medium.otf", 20.0f);
+	io.Fonts->AddFontFromFileTTF("Other/Font/Roboto-Medium.otf", 20.0f);
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
    // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;           // Enable Docking
@@ -79,20 +79,20 @@ Editor::~Editor()
 void Editor::InitImg()
 {
 	GLFWimage icon;
-	icon.pixels = stbi_load("media/IconEditor/logo_6_1.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
+	icon.pixels = stbi_load("Other/IconEditor/logo_Thomas4.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
 
 	glfwSetWindowIcon(_win.GetWindow(), 1, &icon);
 
-	_simImg.insert(std::make_pair("Play", _app->manager.CreateTexture("media/IconEditor/Simulation/Play.png")));
-	_simImg.insert(std::make_pair("Pause", _app->manager.CreateTexture("media/IconEditor/Simulation/Pause.png")));
+	_simImg.insert(std::make_pair("Play", _app->manager.CreateTexture("Other/IconEditor/Simulation/Play.png")));
+	_simImg.insert(std::make_pair("Pause", _app->manager.CreateTexture("Other/IconEditor/Simulation/Pause.png")));
 	_simState.insert(std::make_pair("Play", false));
 	_simState.insert(std::make_pair("Pause", false));
-	_imgGuizmo.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/Translate.png"));
-	_imgGuizmo.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/Rotate.png"));
-	_imgGuizmo.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/Scale.png"));
-	_imgTypeLog.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/info.png"));
-	_imgTypeLog.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/warning.png"));
-	_imgTypeLog.push_back(_app->manager.CreateTexture("media/IconEditor/Simulation/error.png"));
+	_imgGuizmo.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/Translate.png"));
+	_imgGuizmo.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/Rotate.png"));
+	_imgGuizmo.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/Scale.png"));
+	_imgTypeLog.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/info.png"));
+	_imgTypeLog.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/warning.png"));
+	_imgTypeLog.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/error.png"));
 }
 
 void Editor::Init()

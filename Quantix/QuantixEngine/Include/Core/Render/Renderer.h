@@ -21,59 +21,57 @@ namespace Quantix::Core::Render
 	private:
 		#pragma region Attributes
 
-		struct Framebuffer
-		{
-			QXuint FBO = 0;
-			QXuint texture[2];
-			QXuint depthBuffer = 0;
-		};
+		RenderFramebuffer				_mainBuffer;
+		RenderFramebuffer				_gameBuffer;
 
-		struct ShadowFramebuffer
-		{
-			QXuint FBO = 0;
-			QXuint texture = 0;
-			QXuint depthBuffer = 0;
-		};
+		Framebuffer 					_shadowBuffer;
+		Framebuffer 					_finalGameBuffer;
+		Framebuffer 					_finalSceneBuffer;
 
-		Framebuffer	_mainBuffer;
-		Framebuffer	_gameBuffer;
+		QXuint							_viewProjMatrixUBO = 0;
+		QXuint							_viewProjShadowMatrixUBO = 0;
+		QXuint							_lightUBO = 0;
 
-		ShadowFramebuffer _shadowBuffer;
-		ShadowFramebuffer _finalGameBuffer;
-		ShadowFramebuffer _finalSceneBuffer;
+		Math::QXmat4 					_projLight;
 
-		QXuint		_viewProjMatrixUBO = 0;
-		QXuint		_viewProjShadowMatrixUBO = 0;
-		QXuint		_lightUBO = 0;
+		PostProcess::PostProcessEffect*	_effects;
+		PostProcess::Bloom* 			_bloom;
 
+		Resources::ShaderProgram* 		_wireFrameProgram;
+		Resources::ShaderProgram* 		_shadowProgram;
 
-		Math::QXmat4 _projLight;
-		PostProcess::PostProcessEffect* _effects;
-
-		PostProcess::Bloom* _bloom;
-
-		Resources::ShaderProgram* _shadowProgram;
-
-		Resources::Model* _cube;
-		Resources::Model* _sphere;
-		Resources::Model* _caps;
-		Resources::ShaderProgram* _wireFrameProgram;
+		Resources::Model* 				_cube;
+		Resources::Model* 				_sphere;
+		Resources::Model* 				_caps;
 
 		#pragma endregion
 
 		#pragma region Functions
 
 		/**
-		 * @brief Create a Frame Buffer object
+		 * @brief Create a Render Framebuffer object
 		 * 
 		 * @param width Width of the window
 		 * @param height Height of the window
+		 * @param fbo fbo to initialize
 		 */
-		void CreateFrameBuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept;
+		void CreateRenderFramebuffer(QXuint width, QXuint height, RenderFramebuffer& fbo) noexcept;
 
+		/**
+		 * @brief Create a Framebuffer object
+		 * 
+		 * @param width Width of the window
+		 * @param height Height of the window
+		 * @param fbo fbo to initialize
+		 */
+		void CreateFramebuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept;
+
+		/**
+		 * @brief Init the shadow buffer
+		 * 
+		 */
 		void InitShadowBuffer() noexcept;
 
-		void InitFinalBuffer(QXuint width, QXuint height, ShadowFramebuffer& fbo) noexcept;
 
 		/**
 		 * @brief Create post process effects
@@ -81,6 +79,16 @@ namespace Quantix::Core::Render
 		 * @param manager ressource manager to create post process data
 		 */
 		void InitPostProcessEffects(DataStructure::ResourcesManager& manager, Platform::AppInfo& info) noexcept;
+
+		/**
+		 * @brief Draw the shadow pass
+		 * 
+		 * @param meshes meshes to use
+		 * @param info app info
+		 * @param lights ligths to use
+		 */
+		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
+			std::vector<Core::Components::Light> & lights);
 
 		#pragma endregion
 
@@ -109,10 +117,8 @@ namespace Quantix::Core::Render
 		/**
 		 * @brief Construct a new Renderer object
 		 * 
-		 * @param width Window width
-		 * @param height Window width
-		 * @param resizeCallback Window callback for resize
-		 * @param manager resources manager to instanciate datas
+		 * @param info App info
+		 * @param manager Resources manager
 		 */
 		Renderer(Platform::AppInfo& info, DataStructure::ResourcesManager& manager) noexcept;
 
@@ -146,26 +152,27 @@ namespace Quantix::Core::Render
 		#pragma region Functions
 
 		/**
-		 * @brief 
+		 * @brief Function to draw current scene as a scene
 		 * 
-		 * @param meshes Meshes to render
-		 * @param lights Lights for the scene
-		 * @param info App info
-		 * @param cam Scene camera for rendering
+		 * @param meshes meshes to draw
+		 * @param colliders colliders to draw
+		 * @param lights lights to use
+		 * @param info app info
+		 * @param cam camera to use
+		 * @return QXuint created texture
 		 */
 		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
 				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
 
-		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
-			std::vector<Core::Components::Light> & lights);
-
 		/**
-		 * @brief
-		 *
-		 * @param meshes Meshes to render
-		 * @param lights Lights for the scene
-		 * @param info App info
-		 * @param cam Game camera for rendering
+		 * @brief Function to draw current scene as game
+		 * 
+		 * @param meshes meshes to draw
+		 * @param colliders colliders to draw
+		 * @param lights lights to use
+		 * @param info app info
+		 * @param cam camera to use
+		 * @return QXuint created texture
 		 */
 		QXuint DrawGame(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
 

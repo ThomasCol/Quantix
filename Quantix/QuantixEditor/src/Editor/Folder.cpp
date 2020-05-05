@@ -5,13 +5,13 @@ Folder::Folder(Quantix::Core::DataStructure::ResourcesManager& cache, const fs::
 	_sizeFolder = 1;
 	_sizeFile = { 70, 70 };
 
-	_folderGLu = cache.CreateTexture("media/ImgFolder/Folder.png");
-	_cppGLu = cache.CreateTexture("media/ImgFolder/iconeCPP.png");
-	_hGLu = cache.CreateTexture("media/ImgFolder/iconeH.png");
-	_slnGLu = cache.CreateTexture("media/ImgFolder/iconSLN.png");
-	_vcxprojGLu = cache.CreateTexture("media/ImgFolder/iconeVCXPROJ.png");
-	_fileGLu = cache.CreateTexture("media/ImgFolder/iconExtension.png");
-	_imgFileGLu = cache.CreateTexture("media/ImgFolder/jpgfile.png");
+	_folderGLu = cache.CreateTexture("Other/ImgFolder/Folder.png");
+	_cppGLu = cache.CreateTexture("Other/ImgFolder/iconeCPP.png");
+	_hGLu = cache.CreateTexture("Other/ImgFolder/iconeH.png");
+	_slnGLu = cache.CreateTexture("Other/ImgFolder/iconSLN.png");
+	_vcxprojGLu = cache.CreateTexture("Other/ImgFolder/iconeVCXPROJ.png");
+	_fileGLu = cache.CreateTexture("Other/ImgFolder/iconExtension.png");
+	_imgFileGLu = cache.CreateTexture("Other/ImgFolder/jpgfile.png");
 
 	fs::directory_iterator end_itr;
 	fs::directory_iterator dir_itr(p);

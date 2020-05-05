@@ -10,14 +10,14 @@
 
 namespace Quantix::Core::UserEntry
 {
-	enum class QUANTIX_API EButtonType
+	enum class /*QUANTIX_API*/ EButtonType
 	{
 		KEYBOARD,
 		GAMEPAD,
 		MOUSE
 	};
 
-	enum class QUANTIX_API ETriggerType
+	enum class /*QUANTIX_API*/ ETriggerType
 	{
 		DOWN,
 		UP,
@@ -27,7 +27,7 @@ namespace Quantix::Core::UserEntry
 
 #pragma region TypeOfKeys
 
-	enum QUANTIX_API EKey
+	enum /*QUANTIX_API*/ EKey
 	{
 		QX_KEY_SPACE = GLFW_KEY_SPACE,
 		QX_KEY_APOSTROPHE = GLFW_KEY_APOSTROPHE,
@@ -150,14 +150,14 @@ namespace Quantix::Core::UserEntry
 		QX_KEY_MENU = GLFW_KEY_MENU
 	};
 
-	enum QUANTIX_API EMouseButton
+	enum /*QUANTIX_API*/ EMouseButton
 	{
 		QX_MOUSE_BUTTON_LEFT = GLFW_MOUSE_BUTTON_LEFT,
 		QX_MOUSE_BUTTON_RIGHT = GLFW_MOUSE_BUTTON_RIGHT,
 		QX_MOUSE_BUTTON_MIDDLE = GLFW_MOUSE_BUTTON_MIDDLE
 	};
 
-	enum QUANTIX_API EGamepadButton
+	enum /*QUANTIX_API*/ EGamepadButton
 	{
 		QX_GAMEPAD_BUTTON_A = GLFW_GAMEPAD_BUTTON_A,
 		QX_GAMEPAD_BUTTON_B = GLFW_GAMEPAD_BUTTON_B,
@@ -176,7 +176,7 @@ namespace Quantix::Core::UserEntry
 		QX_GAMEPAD_BUTTON_DPAD_LEFT = GLFW_GAMEPAD_BUTTON_DPAD_LEFT
 	};
 
-	enum QUANTIX_API EGamepadAxis
+	enum /*QUANTIX_API*/ EGamepadAxis
 	{
 		QX_GAMEPAD_AXIS_LEFT_X = GLFW_GAMEPAD_AXIS_LEFT_X,
 		QX_GAMEPAD_AXIS_LEFT_Y = GLFW_GAMEPAD_AXIS_LEFT_Y,
@@ -189,7 +189,7 @@ namespace Quantix::Core::UserEntry
 
 	typedef int Joystick;
 
-	struct QUANTIX_API Input
+	struct /*QUANTIX_API*/ Input
 	{
 	public:
 
@@ -200,7 +200,7 @@ namespace Quantix::Core::UserEntry
 		virtual void		React(int action) = 0;
 	};
 
-	struct QUANTIX_API MouseMouvement : public Input
+	struct /*QUANTIX_API*/ MouseMouvement : public Input
 	{
 	public:
 
@@ -213,7 +213,7 @@ namespace Quantix::Core::UserEntry
 		//void				React(int action) override;
 	};
 
-	struct QUANTIX_API Button : public Input
+	struct /*QUANTIX_API*/ Button : public Input
 	{
 	public:
 		//Attributes
@@ -235,7 +235,7 @@ namespace Quantix::Core::UserEntry
 		bool				operator!=(const Button& k) const;
 	};
 
-	struct QUANTIX_API KeyPack
+	struct /*QUANTIX_API*/ KeyPack
 	{
 		//Attribute
 		std::vector<Button>	_buttons;
@@ -245,7 +245,7 @@ namespace Quantix::Core::UserEntry
 		bool IsValid() const;
 	};
 
-	class QUANTIX_API InputManager
+	class /*QUANTIX_API*/ InputManager
 	{
 	private:
 		//Attribute

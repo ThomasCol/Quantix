@@ -1,4 +1,0 @@
-
-(function initWebloyalty(){var webloyalty=$('[data-webloyalty-loader]');function loadWebloyalty(){GLOBAL_FUN.dynamicallyLoadScript(webloyalty.data('url')+Date.now());}
-function testWebloyalty(){if(webloyalty.length){loadWebloyalty();}}
-$(document).ready(testWebloyalty);})();
