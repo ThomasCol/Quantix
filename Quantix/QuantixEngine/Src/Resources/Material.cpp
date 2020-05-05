@@ -7,11 +7,11 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<Quantix::Resources::Material>("Material")
 	.constructor<>()
 	.constructor<Quantix::Resources::ShaderProgram*>()
+	.property("Texture", &Quantix::Resources::Material::GetMaterialTexture, &Quantix::Resources::Material::SetMaterialTexture)
 	.property("ambient", &Quantix::Resources::Material::ambient)
 	.property("diffuse", &Quantix::Resources::Material::diffuse)
 	.property("specular", &Quantix::Resources::Material::specular)
 	.property("shininess", &Quantix::Resources::Material::shininess)
-	.property("Texture", &Quantix::Resources::Material::GetMaterialTexture, &Quantix::Resources::Material::SetMaterialTexture)
 	.method("GetPath", &Quantix::Resources::Material::GetPath);
 }
 

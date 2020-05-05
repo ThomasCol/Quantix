@@ -129,9 +129,7 @@ namespace Quantix::Resources
 		FMOD_MODE	clipMode;
 
 		if (Core::SoundCore::GetInstance()->Try(_clip->getMode(&clipMode)))
-		{
 			return ((clipMode & FMOD_3D) == FMOD_3D);
-		}
 		return false;
 	}
 

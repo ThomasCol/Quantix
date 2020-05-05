@@ -117,6 +117,7 @@ namespace Quantix::Core::Components
 		{
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(_angle));
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetUp(((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation() * Math::QXvec3::up);
 		}
 	}
 }

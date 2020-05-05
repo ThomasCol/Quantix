@@ -20,7 +20,7 @@ RTTR_PLUGIN_REGISTRATION
 	.property("Volume", &Quantix::Core::Components::SoundEmitter::GetVolume, &Quantix::Core::Components::SoundEmitter::SetVolume)
 	.property("Loop", &Quantix::Core::Components::SoundEmitter::_loop)
 	.property("On Awake", &Quantix::Core::Components::SoundEmitter::_playOnAwake)
-	.method("Attributes", &Quantix::Core::Components::SoundEmitter::UpdateAttributes)
+	.method("AttributesEmitter", &Quantix::Core::Components::SoundEmitter::UpdateAttributes)
 	.method("PlaySound", &Quantix::Core::Components::SoundEmitter::PlaySound);
 }
 

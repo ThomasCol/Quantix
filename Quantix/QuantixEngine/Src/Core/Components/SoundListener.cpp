@@ -11,7 +11,8 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<>()
 	.constructor<const Quantix::Core::Components::SoundListener&>()
 	.constructor<Quantix::Core::Components::SoundListener&&>()
-	.constructor<Quantix::Core::DataStructure::GameComponent*>();
+	.constructor<Quantix::Core::DataStructure::GameComponent*>()
+	.method("AttributesListener", &Quantix::Core::Components::SoundListener::UpdateAttributes);
 }
 
 namespace Quantix::Core::Components

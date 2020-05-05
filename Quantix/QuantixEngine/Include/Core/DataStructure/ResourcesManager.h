@@ -9,6 +9,7 @@
 #include "Resources/ShaderProgram.h"
 #include "Resources/Texture.h"
 #include "Resources/Material.h"
+#include "Resources/Sound.h"
 #include "Resources/Scene.h"
 #include "Core/Components/Mesh.h"
 #include "Core/Tool/Serializer.h"
@@ -29,6 +30,7 @@ namespace Quantix::Core::DataStructure
 		std::unordered_map<QXstring, ShaderProgram*>	_programs;
 		std::unordered_map<QXstring, Texture*>			_textures;
 		std::unordered_map<QXstring, Components::Mesh*>	_meshes;
+		std::unordered_map<QXstring, Sound*>			_sounds;
 		std::unordered_map<QXstring, Scene*>			_scenes;
 
 		std::list<Resource*>							_resourcesToBind;
@@ -172,6 +174,8 @@ namespace Quantix::Core::DataStructure
 		 */
 		Material*			CreateMaterial(const QXstring& filePath) noexcept;
 
+		Sound*				CreateSound(const QXstring & filePath) noexcept;
+
 		/**
 		 * @brief Create a Mesh object
 		 * 
@@ -247,6 +251,7 @@ namespace Quantix::Core::DataStructure
 		inline std::unordered_map<QXstring, Model*>&					GetModels() { return _models; };
 		inline std::unordered_map<QXstring, Material*>&					GetMaterials() { return _materials; };
 		inline std::unordered_map<QXstring, Texture*>&					GetTextures() { return _textures; };
+		inline std::unordered_map<QXstring, Sound*>&					GetSounds() { return _sounds; };
 
 #pragma endregion
 	};

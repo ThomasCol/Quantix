@@ -36,13 +36,16 @@ public:
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 	void													ShowComponent();
 	void													AddComponent();
-	void													DrawMaterialPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
-	void													DrawModelPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
-	void													DrawMTexturePath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
-	void													DrawSoundEmitterPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
+	void													DrawMaterialPath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app);
+	void													DrawModelPath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app);
+	void													DrawMTexturePath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app);
+	void													DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app);
+	void													SetAttributesListener(rttr::instance inst, rttr::type t);
+	void													SetSound(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app);
 	void													GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
 	void													ShowLightEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
 	void													ShowSoundModeEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
+	void													LookType(rttr::instance inst, rttr::type type, rttr::property currentProp, Quantix::Core::Platform::Application* app);
 	void													DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app);
 
 private:

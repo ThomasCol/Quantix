@@ -102,6 +102,24 @@ namespace Quantix::Core::DataStructure
 		return material;
 	}
 
+	Sound* ResourcesManager::CreateSound(const QXstring& filePath) noexcept
+	{
+		if (filePath == "")
+			return nullptr;
+
+		auto it = _sounds.find(filePath);
+		if (it != _sounds.end() && it->second != nullptr)
+		{
+			return it->second;
+		}
+
+		Sound* sound = new Sound(filePath.c_str());
+
+		_sounds[filePath] = sound;
+
+		return sound;
+	}
+
 	Components::Mesh* ResourcesManager::CreateMesh(Components::Mesh* mesh, const QXstring& modelPath, const QXstring& materialPath) noexcept
 	{
 		QXstring key = modelPath + materialPath;
