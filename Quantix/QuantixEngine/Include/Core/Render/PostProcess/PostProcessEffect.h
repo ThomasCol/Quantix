@@ -81,7 +81,7 @@ namespace Quantix::Core::Render::PostProcess
 		 * 
 		 * @param info info of the application
 		 */
-		virtual void Render(Platform::AppInfo& info) noexcept = 0;
+		virtual void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept = 0;
 
 		#pragma endregion
 	};

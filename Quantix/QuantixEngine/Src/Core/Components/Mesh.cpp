@@ -56,8 +56,8 @@ namespace Quantix::Core::Components
 			return false;
 		else if (!_isMaterialInit && _material->IsReady())
 		{
-			if (_material->GetMainTexture())
-				textureID = _material->GetMainTexture()->GetId();
+			if (_material->GetDiffuseTexture())
+				textureID = _material->GetDiffuseTexture()->GetId();
 			_isMaterialInit = true;
 		}
 		return _isEnable;

@@ -14,12 +14,14 @@ namespace Quantix::Core::Render
 {
 #pragma region Constructors
 
-	Renderer::Renderer(QXuint width, QXuint height, DataStructure::ResourcesManager& manager) noexcept :
+	Renderer::Renderer(Platform::AppInfo& info, DataStructure::ResourcesManager& manager) noexcept :
 		_mainBuffer {},
 		_projLight { Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f) }
 	{
-		CreateFrameBuffer(width, height, _mainBuffer);
-		CreateFrameBuffer(width, height, _gameBuffer);
+		CreateFrameBuffer(info.width, info.height, _mainBuffer);
+		CreateFrameBuffer(info.width, info.height, _gameBuffer);
+		InitFinalBuffer(info.width, info.height, _finalGameBuffer);
+		InitFinalBuffer(info.width, info.height, _finalSceneBuffer);
 		InitShadowBuffer();
 
 		_cube = manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj");
@@ -50,7 +52,7 @@ namespace Quantix::Core::Render
 		glBindBufferBase(GL_UNIFORM_BUFFER, 1, _viewProjShadowMatrixUBO);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 2, _lightUBO);
 
-		InitPostProcessEffects(manager);
+		InitPostProcessEffects(manager, info);
 	}
 
 #pragma endregion
@@ -68,16 +70,19 @@ namespace Quantix::Core::Render
         glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
         // Create texture that will be used as color attachment
-		QXuint texture;
-        glGenTextures(1, &texture);
+		QXuint texture[2];
+        glGenTextures(2, texture);
         
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+		for (QXsizei i = 0; i < 2; ++i)
+		{
+			glBindTexture(GL_TEXTURE_2D, texture[i]);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, texture[i], 0);
+		}
 
 		GLuint depth_stencil_renderbuffer;
 		glGenRenderbuffers(1, &depth_stencil_renderbuffer);
@@ -88,8 +93,8 @@ namespace Quantix::Core::Render
 		// Setup attachements
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_stencil_renderbuffer);
 
-        QXuint draw_attachments = GL_COLOR_ATTACHMENT0;
-        glDrawBuffers(1, &draw_attachments);
+		QXuint draw_attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+        glDrawBuffers(2, draw_attachments);
 
         GLenum framebuffer_status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (framebuffer_status != GL_FRAMEBUFFER_COMPLETE)
@@ -100,17 +105,65 @@ namespace Quantix::Core::Render
         glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
 
 		fbo.FBO = FBO;
+		fbo.texture[0] = texture[0];
+		fbo.texture[1] = texture[1];
+		fbo.depthBuffer = depth_stencil_renderbuffer;
+	}
+
+	void Renderer::InitFinalBuffer(QXuint width, QXuint height, ShadowFramebuffer& fbo) noexcept
+	{
+		QXint previous_framebuffer;
+		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_framebuffer);
+
+		// Create Framebuffer that will hold 1 color attachement
+		QXuint FBO;
+		glGenFramebuffers(1, &FBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+		// Create texture that will be used as color attachment
+		QXuint texture;
+		glGenTextures(1, &texture);
+
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+
+		GLuint depth_stencil_renderbuffer;
+		glGenRenderbuffers(1, &depth_stencil_renderbuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, depth_stencil_renderbuffer);
+		glObjectLabel(GL_RENDERBUFFER, depth_stencil_renderbuffer, -1, "DepthStencilRenderbuffer");
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+
+		// Setup attachements
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_stencil_renderbuffer);
+
+		QXuint draw_attachments { GL_COLOR_ATTACHMENT0 };
+		glDrawBuffers(1, &draw_attachments);
+
+		GLenum framebuffer_status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if (framebuffer_status != GL_FRAMEBUFFER_COMPLETE)
+		{
+			LOG(ERROR, std::string("framebuffer failed to complete (0x%x)\n", framebuffer_status));
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
+
+		fbo.FBO = FBO;
 		fbo.texture = texture;
 		fbo.depthBuffer = depth_stencil_renderbuffer;
 	}
 
 	void Renderer::InitShadowBuffer() noexcept
 	{
-		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-		unsigned int depthMapFBO;
+		const QXuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+		QXuint depthMapFBO;
 		glGenFramebuffers(1, &depthMapFBO);
 		// create depth texture
-		unsigned int depthMap;
+		QXuint depthMap;
 		glGenTextures(1, &depthMap);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
@@ -118,7 +171,7 @@ namespace Quantix::Core::Render
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		QXfloat borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 		// attach depth texture as FBO's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
@@ -132,12 +185,16 @@ namespace Quantix::Core::Render
 		_shadowBuffer.texture = depthMap;
 	}
 
-	void Renderer::InitPostProcessEffects(DataStructure::ResourcesManager& manager) noexcept
+	void Renderer::InitPostProcessEffects(DataStructure::ResourcesManager& manager, Platform::AppInfo& info) noexcept
 	{
 		// create Skybox effect
 		_effects = new PostProcess::Skybox(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/SkyboxShader.vert", "../QuantixEngine/Media/Shader/SkyboxShader.frag"),
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/CubemapShader.vert", "../QuantixEngine/Media/Shader/CubemapShader.frag"),
 			manager.CreateModel("../QuantixEngine/Media/Mesh/cube.obj"), manager.CreateHDRTexture("../QuantixEngine/Media/Textures/skybox.hdr"));
+
+		_bloom = new PostProcess::Bloom(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Blur.frag"),
+			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Bloom.frag"),
+			manager.CreateModel("../QuantixEngine/Media/Mesh/quad.obj"), info);
 	}
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
@@ -147,7 +204,7 @@ namespace Quantix::Core::Render
 
 		std::sort(mesh.begin(), mesh.end(), [](const Components::Mesh* a, const Components::Mesh* b) {
 			return a->key < b->key;
-		});
+			});
 
 		QXbyte last_shader_id = -1;
 		QXbyte last_texture_id = -1;
@@ -183,7 +240,7 @@ namespace Quantix::Core::Render
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 
-		Resources::Material*						material;
+		Resources::Material* material;
 		Quantix::Core::DataStructure::GameObject3D* obj;
 
 		for (QXuint i = 0; i < mesh.size(); i++)
@@ -260,15 +317,17 @@ namespace Quantix::Core::Render
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		glActiveTexture(0);
+		glActiveTexture(GL_TEXTURE0);
 
-		_effects->Render(info);
+		_effects->Render(info, 0, 0, 0);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		STOP_PROFILING("draw");
 
-		return _mainBuffer.texture;
+		_bloom->Render(info, _mainBuffer.texture[0], _mainBuffer.texture[1], _finalSceneBuffer.FBO);
+
+		return _finalSceneBuffer.texture;
 	}
 
 	QXuint Renderer::DrawGame(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept
@@ -345,15 +404,16 @@ namespace Quantix::Core::Render
 			glBindVertexArray(0);
 		}
 
-		glActiveTexture(0);
-		_effects->Render(info);
-
+		glActiveTexture(GL_TEXTURE0);
+		
+		_effects->Render(info, 0, 0, 0);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		STOP_PROFILING("draw");
+		_bloom->Render(info, _gameBuffer.texture[0], _gameBuffer.texture[1], _finalGameBuffer.FBO);
 
-		return _gameBuffer.texture;
+		return _finalGameBuffer.texture;
 	}
 	
 	void Renderer::RenderShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,

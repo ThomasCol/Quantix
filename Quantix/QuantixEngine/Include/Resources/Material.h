@@ -16,7 +16,8 @@ namespace Quantix::Resources
 #pragma region Attributes
 
 		ShaderProgram* 	_program = nullptr;
-		Texture*		_mainTexture = nullptr;
+		Texture*		_diffuse = nullptr;
+		Texture*		_emissive = nullptr;
 
 		QXstring		_path;
 
@@ -182,7 +183,9 @@ namespace Quantix::Resources
 		 * 
 		 * @return const Texture& Main texture reference
 		 */
-		inline const Texture*			GetMainTexture() const noexcept { return _mainTexture; }
+		inline Texture*					GetDiffuseTexture() const noexcept { return _diffuse; }
+
+		inline Texture*					GetEmissiveTexture() const noexcept { return _emissive; }
 
 		inline std::vector<QXstring>	GetProgramPath() const { return _program->GetPath(); }
 
@@ -192,16 +195,9 @@ namespace Quantix::Resources
 
 		inline void						SetPath(QXstring path) { _path = path; }
 
-		inline  Texture* GetMaterialTexture() noexcept { return _mainTexture; }
+		inline void						SetDiffuseTexture(Texture* texture) noexcept { _diffuse = texture; }
 
-		inline void SetMaterialTexture(Texture* texture) noexcept { _mainTexture = texture; }
-
-		/**
-		 * @brief Set the Main Texture object
-		 * 
-		 * @param texture new main texture pointer
-		 */
-		inline void SetMainTexture(Texture* texture) noexcept { _mainTexture = texture; }
+		inline void						SetEmissiveTexture(Texture* texture) noexcept { _emissive = texture; }
 
 #pragma endregion
 

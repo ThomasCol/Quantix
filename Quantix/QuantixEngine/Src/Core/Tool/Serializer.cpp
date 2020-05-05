@@ -9,7 +9,6 @@ namespace Quantix::Core::Tool
 {
 	QXbool Serializer::Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager* manager)
 	{
-		//std::ifstream stream(path);
 		std::ifstream stream(path, std::ios::ate);
 		if (!stream.is_open())
 			return false;

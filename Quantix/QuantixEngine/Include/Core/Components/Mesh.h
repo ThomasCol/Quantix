@@ -93,7 +93,7 @@ namespace Quantix::Core::Components
 		 *
 		 * @param texture new main texture pointer
 		 */
-		inline void SetMaterialMainTexture(Resources::Texture* texture) noexcept { _material->SetMainTexture(texture); }
+		inline void SetMaterialDiffuseTexture(Resources::Texture* texture) noexcept { _material->SetDiffuseTexture(texture); }
 
 		QXbool		IsEnable() override;
 

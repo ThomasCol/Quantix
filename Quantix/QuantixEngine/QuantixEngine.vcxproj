@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Render\PostProcess\Bloom.cpp" />
     <ClCompile Include="Src\Core\Threading\TaskSystem.cpp" />
     <ClCompile Include="Src\Core\Tool\Serializer.cpp" />
     <ClCompile Include="Src\Physic\SimulationCallback.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="Include\Core\Components\Light.h" />
     <ClInclude Include="Include\Core\Platform\Application.h" />
     <ClInclude Include="Include\Core\Profiler\Profiler.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\Bloom.h" />
     <ClInclude Include="Include\Core\Render\PostProcess\PostProcessEffect.h" />
     <ClInclude Include="Include\Core\Render\Renderer.h" />
     <ClInclude Include="Include\Core\Render\PostProcess\Skybox.h" />

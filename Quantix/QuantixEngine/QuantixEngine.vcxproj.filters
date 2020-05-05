@@ -43,6 +43,7 @@
     <ClCompile Include="Src\Core\Tool\Serializer.cpp" />
     <ClCompile Include="Src\Core\Threading\TaskSystem.cpp" />
     <ClCompile Include="Src\Core\LibImpl.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\Bloom.cpp" />
     <ClCompile Include="Src\Resources\Sound.cpp" />
     <ClCompile Include="Src\Core\SoundCore.cpp" />
     <ClCompile Include="Src\Core\Components\SoundEmitter.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="Include\Core\Components\Behaviour.h" />
     <ClInclude Include="Include\Physic\SimulationCallback.h" />
     <ClInclude Include="Include\Physic\PhysicSetting.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\Bloom.h" />
     <ClInclude Include="Include\Resources\Sound.h" />
     <ClInclude Include="Include\Core\SoundCore.h" />
     <ClInclude Include="Include\Core\Components\SoundEmitter.h" />
