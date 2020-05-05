@@ -37,13 +37,6 @@ namespace Quantix::Core::Components
 		 * @param up Vector
 		 */
 		Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up);
-		
-		/**
-		 * @brief Construct a new Camera object
-		 * 
-		 * @param object GameComponent
-		 */
-		Camera(Core::DataStructure::GameComponent* object);
 
 		/**
 		 * @brief Construct a new Camera object by copy 

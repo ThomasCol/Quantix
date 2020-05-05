@@ -41,13 +41,6 @@ namespace Quantix::Core::Components
 			SoundListener(SoundListener&& copy) noexcept;
 
 			/**
-			 * @brief Construct a new SoundListener object from a game component
-			 *
-			 * @param object game component
-			 */
-			SoundListener(Core::DataStructure::GameComponent* object);
-
-			/**
 			 * @brief Destroy the SoundListener object
 			 *
 			 */

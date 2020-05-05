@@ -286,16 +286,8 @@ void Inspector::SetAttributesListener(rttr::instance inst, rttr::type t)
 void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app)
 {
 	if (inst.get_derived_type() == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
-	{
 		if (currentProp.get_name().to_string() == "Sound")
-		{
 			DrawSoundEmitterPath(inst, t, currentProp, app);
-		}
-	}
-	if (inst.get_derived_type() == rttr::type::get<Quantix::Core::Components::SoundListener>())
-	{
-		SetAttributesListener(inst, t);
-	}
 }
 
 void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
@@ -327,6 +319,8 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				ImGui::PopID();
 				index++;
 			}
+			if (t == rttr::type::get<Quantix::Core::Components::SoundListener>())
+				SetAttributesListener(inst, inst.get_type());
 			if (t == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
 				PlaySound(inst, t);
 			ImGui::TreePop();

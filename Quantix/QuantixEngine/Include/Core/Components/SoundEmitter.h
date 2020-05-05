@@ -59,13 +59,6 @@ namespace Quantix::Core::Components
 			SoundEmitter(SoundEmitter&& copy) noexcept;
 
 			/**
-			 * @brief Construct a new SoundEmitter object from a game component
-			 *
-			 * @param object game component
-			 */
-			SoundEmitter(Core::DataStructure::GameComponent* object);
-
-			/**
 			 * @brief Destroy the SoundEmitter object
 			 *
 			 */

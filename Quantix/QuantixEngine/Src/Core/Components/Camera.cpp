@@ -9,7 +9,6 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<Quantix::Core::Components::Camera>("Camera")
 	.constructor<>()
 	.constructor<const Math::QXvec3&, const Math::QXvec3&, const Math::QXvec3&>()
-	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const Quantix::Core::Components::Camera&>()
 	.constructor<Quantix::Core::Components::Camera&&>()
 	.method("Init", &Quantix::Core::Components::Camera::Init)
@@ -32,11 +31,6 @@ namespace Quantix::Core::Components
 		_up(up),
 		_angle(Math::QXvec3(0, 0, 0)),
 		_lookAt { Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up) }
-	{
-	}
-
-	Camera::Camera(Core::DataStructure::GameComponent* object) :
-		Quantix::Core::DataStructure::Component(object)
 	{
 	}
 
