@@ -20,7 +20,6 @@ namespace Quantix::Core::Components
 
 			Resources::ESoundMode	_soundMode;
 
-			QXstring				_path;
 			QXfloat					_volume;
 
 			QXbool					_loop;

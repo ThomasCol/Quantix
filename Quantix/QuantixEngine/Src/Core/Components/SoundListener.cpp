@@ -60,7 +60,7 @@ namespace Quantix::Core::Components
 	{
 		DataStructure::GameObject3D* go = static_cast<DataStructure::GameObject3D*>(_object);
 
-							//Works if the rotation is a Quaternion
+		//Works if the rotation is a Quaternion
 		Math::QXvec3 forw = go->GetTransform()->GetForward();
 
 		FMOD_VECTOR forward{ forw.x, forw.y , forw.z };

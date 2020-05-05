@@ -13,7 +13,6 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<const Quantix::Core::Components::SoundEmitter&>()
 	.constructor<Quantix::Core::Components::SoundEmitter&&>()
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
-	.property("Path", &Quantix::Core::Components::SoundEmitter::_path)
 	.property("Sound", &Quantix::Core::Components::SoundEmitter::_sound)
 	.property("Channel", &Quantix::Core::Components::SoundEmitter::_channel)
 	.property("Mode", &Quantix::Core::Components::SoundEmitter::GetSoundMode, &Quantix::Core::Components::SoundEmitter::SetSoundMode)
@@ -98,7 +97,6 @@ namespace Quantix::Core::Components
 		_object = object;
 		_sound = nullptr;
 		_channel = nullptr;
-		_path = "";
 		_soundMode = Resources::ESoundMode::QX_2D;
 		_loop = false;
 		_playOnAwake = false;

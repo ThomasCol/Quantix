@@ -174,7 +174,6 @@ void Inspector::DrawModelPath(rttr::instance inst, rttr::property currentProp, Q
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
 	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(155.f);
-	std::cout << "Model path: " << name << std::endl;
 	Quantix::Resources::Model* mod = currentProp.get_value(inst).get_value<Quantix::Resources::Model*>();
 	QXstring path;
 	for (auto it = app->manager.GetModels().begin(); it != app->manager.GetModels().end(); ++it)
@@ -245,6 +244,7 @@ void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::pr
 		if (it->second == sound)
 			path = it->first;
 	}
+
 	if (path == "")
 		ImGui::ButtonEx(path.c_str(), ImVec2(100, 0), ImGuiButtonFlags_Disabled);
 	else
@@ -258,8 +258,7 @@ void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::pr
 			if (pathTmp.find(".mp3") != QXstring::npos)
 				path = pathTmp;
 			Quantix::Resources::Sound* sound = app->manager.CreateSound(path);
-			t.get_property("Path").set_value(inst, path);
-			t.get_property("Sound").set_value(inst, sound);
+			currentProp.set_value(inst, sound);
 			ImGui::EndDragDropTarget();
 		}
 	}
@@ -268,8 +267,10 @@ void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::pr
 
 static void PlaySound(rttr::instance inst, rttr::type t)
 {
-	if (ImGui::Button("Play"))
+	ImGui::Indent(ImGui::GetWindowSize().x / 3);
+	if (ImGui::Button("Play", ImVec2(100.f, 25.f)))
 		t.invoke("PlaySound", inst, {}).get_value<QXbool>();
+	ImGui::Indent();
 }
 
 void Inspector::SetAttributesListener(rttr::instance inst, rttr::type t)
@@ -286,7 +287,6 @@ void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property curre
 		if (currentProp.get_name().to_string() == "Sound")
 		{
 			DrawSoundEmitterPath(inst, t, currentProp, app);
-			PlaySound(inst, t);
 		}
 	}
 	if (inst.get_derived_type() == rttr::type::get<Quantix::Core::Components::SoundListener>())
@@ -324,6 +324,8 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				ImGui::PopID();
 				index++;
 			}
+			if (t == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
+				PlaySound(inst, t);
 			ImGui::TreePop();
 		}
 	}
