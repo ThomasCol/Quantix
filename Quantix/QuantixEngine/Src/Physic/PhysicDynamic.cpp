@@ -24,15 +24,10 @@ namespace Quantix::Physic
 	using namespace physx;
 	PhysicDynamic::PhysicDynamic() noexcept : IPhysicType(ETypePhysic::DYNAMIC)
 	{
-		if (type != ETypePhysic::NONE)
-			std::cout << "type set: Dynamic" << std::endl;
 	}
 
 	PhysicDynamic::PhysicDynamic(PxPhysics* SDK) noexcept : IPhysicType(ETypePhysic::DYNAMIC)
 	{
-		if (type != ETypePhysic::NONE)
-			std::cout << "type set: Dynamic" << std::endl;
-
 		// Create ActorPhysic Dynamic
 		_dynamic = SDK->createRigidDynamic(PxTransform(PxVec3(0, 2, 0)));
 	}
@@ -42,6 +37,7 @@ namespace Quantix::Physic
 		// Set Type
 		type = ETypePhysic::DYNAMIC;
 
+		// Get All Shapes of physicStatic
 		int numShapes = physicStatic->GetRigid()->getNbShapes();
 		PxShape** shapes = (PxShape**)malloc(sizeof(PxShape*) * numShapes);
 		physicStatic->GetRigid()->getShapes(shapes, numShapes);
@@ -49,6 +45,7 @@ namespace Quantix::Physic
 		// Prendre les valeurs du static
 		_dynamic = SDK->createRigidDynamic(PxTransform(physicStatic->GetRigid()->getGlobalPose()));
 
+		// Attach shape On the new actor and detach of the old actor
 		physx::PxShape* currentShape = nullptr;
 		for (int i = 0; i < numShapes; i++)
 		{
@@ -56,11 +53,12 @@ namespace Quantix::Physic
 			physicStatic->GetRigid()->detachShape(*currentShape);
 			_dynamic->attachShape(*currentShape);
 		}
-		free(shapes); 
 
+		free(shapes);
+
+		// Set the userdata
 		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicStatic->GetRigid()->userData;
 		_dynamic->userData = data;
-		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);
 	}
 
 	PhysicDynamic::PhysicDynamic(const PhysicDynamic& pd) noexcept : IPhysicType(pd)

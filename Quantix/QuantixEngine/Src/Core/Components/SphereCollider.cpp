@@ -19,7 +19,8 @@ namespace Quantix::Core::Components
 {
 	SphereCollider::SphereCollider(DataStructure::GameComponent* par):
 		ICollider(par)
-	{
+	{	
+		// Create Shape in physic
 		if (par->GetComponent<Rigidbody>())
 			shape = Physic::PhysicHandler::GetInstance()->CreateSphereCollider(par, true);
 		else
@@ -62,6 +63,7 @@ namespace Quantix::Core::Components
 		_isDestroyed = false;
 		_isEnable = true;
 
+		// Create shape and Init Pointer On Actor physic
 		if (par->GetComponent<Rigidbody>())
 		{
 			shape = Physic::PhysicHandler::GetInstance()->CreateSphereCollider(par, true);

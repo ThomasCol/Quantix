@@ -19,6 +19,7 @@ namespace Quantix::Core::Components
 	CapsuleCollider::CapsuleCollider(DataStructure::GameComponent* par):
 		ICollider(par)
 	{
+		// Create Shape in physic
 		if (par->GetComponent<Rigidbody>())
 			shape = Physic::PhysicHandler::GetInstance()->CreateCapsuleCollider(par, true);
 		else
@@ -73,6 +74,7 @@ namespace Quantix::Core::Components
 		_isDestroyed = false;
 		_isEnable = true;
 
+		// Create shape and Init Pointer On Actor physic
 		if (par->GetComponent<Rigidbody>())
 		{
 			shape = Physic::PhysicHandler::GetInstance()->CreateCapsuleCollider(par, true);

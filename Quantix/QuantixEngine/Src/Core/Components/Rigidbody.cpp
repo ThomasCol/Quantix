@@ -25,7 +25,6 @@ RTTR_PLUGIN_REGISTRATION
 	.property("Rotation", &Quantix::Core::Components::Rigidbody::GetTransformRotation, &Quantix::Core::Components::Rigidbody::SetTransformRotation)
 	.property("DisableGravity", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableGravity, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableGravity)
 	.property("DisableSimulation", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableSimulation, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableSimulation)
-	.property("Visualization", &Quantix::Core::Components::Rigidbody::GetActorFlagVisualization, &Quantix::Core::Components::Rigidbody::SetActorFlagVisualization)
 	.property("CCD", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCD, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCD)
 	.property("CCDFriction", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCDFriction, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCDFriction)
 	.property("SpeculativeCCD", &Quantix::Core::Components::Rigidbody::GetRigidFlagSpeculativeCCD, &Quantix::Core::Components::Rigidbody::SetRigidFlagSpeculativeCCD)
@@ -80,15 +79,13 @@ namespace Quantix::Core::Components
 
 	void Rigidbody::Destroy()
 	{
-		std::cout << "destroy rigidbody" << std::endl;
-
+		// Actualize the physic actor
 		Physic::PhysicHandler::GetInstance()->GetObject(_object, false);
 		
+		// Actualize the pointer in colliders
 		std::vector<ICollider*> vector{ _object->GetComponents<ICollider>() };
 		for (QXuint i = 0; i < vector.size(); i++)
-		{
 			vector[i]->UpdateActorPhysic();
-		}
 	}
 
 	QXfloat Rigidbody::GetMass()
@@ -98,8 +95,8 @@ namespace Quantix::Core::Components
 
 	void Rigidbody::SetMass(QXfloat m)
 	{
-		if (m == 0.f)
-			m = 0.1f;
+		if (m < 0.f)
+			m = 0.00001f;
 		mass = m;
 		physx::PxRigidBodyExt::updateMassAndInertia(*actorPhysic->GetRigid(), m);
 	}
@@ -151,9 +148,6 @@ namespace Quantix::Core::Components
 												actorPhysic->GetRigid()->getGlobalPose().p, 
 												physx::PxQuat(q.v.x, q.v.y, q.v.z, q.w)
 												));
-
-		//physx::PxBaseFlag::
-		
 	}
 
 	void Rigidbody::SetActorFlagDisableGravity(bool b)
@@ -162,20 +156,10 @@ namespace Quantix::Core::Components
 		actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, b);
 	}
 
-	bool Rigidbody::GetActorFlagDisableGravity()
-	{
-		return actorFlag.disableGravity;
-	}
-
 	void Rigidbody::SetActorFlagDisableSimulation(bool b)
 	{
 		actorFlag.disableSimulation = b;
 		actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, b);
-	}
-
-	bool Rigidbody::GetActorFlagDisableSimulation()
-	{
-		return actorFlag.disableSimulation;
 	}
 
 	void Rigidbody::SetActorFlagSendSleepNotifies(bool b)
@@ -184,42 +168,16 @@ namespace Quantix::Core::Components
 		actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES, b);
 	}
 
-	bool Rigidbody::GetActorFlagSendSleepNotifies()
-	{
-		return actorFlag.sendSleepNotifies;
-	}
-
-	void Rigidbody::SetActorFlagVisualization(bool b)
-	{
-		actorFlag.visualization = b;
-		actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eVISUALIZATION, b);
-	}
-
-	bool Rigidbody::GetActorFlagVisualization()
-	{
-		return actorFlag.visualization;
-	}
-
 	void Rigidbody::SetRigidFlagCCD(bool b)
 	{
 		rigidFlag.ccd = b;
 		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, b);
-	}
-
-	bool Rigidbody::GetRigidFlagCCD()
-	{
-		return rigidFlag.ccd;
-	}
+	} 
 
 	void Rigidbody::SetRigidFlagCCDFriction(bool b)
 	{
 		rigidFlag.ccdFriction = b;
 		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD_FRICTION, b);
-	}
-
-	bool Rigidbody::GetRigidFlagCCDFriction()
-	{
-		return rigidFlag.ccdFriction;
 	}
 
 	void Rigidbody::SetRigidFlagSpeculativeCCD(bool b)
@@ -228,20 +186,10 @@ namespace Quantix::Core::Components
 		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, b);
 	}
 
-	bool Rigidbody::GetRigidFlagSpeculativeCCD()
-	{
-		return rigidFlag.speculativeCCD;
-	}
-
 	void Rigidbody::SetRigidFlagKinematic(bool b)
 	{
 		rigidFlag.kinematic = b;
 		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, b);
-	}
-
-	bool Rigidbody::GetRigidFlagKinematic()
-	{
-		return rigidFlag.kinematic;
 	}
 
 	void Rigidbody::SetRigidFlagRetainAcceleration(bool b)
@@ -250,20 +198,10 @@ namespace Quantix::Core::Components
 		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eRETAIN_ACCELERATIONS, b);
 	}
 
-	bool Rigidbody::GetRigidFlagRetainAcceleration()
-	{
-		return rigidFlag.retainAcceleration;
-	}
-
 	void Rigidbody::SetRigidFlagKineForQueries(bool b)
 	{
 		rigidFlag.useKinematicTargetForQueries = b;
 		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eUSE_KINEMATIC_TARGET_FOR_SCENE_QUERIES, b);
-	}
-
-	bool Rigidbody::GetRigidFlagKineForQueries()
-	{
-		return rigidFlag.useKinematicTargetForQueries;
 	}
 
 	void Rigidbody::SetRigidFlagPosePreview(bool b)
@@ -272,19 +210,9 @@ namespace Quantix::Core::Components
 		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_POSE_INTEGRATION_PREVIEW, b);
 	}
 
-	bool Rigidbody::GetActorFlagPosePreview()
-	{
-		return rigidFlag.poseIntegrationPreview;
-	}
-
 	void Rigidbody::SetActorFlagCCDMaxContactImpulse(bool b)
 	{
 		rigidFlag.ccdMaxContactImpulse = b;
 		actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD_MAX_CONTACT_IMPULSE, b);
-	}
-
-	bool Rigidbody::GetActorFlagCCDMaxContactImpulse()
-	{
-		return rigidFlag.ccdMaxContactImpulse;
 	}
 }
