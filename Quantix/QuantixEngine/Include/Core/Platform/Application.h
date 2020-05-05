@@ -39,7 +39,7 @@ namespace Quantix::Core::Platform
 		/**
 		 * @brief Destroy the Application object
 		 */
-		~Application() = default;
+		~Application();
 
 #pragma endregion
 

@@ -1,8 +1,0 @@
-
-(function($){DARTY_CONF.BASKET=DARTY_CONF.BASKET||{};DARTY_CONF.CONST=DARTY_CONF.CONST||{};function loadRecommandations(){var $reco_container=$('[data-js="recommandations_container"]');var codics=''+$reco_container.data('codics');$.get('/tunnel_achat/ajax/product_xsell_v2',{'codics':codics,'origin':'receipt'}).done(function(data){$reco_container.html(data);$(document).trigger('refresh');});}
-function bindClickImprimer(){$('[data-js="imprimer-recu"]').on('click',function(event){var url=location.href+"&print=true";window.open(url,"nom_popup","menubar=no, status=no, scrollbars=yes, menubar=no, width=800, height=700");});}
-function bindImpression(){var print=$('#intro').data('print');if(print){window.print();}}
-function bindCarteCadeauPopin(orderId){$(document).on('click','#promo_carte_cadeau_popin',function(event){event.preventDefault();injectPopinModalIframe("Recevez une carte cadeau",'/tunnel_achat/popup/carte_cadeau?orderId='+orderId,"600px","410px");});}
-function bindCouponPopin(orderId){$(document).on('click','#promo_coupon_popin',function(event){event.preventDefault();injectPopinModalIframe("Recevez un ou plusieurs coupons",'/tunnel_achat/popup/coupon?orderId='+orderId,"600px","410px");});}
-function bindCarteCadeauV2Popin(orderId){$(document).on('click','#promo_carte_cadeau_v2_popin',function(event){event.preventDefault();injectPopinModalIframe("Recevez une carte cadeau",'/tunnel_achat/popup/carte_cadeau_v2?orderId='+orderId,"600px","410px");});}
-(function(){var orderId=$('#intro').attr('data-order');bindClickImprimer();bindImpression();bindCarteCadeauPopin(orderId);bindCarteCadeauV2Popin(orderId);bindCouponPopin(orderId);loadRecommandations();DARTY_CONF.BASKET.saveCurrentStep('recu');DARTY_CONF.BASKET.resetBasket();})();})(jQuery);

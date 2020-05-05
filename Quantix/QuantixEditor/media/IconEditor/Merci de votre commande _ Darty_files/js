@@ -1,2 +1,0 @@
-try { typeof __sto !== "undefined" && typeof __sto.verif === "function" ? __sto.verif("448dff97ce9cd417834672cf33b8d5a2") : ""; } catch(e) { };
-try { typeof __sto !== "undefined" && typeof __sto.deliv === "function" ? __sto.deliv({"placements":{},"data":{"loaded":true,"cid":"","uid":"448dff97ce9cd417834672cf33b8d5a2","sid":"9ec62ece62b93522c8c512aef7aab3be"},"unexposed":{}}) : ""; } catch(e) { };

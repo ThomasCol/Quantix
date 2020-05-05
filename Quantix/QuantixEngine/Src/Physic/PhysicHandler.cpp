@@ -4,7 +4,6 @@
 #include "Core/MathHeader.h"
 #include "Core/DataStructure/GameObject3D.h"
 #include "Physic/SimulationCallback.h"
-
 #include <vector>
 
 #define PVD_HOST "127.0.0.1"	//Set this to the IP address of the system running the PhysX Visual Debugger that you want to connect to.
@@ -12,7 +11,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
-rttr::registration::class_<Quantix::Physic::PhysicHandler>("Collider")
+rttr::registration::class_<Quantix::Physic::PhysicHandler>("PhysicHandler")
 .constructor<>();
 	/*.property("AdaptiveForce", &Quantix::Physic::PhysicHandler::GetFlagAdaptiveForce, &Quantix::Physic::PhysicHandler::SetFlagAdaptiveForce)
 	.property("DisableCCDResweep", &Quantix::Physic::PhysicHandler::GetFlagDisableCCDResweep, &Quantix::Physic::PhysicHandler::SetFlagDisableCCDResweep)
@@ -287,6 +286,11 @@ namespace Quantix::Physic
 		}
 
 		pDefaultFundation->release();
+	}
+
+	void PhysicHandler::Destroy()
+	{
+		delete _instance;
 	}
 
 	void PhysicHandler::UpdateSystem(double deltaTime)
