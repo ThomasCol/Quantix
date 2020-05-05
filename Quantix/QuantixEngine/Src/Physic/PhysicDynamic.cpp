@@ -42,24 +42,19 @@ namespace Quantix::Physic
 		// Set Type
 		type = ETypePhysic::DYNAMIC;
 
-		int nb = physicStatic->GetRigid()->getNbShapes();
-		PxShape* shape;
-		physicStatic->GetRigid()->getShapes(&shape, nb);
+		int numShapes = physicStatic->GetRigid()->getNbShapes();
+		PxShape** shapes = (PxShape**)malloc(sizeof(PxShape*) * numShapes);
+		physicStatic->GetRigid()->getShapes(shapes, numShapes);
 
 		// Prendre les valeurs du static
 		_dynamic = SDK->createRigidDynamic(PxTransform(physicStatic->GetRigid()->getGlobalPose()));
+
 		physx::PxShape* currentShape = nullptr;
-		std::cout << "nb of shape : " << nb << std::endl;
-		for (int i = 0; i < nb; i++)
+		for (int i = 0; i < numShapes; i++)
 		{
-			currentShape = &shape[i];
-			currentShape->getLocalPose();
-			currentShape->getActor();
-			currentShape->getName();
-			
-			std::cout << "attach one shape" << std::endl;
-			_dynamic->attachShape(*currentShape);
+			currentShape = shapes[i];
 			physicStatic->GetRigid()->detachShape(*currentShape);
+			_dynamic->attachShape(*currentShape);
 		}
 		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicStatic->GetRigid()->userData;
 		_dynamic->userData = data;

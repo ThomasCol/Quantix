@@ -144,7 +144,7 @@ namespace Quantix::Physic
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
 		// Create Shape With BoxGeometrie
-		PxShape* s = mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *mMaterial, false);
+		PxShape* s = mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *mMaterial, true);
 		
 		// Attach the shape to the actor
 		if (hasRigidbody)
@@ -161,8 +161,8 @@ namespace Quantix::Physic
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
 		// Create Shape With SphereGeometrie
-		PxShape* s = mSDK->createShape(PxSphereGeometry(1.f), *mMaterial, false);
-
+		PxShape* s = mSDK->createShape(PxSphereGeometry(1.f), *mMaterial, true);
+		
 		// Attach the shape to the actor
 		if (hasRigidbody)
 		{
@@ -180,7 +180,7 @@ namespace Quantix::Physic
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
 		// Create Shape With CapsuleGeometrie
-		PxShape* s = mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *mMaterial, false);
+		PxShape* s = mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *mMaterial, true);
 		
 		// Attach the shape to the actor
 		if (hasRigidbody)
