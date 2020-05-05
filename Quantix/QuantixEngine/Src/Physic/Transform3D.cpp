@@ -67,14 +67,29 @@ namespace Quantix::Physic
 		return _position;
 	}
 
+	const Math::QXvec3& Transform3D::GetGlobalPosition()
+	{
+		return _globalPosition;
+	}
+
 	Math::QXquaternion& Transform3D::GetRotation()
 	{
 		return _rotation;
 	}
 
+	Math::QXquaternion& Transform3D::GetGlobalRotation()
+	{
+		return _globalRotation;
+	}
+
 	const Math::QXvec3& Transform3D::GetScale()
 	{
 		return _scale;
+	}
+
+	const Math::QXvec3& Transform3D::GetGlobalScale()
+	{
+		return _globalScale;
 	}
 
 	const Math::QXvec3& Transform3D::GetForward()
@@ -102,14 +117,38 @@ namespace Quantix::Physic
 		_position = newPos;
 	}
 
+	void Transform3D::SetGlobalPosition(const Math::QXvec3& newPos)
+	{
+		if (_parent)
+			_globalPosition = _parent->GetGlobalPosition() + newPos;
+		else
+			_globalPosition = newPos;
+	}
+
 	void	Transform3D::SetRotation(const Math::QXquaternion& newRot)
 	{
 		_rotation = newRot;
 	}
 
+	void Transform3D::SetGlobalRotation(const Math::QXquaternion& newRot)
+	{
+		if (_parent)
+			_globalRotation = _parent->GetGlobalRotation() * newRot;
+		else
+			_globalRotation = newRot;
+	}
+
 	void	Transform3D::SetScale(const Math::QXvec3& newSca)
 	{
 		_scale = newSca;
+	}
+
+	void Transform3D::SetGlobalScale(const Math::QXvec3& newSca)
+	{
+		if (_parent)
+			_globalScale = _parent->GetGlobalScale() + newSca;
+		else
+			_globalScale = newSca;
 	}
 
 	void	Transform3D::SetForward(const Math::QXvec3& newFor)
