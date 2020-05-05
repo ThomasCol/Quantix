@@ -6,7 +6,6 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<Quantix::Physic::PhysicStatic>("PhysicDynamic")
 	.constructor<>()
 	.constructor<physx::PxPhysics*>()
-	.constructor<physx::PxPhysics*, Quantix::Physic::EPhysXShape>()
 	.constructor<physx::PxPhysics*, Quantix::Physic::PhysicDynamic*>()
 	.constructor<const Quantix::Physic::PhysicStatic&>()
 	.constructor<Quantix::Physic::PhysicStatic&&>()
@@ -30,58 +29,30 @@ namespace Quantix::Physic
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Static" << std::endl;
 
+		// Create Actor Physic Static
 		_static = SDK->createRigidStatic(PxTransform(PxVec3(0, -2, 0)));
-	}
-
-	PhysicStatic::PhysicStatic(PxPhysics* SDK, EPhysXShape physXShape)
-	{
-		if (type != ETypePhysic::NONE)
-			std::cout << "type set: Static" << std::endl;
-		type = ETypePhysic::STATIC;
-
-		_static = SDK->createRigidStatic(PxTransform(PxVec3(0, -1, 0)));
-
-		PxMaterial* aMaterial = SDK->createMaterial(0.5f, 0.5f, 0.1f);
-		PxShape* aShape = nullptr;
-
-		if (physXShape == EPhysXShape::CUBE)
-		{
-			aShape = SDK->createShape(PxBoxGeometry(1000.f, 1.f, 1000.f), *aMaterial);
-			std::cout << "shape: Cube" << std::endl;
-		}
-		else if (physXShape == EPhysXShape::SPHERE)
-		{
-			aShape = SDK->createShape(PxSphereGeometry(1.f), *aMaterial);
-			std::cout << "shape: Sphere" << std::endl;
-		}
-		else if (physXShape == EPhysXShape::CAPSULE)
-		{
-			aShape = SDK->createShape(PxCapsuleGeometry(1.f, 1.f), *aMaterial);
-			std::cout << "shape: Capsule" << std::endl;
-		}
-		_static->attachShape(*aShape);
 	}
 
 	PhysicStatic::PhysicStatic(PxPhysics* SDK, PhysicDynamic* physicDynamic)
 	{
+		// Set Type
 		type = ETypePhysic::STATIC;
 
-		int nb = physicDynamic->GetRigid()->getNbShapes();
-
-		PxShape* shape;
-		physicDynamic->GetRigid()->getShapes(&shape, nb);
+		int numShapes = physicDynamic->GetRigid()->getNbShapes();
+		PxShape** shapes = (PxShape**)malloc(sizeof(PxShape*) * numShapes);
+		physicDynamic->GetRigid()->getShapes(shapes, numShapes);
 
 		// Prendre les valeurs du dynamic
 		_static = SDK->createRigidStatic(PxTransform(physicDynamic->GetRigid()->getGlobalPose()));
-		std::cout << "Static ==> position: {" << _static->getGlobalPose().p.x << ", " << _static->getGlobalPose().p.y << ", " << _static->getGlobalPose().p.z << "}" << std::endl;
-		std::cout << "nb of shape : " << nb << std::endl;
-		for (int i = 0; i < nb; i++)
+
+		physx::PxShape* currentShape = nullptr;
+		for (int i = 0; i < numShapes; i++)
 		{
-			std::cout << "attach one shape" << std::endl;
-			_static->attachShape(shape[i]);
-			physicDynamic->GetRigid()->detachShape(shape[i]);
-			
+			currentShape = shapes[i]; 
+			physicDynamic->GetRigid()->detachShape(*currentShape);
+			_static->attachShape(*currentShape);
 		}
+		free(shapes);
 
 		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicDynamic->GetRigid()->userData;
 		_static->userData = data;
@@ -100,11 +71,6 @@ namespace Quantix::Physic
 
 	PhysicStatic::~PhysicStatic()
 	{
-	}
-
-	void PhysicStatic::print()
-	{
-		std::cout << "Je suis static" << std::endl;
 	}
 
 	PxRigidStatic* PhysicStatic::GetRigid()

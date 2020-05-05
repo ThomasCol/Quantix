@@ -36,14 +36,6 @@ namespace Quantix::Physic
 		type {std::move(pt.type)}
 	{}
 
-	void IPhysicType::print()
-	{
-		if (type == ETypePhysic::STATIC)
-			(dynamic_cast<PhysicStatic*>(this))->print();
-		else if (type == ETypePhysic::DYNAMIC)
-			(dynamic_cast<PhysicDynamic*>(this))->print();
-	}
-
 	ETypePhysic& IPhysicType::GetType()
 	{
 		return type;

@@ -59,6 +59,11 @@ namespace Quantix::Core::Components
 		actorPhysic->GetObjectDynamic()->GetRigid()->addForce(physx::PxVec3(vec.x, vec.y, vec.z));
 	}
 
+	void Rigidbody::AddTorque(Math::QXvec3 vec) noexcept
+	{
+		actorPhysic->GetObjectDynamic()->GetRigid()->addTorque(physx::PxVec3(vec.x, vec.y, vec.z));
+	}
+
 	Rigidbody* Rigidbody::Copy() const
 	{
 		return new Rigidbody(*this);
@@ -73,6 +78,19 @@ namespace Quantix::Core::Components
 		actorPhysic = (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(par, true);
 	}
 
+	void Rigidbody::Destroy()
+	{
+		std::cout << "destroy rigidbody" << std::endl;
+
+		Physic::PhysicHandler::GetInstance()->GetObject(_object, false);
+		
+		std::vector<ICollider*> vector{ _object->GetComponents<ICollider>() };
+		for (QXuint i = 0; i < vector.size(); i++)
+		{
+			vector[i]->UpdateActorPhysic();
+		}
+	}
+
 	QXfloat Rigidbody::GetMass()
 	{
 		return mass;
@@ -84,7 +102,6 @@ namespace Quantix::Core::Components
 			m = 0.1f;
 		mass = m;
 		physx::PxRigidBodyExt::updateMassAndInertia(*actorPhysic->GetRigid(), m);
-		actorPhysic->GetRigid()->setMass(m);
 	}
 
 	Math::QXvec3 Rigidbody::GetLinearVelocity()

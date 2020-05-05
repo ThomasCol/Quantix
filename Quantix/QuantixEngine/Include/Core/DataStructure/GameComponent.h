@@ -110,18 +110,32 @@ namespace Quantix::Core::DataStructure
 		 * @tparam T type of the Component
 		 * @return std::vector<T*> components of that type
 		 */
-		/*template<typename T>
-		inline std::vector<T*>	GetComponents()
+		template<typename T>
+		inline std::vector<T*>	GetComponents(QXbool usePolymorphism = false)
 		{
-			std::vector<T*>			vecT;
-			const std::type_info&	type = typeid(T&);
-			for (Component* comp : _component)
+			std::vector<T*>			vecT; 
+			if (!usePolymorphism)
 			{
-				if (comp->GetType() == type)
-					vecT.push_back(comp);
+				for (Component* comp : _component)
+				{
+					rttr::type t = comp->get_type();
+
+					if (rttr::type::get<T>() == t)
+						vecT.push_back(dynamic_cast<T*>(comp));
+				}
+			}
+			else
+			{
+				for (Component* comp : _component)
+				{
+					rttr::type t = comp->get_type();
+
+					if (rttr::type::get<T>().is_base_of(t))
+						vecT.push_back(dynamic_cast<T*>(comp));
+				}
 			}
 			return vecT;
-		}*/
+		}
 
 		inline const std::vector<Component*>&	GetComponents()
 		{
@@ -153,6 +167,7 @@ namespace Quantix::Core::DataStructure
 				if ((*it) == component)
 				{
 					(*it)->EraseEndOfFrame();
+					(*it)->Destroy();
 					_component.erase(it);
 					return;
 				}
@@ -166,6 +181,7 @@ namespace Quantix::Core::DataStructure
 				if ((*it) == behaviour)
 				{
 					(*it)->EraseEndOfFrame();
+					(*it)->Destroy();
 					_component.erase(it);
 					return;
 				}

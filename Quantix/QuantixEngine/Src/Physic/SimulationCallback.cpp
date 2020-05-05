@@ -36,6 +36,7 @@ namespace Quantix::Physic
 			{
 				if (pairHeader.actors[2] && pairHeader.actors[1])
 				{
+					// Call OnContact Function of each GameObject
 					((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData);
 					((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData);
 				}
@@ -49,9 +50,11 @@ namespace Quantix::Physic
 
 		for (PxU32 i = 0; i < count; i++)
 		{
+			// Call OnTrigger Function of GameObject who is trigger
 			((Core::DataStructure::GameObject3D*)pairs->triggerActor->userData)->CallOnTrigger((Core::DataStructure::GameObject3D*)pairs->otherActor->userData);
 		}
 	}
+
 	void SimulationCallback::onAdvance(const PxRigidBody* const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count)
 	{
 		(void*)bodyBuffer;

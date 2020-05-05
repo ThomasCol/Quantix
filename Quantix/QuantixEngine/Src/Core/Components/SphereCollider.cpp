@@ -25,7 +25,7 @@ namespace Quantix::Core::Components
 		else
 			shape = Physic::PhysicHandler::GetInstance()->CreateSphereCollider(par, false);
 	}
-
+	
 	SphereCollider::SphereCollider(const SphereCollider& other) noexcept :
 		ICollider(other)
 	{}

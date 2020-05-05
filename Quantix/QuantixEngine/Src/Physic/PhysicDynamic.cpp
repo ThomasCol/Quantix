@@ -9,7 +9,6 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<Quantix::Physic::PhysicDynamic>("PhysicDynamic")
 	.constructor<>()
 	.constructor<physx::PxPhysics*>()
-	.constructor<physx::PxPhysics*, Quantix::Physic::EPhysXShape>()
 	.constructor<physx::PxPhysics*, Quantix::Physic::PhysicStatic*>()
 	.constructor<const Quantix::Physic::PhysicDynamic&>()
 	.constructor<Quantix::Physic::PhysicDynamic&&>()
@@ -33,57 +32,32 @@ namespace Quantix::Physic
 	{
 		if (type != ETypePhysic::NONE)
 			std::cout << "type set: Dynamic" << std::endl;
+
+		// Create ActorPhysic Dynamic
 		_dynamic = SDK->createRigidDynamic(PxTransform(PxVec3(0, 2, 0)));
-	}
-
-	PhysicDynamic::PhysicDynamic(PxPhysics* SDK, EPhysXShape physXShape) noexcept : IPhysicType(ETypePhysic::DYNAMIC)
-	{
-		if (type != ETypePhysic::NONE)
-			std::cout << "type set: Dynamic" << std::endl;
-
-		_dynamic = SDK->createRigidDynamic(PxTransform(PxVec3(0, 10, 0)));
-
-		PxMaterial* aMaterial = SDK->createMaterial(1.f, 1.f, 1.f);
-		PxShape* aShape = nullptr;
-
-		if (physXShape == EPhysXShape::CUBE)
-		{
-			aShape = SDK->createShape(PxBoxGeometry(1.f, 1.f, 1.f), *aMaterial);
-			std::cout << "shape: Cube" << std::endl;
-		}
-		else if (physXShape == EPhysXShape::SPHERE)
-		{
-			aShape = SDK->createShape(PxSphereGeometry(1.f), *aMaterial);
-			std::cout << "shape: Sphere" << std::endl;
-		}
-		else if (physXShape == EPhysXShape::CAPSULE)
-		{
-			aShape = SDK->createShape(PxCapsuleGeometry(1.f, 1.f), *aMaterial);
-			std::cout << "shape: Capsule" << std::endl;
-		}
-		std::cout << "Dynamic ==> position: {" << _dynamic->getGlobalPose().p.x << ", " << _dynamic->getGlobalPose().p.y << ", " << _dynamic->getGlobalPose().p.z << "}" << std::endl;
-		_dynamic->attachShape(*aShape);
-		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);
 	}
 
 	PhysicDynamic::PhysicDynamic(PxPhysics* SDK, PhysicStatic* physicStatic) noexcept
 	{
+		// Set Type
 		type = ETypePhysic::DYNAMIC;
 
-		int nb = physicStatic->GetRigid()->getNbShapes();
-		PxShape* shape;
-		physicStatic->GetRigid()->getShapes(&shape, nb);
+		int numShapes = physicStatic->GetRigid()->getNbShapes();
+		PxShape** shapes = (PxShape**)malloc(sizeof(PxShape*) * numShapes);
+		physicStatic->GetRigid()->getShapes(shapes, numShapes);
 
 		// Prendre les valeurs du static
 		_dynamic = SDK->createRigidDynamic(PxTransform(physicStatic->GetRigid()->getGlobalPose()));
 
-		std::cout << "nb of shape : " << nb << std::endl;
-		for (int i = 0; i < nb; i++)
+		physx::PxShape* currentShape = nullptr;
+		for (int i = 0; i < numShapes; i++)
 		{
-			std::cout << "attach one shape" << std::endl;
-			_dynamic->attachShape(shape[i]);
-			physicStatic->GetRigid()->detachShape(shape[i]);
+			currentShape = shapes[i];
+			physicStatic->GetRigid()->detachShape(*currentShape);
+			_dynamic->attachShape(*currentShape);
 		}
+		free(shapes); 
+
 		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicStatic->GetRigid()->userData;
 		_dynamic->userData = data;
 		PxRigidBodyExt::updateMassAndInertia(*_dynamic, 1.f);
@@ -102,11 +76,6 @@ namespace Quantix::Physic
 
 	PhysicDynamic::~PhysicDynamic()
 	{
-	}
-
-	void PhysicDynamic::print()
-	{
-		std::cout << "Je suis dynamic" << std::endl;
 	}
 
 	PxRigidDynamic* PhysicDynamic::GetRigid()

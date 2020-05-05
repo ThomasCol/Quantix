@@ -92,6 +92,8 @@ namespace Quantix::Core::Components
 		 */
 		void							Rotate(Math::QXvec3 rotate);
 
+		void Destroy() override {};
+
 		#pragma	region Accessor
 
 		inline Math::QXmat4&			GetLookAt() { return _lookAt; }

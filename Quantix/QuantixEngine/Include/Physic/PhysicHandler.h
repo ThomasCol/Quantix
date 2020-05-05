@@ -20,13 +20,20 @@ namespace Quantix::Physic
 	class QUANTIX_API PhysicHandler
 	{
 	private:
+		/**
+		 * @brief Construct a new Physic Handler object
+		 * 
+		 */
 		PhysicHandler() = default;
 
 
 #pragma region Attributes
 
+#pragma region Singleton
 		static PhysicHandler* _instance;
+#pragma endregion
 
+#pragma region PhysX
 		bool recordMemoryAllocations = true;
 		PxPhysics* mSDK = NULL;
 		PxCooking* mCooking = NULL;
@@ -41,42 +48,151 @@ namespace Quantix::Physic
 
 		PxCollection* collection;
 
+		// To Delete
 		PxReal mAccumulator = 0.0f;
 		PxReal mStepSize = 1.0f / 60.0f;
+#pragma endregion
 
 		std::map<Core::DataStructure::GameComponent*, IPhysicType*>		_physObject;
 
+#pragma region Flag
 		SceneFlag sceneFlag;
+#pragma endregion
 
 #pragma endregion
 	public:
 #pragma region Constructors
+
 		PhysicHandler(const PhysicHandler& src) = delete;
 		PhysicHandler(PhysicHandler&& src) = delete;
+
+		/**
+		 * @brief Destroy the Physic Handler object
+		 * 
+		 */
 		~PhysicHandler() = default;
+
 #pragma endregion
 
 #pragma region Functions
 
+		/**
+		 * @brief Get the Instance object
+		 * 
+		 * @return PhysicHandler* return a pointer on the PhysicHandler Instance
+		 */
 		static PhysicHandler* GetInstance();
 
-
-		void		Print(std::vector<Core::DataStructure::GameComponent*> go);
-
-		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody = false);
-
-		PxShape* CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
-
-		PxShape* CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
-
-		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
-
+		/**
+		 * @brief Init Physic System
+		 * 
+		 */
 		void		InitSystem();
-		void		ReleaseSystem();
+		
+		/**
+		 * @brief Init Physic Scene
+		 * 
+		 */
 		void		InitScene();
 
+		/**
+		 * @brief Release System Physic
+		 * 
+		 */
+		void		ReleaseSystem();
+
+		// 
+		/**
+		 * @brief Return PhysicType Linked to the GameComponent
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param hasRigidbody 
+		 * @return IPhysicType* PhysicType Linked
+		 */
+		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody = false);
+
+		/**
+		 * @brief Create a And Link Actor Physic object
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param dynamic 
+		 * @return IPhysicType* Pointer on IPhysicType Linked in map
+		 */
+		IPhysicType* CreateAndLinkActorPhysic(Core::DataStructure::GameComponent* object, bool dynamic);
+
+		/**
+		 * @brief Swap ActorPhysic in static to dynamic
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param staticActor ActorPhysic Static
+		 * @return IPhysicType* Pointer on IPhysicType Linked in map
+		 */
+		IPhysicType* SwapActorPhysicStaticToDynamic(Core::DataStructure::GameComponent* object, PhysicStatic* staticActor);
+
+		/**
+		 * @brief  Swap ActorPhysic in dynamic to static
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param dynamicActor ActorPhysic dynamic
+		 * @return IPhysicType* Pointer on IPhysicType Linked in map
+		 */
+		IPhysicType* SwapActorPhysicDynamicToStatic(Core::DataStructure::GameComponent* object, PhysicDynamic* dynamicActor);
+
+
+		/**
+		 * @brief Create a Cube Collider object
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param hasRigidbody 
+		 * @return PxShape* New Shape
+		 */
+		PxShape* CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+
+		/**
+		 * @brief Create a Sphere Collider object
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param hasRigidbody 
+		 * @return PxShape* New Shape
+		 */
+		PxShape* CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+
+		/**
+		 * @brief Create a Capsule Collider object
+		 * 
+		 * @param object GameComponent linked in map
+		 * @param hasRigidbody 
+		 * @return PxShape* New Shape
+		 */
+		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+
+
+		// Update
+		/**
+		 * @brief Update and simulate System Physic
+		 * 
+		 * @param deltaTime 
+		 */
 		void		UpdateSystem(double deltaTime);
+
+		/**
+		 * @brief Synchronize Physic Actor with GameObject
+		 * 
+		 * @param isPlaying 
+		 */
 		void		UpdatePhysicActor(bool isPlaying = false);
+
+		/**
+		 * @brief Update Actor in playing
+		 * 
+		 */
+		void UpdatePlayingActor();
+
+		/**
+		 * @brief Update Actor in Editor
+		 * 
+		 */
+		void UpdateEditorActor();
 
 #pragma region Operators
 
@@ -88,9 +204,15 @@ namespace Quantix::Physic
 
 #pragma region Accessors
 
+		/**
+		 * @brief Get the Flag Adaptive Force object
+		 * 
+		 * @return Value of the Flag
+		 */
 		bool GetFlagAdaptiveForce()				{ return sceneFlag.adaptiveForce; }
+
 		bool GetFlagDisableCCDResweep()			{ return sceneFlag.disableCCDResweep; }
-		bool GetFlagDisableContactCache()		{ return sceneFlag.disableContactCache; }
+		bool GetFlagDisableContactCache()		{ return sceneFlag.disableContactCache; }	
 		bool GetFlagDisableContactReport()		{ return sceneFlag.disableContactReportResize; }
 		bool GetFlagActiveActors()				{ return sceneFlag.activeActors; }
 		bool GetFlagAveragePoint()				{ return sceneFlag.averagePoint; }

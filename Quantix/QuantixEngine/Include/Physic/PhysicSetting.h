@@ -6,6 +6,7 @@
 
 namespace Quantix::Physic
 {
+	// Wrapper PxRigidFlag
 	struct QUANTIX_API RigidBodyFlag
 	{
 		bool ccd = false;
@@ -18,11 +19,13 @@ namespace Quantix::Physic
 		bool ccdMaxContactImpulse = false;
 	};
 
+	// Wrapper PxBaseFlag
 	struct QUANTIX_API BaseFlag
 	{
 
 	};
 
+	// Wrapper PxActorFlag
 	struct QUANTIX_API ActorFlag
 	{
 		bool disableGravity = false;
@@ -33,6 +36,7 @@ namespace Quantix::Physic
 		CLASS_REGISTRATION()
 	};
 
+	// Wrapper PxShapeFlag
 	struct QUANTIX_API ShapeFlag
 	{
 		bool sceneQuery = true;
@@ -41,6 +45,7 @@ namespace Quantix::Physic
 		bool visualization = false;
 	};
 
+	// Wrapper PxSceneFlag
 	struct QUANTIX_API SceneFlag
 	{
 		bool adaptiveForce = false;

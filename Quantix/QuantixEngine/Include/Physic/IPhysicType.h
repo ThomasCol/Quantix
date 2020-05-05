@@ -31,21 +31,71 @@ namespace Quantix::Physic
 	class IPhysicType
 	{
 	protected:
+#pragma region Attributes
+		// To know if PxActor is static or Dynamic
 		ETypePhysic		type = ETypePhysic::NONE;
-
+#pragma endregion
 	public:
 
+#pragma region Constructors	
+
+		/**
+		 * @brief Construct a new IPhysicType object
+		 * 
+		 */
 		IPhysicType() noexcept;
+
+		/**
+		 * @brief Construct a new IPhysicType object
+		 * 
+		 * @param oType type Value
+		 */
 		IPhysicType(ETypePhysic oType) noexcept;
-		IPhysicType(const IPhysicType&) noexcept;
-		IPhysicType(IPhysicType&&) noexcept;
+
+		/**
+		 * @brief Construct a new IPhysicType object
+		 * 
+		 * @param src IPhysicType to Copy
+		 */
+		IPhysicType(const IPhysicType& src) noexcept;
+
+		/**
+		 * @brief Construct a new IPhysicType object
+		 * 
+		 * @param src IPhysicType to move
+		 */
+		IPhysicType(IPhysicType&& src) noexcept;
+
+		/**
+		 * @brief Destroy the IPhysicType object
+		 * 
+		 */
 		virtual ~IPhysicType() = default;
+#pragma endregion
 
-		void		print();
+#pragma region Functions
+#pragma region Accessors
 
+		/**
+		 * @brief Get the Type object
+		 * 
+		 * @return ETypePhysic& Value of type
+		 */
 		ETypePhysic&		GetType();
+
+		/**
+		 * @brief Set the Type object
+		 * 
+		 * @param nt new value of type
+		 */
 		void		SetType(ETypePhysic& nt) { type = nt; };
 		
+		/**
+		 * @brief Get the IPhysicType object
+		 * 
+		 * @tparam T type of the IPhysicType
+		 * @return T* Object IPhysictype
+		 */
 		template<class T>
 		T* GetObject()
 		{
@@ -55,16 +105,27 @@ namespace Quantix::Physic
 				return (dynamic_cast<PhysicDynamic*>(this));
 		}
 
+		/**
+		 * @brief Get the Object Dynamic object
+		 * 
+		 * @return PhysicDynamic* Pointer on PhysicDynamic
+		 */
 		PhysicDynamic* GetObjectDynamic()
 		{
 			return (PhysicDynamic*)this;
 		}
 
+		/**
+		 * @brief Get the Object Static object
+		 * 
+		 * @return PhysicStatic* Pointer on PhysicStatic
+		 */
 		PhysicStatic* GetObjectStatic()
 		{
 			return (PhysicStatic*)this;
 		}
-
+#pragma endregion
+#pragma endregion
 		CLASS_REGISTRATION()
 	};
 }

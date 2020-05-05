@@ -13,24 +13,72 @@ namespace Quantix::Physic
 	{
 	private:
 #pragma region Attributes
+		// Actor Physic
 		PxRigidStatic* _static = nullptr;
 #pragma endregion
 	public:
 #pragma region Constructors
+
+		/**
+		 * @brief Construct a new Physic Static object
+		 * 
+		 */
 		PhysicStatic();
+
+		/**
+		 * @brief Construct a new Physic Static object
+		 * 
+		 * @param SDK PxPhysic
+		 */
 		PhysicStatic(PxPhysics* SDK);
-		PhysicStatic(PxPhysics* SDK, EPhysXShape physXShape);
+
+		/**
+		 * @brief Construct a new Physic Static object
+		 * 
+		 * @param SDK PxPhysic
+		 * @param physicDynamic Actor Dynamic to switch in Static
+		 */
 		PhysicStatic(PxPhysics* SDK, PhysicDynamic* physicDynamic);
-		PhysicStatic(const PhysicStatic&);
-		PhysicStatic(PhysicStatic&&);
+
+		/**
+		 * @brief Construct a new Physic Static object
+		 * 
+		 * @param src Physicstatic to copy
+		 */
+		PhysicStatic(const PhysicStatic& src);
+
+		/**
+		 * @brief Construct a new Physic Static object
+		 * 
+		 * @param src Physicstatic to move
+		 */
+		PhysicStatic(PhysicStatic&& src);
+
+		/**
+		 * @brief Destroy the Physic Static object
+		 * 
+		 */
 		~PhysicStatic();
 #pragma endregion
 
 #pragma region Functions
-		void	print();
+#pragma region Accessors
 
+		/**
+		 * @brief Get the Rigid object
+		 * 
+		 * @return PxRigidStatic* pointer on rigid
+		 */
 		PxRigidStatic* GetRigid();
+
+		/**
+		 * @brief Set the Rigid object
+		 * 
+		 * @param rigid New value of rigid
+		 */
 		void SetRigid(PxRigidStatic* rigid);
+		
+#pragma endregion
 #pragma endregion
 		CLASS_REGISTRATION(Quantix::Physic::IPhysicType)
 	};
