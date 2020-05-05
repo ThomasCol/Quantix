@@ -6,8 +6,8 @@
 #include "Core/Components/Mesh.h"
 #include "Core/Components/Light.h"
 #include "../../../QuantixEditor/include/Window.h"
-#include "PostProcess/PostProcessEffect.h"
 #include "Core/Components/Collider.h"
+#include "PostProcess/Bloom.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -24,6 +24,13 @@ namespace Quantix::Core::Render
 		struct Framebuffer
 		{
 			QXuint FBO = 0;
+			QXuint texture[2];
+			QXuint depthBuffer = 0;
+		};
+
+		struct ShadowFramebuffer
+		{
+			QXuint FBO = 0;
 			QXuint texture = 0;
 			QXuint depthBuffer = 0;
 		};
@@ -31,7 +38,9 @@ namespace Quantix::Core::Render
 		Framebuffer	_mainBuffer;
 		Framebuffer	_gameBuffer;
 
-		Framebuffer	_shadowBuffer;
+		ShadowFramebuffer _shadowBuffer;
+		ShadowFramebuffer _finalGameBuffer;
+		ShadowFramebuffer _finalSceneBuffer;
 
 		QXuint		_viewProjMatrixUBO = 0;
 		QXuint		_viewProjShadowMatrixUBO = 0;
@@ -40,6 +49,8 @@ namespace Quantix::Core::Render
 
 		Math::QXmat4 _projLight;
 		PostProcess::PostProcessEffect* _effects;
+
+		PostProcess::Bloom* _bloom;
 
 		Resources::ShaderProgram* _shadowProgram;
 
@@ -62,12 +73,14 @@ namespace Quantix::Core::Render
 
 		void InitShadowBuffer() noexcept;
 
+		void InitFinalBuffer(QXuint width, QXuint height, ShadowFramebuffer& fbo) noexcept;
+
 		/**
 		 * @brief Create post process effects
 		 * 
 		 * @param manager ressource manager to create post process data
 		 */
-		void InitPostProcessEffects(DataStructure::ResourcesManager& manager) noexcept;
+		void InitPostProcessEffects(DataStructure::ResourcesManager& manager, Platform::AppInfo& info) noexcept;
 
 		#pragma endregion
 
@@ -101,7 +114,7 @@ namespace Quantix::Core::Render
 		 * @param resizeCallback Window callback for resize
 		 * @param manager resources manager to instanciate datas
 		 */
-		Renderer(QXuint width, QXuint height, DataStructure::ResourcesManager& manager) noexcept;
+		Renderer(Platform::AppInfo& info, DataStructure::ResourcesManager& manager) noexcept;
 
 		/**
 		 * @brief Destroy the Renderer object

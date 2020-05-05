@@ -89,7 +89,7 @@ namespace Quantix::Core::Render::PostProcess
 		 * 
 		 * @param info info of the application
 		 */
-		void Render(Platform::AppInfo& info) noexcept override;
+		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
 
 #pragma endregion
 	};

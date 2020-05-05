@@ -200,7 +200,7 @@ void Inspector::DrawMTexturePath(rttr::instance inst, rttr::type t, Quantix::Cor
 {
 	ImGui::PushID(2);
 	ImGui::Text("Texture Path: "); ImGui::SameLine(155.f);
-	Quantix::Resources::Texture* text = t.get_property("Texture").get_value(inst).get_value<Quantix::Resources::Texture*>();
+	Quantix::Resources::Texture* text = t.get_property("Diffuse").get_value(inst).get_value<Quantix::Resources::Texture*>();
 	QXstring path;
 	for (auto it = app->manager.GetTextures().begin(); it != app->manager.GetTextures().end(); ++it)
 	{
@@ -219,7 +219,38 @@ void Inspector::DrawMTexturePath(rttr::instance inst, rttr::type t, Quantix::Cor
 			if (pathTmp.find(".png") != QXstring::npos)
 				path = pathTmp;
 			Quantix::Resources::Texture* texture = app->manager.CreateTexture(path);
-			t.get_property("Texture").set_value(inst, texture);
+			t.get_property("Diffuse").set_value(inst, texture);
+			ImGui::EndDragDropTarget();
+		}
+	}
+	ImGui::PopID();
+	DrawMTexturePath2(inst, t, app);
+}
+
+void Inspector::DrawMTexturePath2(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
+{
+	ImGui::PushID(2);
+	ImGui::Text("Texture Path: "); ImGui::SameLine(155.f);
+	Quantix::Resources::Texture* text = t.get_property("Emissive").get_value(inst).get_value<Quantix::Resources::Texture*>();
+	QXstring path;
+	for (auto it = app->manager.GetTextures().begin(); it != app->manager.GetTextures().end(); ++it)
+	{
+		if (it->second == text)
+			path = it->first;
+	}
+	if (path.empty())
+		ImGui::ButtonEx(path.c_str(), ImVec2(100, 0), ImGuiButtonFlags_Disabled);
+	else
+		ImGui::ButtonEx(path.c_str(), ImVec2(0, 0), ImGuiButtonFlags_Disabled);
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
+		{
+			QXstring pathTmp = (const QXchar*)payload->Data;
+			if (pathTmp.find(".png") != QXstring::npos)
+				path = pathTmp;
+			Quantix::Resources::Texture* texture = app->manager.CreateTexture(path);
+			t.get_property("Emissive").set_value(inst, texture);
 			ImGui::EndDragDropTarget();
 		}
 	}

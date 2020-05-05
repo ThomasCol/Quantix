@@ -24,8 +24,8 @@ namespace Quantix::Core::Platform
 	}*/
 
 	Application::Application(QXuint width, QXuint height) :
-		renderer { width, height, manager },
 		info{ width, height },
+		renderer { info, manager },
 		sceneManager {},
 		scene {new Resources::Scene()}
 	{

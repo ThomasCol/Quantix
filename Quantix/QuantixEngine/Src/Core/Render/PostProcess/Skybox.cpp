@@ -102,7 +102,7 @@ namespace Quantix::Core::Render::PostProcess
 		glBindVertexArray(0);
 	}
 
-	void Skybox::Render(Platform::AppInfo& info) noexcept
+	void Skybox::Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept
 	{
 		if (!_isCubemapReady)
 		{

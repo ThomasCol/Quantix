@@ -21,8 +21,8 @@ namespace Quantix::Core::Platform
 	public:
 #pragma region Attributes
 
-		DataStructure::ResourcesManager manager;
 		AppInfo							info;
+		DataStructure::ResourcesManager manager;
 		Render::Renderer 				renderer;
 		DataStructure::SceneManager		sceneManager;
 		Resources::Scene*				scene;

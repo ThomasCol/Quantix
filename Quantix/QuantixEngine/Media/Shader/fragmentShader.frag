@@ -1,5 +1,8 @@
 #version 420 core
 
+layout (location = 0) out vec4			fragColor;
+layout (location = 1) out vec4			brightColor;
+
 /* light struct for all lights */
 struct Light
 {
@@ -28,10 +31,12 @@ struct Material
 	vec3	specular;
 
 	float	shininess;
-	bool	textured;
+	bool	isTextured;
+	bool	hasEmissive;
 
 	sampler2D	shadowMap;
-	sampler2D	texture;
+	sampler2D	diffuseTexture;
+	sampler2D	emissiveTexture;
 };
 
 layout (std140, binding = 2) uniform lights
@@ -44,14 +49,12 @@ uniform Material	material;
 /* light array with constant size */
 uniform Light		lightArray[10];
 
-uniform bool phong;
-
-out vec4			fragColor;
-
 in vec2				UV;
 in vec3				outNormal;
 in vec3				fragPos;
 in vec4				fragPosLightSpace;
+
+uniform vec3 		minBright = vec3(0.2126, 0.7152, 0.0722);
 
 uniform vec3		viewPos;
 
@@ -71,6 +74,11 @@ void main()
 	vec3	norm = normalize(outNormal);
 	vec3	lightDir;
 	vec3	output = vec3(0.0);
+	
+	if (material.hasEmissive)
+    	brightColor = texture(material.emissiveTexture, UV);
+	else
+		brightColor = vec4(0.0);
 
 	float shadow = ComputeShadow(fragPosLightSpace, normalize(light[0].position - fragPos), norm);
 
@@ -89,34 +97,16 @@ void main()
 			output += calculateSpotLight(light[i], lightDir, norm, 0.0);
 	}
 
-	if (material.textured)
-		fragColor = vec4(output, 1.0) * texture(material.texture, UV);
+	if (material.isTextured)
+		fragColor = vec4(output, 1.0) * texture(material.diffuseTexture, UV);
 	else
 		fragColor = vec4(output, 1.0);
 
-	/*vec3 color = vec3(1.0);
-	if (material.textured)
-		color = texture(material.texture, UV).rgb;
-    vec3 normal = normalize(outNormal);
-    vec3 lightColor = vec3(0.3);
-    // ambient
-    vec3 ambient = 0.3 * color;
-    // diffuse
-    vec3 lightDir = normalize(light[0].position - fragPos);
-    float diff = max(dot(lightDir, normal), 0.0);
-    vec3 diffuse = diff * lightColor;
-    // specular
-    vec3 viewDir = normalize(viewPos - fragPos);
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = 0.0;
-    vec3 halfwayDir = normalize(lightDir + viewDir);  
-    spec = pow(max(dot(normal, halfwayDir), 0.0), 64.0);
-    vec3 specular = spec * lightColor;    
-    // calculate shadow
-    float shadow = ComputeShadow(fragPosLightSpace);                      
-    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;    
-    
-    FragColor = vec4(lighting, 1.0);*/
+	float brightness = dot(fragColor.rgb, minBright);
+	if(brightness > 1.0)
+        brightColor += vec4(fragColor.rgb, 1.0);
+	else
+		brightColor += vec4(0.0, 0.0, 0.0, 1.0);
 }
 
 float	ComputeShadow(vec4 fragPosLightSpace, vec3 lightDir, vec3 normal)

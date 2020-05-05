@@ -39,6 +39,7 @@ public:
 	void													DrawMaterialPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
 	void													DrawModelPath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
 	void													DrawMTexturePath(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
+	void													DrawMTexturePath2(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
 	void													GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
 	void													ShowLightEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
 	void													DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app);

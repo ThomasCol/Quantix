@@ -43,6 +43,7 @@
     <ClCompile Include="Src\Core\Tool\Serializer.cpp" />
     <ClCompile Include="Src\Core\Threading\TaskSystem.cpp" />
     <ClCompile Include="Src\Core\LibImpl.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\Bloom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -91,5 +92,6 @@
     <ClInclude Include="Include\Core\Components\Behaviour.h" />
     <ClInclude Include="Include\Physic\SimulationCallback.h" />
     <ClInclude Include="Include\Physic\PhysicSetting.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\Bloom.h" />
   </ItemGroup>
 </Project>
