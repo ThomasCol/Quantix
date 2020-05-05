@@ -18,26 +18,22 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Physic
 {
-	PhysicStatic::PhysicStatic() : IPhysicType(ETypePhysic::STATIC)
+	PhysicStatic::PhysicStatic()  noexcept : IPhysicType(ETypePhysic::STATIC)
 	{
-		if (type != ETypePhysic::NONE)
-			std::cout << "type set: Static" << std::endl;
 	}
 
-	PhysicStatic::PhysicStatic(PxPhysics* SDK) : IPhysicType(ETypePhysic::STATIC)
+	PhysicStatic::PhysicStatic(PxPhysics* SDK)  noexcept : IPhysicType(ETypePhysic::STATIC)
 	{
-		if (type != ETypePhysic::NONE)
-			std::cout << "type set: Static" << std::endl;
-
 		// Create Actor Physic Static
 		_static = SDK->createRigidStatic(PxTransform(PxVec3(0, -2, 0)));
 	}
 
-	PhysicStatic::PhysicStatic(PxPhysics* SDK, PhysicDynamic* physicDynamic)
+	PhysicStatic::PhysicStatic(PxPhysics* SDK, PhysicDynamic* physicDynamic) noexcept
 	{
 		// Set Type
 		type = ETypePhysic::STATIC;
 
+		// Get All Shapes of physicStatic
 		int numShapes = physicDynamic->GetRigid()->getNbShapes();
 		PxShape** shapes = (PxShape**)malloc(sizeof(PxShape*) * numShapes);
 		physicDynamic->GetRigid()->getShapes(shapes, numShapes);
@@ -45,6 +41,7 @@ namespace Quantix::Physic
 		// Prendre les valeurs du dynamic
 		_static = SDK->createRigidStatic(PxTransform(physicDynamic->GetRigid()->getGlobalPose()));
 
+		// Attach shape On the new actor and detach of the old actor
 		physx::PxShape* currentShape = nullptr;
 		for (int i = 0; i < numShapes; i++)
 		{
@@ -52,33 +49,35 @@ namespace Quantix::Physic
 			physicDynamic->GetRigid()->detachShape(*currentShape);
 			_static->attachShape(*currentShape);
 		}
-		free(shapes);
 
+		free(shapes);
+		
+		// Set the userdata
 		Core::DataStructure::GameObject3D* data = (Core::DataStructure::GameObject3D*)physicDynamic->GetRigid()->userData;
 		_static->userData = data;
 	}
 
 
-	PhysicStatic::PhysicStatic(const PhysicStatic& ps) : IPhysicType(ps)
+	PhysicStatic::PhysicStatic(const PhysicStatic& ps)  noexcept : IPhysicType(ps)
 	{
 		_static = ps._static;
 	}
 
-	PhysicStatic::PhysicStatic(PhysicStatic&& ps) : IPhysicType(ps)
+	PhysicStatic::PhysicStatic(PhysicStatic&& ps) noexcept : IPhysicType(ps)
 	{
 		_static = std::move(ps._static);
 	}
 
-	PhysicStatic::~PhysicStatic()
+	PhysicStatic::~PhysicStatic() noexcept
 	{
 	}
 
-	PxRigidStatic* PhysicStatic::GetRigid()
+	PxRigidStatic* PhysicStatic::GetRigid() noexcept
 	{
 		return _static;
 	}
 
-	void PhysicStatic::SetRigid(PxRigidStatic* st)
+	void PhysicStatic::SetRigid(PxRigidStatic* st) noexcept
 	{
 		_static = st;
 	}

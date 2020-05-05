@@ -7,11 +7,12 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<Quantix::Resources::Material>("Material")
 	.constructor<>()
 	.constructor<Quantix::Resources::ShaderProgram*>()
-	.property("Texture", &Quantix::Resources::Material::GetMaterialTexture, &Quantix::Resources::Material::SetMaterialTexture)
 	.property("ambient", &Quantix::Resources::Material::ambient)
 	.property("diffuse", &Quantix::Resources::Material::diffuse)
 	.property("specular", &Quantix::Resources::Material::specular)
 	.property("shininess", &Quantix::Resources::Material::shininess)
+	.property("Diffuse", &Quantix::Resources::Material::GetDiffuseTexture, &Quantix::Resources::Material::SetDiffuseTexture)
+	.property("Emissive", &Quantix::Resources::Material::GetEmissiveTexture, &Quantix::Resources::Material::SetEmissiveTexture)
 	.method("GetPath", &Quantix::Resources::Material::GetPath);
 }
 
@@ -21,7 +22,7 @@ namespace Quantix::Resources
 
 	Material::Material(ShaderProgram* program) :
 		_program {program},
-		_mainTexture {nullptr}
+		_diffuse {nullptr}
 	{}
 
 	Material::~Material()
@@ -33,9 +34,9 @@ namespace Quantix::Resources
 
 	QXbool	Material::IsReady()
 	{
-		if (!_mainTexture)
+		if (!_diffuse)
 			return true;
-		return _mainTexture->IsReady();
+		return _diffuse->IsReady();
 	}
 	
 	void Material::SendData(QXuint shadowTexture)
@@ -49,13 +50,22 @@ namespace Quantix::Resources
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, shadowTexture);
 
-		if (_mainTexture && _mainTexture->IsReady())
+		if (_diffuse && _diffuse->IsReady())
 		{
-			SetInt("material.textured", 1);
+			SetInt("material.isTextured", 1);
 
-			SetInt("material.texture", 0);
+			SetInt("material.diffuseTexture", 0);
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, _mainTexture->GetId());
+			glBindTexture(GL_TEXTURE_2D, _diffuse->GetId());
+			if (_emissive && _emissive->IsReady())
+			{
+				SetInt("material.hasEmissive", 1);
+				SetInt("material.emissiveTexture", 2);
+				glActiveTexture(GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_2D, _emissive->GetId());
+			}
+			else
+				SetInt("material.hasEmissive", 0);
 		}
 		else
 			SetInt("material.textured", 0);

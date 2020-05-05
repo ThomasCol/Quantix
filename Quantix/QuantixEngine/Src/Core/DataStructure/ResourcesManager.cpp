@@ -130,8 +130,8 @@ namespace Quantix::Core::DataStructure
 		_meshes[key] = mesh;
 
 		mesh->shaderID = mesh->GetMaterial()->GetShaderProgram()->GetID();
-		if (mesh->GetMaterial()->GetMainTexture())
-			mesh->textureID = mesh->GetMaterial()->GetMainTexture()->GetId();
+		if (mesh->GetMaterial()->GetDiffuseTexture())
+			mesh->textureID = mesh->GetMaterial()->GetDiffuseTexture()->GetId();
 		
 			
 		return mesh;
@@ -234,7 +234,7 @@ namespace Quantix::Core::DataStructure
 		if (file == nullptr)
 			return nullptr;
 
-		QXstring vertex_path, fragment_path, texture_path;
+		QXstring vertex_path, fragment_path, diffuse_path, emissive_path;
 		QXsizei char_count;
 
 		fread(&char_count, sizeof(QXsizei), 1, file);
@@ -253,10 +253,19 @@ namespace Quantix::Core::DataStructure
 		fread(&material->shininess, sizeof(QXfloat), 1, file);
 
 		fread(&char_count, sizeof(QXsizei), 1, file);
-		texture_path.resize(char_count);
-		fread(texture_path.data(), sizeof(QXchar), char_count, file);
+		diffuse_path.resize(char_count);
+		fread(diffuse_path.data(), sizeof(QXchar), char_count, file);
 
-		material->SetMainTexture(CreateTexture(texture_path));
+		material->SetDiffuseTexture(CreateTexture(diffuse_path));
+
+		fread(&char_count, sizeof(QXsizei), 1, file);
+		if (char_count != 0)
+		{
+			emissive_path.resize(char_count);
+			fread(emissive_path.data(), sizeof(QXchar), char_count, file);
+
+			material->SetDiffuseTexture(CreateTexture(emissive_path));
+		}
 
 		fclose(file);
 
@@ -285,11 +294,24 @@ namespace Quantix::Core::DataStructure
 		fwrite(&material->specular, sizeof(Math::QXvec3), 1, file);
 		fwrite(&material->shininess, sizeof(QXfloat), 1, file);
 
-		const Texture* texture = material->GetMainTexture();
+		const Texture* diffuse = material->GetDiffuseTexture();
+		const Texture* emissive = material->GetDiffuseTexture();
 
 		for (auto it = _textures.begin(); it != _textures.end(); ++it)
 		{
-			if (it->second == texture)
+			if (it->second == diffuse)
+			{
+				char_count = it->first.length();
+
+				fwrite(&char_count, sizeof(QXsizei), 1, file);
+				fwrite(it->first.data(), sizeof(QXchar), char_count, file);
+				break;
+			}
+		}
+
+		for (auto it = _textures.begin(); it != _textures.end(); ++it)
+		{
+			if (it->second == emissive)
 			{
 				char_count = it->first.length();
 
@@ -355,9 +377,9 @@ namespace Quantix::Core::DataStructure
 		for (auto it = _materials.begin(); it != _materials.end(); ++it)
 		{
 			mat = it->second;
-			if (mat->GetMainTexture() == texture)
+			if (mat->GetDiffuseTexture() == texture)
 			{
-				mat->SetMainTexture(nullptr);
+				mat->SetDiffuseTexture(nullptr);
 				break;
 			}
 		}

@@ -23,14 +23,14 @@ namespace Quantix::Physic
 		 * @brief Construct a new Physic Static object
 		 * 
 		 */
-		PhysicStatic();
+		PhysicStatic() noexcept;
 
 		/**
 		 * @brief Construct a new Physic Static object
 		 * 
 		 * @param SDK PxPhysic
 		 */
-		PhysicStatic(PxPhysics* SDK);
+		PhysicStatic(PxPhysics* SDK) noexcept;
 
 		/**
 		 * @brief Construct a new Physic Static object
@@ -38,27 +38,27 @@ namespace Quantix::Physic
 		 * @param SDK PxPhysic
 		 * @param physicDynamic Actor Dynamic to switch in Static
 		 */
-		PhysicStatic(PxPhysics* SDK, PhysicDynamic* physicDynamic);
+		PhysicStatic(PxPhysics* SDK, PhysicDynamic* physicDynamic) noexcept;
 
 		/**
 		 * @brief Construct a new Physic Static object
 		 * 
 		 * @param src Physicstatic to copy
 		 */
-		PhysicStatic(const PhysicStatic& src);
+		PhysicStatic(const PhysicStatic& src) noexcept;
 
 		/**
 		 * @brief Construct a new Physic Static object
 		 * 
 		 * @param src Physicstatic to move
 		 */
-		PhysicStatic(PhysicStatic&& src);
+		PhysicStatic(PhysicStatic&& src) noexcept;
 
 		/**
 		 * @brief Destroy the Physic Static object
 		 * 
 		 */
-		~PhysicStatic();
+		~PhysicStatic() noexcept;
 #pragma endregion
 
 #pragma region Functions
@@ -69,14 +69,14 @@ namespace Quantix::Physic
 		 * 
 		 * @return PxRigidStatic* pointer on rigid
 		 */
-		PxRigidStatic* GetRigid();
+		PxRigidStatic* GetRigid() noexcept;
 
 		/**
 		 * @brief Set the Rigid object
 		 * 
 		 * @param rigid New value of rigid
 		 */
-		void SetRigid(PxRigidStatic* rigid);
+		void SetRigid(PxRigidStatic* rigid) noexcept;
 		
 #pragma endregion
 #pragma endregion

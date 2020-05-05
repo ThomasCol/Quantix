@@ -2,6 +2,9 @@
 
 #include "Core/DataStructure/GameObject3D.h"
 #include "Core/DataStructure/ResourcesManager.h"
+#include "Core/Components/Rigidbody.h"
+#include "Core/Components/CubeCollider.h"
+#include "Core/Components/SphereCollider.h"
 
 #include <fstream>
 
@@ -9,7 +12,6 @@ namespace Quantix::Core::Tool
 {
 	QXbool Serializer::Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager* manager)
 	{
-		//std::ifstream stream(path);
 		std::ifstream stream(path, std::ios::ate);
 		if (!stream.is_open())
 			return false;
@@ -113,6 +115,27 @@ namespace Quantix::Core::Tool
 		{
 			Components::Camera* camera = object->AddComponent<Components::Camera>();
 			ReadCamera(camera, ret->value);
+		}
+		ret = val.FindMember("Rigidbody");
+		if (ret != val.MemberEnd())
+		{
+			object->AddComponent<Components::Rigidbody>()->Init(object);
+		}
+		ret = val.FindMember("CubeCollider");
+		if (ret != val.MemberEnd())
+		{
+			Components::CubeCollider* collider = object->AddComponent<Components::CubeCollider>();
+			collider->Init(object);
+			Math::QXvec3 vec;
+			ReadVec3(vec, ret->value.FindMember("HalfExtent")->value);
+			collider->SetHalfExtents(vec);
+		}
+		ret = val.FindMember("SphereCollider");
+		if (ret != val.MemberEnd())
+		{
+			Components::SphereCollider* collider = object->AddComponent<Components::SphereCollider>();
+			collider->Init(object);
+			collider->SetRadius(ret->value.FindMember("Radius")->value.GetFloat());
 		}
 	}
 
@@ -281,6 +304,10 @@ namespace Quantix::Core::Tool
 		else if (type == rttr::type::get<Math::QXvec3>())
 		{
 			WriteVec3(currentProp.get_name().to_string(), currentProp.get_value(inst).get_value<Math::QXvec3>(), writer);
+		}
+		else if (type == rttr::type::get<Math::QXquaternion>())
+		{
+			WriteQuat(currentProp.get_name().to_string(), currentProp.get_value(inst).get_value<Math::QXquaternion>(), writer);
 		}
 		else if (currentProp.get_type().is_class() || (currentProp.get_type().is_pointer() && currentProp.get_type().get_raw_type().is_class()))
 		{
