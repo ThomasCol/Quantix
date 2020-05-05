@@ -142,7 +142,7 @@ void Inspector::DrawMaterialPath(rttr::instance inst, rttr::property currentProp
 {
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
-	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(155.f);
+	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(165.f);
 	Quantix::Resources::Material* mat = currentProp.get_value(inst).get_value<Quantix::Resources::Material*>();
 	QXstring path;
 	for (auto it = app->manager.GetMaterials().begin(); it != app->manager.GetMaterials().end(); ++it)
@@ -173,7 +173,7 @@ void Inspector::DrawModelPath(rttr::instance inst, rttr::property currentProp, Q
 {
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
-	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(155.f);
+	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(165.f);
 	Quantix::Resources::Model* mod = currentProp.get_value(inst).get_value<Quantix::Resources::Model*>();
 	QXstring path;
 	for (auto it = app->manager.GetModels().begin(); it != app->manager.GetModels().end(); ++it)
@@ -204,7 +204,7 @@ void Inspector::DrawMTexturePath(rttr::instance inst, rttr::property currentProp
 {
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
-	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(155.f);
+	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(165.f);
 	Quantix::Resources::Texture* text = currentProp.get_value(inst).get_value<Quantix::Resources::Texture*>();
 	QXstring path;
 
@@ -223,7 +223,10 @@ void Inspector::DrawMTexturePath(rttr::instance inst, rttr::property currentProp
 		{
 			QXstring pathTmp = (const QXchar*)payload->Data;
 			if (pathTmp.find(".png") != QXstring::npos)
+			{
 				path = pathTmp;
+				inst.get_type().invoke("SetChanged", inst, { true });
+			}
 			Quantix::Resources::Texture* texture = app->manager.CreateTexture(path);
 			currentProp.set_value(inst, texture);
 			ImGui::EndDragDropTarget();
@@ -236,7 +239,7 @@ void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::pr
 {
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
-	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(155.f);
+	ImGui::Text("%s Path: ", name.c_str()); ImGui::SameLine(165.f);
 	Quantix::Resources::Sound* sound = currentProp.get_value(inst).get_value<Quantix::Resources::Sound*>();
 	QXstring path;
 	for (auto it = app->manager.GetSounds().begin(); it != app->manager.GetSounds().end(); ++it)
@@ -361,7 +364,7 @@ void Inspector::ShowLightEnum(rttr::property currentProp, rttr::instance inst, r
 	const QXchar* items[] = { "Default", "Directonal", "Point", "Spot" };
 	QXint item_current = GetValueLightEnum(LightType);
 
-	ImGui::Text("Light Type"); ImGui::SameLine(155.f);
+	ImGui::Text("Light Type"); ImGui::SameLine(165.f);
 	ImGui::Combo("##Light Type: ", &item_current, items, IM_ARRAYSIZE(items));
 
 	LightType = SetValueLightEnum(item_current);
@@ -396,7 +399,7 @@ void Inspector::ShowSoundModeEnum(rttr::property currentProp, rttr::instance ins
 	const QXchar* items[] = { "QX_2D", "QX_3D" };
 	QXint item_current = GetValueSoundModeEnum(SoundMode);
 
-	ImGui::Text("Sound Mode"); ImGui::SameLine(155.f);
+	ImGui::Text("Sound Mode"); ImGui::SameLine(165.f);
 	ImGui::Combo("##Sound Mode: ", &item_current, items, IM_ARRAYSIZE(items));
 
 	SoundMode = SetValueSoundModeEnum(item_current);
@@ -421,7 +424,7 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 	if (type == rttr::type::get<QXbool>())
 	{
 		QXbool enable = currentProp.get_value(inst).to_bool();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::Checkbox("", &enable);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::Checkbox("", &enable);
 		currentProp.set_value(inst, enable);
 	}
 	else if (type == rttr::type::get<QXfloat>())
@@ -429,30 +432,30 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		QXfloat value = currentProp.get_value(inst).to_float();
 		if (currentProp.get_name().to_string() == "Volume")
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::SliderFloat("", &value, 0.f, 1.f);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::SliderFloat("", &value, 0.f, 1.f);
 		}
 		else
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat("", &value);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::DragFloat("", &value);
 		}
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXdouble>())
 	{
 		QXdouble value = currentProp.get_value(inst).to_double();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::InputDouble("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputDouble("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXint>())
 	{
 		QXint value = currentProp.get_value(inst).to_int();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::InputInt("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXsizei>())
 	{
 		int value = currentProp.get_value(inst).to_int();
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::InputInt("", &value);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
 	}
 	else if (type == rttr::type::get<QXstring>() && currentProp.get_name() != "Path")
@@ -472,11 +475,11 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		if ((inst.get_type().get_raw_type() == rttr::type::get<Quantix::Resources::Material*>().get_raw_type())
 			|| (inst.get_type() == rttr::type::get<Quantix::Resources::Material>()))
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::ColorEdit3("", value.e);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::ColorEdit3("", value.e);
 		}
 		else
 		{
-			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat3("", value.e);
+			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::DragFloat3("", value.e);
 		}
 		currentProp.set_value(inst, value);
 	}
@@ -499,7 +502,7 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		Math::QXquaternion q = currentProp.get_value(inst).get_value<Math::QXquaternion>();
 		Math::QXvec3 value = q.QuaternionToEuler();
 		
-		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(155.f); ImGui::DragFloat3("", value.e);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::DragFloat3("", value.e);
 
 		q = Math::QXquaternion::EulerToQuaternion(value);
 		currentProp.set_value(inst, q);
