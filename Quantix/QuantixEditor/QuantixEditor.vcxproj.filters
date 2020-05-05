@@ -110,9 +110,6 @@
     <ClInclude Include="include\Editor\MenuBar.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Editor\Node.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Docking\Docker.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>

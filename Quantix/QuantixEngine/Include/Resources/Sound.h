@@ -21,7 +21,8 @@ namespace Quantix::Resources
 
 			#pragma region Attributes
 			
-			FMOD::Sound* _clip	{ nullptr };
+			FMOD::Sound*	_clip	{ nullptr };
+			FMOD::Channel* _channel	{ nullptr };
 
 			#pragma endregion
 
@@ -74,21 +75,21 @@ namespace Quantix::Resources
 			#pragma region Accessors
 
 			/**
-			 * @brief Get Sound clip
+			 * @brief Get Sound's clip
 			 *
 			 * @return const FMOD::Sound* clip value
 			 */
 			FMOD::Sound*	GetClip();
 
 			/**
-			 * @brief Get Sound name
+			 * @brief Get Sound's name
 			 *
 			 * @return QXstring name value
 			 */
 			QXstring		GetName();
 
 			/**
-			 * @brief Get Sound type
+			 * @brief Get Sound's type
 			 *
 			 * @return QXstring type value
 			 */
@@ -97,11 +98,25 @@ namespace Quantix::Resources
 			//const unsigned int& GetSize();
 
 			/**
-			 * @brief Get Sound time length
+			 * @brief Get Sound's time length
 			 *
 			 * @return QXuint time length value
 			 */
 			const QXuint	GetTimeLength();
+
+			/**
+			 * @brief Get Sound's volume
+			 *
+			 * @return QXfloat volume value
+			 */
+			const QXfloat	GetVolume();
+
+			/**
+			 * @brief Set Sound's volume
+			 *
+			 * @param QXfloat volume value
+			 */
+			void			SetVolume(QXfloat newVolume);
 
 			#pragma endregion
 
@@ -120,6 +135,12 @@ namespace Quantix::Resources
 			 */
 			const QXbool	Play(FMOD::ChannelGroup* channel);
 
+			/**
+			 * @brief Pause Sound's clip
+			 *
+			 * @param channel to manage the clip
+			 * @return QXbool pause successfully value
+			 */
 			const QXbool	Pause(FMOD::ChannelGroup* channel);
 
 			/**

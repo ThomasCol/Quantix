@@ -37,8 +37,6 @@ namespace Quantix::Core::Components
 		 * @param up Vector
 		 */
 		Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up);
-		
-		Camera(Core::DataStructure::GameComponent* object);
 
 		/**
 		 * @brief Construct a new Camera object by copy 
@@ -62,6 +60,11 @@ namespace Quantix::Core::Components
 		#pragma endregion Constructors/Destructor
 
 		#pragma region Methods
+		/**
+		 * @brief Copy 
+		 * 
+		 * @return Camera* 
+		 */
 		Camera* Copy() const override;
 
 		void	Init(Core::DataStructure::GameComponent* object) override;
@@ -92,22 +95,61 @@ namespace Quantix::Core::Components
 		 */
 		void							Rotate(Math::QXvec3 rotate);
 
+		/**
+		 * @brief Destroy Component
+		 * 
+		 */
 		void Destroy() override {};
 
 		#pragma	region Accessor
 
+		/**
+		 * @brief Get the Look At object
+		 * 
+		 * @return Math::QXmat4& 
+		 */
 		inline Math::QXmat4&			GetLookAt() { return _lookAt; }
 
+		/**
+		 * @brief Set the Pos object
+		 * 
+		 * @param pos 
+		 */
 		inline void						SetPos(Math::QXvec3 pos) { _pos = pos; }
 
+		/**
+		 * @brief Get the Pos object
+		 * 
+		 * @return Math::QXvec3 
+		 */
 		inline Math::QXvec3				GetPos() { return _pos; }
 
+		/**
+		 * @brief Set the Dir object
+		 * 
+		 * @param dir 
+		 */
 		inline void						SetDir(Math::QXvec3 dir) { _dir = dir; }
 
+		/**
+		 * @brief Get the Dir object
+		 * 
+		 * @return Math::QXvec3 
+		 */
 		inline Math::QXvec3				GetDir() { return _dir; }
 
+		/**
+		 * @brief Set the Up object
+		 * 
+		 * @param up 
+		 */
 		inline void						SetUp(Math::QXvec3 up) { _up = up; }
 
+		/**
+		 * @brief Get the Up object
+		 * 
+		 * @return Math::QXvec3 
+		 */
 		inline Math::QXvec3				GetUp() { return _up; }
 		
 		#pragma	endregion

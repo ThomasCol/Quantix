@@ -34,6 +34,8 @@ namespace Quantix::Resources
 
 		QXbool			isTransparent = false;
 
+		QXbool			textureHasChanged = false;
+
 #pragma endregion
 
 #pragma region Constructors
@@ -199,6 +201,7 @@ namespace Quantix::Resources
 
 		inline void						SetEmissiveTexture(Texture* texture) noexcept { _emissive = texture; }
 
+		void							HasChanged(QXbool changed);
 #pragma endregion
 
 #pragma endregion

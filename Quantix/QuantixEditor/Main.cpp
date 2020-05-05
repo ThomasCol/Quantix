@@ -21,7 +21,7 @@
 #include <Core/SoundCore.h>
 //#include <Resources\Sound.h>
 
-#define SPEED (0.5f)
+#define SPEED (0.25f)
 
 QXuint indexPackD;
 QXuint indexPackE;
@@ -49,6 +49,26 @@ void PlatformUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 
 	// Screen size
 	glfwGetWindowSize(editor->GetWin().GetWindow(), (QXint*)&editor->GetApp()->info.width, (QXint*)&editor->GetApp()->info.height);
+}
+
+void	CameraUpdateEditor(Editor* editor, Quantix::Core::Components::Camera* cameraEditor, Quantix::Core::Components::Camera* cameraGame)
+{
+	if (editor->_mouseInput->MouseCaptured)
+	{
+		PlatformUpdate(editor, cameraEditor);
+		if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			cameraEditor->SetPos(cameraEditor->GetPos() + (cameraEditor->GetDir() * SPEED));
+		if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			cameraEditor->SetPos(cameraEditor->GetPos() - (cameraEditor->GetDir() * SPEED));
+		if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			cameraEditor->SetPos(cameraEditor->GetPos() - (cameraEditor->GetDir().Cross(cameraEditor->GetUp()) * SPEED));
+		if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			cameraEditor->SetPos(cameraEditor->GetPos() + (cameraEditor->GetDir().Cross(cameraEditor->GetUp()) * SPEED));
+		cameraEditor->UpdateLookAt(cameraEditor->GetPos());
+	}
+	if (cameraGame->GetObject() != nullptr)
+		cameraGame->SetPos(((Quantix::Core::DataStructure::GameObject3D*)cameraGame->GetObject())->GetTransform()->GetPosition());
+	cameraGame->UpdateLookAt(cameraGame->GetPos());
 }
 
 void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
@@ -199,7 +219,7 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	if (editor->GetPlay())
 		CameraUpdate(editor, editor->GetMainCamera());
 	else
-		CameraUpdate(editor, editor->GetEditorCamera());
+		CameraUpdateEditor(editor, editor->GetEditorCamera(), editor->GetMainCamera());
 }
 
 int main()

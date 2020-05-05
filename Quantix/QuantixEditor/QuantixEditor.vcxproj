@@ -219,7 +219,6 @@
     <ClInclude Include="include\Editor\Hierarchy.h" />
     <ClInclude Include="include\Editor\Inspector.h" />
     <ClInclude Include="include\Editor\MenuBar.h" />
-    <ClInclude Include="include\Editor\Node.h" />
     <ClInclude Include="include\opengl_helper.h" />
     <ClInclude Include="include\Window.h" />
     <ClInclude Include="resource.h" />

@@ -14,21 +14,52 @@
 class Docker
 {
 public:
+	#pragma region Constructors&Destructor
 	Docker();
 	Docker(const Docker& doc) = default;
 	Docker(Docker&& doc) = default;
 	~Docker() = default;
+	#pragma endregion
 
+
+	#pragma region Methods
+	/**
+	 * @brief Init DockSpace
+	 * 
+	 */
 	void								Init();
 
-	QXstring							CreateWindowEditorDock(std::string name, ImGuiID& id);
+	/**
+	 * @brief Create a Window Editor Dock object
+	 * 
+	 * @param name 
+	 * @param id 
+	 * @return QXstring 
+	 */
+	QXstring							CreateWindowEditorDock(QXstring name, ImGuiID& id);
 
-	inline std::vector<std::string>		GetWindowsEditor() const { return _winEditor; };
+	#pragma region Getters
+	/**
+	 * @brief Get the Windows Editor object
+	 * 
+	 * @return std::vector<QXstring> 
+	 */
+	inline std::vector<QXstring>		GetWindowsEditor() const { return _winEditor; };
+
+	/**
+	 * @brief 
+	 * 
+	 * @return ImGuiID 
+	 */
 	inline ImGuiID						GetIDDockspace() const { return _idDocker; };
+	#pragma endregion
+	#pragma endregion
 
 private:
+	#pragma region Attributes
 	std::vector<QXstring>				_winEditor;
 	ImGuiID								_idDocker;
+	#pragma endregion
 };
 
 #endif // !_DOCKER_H_

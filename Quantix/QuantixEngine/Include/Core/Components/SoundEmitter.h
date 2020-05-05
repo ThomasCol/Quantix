@@ -58,9 +58,6 @@ namespace Quantix::Core::Components
 			 */
 			SoundEmitter(SoundEmitter&& copy) noexcept;
 
-
-			SoundEmitter(Core::DataStructure::GameComponent* object);
-
 			/**
 			 * @brief Destroy the SoundEmitter object
 			 *
@@ -72,7 +69,12 @@ namespace Quantix::Core::Components
 			#pragma region Methods
 
 			SoundEmitter*	Copy() const override;
-
+			
+			/**
+			 * @brief Initialize the object
+			 *
+			 * @param object game component
+			 */
 			virtual void	Init(Quantix::Core::DataStructure::GameComponent* object) override;
 
 			/**
@@ -83,13 +85,6 @@ namespace Quantix::Core::Components
 			const QXbool	PlaySound();
 
 			/**
-			 * @brief Set Mode of the Sound
-			 *
-			 * @return QXbool Setted successfully value
-			 */
-			void	SetSoundMode(Resources::ESoundMode mode);
-
-			/**
 			 * @brief Update position attributes of the emitter
 			 *
 			 */
@@ -97,9 +92,18 @@ namespace Quantix::Core::Components
 
 			#pragma region Accessors
 
+			/**
+			 * @brief Get Sound's Volume
+			 *
+			 * @return const QXfloat volume value
+			 */
+			inline QXfloat				GetVolume() { _volume = _sound->GetVolume(); return _volume; }
 
-			inline float				GetVolume() { _channel->getVolume(&_volume); return _volume; }
-
+			/**
+			 * @brief Get Sound's Mode
+			 *
+			 * @return const Resources::ESoundMode mode value
+			 */
 			inline Resources::ESoundMode GetSoundMode() { return _soundMode; }
 
 			/**
@@ -107,21 +111,21 @@ namespace Quantix::Core::Components
 			 *
 			 * @return const Resources::Sound* sound value
 			 */
-			inline	const Resources::Sound*	GetSound() const					{ return _sound; }
+			inline	const Resources::Sound*		GetSound() const					{ return _sound; }
 
 			/**
 			 * @brief Is Looping
 			 *
 			 * @return const QXbool is looping value
 			 */
-			inline	const QXbool			IsLooping() const					{ return _loop; }
+			inline	const QXbool				IsLooping() const					{ return _loop; }
 
 			/**
 			 * @brief Is Playing On Awake
 			 *
 			 * @return const QXbool is playing on awake value
 			 */
-			inline	const QXbool			IsPlayingOnAwake() const			{ return _playOnAwake; }
+			inline	const QXbool				IsPlayingOnAwake() const			{ return _playOnAwake; }
 
 
 			/**
@@ -129,23 +133,35 @@ namespace Quantix::Core::Components
 			 *
 			 * @param Resources::Sound* sound new value
 			 */
-			inline	void					SetSound(Resources::Sound* sound)	{_sound = sound; }
+			inline	void						SetSound(Resources::Sound* sound)	{_sound = sound; }
 
-			inline void						SetVolume(float volume) { _channel->setVolume(volume); _volume = volume;}
+			/**
+			 * @brief Set Sound's volume
+			 *
+			 * @param QXfloat sound new value
+			 */
+			inline void							SetVolume(QXfloat volume) { _sound->SetVolume(volume); _volume = volume;}
+
+			/**
+			 * @brief Set Mode of the Sound
+			 *
+			 * @return QXbool Setted successfully value
+			 */
+			void	SetSoundMode(Resources::ESoundMode mode);
 
 			/**
 			 * @brief Set Loop
 			 *
 			 * @param QXbool is looping new value
 			 */
-			inline	void					SetLoop(QXbool loop)				{ _loop = loop; }
+			inline	void						SetLoop(QXbool loop)				{ _loop = loop; }
 
 			/**
 			 * @brief Set Play On Awake
 			 *
 			 * @param QXbool is playing on awake new value
 			 */
-			inline	void					SetPlayOnAwake(QXbool playOnAwake)	{ _playOnAwake = playOnAwake; }
+			inline	void						SetPlayOnAwake(QXbool playOnAwake)	{ _playOnAwake = playOnAwake; }
 
 			#pragma endregion
 

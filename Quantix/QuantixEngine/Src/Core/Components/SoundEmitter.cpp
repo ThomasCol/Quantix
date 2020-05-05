@@ -12,7 +12,6 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<Quantix::Resources::Sound*>()
 	.constructor<const Quantix::Core::Components::SoundEmitter&>()
 	.constructor<Quantix::Core::Components::SoundEmitter&&>()
-	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.property("Sound", &Quantix::Core::Components::SoundEmitter::_sound)
 	.property("Channel", &Quantix::Core::Components::SoundEmitter::_channel)
 	.property("Mode", &Quantix::Core::Components::SoundEmitter::GetSoundMode, &Quantix::Core::Components::SoundEmitter::SetSoundMode)
@@ -61,11 +60,6 @@ namespace Quantix::Core::Components
 	_loop { std::move(copy._loop) },
 	_playOnAwake { std::move(copy._playOnAwake) }
 	{}
-
-	SoundEmitter::SoundEmitter(Core::DataStructure::GameComponent* object) :
-		Quantix::Core::DataStructure::Component(object)
-	{
-	}
 
 	SoundEmitter::~SoundEmitter()
 	{

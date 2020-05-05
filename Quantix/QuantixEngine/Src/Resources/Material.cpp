@@ -13,6 +13,7 @@ RTTR_PLUGIN_REGISTRATION
 	.property("shininess", &Quantix::Resources::Material::shininess)
 	.property("Diffuse", &Quantix::Resources::Material::GetDiffuseTexture, &Quantix::Resources::Material::SetDiffuseTexture)
 	.property("Emissive", &Quantix::Resources::Material::GetEmissiveTexture, &Quantix::Resources::Material::SetEmissiveTexture)
+	.method("SetChanged", &Quantix::Resources::Material::HasChanged)
 	.method("GetPath", &Quantix::Resources::Material::GetPath);
 }
 
@@ -206,6 +207,11 @@ namespace Quantix::Resources
 			return;
 
 		glUniform1uiv(location_id, 3, value);
+	}
+
+	void Material::HasChanged(QXbool changed)
+	{
+		textureHasChanged = changed;
 	}
 
 #pragma endregion

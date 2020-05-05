@@ -461,6 +461,7 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 	}
 	else if (_play)
 		focus = false;
+
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{

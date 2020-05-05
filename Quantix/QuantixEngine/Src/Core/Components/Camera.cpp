@@ -9,12 +9,8 @@ RTTR_PLUGIN_REGISTRATION
 	rttr::registration::class_<Quantix::Core::Components::Camera>("Camera")
 	.constructor<>()
 	.constructor<const Math::QXvec3&, const Math::QXvec3&, const Math::QXvec3&>()
-	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const Quantix::Core::Components::Camera&>()
 	.constructor<Quantix::Core::Components::Camera&&>()
-	.property("Pos", &Quantix::Core::Components::Camera::GetPos, &Quantix::Core::Components::Camera::SetPos)
-	.property("Up", &Quantix::Core::Components::Camera::GetUp, &Quantix::Core::Components::Camera::SetUp)
-	.property("Dir", &Quantix::Core::Components::Camera::GetDir, &Quantix::Core::Components::Camera::SetDir)
 	.method("Init", &Quantix::Core::Components::Camera::Init)
 	.method("UpdateLookAt", &Quantix::Core::Components::Camera::UpdateLookAt)
 	.method("ChangeView", &Quantix::Core::Components::Camera::ChangeView)
@@ -35,11 +31,6 @@ namespace Quantix::Core::Components
 		_up(up),
 		_angle(Math::QXvec3(0, 0, 0)),
 		_lookAt { Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up) }
-	{
-	}
-
-	Camera::Camera(Core::DataStructure::GameComponent* object) :
-		Quantix::Core::DataStructure::Component(object)
 	{
 	}
 
@@ -91,6 +82,8 @@ namespace Quantix::Core::Components
 		if (_object)
 		{
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(_pos);
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(_angle));
 		}
 	}
 
@@ -115,7 +108,7 @@ namespace Quantix::Core::Components
 		_dir.x = cos(_angle.x) * sin(_angle.y);
 		if (_object)
 		{
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(_angle));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(rotate));
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetUp(((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation() * Math::QXvec3::up);
 		}
