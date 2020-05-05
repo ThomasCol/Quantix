@@ -40,6 +40,11 @@ namespace Quantix::Core::Components
 			 */
 			SoundListener(SoundListener&& copy) noexcept;
 
+			/**
+			 * @brief Construct a new SoundListener object from a game component
+			 *
+			 * @param object game component
+			 */
 			SoundListener(Core::DataStructure::GameComponent* object);
 
 			/**
@@ -54,6 +59,11 @@ namespace Quantix::Core::Components
 
 			SoundListener*	Copy() const override;
 
+			/**
+			 * @brief Initialize the object
+			 *
+			 * @param object game component
+			 */
 			virtual void	Init(Quantix::Core::DataStructure::GameComponent* object) override;
 
 			/**
