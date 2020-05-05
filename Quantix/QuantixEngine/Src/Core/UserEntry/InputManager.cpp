@@ -4,8 +4,6 @@
 
 namespace Quantix::Core::UserEntry
 {
-	InputManager* InputManager::_instance = nullptr;
-
 	void InputManager::Update(GLFWwindow* window)
 	{
 		QXint state;

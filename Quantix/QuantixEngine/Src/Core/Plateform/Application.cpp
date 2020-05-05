@@ -22,6 +22,10 @@ namespace Quantix::Core::Platform
 
 	Application::~Application()
 	{
+		Physic::PhysicHandler::GetInstance()->ReleaseSystem();
+		Physic::PhysicHandler::GetInstance()->Destroy();
+		Threading::TaskSystem::Destroy();
+		delete scene;
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, bool isPlaying)

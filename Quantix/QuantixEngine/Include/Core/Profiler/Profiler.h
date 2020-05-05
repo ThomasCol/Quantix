@@ -121,7 +121,6 @@ namespace Quantix::Core::Profiling
 
 	private:
 		#pragma region Attributes
-		static Profiler*											_instance;
 		std::string													_profiling;
 		std::map<QXstring, Info>									_infoProfiling;
 		QXbool														_activateFirst;

@@ -283,7 +283,6 @@ namespace Quantix::Core::UserEntry
 
 		Math::QXvec2 _cursorPos;
 
-		static	InputManager* _instance;
 		#pragma endregion
 
 		#pragma region Constructors
@@ -296,13 +295,17 @@ namespace Quantix::Core::UserEntry
 
 		InputManager(const InputManager& manager) = delete;
 		InputManager(InputManager&& manager) = delete;
-		~InputManager();
+		~InputManager() = default;
 
 		#pragma endregion
 
 		#pragma region Functions
 
-		inline static InputManager* GetInstance() { _instance == nullptr ? _instance = new InputManager : _instance; return _instance; }
+		inline static InputManager* GetInstance()
+		{
+			static InputManager instance;
+			return &instance;
+		}
 
 		void Update(GLFWwindow* window);
 

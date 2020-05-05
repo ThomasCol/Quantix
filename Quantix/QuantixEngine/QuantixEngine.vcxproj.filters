@@ -101,5 +101,6 @@
     <ClInclude Include="Include\Core\SoundCore.h" />
     <ClInclude Include="Include\Core\Components\SoundEmitter.h" />
     <ClInclude Include="Include\Core\Components\SoundListener.h" />
+    <ClInclude Include="Include\Core\Render\Framebuffers.h" />
   </ItemGroup>
 </Project>

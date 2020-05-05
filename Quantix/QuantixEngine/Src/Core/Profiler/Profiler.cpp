@@ -9,8 +9,6 @@ namespace Quantix::Core::Profiling
 {
 	static QXint currId = 0;
 
-	Profiler* Profiler::_instance = nullptr;
-
 	Profiler::Profiler()
 	{
 	}
@@ -107,8 +105,7 @@ namespace Quantix::Core::Profiling
 
 	Profiler* Profiler::GetInstance()
 	{
-		if (!_instance)
-			_instance = new Profiler();
-		return _instance;
+		static Profiler instance;
+		return &instance;
 	}
 }

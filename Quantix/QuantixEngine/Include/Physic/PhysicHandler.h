@@ -101,6 +101,12 @@ namespace Quantix::Physic
 		 */
 		void		ReleaseSystem();
 
+		/**
+		 * @brief Delete Singleton
+		 *
+		 */
+		void Destroy();
+
 		// 
 		/**
 		 * @brief Return PhysicType Linked to the GameComponent

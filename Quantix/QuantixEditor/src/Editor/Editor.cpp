@@ -74,6 +74,10 @@ Editor::~Editor()
 	_lib.unload();
 
 	delete _app;
+	delete _cameraEditor;
+	delete _defaultCamera;
+	delete _root;
+	delete _mouseInput;
 }
 
 void Editor::InitImg()

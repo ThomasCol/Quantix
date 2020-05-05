@@ -18,13 +18,13 @@ namespace Quantix::Resources
 
 			#pragma region Attributes
 
-			QXstring							_name = "Default";
-			Core::DataStructure::GameObject3D*	_root;
+			QXstring											_name = "Default";
+			Core::DataStructure::GameObject3D*					_root;
 			QXuint												_id;
 
-			std::vector<Core::DataStructure::GameObject3D*> _objects;
+			std::vector<Core::DataStructure::GameObject3D*>		_objects;
 			
-			std::atomic_bool					_isReady { false };
+			std::atomic_bool									_isReady { false };
 
 			#pragma endregion
 
@@ -58,7 +58,7 @@ namespace Quantix::Resources
 			 * @brief Destroy the Scene object
 			 *
 			 */
-			~Scene() = default;
+			~Scene();
 
 			#pragma endregion
 

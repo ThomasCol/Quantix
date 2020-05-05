@@ -31,6 +31,9 @@ namespace Quantix::Core::DataStructure
 
 		for (auto it = _textures.begin(); it != _textures.end(); ++it)
 			delete it->second;
+
+		for (auto it = _sounds.begin(); it != _sounds.end(); ++it)
+			delete it->second;
 	}
 
 #pragma endregion

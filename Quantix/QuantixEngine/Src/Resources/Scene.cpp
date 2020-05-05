@@ -31,6 +31,12 @@ namespace Quantix::Resources
 		_id{ std::move(copy._id) }
 	{}
 
+	Scene::~Scene()
+	{
+		for (QXsizei i = 0; i < _objects.size(); ++i)
+			delete _objects[i];
+	}
+
 	#pragma endregion
 
 	#pragma region Methods
