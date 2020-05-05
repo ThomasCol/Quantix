@@ -157,9 +157,9 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
 	std::vector<Quantix::Core::Components::ICollider*>	colliders;
 
-	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+	if (GetKey(QX_KEY_F2) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 		editor->GetApp()->manager.SaveScene(editor->GetApp()->scene);
-	if (GetKey(QX_KEY_BACKSPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+	if (GetKey(QX_KEY_F3) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		newScene = editor->GetApp()->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
 		sceneChange = true;
