@@ -13,7 +13,7 @@ void MenuBar::FileButton()
 {
 	if (ImGui::BeginMenu("File"))
 	{
-		static bool selection[3] = { false, false, false };
+		static bool selection[3] = { QX_FALSE, QX_FALSE, QX_FALSE };
 		ImGui::Selectable("New Project", &selection[0]);
 		ImGui::Selectable("Save", &selection[1]);
 		ImGui::Selectable("Save As", &selection[2]);
@@ -23,7 +23,7 @@ void MenuBar::FileButton()
 
 void MenuBar::PhysXSettings()
 {
-	if (ImGui::Begin("PhysX Settings", &_winPhysX))
+	if (ImGui::Begin("PhysX Settings", &_winPhysX, ImGuiWindowFlags_NoCollapse))
 	{
 		rttr::instance inst(Quantix::Physic::PhysicHandler::GetInstance());
 		for (auto it = Quantix::Physic::PhysicHandler::GetInstance()->get_type().get_properties().begin(); it != Quantix::Physic::PhysicHandler::GetInstance()->get_type().get_properties().end(); ++it)
@@ -38,15 +38,15 @@ void MenuBar::PhysXSettings()
 		ImGui::End();
 	}
 	else
-		_winPhysX = false;
+		_winPhysX = QX_FALSE;
 }
 
 void MenuBar::Settings(QXbool* selection)
 {
 	if (selection[0])
 	{
-		_winPhysX = true;
-		selection[0] = false;
+		_winPhysX = !_winPhysX;
+		selection[0] = QX_FALSE;
 	}
 }
 
@@ -54,7 +54,7 @@ void MenuBar::EditButton()
 {
 	if (ImGui::BeginMenu("Edit"))
 	{
-		static QXbool selection[2] = { false, false };
+		static QXbool selection[2] = { QX_FALSE, QX_FALSE };
 		ImGui::Selectable("PhysX Settings", &selection[0]);
 		ImGui::Selectable("Preferences", &selection[1]);
 		Settings(selection);
@@ -79,14 +79,14 @@ void MenuBar::AssetButton()
 	{
 		if (ImGui::BeginMenu("Create"))
 		{
-			static QXbool selection[2] = { false, false };
+			static QXbool selection[2] = { QX_FALSE, QX_FALSE };
 			ImGui::Selectable("Material", &selection[0]);
 			ImGui::Selectable("Shader", &selection[1]);
 			ImGui::EndMenu();
 		}
-		static QXbool selection[2] = { false, false };
+		static QXbool selection[2] = { QX_FALSE, QX_FALSE };
 		if (ImGui::Selectable("Show in Explorer", &selection[0]))
-			OpenExplorer(true);
+			OpenExplorer(QX_TRUE);
 		ImGui::Selectable("Import Asset", &selection[1]);
 		ImGui::EndMenu();
 	}
@@ -117,7 +117,7 @@ void MenuBar::CreateGameObject(QXstring name, QXbool& selection, Quantix::Core::
 		app->scene->AddGameObject("GameObject");
 	else
 		app->scene->AddGameObject("GameObject" + std::to_string(i));
-	selection = false;
+	selection = QX_FALSE;
 	i++;
 }
 
@@ -132,7 +132,7 @@ void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, 
 				app->scene->AddGameObject(objectName[i]);
 			else
 				app->scene->AddGameObject(objectName[i] + std::to_string(j[i]));
-			selection[i] = false;
+			selection[i] = QX_FALSE;
 			j[i]++;
 			return;
 		}
@@ -162,7 +162,7 @@ void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectN
 			else
 				mesh = app->manager.CreateMesh(mesh, "media/Mesh/capsule.obj");
 
-			selection[i] = false;
+			selection[i] = QX_FALSE;
 			j[i]++;
 			return;
 		}
@@ -196,7 +196,7 @@ void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectN
 			else
 				obj = app->scene->AddGameObject(objectName[i] + std::to_string(j[i]));
 			CreateComponentLight(obj, objectName, i);
-			selection[i] = false;
+			selection[i] = QX_FALSE;
 			j[i]++;
 			return;
 		}
@@ -208,13 +208,13 @@ void MenuBar::GameObjectButton(Quantix::Core::Platform::Application* app)
 	static QXint id = 0;
 	if (ImGui::BeginMenu("GameObject"))
 	{
-		static QXbool selection = { false };
+		static QXbool selection = { QX_FALSE };
 		ImGui::Selectable("Create Empty", &selection);
 		if (selection)
 			CreateGameObject("GameObject", selection, app);
 		if (ImGui::BeginMenu("3D Object"))
 		{
-			static QXbool selection[3] = { false, false };
+			static QXbool selection[3] = { QX_FALSE, QX_FALSE };
 			ImGui::Selectable("Cube", &selection[0]);
 			ImGui::Selectable("Sphere", &selection[1]);
 			ImGui::Selectable("Capsule", &selection[2]);
@@ -223,7 +223,7 @@ void MenuBar::GameObjectButton(Quantix::Core::Platform::Application* app)
 		}
 		if (ImGui::BeginMenu("Light"))
 		{
-			static QXbool selection[3] = { false, false, false };
+			static QXbool selection[3] = { QX_FALSE, QX_FALSE, QX_FALSE };
 			ImGui::Selectable("Spot Light", &selection[0]);
 			ImGui::Selectable("Point Light", &selection[1]);
 			ImGui::Selectable("Directional Light", &selection[2]);

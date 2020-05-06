@@ -18,8 +18,8 @@ Editor::Editor(QXuint width, QXuint height) :
 	_folder{},
 	_menuBar{},
 	_hierarchy{},
-	_play{ false },
-	_pause{ false }, 
+	_play{ QX_TRUE },
+	_pause{ QX_TRUE },
 	_guizmoType{ ImGuizmo::OPERATION::TRANSLATE },
 	_guizmoMode{ ImGuizmo::MODE::WORLD },
 	_sizeLog{ 0 },
@@ -34,7 +34,7 @@ Editor::Editor(QXuint width, QXuint height) :
 	//Init Callback
 	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
 
-	_mouseInput = new MouseTest({ false, 0.0f, 0.0f, GetMousePos().x, GetMousePos().y });
+	_mouseInput = new MouseTest({ QX_FALSE, 0.0f, 0.0f, GetMousePos().x, GetMousePos().y });
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -49,16 +49,16 @@ Editor::Editor(QXuint width, QXuint height) :
 	ImGui::StyleColorsDark();
 
 	// Setup Platform/Renderer bindings
-	ImGui_ImplGlfw_InitForOpenGL(_win.GetWindow(), true);
+	ImGui_ImplGlfw_InitForOpenGL(_win.GetWindow(), QX_TRUE);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight());
 
 	_root = _app->scene->GetRoot();
 
-	_showTypeLog.push_back(true);
-	_showTypeLog.push_back(true);
-	_showTypeLog.push_back(true);
+	_showTypeLog.push_back(QX_TRUE);
+	_showTypeLog.push_back(QX_TRUE);
+	_showTypeLog.push_back(QX_TRUE);
 	InitImg();
 }
 
@@ -89,8 +89,8 @@ void Editor::InitImg()
 
 	_simImg.insert(std::make_pair("Play", _app->manager.CreateTexture("Other/IconEditor/Simulation/Play.png")));
 	_simImg.insert(std::make_pair("Pause", _app->manager.CreateTexture("Other/IconEditor/Simulation/Pause.png")));
-	_simState.insert(std::make_pair("Play", false));
-	_simState.insert(std::make_pair("Pause", false));
+	_simState.insert(std::make_pair("Play", QX_FALSE));
+	_simState.insert(std::make_pair("Pause", QX_FALSE));
 	_imgGuizmo.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/Translate.png"));
 	_imgGuizmo.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/Rotate.png"));
 	_imgGuizmo.push_back(_app->manager.CreateTexture("Other/IconEditor/Simulation/Scale.png"));
@@ -250,31 +250,31 @@ void Editor::ChangeStateSimulation()
 		if (!_simState["Pause"])
 		{
 			//Update Scene
-			_play = true;
+			_play = QX_TRUE;
 			if (!_activateFocus)
 			{
-				_mouseInput->MouseCaptured = true;
+				_mouseInput->MouseCaptured = QX_TRUE;
 				glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 				Math::QXvec2 mousePos = GetMousePos();
 				_mouseInput->MouseX = mousePos.x;
 				_mouseInput->MouseY = mousePos.y;
 
-				_activateFocus = true;
+				_activateFocus = QX_TRUE;
 			}
 		}
 		else
 		{
-			_pause = true;
-			_activateFocus = false;
+			_pause = QX_TRUE;
+			_activateFocus = QX_FALSE;
 		}
 	}
 	else
 	{
-		_play = false;
-		_pause = false;
-		_simState["Pause"] = false;
-		_activateFocus = false;
+		_play = QX_FALSE;
+		_pause = QX_FALSE;
+		_simState["Pause"] = QX_FALSE;
+		_activateFocus = QX_FALSE;
 	}
 }
 
@@ -338,7 +338,7 @@ void Editor::GuizmoUI()
 void Editor::DrawSimulation()
 {
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
-	ImGui::BeginChild(ImGui::GetID("Editor"), ImVec2(0, 35), false, flags);
+	ImGui::BeginChild(ImGui::GetID("Editor"), ImVec2(0, 35), QX_FALSE, flags);
 	GuizmoUI();
 	Simulation();
 	ChangeStateSimulation();
@@ -364,7 +364,7 @@ void Editor::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& m
 		ImGuizmo::DecomposeMatrixToComponents(matrixTmp2.array, translation.e, rotTmp.e, scale.e);
 		rotTmp = rotTmp * (Q_PI / 180);
 
-		transform->Rotate(Math::QXquaternion::EulerToQuaternion(rotTmp));
+		transform->Rotate(Math::QXquaternion::EulerToQuaternion(-rotTmp));
 	}
 	else
 	{
@@ -412,9 +412,9 @@ void Editor::DrawGuizmo()
 
 void Editor::FocusScene()
 {
-	if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
+	if (ImGui::BeginPopupContextWindow("Context Menu", 1, QX_FALSE))
 	{
-		_mouseInput->MouseCaptured = true;
+		_mouseInput->MouseCaptured = QX_TRUE;
 		glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		Math::QXvec2 mousePos = GetMousePos();
@@ -428,18 +428,18 @@ void Editor::FocusScene()
 
 void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 {
-	static QXbool focus = false;
+	static QXbool focus = QX_FALSE;
 
 	if (!focus)
 	{
 		if (_play)
 		{
 			ImGui::SetWindowFocus(name.c_str());
-			focus = true;
+			focus = QX_TRUE;
 		}
 	}
 	else if (!_play)
-		focus = false;
+		focus = QX_FALSE;
 
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
@@ -453,18 +453,18 @@ void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 
 void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 {
-	static QXbool focus = false;
+	static QXbool focus = QX_FALSE;
 
 	if (!focus)
 	{
 		if (!_play)
 		{
 			ImGui::SetWindowFocus(name.c_str());
-			focus = true;
+			focus = QX_TRUE;
 		}
 	}
 	else if (_play)
-		focus = false;
+		focus = QX_FALSE;
 
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
@@ -529,7 +529,7 @@ void Editor::DrawConsole(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		static QXbool ShowDemoWindow = false;
+		static QXbool ShowDemoWindow = QX_FALSE;
 		// Display GPU infos
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Checkbox("Demo window", &ShowDemoWindow);
@@ -563,10 +563,13 @@ void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		static bool setCamera = false;
+		static bool setCamera = QX_FALSE;
 
 		if (_hierarchy.GetInspector() != nullptr)
 		{
+			if (_root->GetTransform()->FindTransform(_hierarchy.GetInspector()->GetTransform()) == QX_FALSE)
+				_hierarchy.GetInspector()->SetEnable(QX_FALSE);
+			
 			_hierarchy.GetInspector()->Update(_win, _app);
 			if (!setCamera)
 			{
@@ -576,7 +579,7 @@ void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 					if (type == rttr::type::get<Quantix::Core::Components::Camera*>().get_raw_type())
 					{
 						_mainCamera = dynamic_cast<Quantix::Core::Components::Camera*>(_hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponents().back());
-						setCamera = true;
+						setCamera = QX_TRUE;
 					}
 				}
 			}

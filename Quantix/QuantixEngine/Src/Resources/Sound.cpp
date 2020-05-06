@@ -41,8 +41,6 @@ namespace Quantix::Resources
 	Sound::~Sound()
 	{
 		_clip->release();
-		delete _clip;
-		delete _channel;
 	}
 
 	#pragma endregion

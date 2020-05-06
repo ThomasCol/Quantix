@@ -12,7 +12,7 @@
 
 Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
 	_transform{ transform },
-	_enable{ true }
+	_enable{ QX_TRUE }
 {
 }
 
@@ -91,7 +91,7 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 {
 	if (ImGui::BeginPopupContextItem("Context Item"))
 	{
-		QXbool selection = false;
+		QXbool selection = QX_FALSE;
 		
 		ImGui::Selectable("Remove Component", &selection);
 		if (selection)
@@ -109,7 +109,7 @@ void Inspector::ShowComponent()
 		QXuint i = 0;
 		for (auto it : componentsAvailable)
 		{
-			QXbool enable = false;
+			QXbool enable = QX_FALSE;
 			ImGui::PushID(i);
 
 			ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
@@ -225,7 +225,7 @@ void Inspector::DrawMTexturePath(rttr::instance inst, rttr::property currentProp
 			if (pathTmp.find(".png") != QXstring::npos)
 			{
 				path = pathTmp;
-				inst.get_type().invoke("SetChanged", inst, { true });
+				inst.get_type().invoke("SetChanged", inst, { QX_TRUE });
 			}
 			Quantix::Resources::Texture* texture = app->manager.CreateTexture(path);
 			currentProp.set_value(inst, texture);
