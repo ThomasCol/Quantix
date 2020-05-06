@@ -272,6 +272,7 @@ namespace Quantix::Physic
 
 	void PhysicHandler::ReleaseSystem()
 	{
+		collection->release();
 		mCooking->release();
 		PxCloseExtensions();
 		mSDK->release();
