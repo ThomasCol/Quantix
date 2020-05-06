@@ -10,15 +10,17 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const Quantix::Core::Components::ICollider&>()
 	.constructor<Quantix::Core::Components::ICollider&&>()
-	.enumeration<Quantix::Core::Components::EPhysXType>("EPhysXType")
-		(rttr::value("Default", Quantix::Core::Components::EPhysXType::DEFAULT),
-		rttr::value("Directional", Quantix::Core::Components::EPhysXType::STATIC),
-		rttr::value("Point", Quantix::Core::Components::EPhysXType::DYNAMIC),
-		rttr::value("Spot", Quantix::Core::Components::EPhysXType::COUNT))
-	.property("physicType", &Quantix::Core::Components::ICollider::physicType)
+	.enumeration<Quantix::Physic::FilterGroup::Enum>("FilterGroup")
+		(rttr::value("Pawn", Quantix::Physic::FilterGroup::Enum::PAWN),
+		rttr::value("Crab", Quantix::Physic::FilterGroup::Enum::eCRAB),
+		rttr::value("MineHead", Quantix::Physic::FilterGroup::Enum::eMINE_HEAD))
 	.property("ToRender", &Quantix::Core::Components::ICollider::toRender)
 	.property("Local Position", &Quantix::Core::Components::ICollider::GetPosition, &Quantix::Core::Components::ICollider::SetPosition)
 	.property("Local Rotation", &Quantix::Core::Components::ICollider::GetRotation, &Quantix::Core::Components::ICollider::SetRotation)
+	.property("MyGroup", &Quantix::Core::Components::ICollider::GetMyFilterGroup, &Quantix::Core::Components::ICollider::SetMyFilterGroup)
+	.property("GroupCollidePawn", &Quantix::Core::Components::ICollider::GetCollideFilterPawn, &Quantix::Core::Components::ICollider::SetCollideFilterPawn)
+	.property("GroupCollideMine", &Quantix::Core::Components::ICollider::GetCollideFilterMine, &Quantix::Core::Components::ICollider::SetCollideFilterMine)
+	.property("GroupCollideCrab", &Quantix::Core::Components::ICollider::GetCollideFilterCrab, &Quantix::Core::Components::ICollider::SetCollideFilterCrab)
 	.property("Query Shape", &Quantix::Core::Components::ICollider::GetShapeFlagSceneQuery, &Quantix::Core::Components::ICollider::SetShapeFlagSceneQuery)
 	.property("Simulation Shape", &Quantix::Core::Components::ICollider::GetShapeFlagSimulation, &Quantix::Core::Components::ICollider::SetShapeFlagSimulation)
 	.property("Trigger Shape", &Quantix::Core::Components::ICollider::GetShapeFlagTrigger, &Quantix::Core::Components::ICollider::SetShapeFlagTrigger)
@@ -120,6 +122,77 @@ namespace Quantix::Core::Components
 	{
 		physx::PxQuat tmp = physx::PxQuat(q.v.x, q.v.y, q.v.z, q.w);
 		shape->setLocalPose(physx::PxTransform(shape->getLocalPose().p, tmp));
+	}
+
+	void ICollider::SetMyFilterGroup(Physic::FilterGroup::Enum newGroup)
+	{
+		physx::PxFilterData filterData;
+		filterData.word0 = newGroup; // word0 = own ID
+		filterData.word1 = shape->getSimulationFilterData().word1;  // word1 = ID mask to filter pairs that trigger a
+										// contact callback;
+		shape->setSimulationFilterData(filterData);
+	}
+
+	Physic::FilterGroup::Enum ICollider::GetMyFilterGroup()
+	{
+		return (Physic::FilterGroup::Enum)shape->getSimulationFilterData().word0;
+	}
+
+	void ICollider::SetCollideFilterPawn(bool b)
+	{
+		collideFilter.pawn = b;
+
+		physx::PxFilterData filterData;
+		filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
+		
+		physx::PxU32 mask;
+		if (GetCollideFilterCrab())
+			mask |= Physic::FilterGroup::Enum::eCRAB;
+		if (GetCollideFilterPawn())
+			mask |= Physic::FilterGroup::Enum::PAWN;		
+		if (GetCollideFilterMine())
+			mask |= Physic::FilterGroup::Enum::eMINE_HEAD;
+		filterData.word1 = mask;  // word1 = ID mask to filter pairs that trigger a
+								  // contact callback;
+		shape->setSimulationFilterData(filterData);
+	}
+
+	void ICollider::SetCollideFilterMine(bool b)
+	{
+		collideFilter.mine = b;
+
+		physx::PxFilterData filterData;
+		filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
+
+		physx::PxU32 mask;
+		if (GetCollideFilterCrab())
+			mask |= Physic::FilterGroup::Enum::eCRAB;
+		if (GetCollideFilterPawn())
+			mask |= Physic::FilterGroup::Enum::PAWN;
+		if (GetCollideFilterMine())
+			mask |= Physic::FilterGroup::Enum::eMINE_HEAD;
+		filterData.word1 = mask;  // word1 = ID mask to filter pairs that trigger a
+								  // contact callback;
+		shape->setSimulationFilterData(filterData);
+	}
+
+	void ICollider::SetCollideFilterCrab(bool b)
+	{
+		collideFilter.crab = b;
+
+		physx::PxFilterData filterData;
+		filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
+
+		physx::PxU32 mask;
+		if (GetCollideFilterCrab())
+			mask |= Physic::FilterGroup::Enum::eCRAB;
+		if (GetCollideFilterPawn())
+			mask |= Physic::FilterGroup::Enum::PAWN;
+		if (GetCollideFilterMine())
+			mask |= Physic::FilterGroup::Enum::eMINE_HEAD;
+		filterData.word1 = mask;  // word1 = ID mask to filter pairs that trigger a
+								  // contact callback;
+		shape->setSimulationFilterData(filterData);
 	}
 
 	void ICollider::SetShapeFlagSceneQuery(bool b)

@@ -45,6 +45,8 @@ namespace Quantix::Core::Components
 		bool toRender{ true };
 		Math::QXvec3 scale{ 1.f, 1.f, 1.f };
 
+		Physic::CollideGroup collideFilter;
+
 #pragma endregion
 
 #pragma region Constructors
@@ -160,6 +162,16 @@ namespace Quantix::Core::Components
 		 * @param rot new Rotation
 		 */
 		void SetRotation(Math::QXquaternion rot);
+
+		void SetMyFilterGroup(Physic::FilterGroup::Enum newGroup);
+		Physic::FilterGroup::Enum GetMyFilterGroup();
+
+		void SetCollideFilterPawn(bool b);
+		bool GetCollideFilterPawn() { return collideFilter.pawn; };
+		void SetCollideFilterMine(bool b);
+		bool GetCollideFilterMine() { return collideFilter.mine; };
+		void SetCollideFilterCrab(bool b);
+		bool GetCollideFilterCrab() { return collideFilter.crab; };
 
 		/**
 		 * @brief Set the Shape Flag Scene Query object

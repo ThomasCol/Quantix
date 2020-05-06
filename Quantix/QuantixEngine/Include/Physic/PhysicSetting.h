@@ -6,6 +6,24 @@
 
 namespace Quantix::Physic
 {
+	// Filter Collision Group 
+	struct QUANTIX_API FilterGroup
+	{
+		enum Enum
+		{
+			PAWN = (1 << 0),
+			eMINE_HEAD = (1 << 1),
+			eCRAB = (1 << 2),
+		};
+	};
+
+	struct QUANTIX_API CollideGroup
+	{
+		bool pawn = false;
+		bool mine = false;
+		bool crab = false;
+	};
+
 	// Wrapper PxRigidFlag
 	struct QUANTIX_API RigidBodyFlag
 	{
