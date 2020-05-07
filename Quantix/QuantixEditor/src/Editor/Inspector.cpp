@@ -291,7 +291,7 @@ void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property curre
 			DrawSoundEmitterPath(inst, t, currentProp, app);
 }
 
-void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app, rttr::variant metadata)
+void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
 {
 	if (t != rttr::type::get<Quantix::Resources::Texture*>())
 	{
@@ -310,16 +310,37 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 
 		if (open)
 		{
-			if (metadata != nullptr)
-				ImGui::Text(metadata.get_value<QXstring>().c_str());
-
-			QXint index = 0;
+			static QXbool node = false;
+			static QXstring nodeName;
+			QXbool isOpen = false;
+			QXuint index = 0;
 			for (auto it = t.get_properties().begin(); it != t.get_properties().end(); ++it)
 			{
 				rttr::property currentProp = *(it);
 				rttr::type type = currentProp.get_type();
+				rttr::variant meta = currentProp.get_metadata("Description");
 				ImGui::PushID(index);
-				DrawVariable(inst, currentProp, type, app);
+				if (meta.is_valid() && meta.get_value<QXstring>() != "End")
+				{
+					nodeName = meta.get_value<QXstring>();
+					isOpen = ImGui::TreeNodeEx(nodeName.c_str(), ImGuiTreeNodeFlags_Framed);
+					node = true;
+				}
+				if (node)
+				{
+					if (isOpen)
+						DrawVariable(inst, currentProp, type, app);
+				}
+				else
+					DrawVariable(inst, currentProp, type, app);
+				
+
+				if (meta.is_valid() && meta.get_value<QXstring>() == "End")
+				{
+					node = false;
+					if (isOpen)
+						ImGui::TreePop();
+				}
 				ImGui::PopID();
 				index++;
 			}
@@ -458,12 +479,7 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		if (type != rttr::type::get<QXstring>() && type != rttr::type::get<Quantix::Resources::Sound*>() && type != rttr::type::get<FMOD::ChannelGroup*>()
 			&& type != rttr::type::get<Quantix::Resources::Model*>())
 		{
-			rttr::variant value = currentProp.get_metadata("Description");
-
-			if (value.is_valid())
-				GetInstance(currentProp.get_value(inst), type, app, value);
-			else
-				GetInstance(currentProp.get_value(inst), type, app);
+			GetInstance(currentProp.get_value(inst), type, app);
 		}
 	}
 	//	else

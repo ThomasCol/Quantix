@@ -175,6 +175,119 @@ namespace Quantix::Core::Components
 		 * @param q New Rotation Value
 		 */
 		void SetTransformRotation(Math::QXquaternion q);
+
+		/**
+	 * @brief Get the Rigid Flag Kinematic object
+	 *
+	 * @return Value of the Flag
+	 */
+		bool GetRigidFlagKinematic() { return rigidFlag.kinematic; }
+		bool GetRigidFlagCCD() { return rigidFlag.ccd; }
+		bool GetRigidFlagCCDFriction() { return rigidFlag.ccdFriction; }
+		bool GetRigidFlagSpeculativeCCD() { return rigidFlag.speculativeCCD; }
+		bool GetRigidFlagRetainAcceleration() { return rigidFlag.retainAcceleration; }
+		bool GetRigidFlagKineForQueries() { return rigidFlag.useKinematicTargetForQueries; }
+		bool GetRigidFlagPosePreview() { return rigidFlag.poseIntegrationPreview; }
+		bool GetRigidFlagCCDMaxContactImpulse() { return rigidFlag.ccdMaxContactImpulse; }
+
+
+		void SetRigidFlagCCD(bool b)
+		{
+			rigidFlag.ccd = b;
+			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, b);
+		}
+
+		void SetRigidFlagCCDFriction(bool b)
+		{
+			rigidFlag.ccdFriction = b;
+			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD_FRICTION, b);
+		}
+
+		void SetRigidFlagSpeculativeCCD(bool b)
+		{
+			rigidFlag.speculativeCCD = b;
+			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, b);
+		}
+
+		/**
+		 * @brief Set the Rigid Flag Kinematic object
+		 *
+		 * @param b new Value of the flag
+		 */
+		void SetRigidFlagKinematic(bool b)
+		{
+			rigidFlag.kinematic = b;
+			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, b);
+		}
+
+		void SetRigidFlagRetainAcceleration(bool b)
+		{
+			rigidFlag.retainAcceleration = b;
+			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eRETAIN_ACCELERATIONS, b);
+		}
+
+		void SetRigidFlagKineForQueries(bool b)
+		{
+			rigidFlag.useKinematicTargetForQueries = b;
+			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eUSE_KINEMATIC_TARGET_FOR_SCENE_QUERIES, b);
+		}
+
+		void SetRigidFlagPosePreview(bool b)
+		{
+			rigidFlag.poseIntegrationPreview = b;
+			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_POSE_INTEGRATION_PREVIEW, b);
+		}
+
+		void SetRigidFlagCCDMaxContactImpulse(bool b)
+		{
+			rigidFlag.ccdMaxContactImpulse = b;
+			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD_MAX_CONTACT_IMPULSE, b);
+		}
+
+
+		/**
+		 * @brief Set the Actor Flag Disable Gravity object
+		 *
+		 * @param b new Value of the Flag
+		 */
+		void SetActorFlagDisableGravity(bool b)
+		{
+			actorFlag.disableGravity = b;
+			actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, b);
+		}
+
+		/**
+		 * @brief Set the Actor Flag Disable Simulation object
+		 *
+		 * @param b new Value of the Flag
+		 */
+		void SetActorFlagDisableSimulation(bool b)
+		{
+			actorFlag.disableSimulation = b;
+			actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, b);
+		}
+
+		void SetActorFlagSendSleepNotifies(bool b)
+		{
+			actorFlag.sendSleepNotifies = b;
+			actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eSEND_SLEEP_NOTIFIES, b);
+		}
+
+		/**
+		 * @brief Get the Actor Flag Disable Gravity object
+		 *
+		 * @return Value of the flag
+		 */
+		bool GetActorFlagDisableGravity() { return actorFlag.disableGravity; }
+
+		/**
+		* @brief Get the Actor Flag Disable Simulation object
+		*
+		* @return Value of the flag
+		*/
+		bool GetActorFlagDisableSimulation() { return actorFlag.disableSimulation; }
+
+		bool GetActorFlagSendSleepNotifies() { return actorFlag.sendSleepNotifies; }
 #pragma endregion 
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);

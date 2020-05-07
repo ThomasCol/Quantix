@@ -170,7 +170,7 @@ public:
 	 * @param t 
 	 * @param app 
 	 */
-	void													GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app, rttr::variant metadata = nullptr);
+	void													GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Show Enum

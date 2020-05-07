@@ -19,27 +19,22 @@ RTTR_PLUGIN_REGISTRATION
 	.property("LinearVelocity", &Quantix::Core::Components::Rigidbody::GetLinearVelocity, &Quantix::Core::Components::Rigidbody::SetLinearVelocity)
 	.property("AngularVelocity", &Quantix::Core::Components::Rigidbody::GetAngularVelocity, &Quantix::Core::Components::Rigidbody::SetAngularVelocity)
 	.property("Position", &Quantix::Core::Components::Rigidbody::GetTransformPosition, &Quantix::Core::Components::Rigidbody::SetTransformPosition)
-	.property("Rotation", &Quantix::Core::Components::Rigidbody::GetTransformRotation, &Quantix::Core::Components::Rigidbody::SetTransformRotation)
-	.property("Actor Flag", &Quantix::Core::Components::Rigidbody::actorFlag)
-			(rttr::metadata("Description", "The following information are Actor flags.\n\n"))
-	.property("RigidBody Flag", &Quantix::Core::Components::Rigidbody::rigidFlag)
-			(rttr::metadata("Description", "The following information are RigidBody flags.\n\n"));
+	.property("Rotation", &Quantix::Core::Components::Rigidbody::GetTransformRotation, &Quantix::Core::Components::Rigidbody::SetTransformRotation)			
+	.property("DisableGravity", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableGravity, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableGravity)
+			(rttr::metadata("Description", "Actor Flags"))
+	.property("DisableSimulation", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableSimulation, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableSimulation)
+			(rttr::metadata("Description", "End"))
+	.property("Kinematic", &Quantix::Core::Components::Rigidbody::GetRigidFlagKinematic, &Quantix::Core::Components::Rigidbody::SetRigidFlagKinematic)
+			(rttr::metadata("Description", "Rigid Flags"))
+	.property("CCD", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCD, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCD)
+	.property("CCDFriction", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCDFriction, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCDFriction)
+	.property("SpeculativeCCD", &Quantix::Core::Components::Rigidbody::GetRigidFlagSpeculativeCCD, &Quantix::Core::Components::Rigidbody::SetRigidFlagSpeculativeCCD)
+	.property("RetainAcceleration", &Quantix::Core::Components::Rigidbody::GetRigidFlagRetainAcceleration, &Quantix::Core::Components::Rigidbody::SetRigidFlagRetainAcceleration)
+	.property("KinematicQueries", &Quantix::Core::Components::Rigidbody::GetRigidFlagKineForQueries, &Quantix::Core::Components::Rigidbody::SetRigidFlagKineForQueries)
+	.property("PoseIntPreview", &Quantix::Core::Components::Rigidbody::GetRigidFlagPosePreview, &Quantix::Core::Components::Rigidbody::SetRigidFlagPosePreview)
+	.property("CCDMaxImpulse", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCDMaxContactImpulse, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCDMaxContactImpulse)
+			(rttr::metadata("Description", "End"));
 
-	rttr::registration::class_<Quantix::Physic::RigidBodyFlag>("RigidBody Flag")
-		.constructor<>()
-		.property("Kinematic", &Quantix::Physic::RigidBodyFlag::GetRigidFlagKinematic, &Quantix::Physic::RigidBodyFlag::SetRigidFlagKinematic)
-		.property("CCD", &Quantix::Physic::RigidBodyFlag::GetRigidFlagCCD, &Quantix::Physic::RigidBodyFlag::SetRigidFlagCCD)
-		.property("CCDFriction", &Quantix::Physic::RigidBodyFlag::GetRigidFlagCCDFriction, &Quantix::Physic::RigidBodyFlag::SetRigidFlagCCDFriction)
-		.property("SpeculativeCCD", &Quantix::Physic::RigidBodyFlag::GetRigidFlagSpeculativeCCD, &Quantix::Physic::RigidBodyFlag::SetRigidFlagSpeculativeCCD)
-		.property("RetainAcceleration", &Quantix::Physic::RigidBodyFlag::GetRigidFlagRetainAcceleration, &Quantix::Physic::RigidBodyFlag::SetRigidFlagRetainAcceleration)
-		.property("KinematicQueries", &Quantix::Physic::RigidBodyFlag::GetRigidFlagKineForQueries, &Quantix::Physic::RigidBodyFlag::SetRigidFlagKineForQueries)
-		.property("PoseIntPreview", &Quantix::Physic::RigidBodyFlag::GetRigidFlagPosePreview, &Quantix::Physic::RigidBodyFlag::SetRigidFlagPosePreview)
-		.property("CCDMaxImpulse", &Quantix::Physic::RigidBodyFlag::GetRigidFlagCCDMaxContactImpulse, &Quantix::Physic::RigidBodyFlag::SetRigidFlagCCDMaxContactImpulse);
-
-	rttr::registration::class_<Quantix::Physic::ActorFlag>("Actor Flag")
-		.constructor<>()
-		.property("DisableGravity", &Quantix::Physic::ActorFlag::GetActorFlagDisableGravity, &Quantix::Physic::ActorFlag::SetActorFlagDisableGravity)
-		.property("DisableSimulation", &Quantix::Physic::ActorFlag::GetActorFlagDisableSimulation, &Quantix::Physic::ActorFlag::SetActorFlagDisableSimulation);
 }
 
 namespace Quantix::Core::Components
@@ -83,8 +78,6 @@ namespace Quantix::Core::Components
 		_isEnable = true;
 
 		actorPhysic = (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(par, true);
-		actorFlag.actorPhysic = actorPhysic;
-		rigidFlag.actorPhysic = actorPhysic;
 	}
 
 	void Rigidbody::Destroy()
