@@ -492,6 +492,21 @@ namespace Quantix::Physic
 		}
 	}
 
+	void PhysicHandler::CleanScene()
+	{
+		for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
+		{
+			IPhysicType* type = it->second;
+			PxActor* actor;
+			if (type->GetType() == ETypePhysic::STATIC)
+				actor = type->GetObjectStatic()->GetRigid();
+			else
+				actor = type->GetObjectDynamic()->GetRigid();
+
+			mScene->removeActor(*actor);
+		}
+	}
+
 #pragma region FlagSetters
 	void PhysicHandler::SetFlagAdaptiveForce(bool b)
 	{

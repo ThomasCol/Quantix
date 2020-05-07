@@ -202,6 +202,8 @@ namespace Quantix::Physic
 
 		void Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Raycast& ownRaycast);
 
+		void CleanScene();
+
 #pragma region Operators
 
 		PhysicHandler& operator=(const PhysicHandler& other) = delete;
