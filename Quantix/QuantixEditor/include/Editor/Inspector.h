@@ -190,6 +190,8 @@ public:
 	 */
 	void													ShowSoundModeEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
 
+	void			ShowEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
+
 	/**
 	 * @brief Look Type of Instance or Property
 	 * 

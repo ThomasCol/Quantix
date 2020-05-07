@@ -178,6 +178,7 @@ private:
 	Quantix::Resources::Texture*	_vcxprojGLu{ nullptr };
 	Quantix::Resources::Texture*	_fileGLu{ nullptr };
 	Quantix::Resources::Texture*	_imgFileGLu{ nullptr };
+	Quantix::Resources::Texture*	_imgMp3GLu{ nullptr };
 };
 
 #endif // !_FOLDER_H_

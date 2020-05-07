@@ -147,7 +147,7 @@ namespace Quantix::Core::Components
 			 *
 			 * @return QXbool Setted successfully value
 			 */
-			void	SetSoundMode(Resources::ESoundMode mode);
+			void								SetSoundMode(Resources::ESoundMode mode);
 
 			/**
 			 * @brief Set Loop
