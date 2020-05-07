@@ -367,3 +367,4 @@ MigrationBackup/
 
 *.quantix
 Quantix/QuantixEngine/externals/*
+Quantix/QuantixEngine/dll/*

@@ -59,7 +59,7 @@ namespace Quantix::Core::DataStructure
 			return comp;
 		}
 
-		inline void				AddComponent(Quantix::Core::DataStructure::Component* comp)
+		inline void		AddComponent(Quantix::Core::DataStructure::Component* comp)
 		{
 			_component.push_back(comp);
 			Components::Behaviour* beha = dynamic_cast<Components::Behaviour*>(comp);

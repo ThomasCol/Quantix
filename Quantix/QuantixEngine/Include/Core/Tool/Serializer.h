@@ -17,19 +17,15 @@ namespace Quantix::Core::Tool
 		void DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, DataStructure::GameObject3D* parent,
 			DataStructure::ResourcesManager* manager);
 
-		void ReadCamera(Components::Camera* camera, rapidjson::Value& val);
-
 		void ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager* manager);
 
-		void ReadLight(Components::Light* light, rapidjson::Value& val);
-
-		void ReadMesh(Components::Mesh* Mesh, rapidjson::Value& val, DataStructure::ResourcesManager* manager);
+		void ReadInstance(rttr::instance inst, rttr::type type, rttr::property currentProp, rapidjson::Value& value, DataStructure::ResourcesManager* manager);
 
 		void ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val);
 
-		void ReadVec3(Math::QXvec3& vec, rapidjson::Value& val);
+		Math::QXvec3 ReadVec3(rapidjson::Value& val);
 
-		void ReadQuat(Math::QXquaternion& quat, rapidjson::Value& val);
+		Math::QXquaternion ReadQuat(rapidjson::Value& val);
 
 		void SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 

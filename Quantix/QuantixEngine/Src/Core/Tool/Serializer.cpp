@@ -85,82 +85,96 @@ namespace Quantix::Core::Tool
 			DeserializeRecursive(scene, i, childs[i], object, manager);
 	}
 
-	void Serializer::ReadCamera(Components::Camera* camera, rapidjson::Value& val)
-	{
-		Math::QXvec3 vec;
-		ReadVec3(vec, val.FindMember("Pos")->value);
-		camera->SetPos(vec);
-		ReadVec3(vec, val.FindMember("Up")->value);
-		camera->SetUp(vec);
-		ReadVec3(vec, val.FindMember("Dir")->value);
-		camera->SetDir(vec);
-	}
-
 	void Serializer::ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager* manager)
 	{
-		rapidjson::Value::MemberIterator ret = val.FindMember("Mesh");
-		if (ret != val.MemberEnd())
+		rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
+		rapidjson::Value& val2 = val.GetObject().MemberBegin()[0].value;
+		for (auto it : componentsAvailable)
 		{
-			Components::Mesh* mesh = object->AddComponent<Components::Mesh>();
-			mesh->Init(object);
-			ReadMesh(mesh, ret->value, manager);
-		}
-		ret = val.FindMember("Light");
-		if (ret != val.MemberEnd())
-		{
-			Components::Light* light = object->AddComponent<Components::Light>();
-			light->Init(object);
-			ReadLight(light, ret->value);
-		}
-		ret = val.FindMember("Camera");
-		if (ret != val.MemberEnd())
-		{
-			Components::Camera* camera = object->AddComponent<Components::Camera>();
-			camera->Init(object);
-			ReadCamera(camera, ret->value);
-		}
-		ret = val.FindMember("Rigidbody");
-		if (ret != val.MemberEnd())
-		{
-			object->AddComponent<Components::Rigidbody>()->Init(object);
-		}
-		ret = val.FindMember("CubeCollider");
-		if (ret != val.MemberEnd())
-		{
-			Components::CubeCollider* collider = object->AddComponent<Components::CubeCollider>();
-			collider->Init(object);
-			Math::QXvec3 vec;
-			ReadVec3(vec, ret->value.FindMember("HalfExtent")->value);
-			collider->SetHalfExtents(vec);
-		}
-		ret = val.FindMember("SphereCollider");
-		if (ret != val.MemberEnd())
-		{
-			Components::SphereCollider* collider = object->AddComponent<Components::SphereCollider>();
-			collider->Init(object);
-			collider->SetRadius(ret->value.FindMember("Radius")->value.GetFloat());
+			if (it.get_name() == val.GetObject().MemberBegin()[0].name.GetString())
+			{
+				object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+				Quantix::Core::DataStructure::Component* comp = object->GetComponents().back();
+				comp->Init(object);
+				rttr::type type = comp->get_type();
+				for (QXsizei i = 0; i < val2.MemberCount(); ++i)
+				{
+					for (auto it = type.get_properties().begin(); it != type.get_properties().end(); ++it)
+					{
+						if ((*it).get_name() == val2.MemberBegin()[i].name.GetString())
+							ReadInstance(comp, (*it).get_type(), (*it), val2.MemberBegin()[i].value, manager);
+					}
+				}
+			}
 		}
 	}
 
-	void Serializer::ReadLight(Components::Light* light, rapidjson::Value& val)
+	void Serializer::ReadInstance(rttr::instance inst, rttr::type type, rttr::property currentProp, rapidjson::Value& value, DataStructure::ResourcesManager* manager)
 	{
-		ReadVec3(light->direction, val.FindMember("direction")->value);
-		ReadVec3(light->position, val.FindMember("position")->value);
-		ReadVec3(light->ambient, val.FindMember("ambient")->value);
-		ReadVec3(light->diffuse, val.FindMember("diffuse")->value);
-		ReadVec3(light->specular, val.FindMember("specular")->value);
-		light->constant = val.FindMember("constant")->value.GetFloat();
-		light->linear = val.FindMember("linear")->value.GetFloat();
-		light->quadratic = val.FindMember("quadratic")->value.GetFloat();
-		light->cutOff = val.FindMember("cutOff")->value.GetFloat();
-		light->outerCutOff = val.FindMember("outerCutOff")->value.GetFloat();
-		light->type = (Components::ELightType)val.FindMember("type")->value.GetInt();
-	}
-
-	void Serializer::ReadMesh(Components::Mesh* mesh, rapidjson::Value& val, DataStructure::ResourcesManager* manager)
-	{
-		mesh->SetActive(val.FindMember("Enable")->value.GetBool());
-		manager->CreateMesh(mesh, val.FindMember("Model")->value.GetString(), val.FindMember("Material")->value.GetString());
+		if (type == rttr::type::get<QXbool>())
+		{
+			QXbool tesGrandMort = value.GetBool();
+			currentProp.set_value(inst, value.GetBool());
+		}
+		else if (type == rttr::type::get<QXfloat>())
+		{
+			currentProp.set_value(inst, value.GetFloat());
+		}
+		else if (type == rttr::type::get<QXdouble>())
+		{
+			currentProp.set_value(inst, value.GetDouble());
+		}
+		else if (type == rttr::type::get<QXint>())
+		{
+			currentProp.set_value(inst, value.GetInt());
+		}
+		else if (type == rttr::type::get<QXuint32>())
+		{
+			currentProp.set_value(inst, value.GetUint());
+		}
+		else if (type == rttr::type::get<QXsizei>())
+		{
+			currentProp.set_value(inst, value.GetUint64());
+		}
+		else if (type == rttr::type::get<QXstring>())
+		{
+			currentProp.set_value(inst, value.GetString());
+		}
+		else if (type == rttr::type::get<Components::ELightType>())
+		{
+			//currentProp.set_value(inst, value.GetInt());
+		}
+		else if (type == rttr::type::get<Math::QXvec3>())
+		{
+			Math::QXvec3 vec = ReadVec3(value);
+			currentProp.set_value(inst, ReadVec3(value));
+		}
+		else if (type == rttr::type::get<Math::QXquaternion>())
+		{
+			currentProp.set_value(inst, ReadQuat(value));
+		}
+		else if (type.is_class() || (type.is_pointer() && type.get_raw_type().is_class()))
+		{
+			if (type == rttr::type::get<Resources::Material*>() || type.get_raw_type() == rttr::type::get<Resources::Material*>())
+			{
+				currentProp.set_value(inst, manager->CreateMaterial(value.GetString()));
+				return;
+			}
+			else if (type == rttr::type::get<Resources::Model*>() || type.get_raw_type() == rttr::type::get<Resources::Model*>())
+			{
+				currentProp.set_value(inst, manager->CreateModel(value.GetString()));
+				return;
+			}
+			
+			for (QXsizei i = 0; i < value.MemberCount(); ++i)
+			{
+				for (auto it = type.get_properties().begin(); it != type.get_properties().end(); ++it)
+				{
+					if ((*it).get_name() == value.MemberBegin()[0].name.GetString())
+						ReadInstance(currentProp.get_value(inst), (*it).get_type(), (*it), value.MemberBegin()[0].value, manager);
+				}
+			}
+		}
 	}
 
 	void Serializer::WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
@@ -211,17 +225,17 @@ namespace Quantix::Core::Tool
 
 		writer.String("Components");
 		writer.StartArray();
-		writer.StartObject();
 		for (QXsizei i = 0; i < transform->GetObject()->GetComponents().size(); ++i)
 		{
+			writer.StartObject();
 			auto comp = transform->GetObject()->GetComponents()[i];
 			if (transform->GetObject()->GetComponents()[i] != nullptr)
 			{
 				rttr::type t = transform->GetObject()->GetComponents()[i]->get_type();
 				WriteComponent(comp, t, writer);
 			}
+			writer.EndObject();
 		}
-		writer.EndObject();
 		writer.EndArray();
 
 		writer.String("Childs");
@@ -328,30 +342,31 @@ namespace Quantix::Core::Tool
 
 	void Serializer::ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val)
 	{
-		Math::QXvec3 vec;
-		Math::QXquaternion quat;
-		ReadVec3(vec, val.FindMember("position")->value);
-		transform->SetPosition(vec);
+		transform->SetPosition(ReadVec3(val.FindMember("position")->value));
 
-		ReadQuat(quat, val.FindMember("rotation")->value);
-		transform->SetRotation(quat);
+		transform->SetRotation(ReadQuat(val.FindMember("rotation")->value));
 
-		ReadVec3(vec, val.FindMember("scale")->value);
-		transform->SetScale(vec);
+		transform->SetScale(ReadVec3(val.FindMember("scale")->value));
 	}
 
-	void Serializer::ReadVec3(Math::QXvec3& vec, rapidjson::Value& val)
+	Math::QXvec3 Serializer::ReadVec3(rapidjson::Value& val)
 	{
+		Math::QXvec3 vec;
 		vec.x = (QXfloat)val.FindMember("x")->value.GetDouble();
 		vec.y = (QXfloat)val.FindMember("y")->value.GetDouble();
 		vec.z = (QXfloat)val.FindMember("z")->value.GetDouble();
+
+		return vec;
 	}
 
-	void Serializer::ReadQuat(Math::QXquaternion& quat, rapidjson::Value& val)
+	Math::QXquaternion Serializer::ReadQuat(rapidjson::Value& val)
 	{
+		Math::QXquaternion quat;
 		quat.v.x = (QXfloat)val.FindMember("x")->value.GetDouble();
 		quat.v.y = (QXfloat)val.FindMember("y")->value.GetDouble();
 		quat.v.z = (QXfloat)val.FindMember("z")->value.GetDouble();
 		quat.w = (QXfloat)val.FindMember("w")->value.GetDouble();
+
+		return quat;
 	}
 }
