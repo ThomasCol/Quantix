@@ -107,7 +107,6 @@ namespace Quantix::Physic
 		 */
 		void Destroy();
 
-		// 
 		/**
 		 * @brief Return PhysicType Linked to the GameComponent
 		 * 
