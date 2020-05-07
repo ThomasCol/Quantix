@@ -11,9 +11,9 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<const char*>()
 	.constructor<const Quantix::Resources::Sound&>()
 	.constructor<Quantix::Resources::Sound&&>()
-	.enumeration<Quantix::Resources::ESoundMode>("ELightType")
-					 (rttr::value("Default", Quantix::Resources::ESoundMode::QX_2D),
-					 rttr::value("Directional", Quantix::Resources::ESoundMode::QX_3D));
+	.enumeration<Quantix::Resources::ESoundMode>("Sound Type")
+					 (rttr::value("QX_2D", Quantix::Resources::ESoundMode::QX_2D),
+					 rttr::value("QX_3D", Quantix::Resources::ESoundMode::QX_3D));
 }
 
 namespace Quantix::Resources
@@ -41,8 +41,6 @@ namespace Quantix::Resources
 	Sound::~Sound()
 	{
 		_clip->release();
-		delete _clip;
-		delete _channel;
 	}
 
 	#pragma endregion

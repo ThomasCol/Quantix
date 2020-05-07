@@ -1,7 +1,7 @@
 #ifndef __TRANSFORM3D_H__
 #define __TRANSFORM3D_H__
 
-#include <vector>
+#include <list>
 #include <Quaternion.h>
 #include <Vec3.h>
 #include "Core/DLLHeader.h"
@@ -31,7 +31,7 @@ namespace Quantix::Physic
 
 			Math::QXmat4								_trs;
 
-			std::vector<Transform3D*>					_childs;
+			std::list<Transform3D*>						_childs;
 
 			Quantix::Core::DataStructure::GameObject3D* _gameObject;
 
@@ -170,7 +170,8 @@ namespace Quantix::Physic
 
 			inline Core::DataStructure::GameObject3D*		GetObject() const { return _gameObject; };
 
-			inline std::vector<Transform3D*>&				GetChilds() { return _childs; };
+			inline std::list<Transform3D*>&					GetChilds() { return _childs; };
+
 		#pragma endregion
 
 		#pragma region Functions
@@ -210,6 +211,7 @@ namespace Quantix::Physic
 			 */
 			void											AddChild(Transform3D* child);
 
+			QXbool											FindTransform(Transform3D* toFind);
 			template<class Archive>
 			void save(Archive& archive) const
 			{

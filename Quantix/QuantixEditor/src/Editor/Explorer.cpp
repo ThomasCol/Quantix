@@ -128,15 +128,18 @@ void Explorer::DrawFile(QXint& index)
 
 		if (name.find(".cpp") != std::string::npos)
 			PushId(_folder.GetIDCPP(), name, index);
+		else if (name.find(".png") != std::string::npos || name.find(".jpg") != std::string::npos
+				|| name.find(".jpeg") != std::string::npos || name.find(".hdr") != std::string::npos)
+			PushId(_folder.GetIDImg(), name, index);
 		else if (name.find(".h") != std::string::npos)
 			PushId(_folder.GetIDH(), name, index);
 		else if (name.find(".sln") != std::string::npos)
 			PushId(_folder.GetIDSLN(), name, index);
 		else if (name.find(".vcxproj") != std::string::npos)
 			PushId(_folder.GetIDVCXPROJ(), name, index);
-		else if (name.find(".png") != std::string::npos || name.find(".jpg") != std::string::npos
-				|| name.find(".jpeg") != std::string::npos)
-			PushId(_folder.GetIDImg(), name, index);
+		else if (name.find(".mp3") != std::string::npos || name.find(".wav") != std::string::npos || name.find(".ogg") != std::string::npos
+			|| name.find(".flac") != std::string::npos || name.find(".aif") != std::string::npos)
+			PushId(_folder.GetIDVCXPROJ(), name, index);
 		else
 			PushId(_folder.GetIDFile(), name, index);
 

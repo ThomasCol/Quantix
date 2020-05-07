@@ -23,8 +23,10 @@ namespace Quantix::Physic
 		_up{ t._up },
 		_trs{ t._trs }
 	{
-		for (QXsizei i = 0; i < t._childs.size(); ++i)
-			_childs.push_back(t._childs[i]);
+		for (auto it = t._childs.begin(); it != t._childs.end(); ++it)
+		{
+			_childs.push_back(*it);
+		}
 	}
 
 	Transform3D::Transform3D(Transform3D&& t) noexcept:
@@ -198,6 +200,20 @@ namespace Quantix::Physic
 	void	Transform3D::AddChild(Transform3D* child)
 	{
 		_childs.push_back(child);
+	}
+
+	QXbool Transform3D::FindTransform(Transform3D* toFind)
+	{
+		for (auto it = _childs.begin(); it != _childs.end(); ++it)
+		{
+			if ((*it)->_childs.size() > 0)
+				if ((*it)->FindTransform(toFind))
+					return QX_TRUE;
+
+			if ((*it)->GetObject()->GetName() == toFind->GetObject()->GetName())
+				return QX_TRUE;
+		}
+		return QX_FALSE;
 	}
 
 	#pragma endregion

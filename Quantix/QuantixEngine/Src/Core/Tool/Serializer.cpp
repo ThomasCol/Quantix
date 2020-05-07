@@ -226,11 +226,13 @@ namespace Quantix::Core::Tool
 
 		writer.String("Childs");
 		writer.StartArray();
-		for (QXint i = 0; i < transform->GetChilds().size(); ++i)
+		QXuint idx = 0;
+		for (auto it = transform->GetChilds().begin(); it != transform->GetChilds().end(); ++it)
 		{
 			writer.StartObject();
-			SerializeRecursive(transform->GetChilds()[i], i, writer);
+			SerializeRecursive((*it), idx, writer);
 			writer.EndObject();
+			idx++;
 		}
 		writer.EndArray();
 		writer.EndObject();

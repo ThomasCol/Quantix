@@ -141,7 +141,7 @@ public:
 
 private:
 	#pragma region Attributes
-	QXbool		_winPhysX{ false };
+	QXbool		_winPhysX{ QX_FALSE };
 	#pragma endregion Attributes
 };
 

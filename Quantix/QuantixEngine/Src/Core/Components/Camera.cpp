@@ -59,8 +59,8 @@ namespace Quantix::Core::Components
 	void Camera::Init(Core::DataStructure::GameComponent* object)
 	{
 		_object = object;
-		_isDestroyed = false;
-		_isEnable = true;
+		_isDestroyed = QX_FALSE;
+		_isEnable = QX_TRUE;
 		_dir = Math::QXvec3(0, 0, 1);
 		_up = Math::QXvec3(0, 1, 0);
 		if (_object)
