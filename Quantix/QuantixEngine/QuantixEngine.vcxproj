@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Physic\Raycast.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\Bloom.cpp" />
     <ClCompile Include="Src\Core\Threading\TaskSystem.cpp" />
     <ClCompile Include="Src\Core\Tool\Serializer.cpp" />
@@ -301,6 +302,7 @@
     <ClInclude Include="Include\Physic\PhysicStatic.h" />
     <ClInclude Include="Include\Physic\PhysicHandler.h" />
     <ClInclude Include="Include\Physic\SimulationCallback.h" />
+    <ClInclude Include="Include\Physic\Raycast.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

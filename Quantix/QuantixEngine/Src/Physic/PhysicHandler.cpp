@@ -474,6 +474,20 @@ namespace Quantix::Physic
 		}
 	}
 
+	void PhysicHandler::Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Physic::Raycast& ownRaycast)
+	{
+		PxRaycastBuffer hitRaycast;                 // resultat du ray cast apres test
+
+		ownRaycast.status = mScene->raycast(PxVec3(origin.x, origin.y, origin.z), PxVec3(unitDir.x, unitDir.y, unitDir.z), distMax, hitRaycast);
+		if (ownRaycast.status && hitRaycast.hasBlock)
+		{
+			ownRaycast.normalClosestBlock = Math::QXvec3(hitRaycast.block.normal.x, hitRaycast.block.normal.y, hitRaycast.block.normal.z);
+			ownRaycast.positionClosestBlock = Math::QXvec3(hitRaycast.block.position.x, hitRaycast.block.position.y, hitRaycast.block.position.z);
+			ownRaycast.distanceClosestBlock = hitRaycast.block.distance;
+			ownRaycast.actorClosestBlock = (Core::DataStructure::GameObject3D*)hitRaycast.block.actor->userData;
+		}
+	}
+
 #pragma region FlagSetters
 	void PhysicHandler::SetFlagAdaptiveForce(bool b)
 	{
