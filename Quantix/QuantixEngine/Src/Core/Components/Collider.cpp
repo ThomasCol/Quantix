@@ -21,11 +21,11 @@ RTTR_PLUGIN_REGISTRATION
 	.property("Collide Group", &ICollider::collideFilter)
 	.property("Shape Flag", &ICollider::shapeFlag);
 
-	rttr::registration::class_<Quantix::Physic::CollideGroup>("CollideGroup")
+	rttr::registration::class_<Quantix::Physic::CollideGroup>("Collide Group")
 		.constructor<>()
-		.property("Pawn", &Quantix::Physic::CollideGroup::GetCollideFilterPawn, &Quantix::Physic::CollideGroup::SetCollideFilterPawn)
-		.property("Mine", &Quantix::Physic::CollideGroup::GetCollideFilterMine, &Quantix::Physic::CollideGroup::SetCollideFilterMine)
-		.property("Crab", &Quantix::Physic::CollideGroup::GetCollideFilterCrab, &Quantix::Physic::CollideGroup::SetCollideFilterCrab);
+		.property("PawnGroup", &Quantix::Physic::CollideGroup::GetCollideFilterPawn, &Quantix::Physic::CollideGroup::SetCollideFilterPawn)
+		.property("MineGroup", &Quantix::Physic::CollideGroup::GetCollideFilterMine, &Quantix::Physic::CollideGroup::SetCollideFilterMine)
+		.property("CrabGroup", &Quantix::Physic::CollideGroup::GetCollideFilterCrab, &Quantix::Physic::CollideGroup::SetCollideFilterCrab);
 
 	rttr::registration::class_<Quantix::Physic::ShapeFlag>("Shape Flag")
 	.constructor<>()

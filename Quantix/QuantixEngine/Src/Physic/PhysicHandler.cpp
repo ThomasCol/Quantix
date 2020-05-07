@@ -494,17 +494,17 @@ namespace Quantix::Physic
 
 	void PhysicHandler::CleanScene()
 	{
-		for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
-		{
-			IPhysicType* type = it->second;
-			PxActor* actor;
-			if (type->GetType() == ETypePhysic::STATIC)
-				actor = type->GetObjectStatic()->GetRigid();
-			else
-				actor = type->GetObjectDynamic()->GetRigid();
+		int numActorsDynamic = mScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+		PxActor** actorsDyna = (PxActor**)malloc(sizeof(PxActor*) * numActorsDynamic);
+		mScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, actorsDyna, numActorsDynamic);
 
-			mScene->removeActor(*actor);
-		}
+		mScene->removeActors(actorsDyna, numActorsDynamic);
+
+		int numActorsStatic = mScene->getNbActors(PxActorTypeFlag::eRIGID_STATIC);
+		PxActor** actorsStat = (PxActor**)malloc(sizeof(PxActor*) * numActorsStatic);
+		mScene->getActors(PxActorTypeFlag::eRIGID_STATIC, actorsStat, numActorsStatic);
+
+		mScene->removeActors(actorsStat, numActorsStatic);
 	}
 
 #pragma region FlagSetters

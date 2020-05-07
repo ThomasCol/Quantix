@@ -19,6 +19,7 @@
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/UserEntry/InputManager.h>
 #include <Core/SoundCore.h>
+#include <Physic/PhysicHandler.h>
 //#include <Resources\Sound.h>
 
 #define SPEED (0.25f)
@@ -181,6 +182,7 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 		editor->GetApp()->manager.SaveScene(editor->GetApp()->scene);
 	if (GetKey(QX_KEY_F3) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
+		Quantix::Physic::PhysicHandler::GetInstance()->CleanScene();
 		newScene = editor->GetApp()->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
 		sceneChange = true;
 	}

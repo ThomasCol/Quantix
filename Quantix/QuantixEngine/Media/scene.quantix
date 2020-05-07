@@ -27,18 +27,18 @@
             "Childs": [
                 {
                     "GameObject0": {
-                        "name": "Sphere",
+                        "name": "Mesh",
                         "Transform": {
                             "position": {
-                                "x": -1.6485753059387208,
-                                "y": 11.782999992370606,
-                                "z": -13.722282409667969
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
                             },
                             "rotation": {
-                                "x": -0.6273317933082581,
-                                "y": -0.06246127188205719,
-                                "z": 0.7760308384895325,
-                                "w": 0.018155844882130624
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
                             },
                             "scale": {
                                 "x": 1.0,
@@ -50,15 +50,79 @@
                             {
                                 "Mesh": {
                                     "Enable": true,
-                                    "Model": "./media/Mesh/sphere.obj",
-                                    "Material": "media/Material/DefaultMaterial2.mat"
+                                    "Model": "media/Mesh/cube.obj",
+                                    "Material": "media/Material/DefaultMaterial0.mat"
+                                },
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "Collide Group": {
+                                        "PawnGroup": false,
+                                        "MineGroup": false,
+                                        "CrabGroup": false
+                                    },
+                                    "Shape Flag": {
+                                        "Query Shape": true,
+                                        "Simulation Shape": true,
+                                        "Trigger Shape": false,
+                                        "Visualization Shape": false
+                                    },
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                },
+                {
+                    "GameObject1": {
+                        "name": "Sphere",
+                        "Transform": {
+                            "position": {
+                                "x": 0.0,
+                                "y": 5.440457344055176,
+                                "z": 0.0
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Mesh": {
+                                    "Enable": true,
+                                    "Model": "media/Mesh/sphere.obj",
+                                    "Material": "media/Material/DefaultMaterial1.mat"
                                 },
                                 "Rigidbody": {
                                     "Enable": true,
                                     "Mass": 1.0,
                                     "LinearVelocity": {
                                         "x": 0.0,
-                                        "y": -57.729469299316409,
+                                        "y": 0.0,
                                         "z": 0.0
                                     },
                                     "AngularVelocity": {
@@ -67,26 +131,30 @@
                                         "z": 0.0
                                     },
                                     "Position": {
-                                        "x": -1.6485753059387208,
-                                        "y": 11.782999992370606,
-                                        "z": -13.722282409667969
+                                        "x": 0.0,
+                                        "y": 5.440457344055176,
+                                        "z": 0.0
                                     },
                                     "Rotation": {
-                                        "x": -0.6273317933082581,
-                                        "y": -0.06246127188205719,
-                                        "z": 0.7760308384895325,
-                                        "w": 0.018155844882130624
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
                                     },
-                                    "DisableGravity": false,
-                                    "DisableSimulation": false,
-                                    "CCD": false,
-                                    "CCDFriction": false,
-                                    "SpeculativeCCD": false,
-                                    "Kinematic": false,
-                                    "RetainAcceleration": false,
-                                    "KinematicQueries": false,
-                                    "PoseIntPreview": false,
-                                    "CCDMaxImpulse": false
+                                    "Actor Flag": {
+                                        "DisableGravity": false,
+                                        "DisableSimulation": false
+                                    },
+                                    "RigidBody Flag": {
+                                        "Kinematic": false,
+                                        "CCD": false,
+                                        "CCDFriction": false,
+                                        "SpeculativeCCD": false,
+                                        "RetainAcceleration": false,
+                                        "KinematicQueries": false,
+                                        "PoseIntPreview": false,
+                                        "CCDMaxImpulse": false
+                                    }
                                 },
                                 "SphereCollider": {
                                     "Enable": true,
@@ -102,259 +170,18 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "Query Shape": true,
-                                    "Simulation Shape": true,
-                                    "Trigger Shape": false,
-                                    "Visualization Shape": false,
+                                    "Collide Group": {
+                                        "PawnGroup": false,
+                                        "MineGroup": false,
+                                        "CrabGroup": false
+                                    },
+                                    "Shape Flag": {
+                                        "Query Shape": true,
+                                        "Simulation Shape": true,
+                                        "Trigger Shape": false,
+                                        "Visualization Shape": false
+                                    },
                                     "Radius": 1.0
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject1": {
-                        "name": "Cube",
-                        "Transform": {
-                            "position": {
-                                "x": 0.0,
-                                "y": 1.5,
-                                "z": 0.0
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 0.5,
-                                "y": 0.5,
-                                "z": 0.5
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial3.mat"
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject2": {
-                        "name": "Cube1",
-                        "Transform": {
-                            "position": {
-                                "x": 2.0,
-                                "y": 0.08646035194396973,
-                                "z": 1.0
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 0.5,
-                                "y": 0.5,
-                                "z": 0.5
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial4.mat"
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject3": {
-                        "name": "Cube2",
-                        "Transform": {
-                            "position": {
-                                "x": -1.0,
-                                "y": 0.0,
-                                "z": 2.0
-                            },
-                            "rotation": {
-                                "x": -0.11296413093805313,
-                                "y": 0.2181147336959839,
-                                "z": 0.44580426812171938,
-                                "w": 0.8607729077339172
-                            },
-                            "scale": {
-                                "x": 0.25,
-                                "y": 0.25,
-                                "z": 0.25
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial5.mat"
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject4": {
-                        "name": "Cube10",
-                        "Transform": {
-                            "position": {
-                                "x": 0.0,
-                                "y": 15.0,
-                                "z": -14.326638221740723
-                            },
-                            "rotation": {
-                                "x": 0.24715417623519898,
-                                "y": -0.2907988131046295,
-                                "z": 0.41375458240509035,
-                                "w": 0.8265337347984314
-                            },
-                            "scale": {
-                                "x": 1.0,
-                                "y": 1.0,
-                                "z": 1.0
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial6.mat"
-                                },
-                                "CubeCollider": {
-                                    "Enable": true,
-                                    "ToRender": true,
-                                    "Local Position": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Local Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "Query Shape": true,
-                                    "Simulation Shape": true,
-                                    "Trigger Shape": false,
-                                    "Visualization Shape": false,
-                                    "HalfExtent": {
-                                        "x": 0.5,
-                                        "y": 0.5,
-                                        "z": 0.5
-                                    }
-                                },
-                                "Rigidbody": {
-                                    "Enable": true,
-                                    "Mass": 1.0,
-                                    "LinearVelocity": {
-                                        "x": 0.0,
-                                        "y": -30.828887939453126,
-                                        "z": 0.0
-                                    },
-                                    "AngularVelocity": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Position": {
-                                        "x": 0.0,
-                                        "y": 15.0,
-                                        "z": -14.326638221740723
-                                    },
-                                    "Rotation": {
-                                        "x": -0.10741434246301651,
-                                        "y": 0.042586784809827808,
-                                        "z": -0.3660930395126343,
-                                        "w": 0.9233766198158264
-                                    },
-                                    "DisableGravity": false,
-                                    "DisableSimulation": false,
-                                    "CCD": false,
-                                    "CCDFriction": false,
-                                    "SpeculativeCCD": false,
-                                    "Kinematic": false,
-                                    "RetainAcceleration": false,
-                                    "KinematicQueries": false,
-                                    "PoseIntPreview": false,
-                                    "CCDMaxImpulse": false
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject5": {
-                        "name": "Cube5",
-                        "Transform": {
-                            "position": {
-                                "x": 0.0,
-                                "y": -1.8171215057373047,
-                                "z": 0.0
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 24.0,
-                                "y": 1.0,
-                                "z": 20.0
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial7.mat"
-                                },
-                                "CubeCollider": {
-                                    "Enable": true,
-                                    "ToRender": true,
-                                    "Local Position": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Local Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "Query Shape": true,
-                                    "Simulation Shape": true,
-                                    "Trigger Shape": false,
-                                    "Visualization Shape": false,
-                                    "HalfExtent": {
-                                        "x": 12.0,
-                                        "y": 0.5,
-                                        "z": 10.0
-                                    }
                                 }
                             }
                         ],

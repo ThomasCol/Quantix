@@ -32,6 +32,7 @@ namespace Quantix::Physic
 		void SetCollideFilterPawn(bool b)
 		{
 			pawn = b;
+			std::cout << "pawn : " << pawn << std::endl;
 
 			physx::PxFilterData filterData;
 			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
@@ -83,6 +84,8 @@ namespace Quantix::Physic
 									  // contact callback;
 			shape->setSimulationFilterData(filterData);
 		}
+
+		CLASS_REGISTRATION()
 	};
 
 	// Wrapper PxRigidFlag
@@ -316,6 +319,8 @@ namespace Quantix::Physic
 		 * @return Value of the flag
 		 */
 		bool GetShapeFlagVisualization() { return visualization; };
+
+		CLASS_REGISTRATION()
 	};
 
 	// Wrapper PxSceneFlag
