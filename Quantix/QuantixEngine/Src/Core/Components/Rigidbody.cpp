@@ -75,6 +75,11 @@ namespace Quantix::Core::Components
 		_isEnable = true;
 
 		actorPhysic = (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(par, true);
+
+		// Actualize the pointer in colliders
+		std::vector<ICollider*> vector{ _object->GetComponents<ICollider>() };
+		for (QXuint i = 0; i < vector.size(); i++)
+			vector[i]->UpdateActorPhysic();
 	}
 
 	void Rigidbody::Destroy()
