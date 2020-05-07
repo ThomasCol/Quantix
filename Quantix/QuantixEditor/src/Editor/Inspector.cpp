@@ -291,7 +291,7 @@ void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property curre
 			DrawSoundEmitterPath(inst, t, currentProp, app);
 }
 
-void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
+void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app, rttr::variant metadata)
 {
 	if (t != rttr::type::get<Quantix::Resources::Texture*>())
 	{
@@ -310,6 +310,9 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 
 		if (open)
 		{
+			if (metadata != nullptr)
+				ImGui::Text(metadata.get_value<QXstring>().c_str());
+
 			QXint index = 0;
 			for (auto it = t.get_properties().begin(); it != t.get_properties().end(); ++it)
 			{
@@ -448,13 +451,20 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 	{
 		ShowEnum(currentProp, inst, type);
 	}
-	else if (currentProp.get_type().is_class() || (currentProp.get_type().is_pointer() && currentProp.get_type().get_raw_type().is_class()))
+	else if (type.is_class() || (type.is_pointer() && type.get_raw_type().is_class()))
 	{
 		LookType(inst, inst.get_type(), currentProp, app);
 		
-		if (type != rttr::type::get<QXstring>() && type != rttr::type::get<Quantix::Resources::Sound*>() && type != rttr::type::get<FMOD::ChannelGroup*>() 
+		if (type != rttr::type::get<QXstring>() && type != rttr::type::get<Quantix::Resources::Sound*>() && type != rttr::type::get<FMOD::ChannelGroup*>()
 			&& type != rttr::type::get<Quantix::Resources::Model*>())
-			GetInstance(currentProp.get_value(inst), type, app);
+		{
+			rttr::variant value = currentProp.get_metadata("Description");
+
+			if (value.is_valid())
+				GetInstance(currentProp.get_value(inst), type, app, value);
+			else
+				GetInstance(currentProp.get_value(inst), type, app);
+		}
 	}
 	//	else
 	//		ImGui::Text("Type: % s\nName : % s\nValue : % s\n\n",  currentProp.get_type().get_name().to_string().c_str(), currentProp.get_name().to_string().c_str(), currentProp.get_value(inst).to_string().c_str());
