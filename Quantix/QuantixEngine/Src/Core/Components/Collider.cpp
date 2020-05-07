@@ -5,26 +5,26 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
-	rttr::registration::class_<Quantix::Core::Components::ICollider>("Collider")
+	rttr::registration::class_<ICollider>("Collider")
 	.constructor<>()
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
-	.constructor<const Quantix::Core::Components::ICollider&>()
-	.constructor<Quantix::Core::Components::ICollider&&>()
+	.constructor<const ICollider&>()
+	.constructor<ICollider&&>()
 	.enumeration<Quantix::Physic::FilterGroup::Enum>("FilterGroup")
 		(rttr::value("Pawn", Quantix::Physic::FilterGroup::Enum::PAWN),
 		rttr::value("Crab", Quantix::Physic::FilterGroup::Enum::eCRAB),
 		rttr::value("MineHead", Quantix::Physic::FilterGroup::Enum::eMINE_HEAD))
-	.property("ToRender", &Quantix::Core::Components::ICollider::toRender)
-	.property("Local Position", &Quantix::Core::Components::ICollider::GetPosition, &Quantix::Core::Components::ICollider::SetPosition)
-	.property("Local Rotation", &Quantix::Core::Components::ICollider::GetRotation, &Quantix::Core::Components::ICollider::SetRotation)
-	.property("MyGroup", &Quantix::Core::Components::ICollider::GetMyFilterGroup, &Quantix::Core::Components::ICollider::SetMyFilterGroup)
-	.property("GroupCollidePawn", &Quantix::Core::Components::ICollider::GetCollideFilterPawn, &Quantix::Core::Components::ICollider::SetCollideFilterPawn)
-	.property("GroupCollideMine", &Quantix::Core::Components::ICollider::GetCollideFilterMine, &Quantix::Core::Components::ICollider::SetCollideFilterMine)
-	.property("GroupCollideCrab", &Quantix::Core::Components::ICollider::GetCollideFilterCrab, &Quantix::Core::Components::ICollider::SetCollideFilterCrab)
-	.property("Query Shape", &Quantix::Core::Components::ICollider::GetShapeFlagSceneQuery, &Quantix::Core::Components::ICollider::SetShapeFlagSceneQuery)
-	.property("Simulation Shape", &Quantix::Core::Components::ICollider::GetShapeFlagSimulation, &Quantix::Core::Components::ICollider::SetShapeFlagSimulation)
-	.property("Trigger Shape", &Quantix::Core::Components::ICollider::GetShapeFlagTrigger, &Quantix::Core::Components::ICollider::SetShapeFlagTrigger)
-	.property("Visualization Shape", &Quantix::Core::Components::ICollider::GetShapeFlagVisualization, &Quantix::Core::Components::ICollider::SetShapeFlagVisualization);
+	.property("ToRender", &ICollider::toRender)
+	.property("Local Position", &ICollider::GetPosition, &ICollider::SetPosition)
+	.property("Local Rotation", &ICollider::GetRotation, &ICollider::SetRotation)
+	.property("MyGroup", &ICollider::GetMyFilterGroup, &ICollider::SetMyFilterGroup)
+	.property("GroupCollidePawn", &ICollider::GetCollideFilterPawn, &ICollider::SetCollideFilterPawn)
+	.property("GroupCollideMine", &ICollider::GetCollideFilterMine, &ICollider::SetCollideFilterMine)
+	.property("GroupCollideCrab", &ICollider::GetCollideFilterCrab, &ICollider::SetCollideFilterCrab)
+	.property("Query Shape", &ICollider::GetShapeFlagSceneQuery, &ICollider::SetShapeFlagSceneQuery)
+	.property("Simulation Shape", &ICollider::GetShapeFlagSimulation, &ICollider::SetShapeFlagSimulation)
+	.property("Trigger Shape", &ICollider::GetShapeFlagTrigger, &ICollider::SetShapeFlagTrigger)
+	.property("Visualization Shape", &ICollider::GetShapeFlagVisualization, &ICollider::SetShapeFlagVisualization);
 }
 
 namespace Quantix::Core::Components

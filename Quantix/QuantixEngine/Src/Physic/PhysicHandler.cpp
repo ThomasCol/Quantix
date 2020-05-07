@@ -68,27 +68,19 @@ namespace Quantix::Physic
 	{
 		auto it = _physObject.find(object);
 
-		if (!hasRigidbody)
-		{
-			// None ActorPhysic link at this GameObject
-			if (it == _physObject.end())
-				return CreateAndLinkActorPhysic(object, false);
+		// None ActorPhysic link at this GameObject
+		if (it == _physObject.end())
+			return CreateAndLinkActorPhysic(object, hasRigidbody);
 
+		else if (!hasRigidbody && it->second->GetType() == ETypePhysic::DYNAMIC)
+		{
 			// One ActorPhysic link at this GameObject but it is Dynamic
-			else if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::DYNAMIC))
-				return SwapActorPhysicDynamicToStatic(object, it->second->GetObjectDynamic());
+			return SwapActorPhysicDynamicToStatic(object, it->second->GetObjectDynamic());
 		}
-		else
+		else if (hasRigidbody && it->second->GetType() == ETypePhysic::STATIC)
 		{
-			// None ActorPhysic link at this GameObject
-			if (it == _physObject.end())
-				return CreateAndLinkActorPhysic(object, true);
-
 			// One ActorPhysic link at this GameObject but it is Static
-			else if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::STATIC))
-				return SwapActorPhysicStaticToDynamic(object, it->second->GetObjectStatic());
+			return SwapActorPhysicStaticToDynamic(object, it->second->GetObjectStatic());
 		}
 
 		// Return PhysicActor Link to this GameComponent
