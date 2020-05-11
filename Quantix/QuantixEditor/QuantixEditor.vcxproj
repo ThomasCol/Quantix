@@ -200,9 +200,11 @@
     <ClCompile Include="externals\stb_image.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\Docking\Docker.cpp" />
+    <ClCompile Include="src\Editor\Console.cpp" />
     <ClCompile Include="src\Editor\Editor.cpp" />
     <ClCompile Include="src\Editor\Explorer.cpp" />
     <ClCompile Include="src\Editor\Folder.cpp" />
+    <ClCompile Include="src\Editor\Guizmo.cpp" />
     <ClCompile Include="src\Editor\Hierarchy.cpp" />
     <ClCompile Include="src\Editor\Inspector.cpp" />
     <ClCompile Include="src\Editor\MenuBar.cpp" />
@@ -213,9 +215,11 @@
     <ClInclude Include="..\QuantixEngine\Lib\Glad\include\glad\glad.h" />
     <ClInclude Include="externals\stb_image.h" />
     <ClInclude Include="include\Docking\Docker.h" />
+    <ClInclude Include="include\Editor\Console.h" />
     <ClInclude Include="include\Editor\Editor.h" />
     <ClInclude Include="include\Editor\Explorer.h" />
     <ClInclude Include="include\Editor\Folder.h" />
+    <ClInclude Include="include\Editor\Guizmo.h" />
     <ClInclude Include="include\Editor\Hierarchy.h" />
     <ClInclude Include="include\Editor\Inspector.h" />
     <ClInclude Include="include\Editor\MenuBar.h" />

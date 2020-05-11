@@ -90,6 +90,12 @@
     <ClCompile Include="src\opengl_helpers_imgui.cpp">
       <Filter>Fichiers sources\Ext</Filter>
     </ClCompile>
+    <ClCompile Include="src\Editor\Guizmo.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Console.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\Editor.h">
@@ -127,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="include\opengl_helper.h">
       <Filter>Fichiers d%27en-tête\Ext</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Guizmo.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Editor\Console.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
