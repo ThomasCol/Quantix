@@ -1,7 +1,7 @@
 #ifndef _HIERARCHY_H_
 #define _HIERARCHY_H_
 
-#include <vector>
+#include <list>
 #include <string>
 #include <Node.h>
 #include <Inspector.h>
@@ -38,91 +38,93 @@ public:
 	/**
 	 * @brief Set the Selectable object
 	 * 
-	 * @param nodeGlobal std::vector<Quantix::Physic::Transform3D*>&
-	 * @param node std::vector<Quantix::Physic::Transform3D*>&
+	 * @param nodeGlobal std::list<Quantix::Physic::Transform3D*>&
+	 * @param node std::list<Quantix::Physic::Transform3D*>&
 	 * @param i QXint
 	 */
-	void				SetSelectable(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node, QXint i);
+	void				SetSelectable(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>::iterator& it);
 
 	/**
 	 * @brief Draw Object
 	 * 
-	 * @param nodeGlobal std::vector<Quantix::Physic::Transform3D*>&
-	 * @param node std::vector<Quantix::Physic::Transform3D*>&
+	 * @param nodeGlobal std::list<Quantix::Physic::Transform3D*>&
+	 * @param node std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				DrawObject(std::vector<Quantix::Physic::Transform3D*>& nodeGlobal, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene);
+	void				DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene);
 
 	/**
 	 * @brief Create a Child object
 	 * 
 	 * @param select QXbool&
-	 * @param nodes std::vector<Quantix::Physic::Transform3D*>&
+	 * @param nodes std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				CreateChild(QXbool& select, std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene);
+	void				CreateChild(QXbool& select, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene);
+
+	void				RemoveObject(QXbool& select, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene);
 
 	/**
 	 * @brief Rename Menu
 	 * 
-	 * @param nodes std::vector<Quantix::Physic::Transform3D*>&
+	 * @param nodes std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				MenuRename(std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene);
+	void				MenuRename(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene);
 	
 	/**
 	 * @brief Item Menu
 	 * 
 	 * @param selection QXbool*
-	 * @param itemMenu std::vector<QXstring>
-	 * @param nodes std::vector<Quantix::Physic::Transform3D*>&
+	 * @param itemMenu std::list<QXstring>
+	 * @param nodes std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene);
+	void				MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Resources::Scene* scene);
 
 	/**
 	 * @brief Popup Item Menu
 	 * 
-	 * @param nodes std::vector<Quantix::Physic::Transform3D*>&
+	 * @param nodes std::list<Quantix::Physic::Transform3D*>&
 	 * @param node Transform3D*
 	 * @param scene Scene*
 	 */
-	void				PopUpMenuItem(std::vector<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Resources::Scene* scene);
+	QXbool				PopUpMenuItem(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Resources::Scene* scene);
 
 	/**
 	 * @brief Create a Empty Object object
 	 * 
 	 * @param selection QXbool&
-	 * @param node std::vector<Quantix::Physic::Transform3D*>&
+	 * @param node std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				CreateEmptyObject(QXbool& selection, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene);
+	void				CreateEmptyObject(QXbool& selection, std::list<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene);
 
 	/**
 	 * @brief Create a Item object
 	 * 
 	 * @param selection QXbool*
-	 * @param itemMenu std::vector<QXstring>
-	 * @param node std::vector<Quantix::Physic::Transform3D*>&
+	 * @param itemMenu std::list<QXstring>
+	 * @param node std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				CreateItem(QXbool* selection, std::vector<QXstring> itemMenu, std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene);
+	void				CreateItem(QXbool* selection, std::vector<QXstring> itemMenu, std::list<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene);
 
 	/**
 	 * @brief Popup Menu
 	 * 
-	 * @param node std::vector<Quantix::Physic::Transform3D*>&
+	 * @param node std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				PopUpMenu(std::vector<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene);
+	void				PopUpMenu(std::list<Quantix::Physic::Transform3D*>& node, Quantix::Resources::Scene* scene);
 
 	/**
 	 * @brief Desactivate Previous Inspector
 	 * 
-	 * @param gameComponents std::vector<Quantix::Physic::Transform3D*>&
+	 * @param gameComponents std::list<Quantix::Physic::Transform3D*>&
 	 * @param gameComponent Transform3D*
 	 */
-	void				DesactivatePrevInspector(std::vector<Quantix::Physic::Transform3D*>& gameComponents, Quantix::Physic::Transform3D* gameComponent);
+	void				DesactivatePrevInspector(std::list<Quantix::Physic::Transform3D*>& gameComponents, std::list<Quantix::Physic::Transform3D*>::iterator& gameComponent);
 
 
 	#pragma region Getter

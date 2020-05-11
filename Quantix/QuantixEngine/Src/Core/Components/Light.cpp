@@ -7,7 +7,7 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<>()
 	.constructor<const Quantix::Core::Components::Light&>()
 	.constructor<Quantix::Core::Components::Light&&>()
-	.enumeration<Quantix::Core::Components::ELightType>("ELightType")
+	.enumeration<Quantix::Core::Components::ELightType>("Light Type")
 					 (rttr::value("Default", Quantix::Core::Components::ELightType::DEFAULT),
 					 rttr::value("Directional", Quantix::Core::Components::ELightType::DIRECTIONAL),
 					 rttr::value("Point", Quantix::Core::Components::ELightType::POINT),

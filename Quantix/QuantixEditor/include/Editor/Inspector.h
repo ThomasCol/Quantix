@@ -170,25 +170,16 @@ public:
 	 * @param t 
 	 * @param app 
 	 */
-	void													GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app);
+	void													GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app, rttr::variant metadata = nullptr);
 
 	/**
-	 * @brief Show Light Enum
-	 * 
-	 * @param currentProp 
-	 * @param inst 
-	 * @param type 
+	 * @brief Show Enum
+	 *
+	 * @param currentProp
+	 * @param inst
+	 * @param type
 	 */
-	void													ShowLightEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
-
-	/**
-	 * @brief Show Sound Mode Enum
-	 * 
-	 * @param currentProp 
-	 * @param inst 
-	 * @param type 
-	 */
-	void													ShowSoundModeEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
+	void													ShowEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
 
 	/**
 	 * @brief Look Type of Instance or Property

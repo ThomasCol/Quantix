@@ -175,67 +175,6 @@ namespace Quantix::Core::Components
 		 * @param q New Rotation Value
 		 */
 		void SetTransformRotation(Math::QXquaternion q);
-
-		/**
-		 * @brief Set the Actor Flag Disable Gravity object
-		 * 
-		 * @param b new Value of the Flag
-		 */
-		void SetActorFlagDisableGravity(bool b);
-
-		/**
-		 * @brief Get the Actor Flag Disable Gravity object
-		 * 
-		 * @return Value of the flag 
-		 */
-		bool GetActorFlagDisableGravity() { return actorFlag.disableGravity; }
-
-		/**
-		 * @brief Set the Actor Flag Disable Simulation object
-		 * 
-		 * @param b new Value of the Flag
-		 */
-		void SetActorFlagDisableSimulation(bool b);
-
-		/**
-		 * @brief Get the Actor Flag Disable Simulation object
-		 * 
-		 * @return Value of the flag 
-		 */
-		bool GetActorFlagDisableSimulation() { return actorFlag.disableSimulation; }
-		void SetActorFlagSendSleepNotifies(bool b);
-		bool GetActorFlagSendSleepNotifies() { return actorFlag.sendSleepNotifies; }
-		
-		void SetRigidFlagCCD(bool b);
-		bool GetRigidFlagCCD() { return rigidFlag.ccd; }
-		void SetRigidFlagCCDFriction(bool b);
-		bool GetRigidFlagCCDFriction() { return rigidFlag.ccdFriction; }
-		void SetRigidFlagSpeculativeCCD(bool b);
-		bool GetRigidFlagSpeculativeCCD() {return rigidFlag.speculativeCCD;}
-
-		/**
-		 * @brief Set the Rigid Flag Kinematic object
-		 * 
-		 * @param b new Value of the flag
-		 */
-		void SetRigidFlagKinematic(bool b);
-
-		/**
-		 * @brief Get the Rigid Flag Kinematic object
-		 * 
-		 * @return Value of the Flag
-		 */
-		bool GetRigidFlagKinematic() { return rigidFlag.kinematic; }
-		
-		void SetRigidFlagRetainAcceleration(bool b);
-		bool GetRigidFlagRetainAcceleration() { return rigidFlag.retainAcceleration; }
-		void SetRigidFlagKineForQueries(bool b);
-		bool GetRigidFlagKineForQueries() { return rigidFlag.useKinematicTargetForQueries; }
-		void SetRigidFlagPosePreview(bool b);
-		bool GetActorFlagPosePreview() { return rigidFlag.poseIntegrationPreview; }
-		void SetActorFlagCCDMaxContactImpulse(bool b);
-		bool GetActorFlagCCDMaxContactImpulse() { return rigidFlag.ccdMaxContactImpulse; }
-
 #pragma endregion 
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);

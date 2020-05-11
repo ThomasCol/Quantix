@@ -45,6 +45,8 @@ namespace Quantix::Core::Components
 		bool toRender{ true };
 		Math::QXvec3 scale{ 1.f, 1.f, 1.f };
 
+		Physic::CollideGroup collideFilter;
+
 #pragma endregion
 
 #pragma region Constructors
@@ -161,64 +163,8 @@ namespace Quantix::Core::Components
 		 */
 		void SetRotation(Math::QXquaternion rot);
 
-		/**
-		 * @brief Set the Shape Flag Scene Query object
-		 * 
-		 * @param b Value of the flag
-		 */
-		void SetShapeFlagSceneQuery(bool b);
-
-		/**
-		 * @brief Get the Shape Flag Scene Query object
-		 * 
-		 * @return true Flag is at true
-		 * @return false Flag is at false
-		 */
-		bool GetShapeFlagSceneQuery();
-
-		/**
-		 * @brief Set the Shape Flag Simulation object
-		 * 
-		 * @param b Value of the flag
-		 */
-		void SetShapeFlagSimulation(bool b);
-
-		/**
-		 * @brief Get the Shape Flag Simulation object
-		 * 
-		 * @return true Flag is at true
-		 * @return false  Flag is at false
-		 */
-		bool GetShapeFlagSimulation();
-
-		/**
-		 * @brief Set the Shape Flag Trigger object
-		 * 
-		 * @param b Value of the Flag
-		 */
-		void SetShapeFlagTrigger(bool b);
-
-		/**
-		 * @brief Get the Shape Flag Trigger object
-		 * 
-		 * @return true Flag is at true
-		 * @return false Flag is at false
-		 */
-		bool GetShapeFlagTrigger();
-
-		/**
-		 * @brief Set the Shape Flag Visualization object
-		 * 
-		 * @param b Value of the Flag
-		 */
-		void SetShapeFlagVisualization(bool b);
-
-		/**
-		 * @brief Get the Shape Flag Visualization object
-		 * 
-		 * @return Value of the flag 
-		 */
-		bool GetShapeFlagVisualization();
+		void SetMyFilterGroup(Physic::FilterGroup::Enum newGroup);
+		Physic::FilterGroup::Enum GetMyFilterGroup();
 
 #pragma endregion
 

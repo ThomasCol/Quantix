@@ -12,7 +12,7 @@
 
 Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
 	_transform{ transform },
-	_enable{ true }
+	_enable{ QX_TRUE }
 {
 }
 
@@ -91,7 +91,7 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 {
 	if (ImGui::BeginPopupContextItem("Context Item"))
 	{
-		QXbool selection = false;
+		QXbool selection = QX_FALSE;
 		
 		ImGui::Selectable("Remove Component", &selection);
 		if (selection)
@@ -109,7 +109,7 @@ void Inspector::ShowComponent()
 		QXuint i = 0;
 		for (auto it : componentsAvailable)
 		{
-			QXbool enable = false;
+			QXbool enable = QX_FALSE;
 			ImGui::PushID(i);
 
 			ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
@@ -222,10 +222,10 @@ void Inspector::DrawMTexturePath(rttr::instance inst, rttr::property currentProp
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
 		{
 			QXstring pathTmp = (const QXchar*)payload->Data;
-			if (pathTmp.find(".png") != QXstring::npos)
+			if (pathTmp.find(".png") != QXstring::npos || pathTmp.find(".jpg") != QXstring::npos || pathTmp.find(".jpeg") != QXstring::npos)
 			{
 				path = pathTmp;
-				inst.get_type().invoke("SetChanged", inst, { true });
+				inst.get_type().invoke("SetChanged", inst, { QX_TRUE });
 			}
 			Quantix::Resources::Texture* texture = app->manager.CreateTexture(path);
 			currentProp.set_value(inst, texture);
@@ -258,7 +258,8 @@ void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::pr
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
 		{
 			QXstring pathTmp = (const QXchar*)payload->Data;
-			if (pathTmp.find(".mp3") != QXstring::npos)
+			if (pathTmp.find(".mp3") != QXstring::npos || pathTmp.find(".wav") != std::string::npos || pathTmp.find(".ogg") != std::string::npos
+				|| pathTmp.find(".flac") != std::string::npos || pathTmp.find(".aif") != std::string::npos)
 				path = pathTmp;
 			Quantix::Resources::Sound* sound = app->manager.CreateSound(path);
 			currentProp.set_value(inst, sound);
@@ -290,7 +291,7 @@ void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property curre
 			DrawSoundEmitterPath(inst, t, currentProp, app);
 }
 
-void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
+void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app, rttr::variant metadata)
 {
 	if (t != rttr::type::get<Quantix::Resources::Texture*>())
 	{
@@ -309,6 +310,9 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 
 		if (open)
 		{
+			if (metadata != nullptr)
+				ImGui::Text(metadata.get_value<QXstring>().c_str());
+
 			QXint index = 0;
 			for (auto it = t.get_properties().begin(); it != t.get_properties().end(); ++it)
 			{
@@ -328,76 +332,18 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 	}
 }
 
-static QXint GetValueLightEnum(Quantix::Core::Components::ELightType type)
+void Inspector::ShowEnum(rttr::property currentProp, rttr::instance inst, rttr::type type)
 {
-	if (type == Quantix::Core::Components::ELightType::DEFAULT)
-		return 0;
-	else if (type == Quantix::Core::Components::ELightType::DIRECTIONAL)
-		return 1;
-	else if (type == Quantix::Core::Components::ELightType::POINT)
-		return 2;
-	else if (type == Quantix::Core::Components::ELightType::SPOT)
-		return 3;
-}
+	auto value = currentProp.get_enumeration().value_to_name(currentProp.get_value(inst)).to_string();
 
-static Quantix::Core::Components::ELightType SetValueLightEnum(QXint value)
-{
-	if (value == 0)
-		return Quantix::Core::Components::ELightType::DEFAULT;
-	else if (value == 1)
-		return Quantix::Core::Components::ELightType::DIRECTIONAL;
-	else if (value == 2)
-		return Quantix::Core::Components::ELightType::POINT;
-	else if (value == 3)
-		return Quantix::Core::Components::ELightType::SPOT;
-}
-
-void Inspector::ShowLightEnum(rttr::property currentProp, rttr::instance inst, rttr::type type)
-{
-	Quantix::Core::Components::ELightType LightType = currentProp.get_value(inst).get_value<Quantix::Core::Components::ELightType>();
-	const QXchar* items[] = { "Default", "Directonal", "Point", "Spot" };
-	QXint item_current = GetValueLightEnum(LightType);
-
-	ImGui::Text("Light Type"); ImGui::SameLine(165.f);
-	ImGui::Combo("##Light Type: ", &item_current, items, IM_ARRAYSIZE(items));
-
-	LightType = SetValueLightEnum(item_current);
-	currentProp.set_value(inst, LightType);
-}
-
-static QXint GetValueSoundModeEnum(Quantix::Resources::ESoundMode type)
-{
-	if (type == Quantix::Resources::ESoundMode::QX_2D)
-		return 0;
-	else if (type == Quantix::Resources::ESoundMode::QX_3D)
-		return 1;
-}
-
-static Quantix::Resources::ESoundMode SetValueSoundModeEnum(QXint value)
-{
-	if (value == 0)
-		return Quantix::Resources::ESoundMode::QX_2D;
-	else if (value == 1)
-		return Quantix::Resources::ESoundMode::QX_3D;
-}
-
-void Inspector::ShowSoundModeEnum(rttr::property currentProp, rttr::instance inst, rttr::type type)
-{
-	Quantix::Resources::ESoundMode SoundMode = currentProp.get_value(inst).get_value<Quantix::Resources::ESoundMode>();
-	if (SoundMode == Quantix::Resources::ESoundMode::QX_3D)
+	ImGui::Text("%s", currentProp.get_enumeration().get_name().to_string().c_str()); ImGui::SameLine(165.f);
+	if (ImGui::BeginCombo("##", value.c_str()))
 	{
-		auto tmpInst = inst.get_derived_type();
-
-		tmpInst.invoke("AttributesEmitter", inst, {});
+		for (auto it = currentProp.get_enumeration().get_names().begin(); it != currentProp.get_enumeration().get_names().end(); ++it)
+			if (ImGui::Selectable((*it).to_string().c_str()))
+				currentProp.set_value(inst, currentProp.get_enumeration().name_to_value((*it).to_string()));
+		ImGui::EndCombo();
 	}
-	const QXchar* items[] = { "QX_2D", "QX_3D" };
-	QXint item_current = GetValueSoundModeEnum(SoundMode);
-
-	ImGui::Text("Sound Mode"); ImGui::SameLine(165.f);
-	ImGui::Combo("##Sound Mode: ", &item_current, items, IM_ARRAYSIZE(items));
-
-	SoundMode = SetValueSoundModeEnum(item_current);
-	currentProp.set_value(inst, SoundMode);
 }
 
 void Inspector::LookType(rttr::instance inst, rttr::type type, rttr::property currentProp, Quantix::Core::Platform::Application* app)
@@ -501,21 +447,24 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 		q = Math::QXquaternion::EulerToQuaternion(value);
 		currentProp.set_value(inst, q);
 	}
-	else if (type == rttr::type::get<Quantix::Resources::ESoundMode>())
+	else if (currentProp.is_enumeration())
 	{
-		ShowSoundModeEnum(currentProp, inst, type);
+		ShowEnum(currentProp, inst, type);
 	}
-	else if (type == rttr::type::get<Quantix::Core::Components::ELightType>())
-	{
-		ShowLightEnum(currentProp, inst, type);
-	}
-	else if (currentProp.get_type().is_class() || (currentProp.get_type().is_pointer() && currentProp.get_type().get_raw_type().is_class()))
+	else if (type.is_class() || (type.is_pointer() && type.get_raw_type().is_class()))
 	{
 		LookType(inst, inst.get_type(), currentProp, app);
 		
-		if (type != rttr::type::get<QXstring>() && type != rttr::type::get<Quantix::Resources::Sound*>() && type != rttr::type::get<FMOD::ChannelGroup*>() 
+		if (type != rttr::type::get<QXstring>() && type != rttr::type::get<Quantix::Resources::Sound*>() && type != rttr::type::get<FMOD::ChannelGroup*>()
 			&& type != rttr::type::get<Quantix::Resources::Model*>())
-			GetInstance(currentProp.get_value(inst), type, app);
+		{
+			rttr::variant value = currentProp.get_metadata("Description");
+
+			if (value.is_valid())
+				GetInstance(currentProp.get_value(inst), type, app, value);
+			else
+				GetInstance(currentProp.get_value(inst), type, app);
+		}
 	}
 	//	else
 	//		ImGui::Text("Type: % s\nName : % s\nValue : % s\n\n",  currentProp.get_type().get_name().to_string().c_str(), currentProp.get_name().to_string().c_str(), currentProp.get_value(inst).to_string().c_str());

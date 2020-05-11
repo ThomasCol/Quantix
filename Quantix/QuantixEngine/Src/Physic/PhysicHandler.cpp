@@ -41,15 +41,19 @@ namespace Quantix::Physic
 		// If it is a trigger
 		if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 		{
-			pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
+			if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+				pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
 			return physx::PxFilterFlag::eDEFAULT;
 		}
 
 		// generate contacts for all that were not filtered above
 		std::cout << "Not Trigger" << std::endl;
-		pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
-		pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
 
+		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		{
+			pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
+			pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
+		}
 		return physx::PxFilterFlag::eDEFAULT;
 	}
 
@@ -68,27 +72,19 @@ namespace Quantix::Physic
 	{
 		auto it = _physObject.find(object);
 
-		if (!hasRigidbody)
-		{
-			// None ActorPhysic link at this GameObject
-			if (it == _physObject.end())
-				return CreateAndLinkActorPhysic(object, false);
+		// None ActorPhysic link at this GameObject
+		if (it == _physObject.end())
+			return CreateAndLinkActorPhysic(object, hasRigidbody);
 
+		else if (!hasRigidbody && it->second->GetType() == ETypePhysic::DYNAMIC)
+		{
 			// One ActorPhysic link at this GameObject but it is Dynamic
-			else if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::DYNAMIC))
-				return SwapActorPhysicDynamicToStatic(object, it->second->GetObjectDynamic());
+			return SwapActorPhysicDynamicToStatic(object, it->second->GetObjectDynamic());
 		}
-		else
+		else if (hasRigidbody && it->second->GetType() == ETypePhysic::STATIC)
 		{
-			// None ActorPhysic link at this GameObject
-			if (it == _physObject.end())
-				return CreateAndLinkActorPhysic(object, true);
-
 			// One ActorPhysic link at this GameObject but it is Static
-			else if (it != _physObject.end()
-				&& (it->second->GetType() == ETypePhysic::STATIC))
-				return SwapActorPhysicStaticToDynamic(object, it->second->GetObjectStatic());
+			return SwapActorPhysicStaticToDynamic(object, it->second->GetObjectStatic());
 		}
 
 		// Return PhysicActor Link to this GameComponent
@@ -272,6 +268,7 @@ namespace Quantix::Physic
 
 	void PhysicHandler::ReleaseSystem()
 	{
+		collection->release();
 		mCooking->release();
 		PxCloseExtensions();
 		mSDK->release();
@@ -479,6 +476,35 @@ namespace Quantix::Physic
 				}
 			}
 		}
+	}
+
+	void PhysicHandler::Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Physic::Raycast& ownRaycast)
+	{
+		PxRaycastBuffer hitRaycast;                 // resultat du ray cast apres test
+
+		ownRaycast.status = mScene->raycast(PxVec3(origin.x, origin.y, origin.z), PxVec3(unitDir.x, unitDir.y, unitDir.z), distMax, hitRaycast);
+		if (ownRaycast.status && hitRaycast.hasBlock)
+		{
+			ownRaycast.normalClosestBlock = Math::QXvec3(hitRaycast.block.normal.x, hitRaycast.block.normal.y, hitRaycast.block.normal.z);
+			ownRaycast.positionClosestBlock = Math::QXvec3(hitRaycast.block.position.x, hitRaycast.block.position.y, hitRaycast.block.position.z);
+			ownRaycast.distanceClosestBlock = hitRaycast.block.distance;
+			ownRaycast.actorClosestBlock = (Core::DataStructure::GameObject3D*)hitRaycast.block.actor->userData;
+		}
+	}
+
+	void PhysicHandler::CleanScene()
+	{
+		int numActorsDynamic = mScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+		PxActor** actorsDyna = (PxActor**)malloc(sizeof(PxActor*) * numActorsDynamic);
+		mScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, actorsDyna, numActorsDynamic);
+
+		mScene->removeActors(actorsDyna, numActorsDynamic);
+
+		int numActorsStatic = mScene->getNbActors(PxActorTypeFlag::eRIGID_STATIC);
+		PxActor** actorsStat = (PxActor**)malloc(sizeof(PxActor*) * numActorsStatic);
+		mScene->getActors(PxActorTypeFlag::eRIGID_STATIC, actorsStat, numActorsStatic);
+
+		mScene->removeActors(actorsStat, numActorsStatic);
 	}
 
 #pragma region FlagSetters

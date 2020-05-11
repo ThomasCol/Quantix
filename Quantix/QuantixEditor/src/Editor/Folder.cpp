@@ -12,6 +12,7 @@ Folder::Folder(Quantix::Core::DataStructure::ResourcesManager& cache, const fs::
 	_vcxprojGLu = cache.CreateTexture("Other/ImgFolder/iconeVCXPROJ.png");
 	_fileGLu = cache.CreateTexture("Other/ImgFolder/iconExtension.png");
 	_imgFileGLu = cache.CreateTexture("Other/ImgFolder/jpgfile.png");
+	_imgMp3GLu = cache.CreateTexture("Other/ImgFolder/iconmp3.png");
 
 	fs::directory_iterator end_itr;
 	fs::directory_iterator dir_itr(p);

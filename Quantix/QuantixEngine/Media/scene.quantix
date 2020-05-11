@@ -67,15 +67,84 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "Query Shape": true,
-                                    "Simulation Shape": true,
-                                    "Trigger Shape": false,
-                                    "Visualization Shape": false,
+                                    "Collide Group": {
+                                        "PawnGroup": false,
+                                        "MineGroup": false,
+                                        "CrabGroup": false
+                                    },
+                                    "Shape Flag": {
+                                        "Query Shape": true,
+                                        "Simulation Shape": true,
+                                        "Trigger Shape": false,
+                                        "Visualization Shape": false
+                                    },
                                     "HalfExtent": {
                                         "x": 0.5,
-                                        "y": 8.5,
+                                        "y": 0.5,
                                         "z": 0.5
                                     }
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                },
+                {
+                    "GameObject1": {
+                        "name": "Cube",
+                        "Transform": {
+                            "position": {
+                                "x": 3.4530794620513918,
+                                "y": 3.78015398979187,
+                                "z": 0.10302400588989258
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Mesh": {
+                                    "Enable": true,
+                                    "Model": "media/Mesh/cube.obj",
+                                    "Material": "media/Material/DefaultMaterial1.mat"
+                                }
+                            },
+                            {
+                                "SphereCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "Collide Group": {
+                                        "PawnGroup": false,
+                                        "MineGroup": false,
+                                        "CrabGroup": false
+                                    },
+                                    "Shape Flag": {
+                                        "Query Shape": true,
+                                        "Simulation Shape": true,
+                                        "Trigger Shape": false,
+                                        "Visualization Shape": false
+                                    },
+                                    "Radius": 1.0
                                 }
                             }
                         ],
