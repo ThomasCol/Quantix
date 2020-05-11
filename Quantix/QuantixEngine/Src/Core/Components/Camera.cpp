@@ -113,4 +113,14 @@ namespace Quantix::Core::Components
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetUp(((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation() * Math::QXvec3::up);
 		}
 	}
+
+	Math::QXvec3	Camera::GetPos()
+	{ 
+		if ((Core::DataStructure::GameObject3D*)_object)
+		{
+			return ((Core::DataStructure::GameObject3D*)_object)->GetLocalPosition();
+		}
+		
+		return _pos;
+	}
 }

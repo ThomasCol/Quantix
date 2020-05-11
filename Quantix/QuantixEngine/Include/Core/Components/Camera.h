@@ -124,7 +124,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @return Math::QXvec3 
 		 */
-		inline Math::QXvec3				GetPos() { return _pos; }
+		Math::QXvec3				GetPos();
 
 		/**
 		 * @brief Set the Dir object
