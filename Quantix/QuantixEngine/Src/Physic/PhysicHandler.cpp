@@ -41,7 +41,7 @@ namespace Quantix::Physic
 		// If it is a trigger
 		if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 		{
-			if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+			//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 				pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
 			return physx::PxFilterFlag::eDEFAULT;
 		}
@@ -49,7 +49,7 @@ namespace Quantix::Physic
 		// generate contacts for all that were not filtered above
 		std::cout << "Not Trigger" << std::endl;
 
-		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 		{
 			pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 			pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
@@ -368,57 +368,11 @@ namespace Quantix::Physic
 	{
 		if (isPlaying)
 		{
-			PxU32 nbActors;
-			PxActor** listActor = mScene->getActiveActors(nbActors);
-
-			for (PxU32 index = 0; index < nbActors; index++)
-			{
-				PxRigidDynamic* currentActor = (PxRigidDynamic*)listActor[index];
-				if (currentActor)
-				{
-					PxTransform transformPhysic = currentActor->getGlobalPose();
-
-					if (((Core::DataStructure::GameObject3D*)currentActor->userData))
-					{
-						Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
-						transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
-						transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
-					}
-				}
-			}
+			UpdatePlayingActor();
 		}
 		else
 		{		
-			for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
-			{
-				if (it->second && it->first)
-				{
-					if (it->second->GetType() == ETypePhysic::DYNAMIC)
-					{	
-						PxTransform transform = it->second->GetObjectDynamic()->GetRigid()->getGlobalPose();
-
-						Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
-						transform.p = PxVec3(pos.x, pos.y, pos.z);
-
-						Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
-						transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
-
-						it->second->GetObjectDynamic()->GetRigid()->setGlobalPose(transform);
-					}
-					else
-					{
-						PxTransform transform = it->second->GetObjectStatic()->GetRigid()->getGlobalPose();
-
-						Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
-						transform.p = PxVec3(pos.x, pos.y, pos.z);
-
-						Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
-						transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
-
-						it->second->GetObjectStatic()->GetRigid()->setGlobalPose(transform);
-					}
-				}
-			}
+			UpdateEditorActor();
 		}
 	}
 
@@ -433,12 +387,13 @@ namespace Quantix::Physic
 			if (currentActor)
 			{
 				PxTransform transformPhysic = currentActor->getGlobalPose();
+				transformPhysic.q = transformPhysic.q.getConjugate();
 
 				if (((Core::DataStructure::GameObject3D*)currentActor->userData))
 				{
 					// Set Transform GameObject On PhysicActor Transform
 					Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
-
+					//transformPhysic.q = transformPhysic.q.getConjugate() * transformPhysic.q.getNormalized();
 					transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
 					transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
 				}
@@ -455,7 +410,7 @@ namespace Quantix::Physic
 				// Set RigidBody Transform On GameOject Transform
 				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
 				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
-				
+				quat = quat.ConjugateQuaternion();
 				if (it->second->GetType() == ETypePhysic::DYNAMIC)
 				{
 					PxTransform transform = it->second->GetObjectDynamic()->GetRigid()->getGlobalPose();
