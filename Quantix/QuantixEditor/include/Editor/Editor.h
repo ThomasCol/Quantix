@@ -12,7 +12,8 @@
 #include "MenuBar.h"
 #include "Hierarchy.h"
 #include "Explorer.h"
-#include <imGuizmo.h>
+#include "Guizmo.h"
+#include "Console.h"
 
 
 namespace fs = std::filesystem;
@@ -69,6 +70,8 @@ public:
 	#pragma endregion Constructors&Destructor
 
 	#pragma region Methods
+	void												InitEditorArtifact();
+
 	/**
 	 * @brief Init image
 	 * 
@@ -100,6 +103,8 @@ public:
 	void												CameraUpdateEditor();
 
 	void												CameraUpdate();
+
+	void												SaveLoadScene();
 
 	void												UpdateScene();
 
@@ -332,6 +337,8 @@ private:
 	Quantix::Core::Components::Camera*					_mainCamera;
 	Quantix::Core::Components::Camera*					_defaultCamera;
 
+	Guizmo												_guizmo;
+	Console												_console;
 	Docker												_docker;
 	Folder												_folder;
 	MenuBar												_menuBar;
@@ -346,12 +353,6 @@ private:
 
 	QXuint												_fboScene;
 	QXuint												_fboGame;
-	std::vector<bool>									_showTypeLog;
-	std::vector<Quantix::Resources::Texture*>			_imgTypeLog;
-	std::vector<Quantix::Resources::Texture*>			_imgGuizmo;
-	ImGuizmo::OPERATION									_guizmoType;
-	ImGuizmo::MODE										_guizmoMode;
-	QXuint												_sizeLog;
 	ImGuiWindowFlags									_flagsEditor;
 	#pragma endregion Attributes
 };
