@@ -50,7 +50,7 @@ namespace Quantix::Core::DataStructure
 			archive(_component);
 		}
 		void									CallOnTrigger(GameObject3D* other);
-		void									CallOnContact(GameObject3D* other);
+		void									CallOnContact(GameObject3D* other, Math::QXvec3& position, Math::QXvec3& normal);
 
 		#pragma region Accessors
 		/**

@@ -4,6 +4,7 @@
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
 #include "rttrEnabled.h"
+#include "Core/MathHeader.h"
 #include <iostream>
 
 namespace Quantix::Core::DataStructure
@@ -28,7 +29,7 @@ namespace Quantix::Core::Components
 		virtual void	Awake() {}
 		virtual void	Start() {}
 		virtual void	Update(QXdouble deltaTime) {}
-		virtual void    OnCollision(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) {}
+		virtual void    OnCollision(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other, Math::QXvec3& position, Math::QXvec3& normal) {}
 		virtual void    OnTrigger(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) {}
 		virtual void	Destroy() override {}
 

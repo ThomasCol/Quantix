@@ -19,7 +19,8 @@ namespace Quantix::Core::Threading
 		TaskSystem* syst = GetInstance();
 		for (size_t i = 0; i < syst->_threadNumber; i++)
 		{
-			syst->_threadPool[i].thread.join();
+			if (syst->_threadPool[i].thread.joinable())
+				syst->_threadPool[i].thread.join();
 		}
 		delete[] syst->_threadPool;
 	}
