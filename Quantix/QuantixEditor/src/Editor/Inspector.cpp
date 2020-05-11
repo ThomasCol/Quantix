@@ -319,13 +319,14 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				rttr::property currentProp = *(it);
 				rttr::type type = currentProp.get_type();
 				rttr::variant meta = currentProp.get_metadata("Description");
-				ImGui::PushID(index);
 				if (meta.is_valid() && meta.get_value<QXstring>() != "End")
 				{
 					nodeName = meta.get_value<QXstring>();
 					isOpen = ImGui::TreeNodeEx(nodeName.c_str(), ImGuiTreeNodeFlags_Framed);
 					node = true;
 				}
+
+				ImGui::PushID(index);
 				if (node)
 				{
 					if (isOpen)
@@ -334,15 +335,15 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				else
 					DrawVariable(inst, currentProp, type, app);
 				
-
+				ImGui::PopID();
+				index++;				
 				if (meta.is_valid() && meta.get_value<QXstring>() == "End")
 				{
 					node = false;
 					if (isOpen)
 						ImGui::TreePop();
 				}
-				ImGui::PopID();
-				index++;
+
 			}
 			if (t == rttr::type::get<Quantix::Core::Components::SoundListener>())
 				SetAttributesListener(inst, inst.get_type());
