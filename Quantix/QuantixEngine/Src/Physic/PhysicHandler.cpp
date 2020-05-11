@@ -41,7 +41,7 @@ namespace Quantix::Physic
 		// If it is a trigger
 		if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 		{
-			if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+			//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 				pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
 			return physx::PxFilterFlag::eDEFAULT;
 		}
@@ -49,7 +49,7 @@ namespace Quantix::Physic
 		// generate contacts for all that were not filtered above
 		std::cout << "Not Trigger" << std::endl;
 
-		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 		{
 			pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 			pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
@@ -292,74 +292,13 @@ namespace Quantix::Physic
 
 	void PhysicHandler::UpdateSystem(double deltaTime)
 	{
-		/*PhysicStatic* tmp = _physObject.at(go[1])->GetObjectStatic();
-
-		PxShape* shape;
-		PxBoxGeometry overlapGeometrie;
-		tmp->GetRigid()->getShapes(&shape, sizeof(8) * 1);
-		shape->getBoxGeometry(overlapGeometrie);*/
-
-		/* Chose a abstraire */
-
-		// ========= Ray cast ==============
-		/*PxVec3 origin = PxVec3(0, 0, 0);                 // Origin du ray cast
-		PxVec3 unitDir = PxVec3(0, -1, 0);                // direction du ray cast
-		PxReal maxDistance = 100;            // distance max du ray cast
-		PxRaycastBuffer hitRaycast;                 // resultat du ray cast apres test
-
-		bool status1 = mScene->raycast(origin, unitDir, maxDistance, hitRaycast);
-		if (status1 && hitRaycast.hasBlock)
-			std::cout << hitRaycast.block.actor << std::endl; // closest actor hit
-
-		PxVec3 unitDir2 = PxVec3(0, 1, 0);                // direction du ray cast
-
-		status1 = mScene->raycast(origin, unitDir2, maxDistance, hitRaycast);
-		if (status1 && hitRaycast.hasBlock)
-			std::cout << hitRaycast.block.actor << std::endl; // closest actor hit
-
-		PxVec3 unitDir3 = PxVec3(-1, 1, 0);                // direction du ray cast
-
-		status1 = mScene->raycast(origin, unitDir2, maxDistance, hitRaycast);
-		if (status1 && hitRaycast.hasBlock)
-			std::cout << hitRaycast.block.actor->getName() << std::endl; // closest actor hit*/
-
-			// ========= Overlap with the closest actor in result (Block) ============
-			// PxTransform ET PxGeometrie de base ne fonctionne pas, donne une erreur comme quoi c'est invalide
-			/*PxTransform shapePosition = tmp->GetRigid()->getGlobalPose();    // Need position of PhysX Actor
-			//std::cout << << std::endl;
-
-			PxQueryFilterData fd;
-			fd.flags |= PxQueryFlag::eDYNAMIC; // note the OR with the default value
-			fd.flags.set(PxQueryFlag::eDYNAMIC);
-
-			// possibilité de que dynamic et non bloquant dans l'enum.
-
-			//PxOverlapHit
-			PxOverlapHit* temp;
-
-
-			bool status2 = mScene->overlap(overlapGeometrie, shapePosition, temp, fd);
-			//std::cout << "avant test" << std::endl;
-			if (status2 )
-			{
-				if (hitOverlap.hasBlock)
-					std::cout << hitOverlap.block.actor->getName() << std::endl; // closest actor who overlap
-			}*/
-
-			/*
-				Multiple block pas fait
-				possibilité de rajouter des filtres dans les overlap et raycast (genre que les dynamic ou que les static)
-			*/
-
-			// =====================================================
-
-		/*mAccumulator += (physx::PxReal)deltaTime;
+		mAccumulator += (physx::PxReal)deltaTime;
 		if (mAccumulator < mStepSize)
 			return;
 
-		mAccumulator -= 0.0f;*/
+		mAccumulator = 0.0f;
 
-		mScene->simulate(PxReal(deltaTime));
+		mScene->simulate(PxReal(mStepSize));
 
 		mScene->fetchResults(true);
 	}
@@ -367,59 +306,9 @@ namespace Quantix::Physic
 	void PhysicHandler::UpdatePhysicActor(bool isPlaying)
 	{
 		if (isPlaying)
-		{
-			PxU32 nbActors;
-			PxActor** listActor = mScene->getActiveActors(nbActors);
-
-			for (PxU32 index = 0; index < nbActors; index++)
-			{
-				PxRigidDynamic* currentActor = (PxRigidDynamic*)listActor[index];
-				if (currentActor)
-				{
-					PxTransform transformPhysic = currentActor->getGlobalPose();
-
-					if (((Core::DataStructure::GameObject3D*)currentActor->userData))
-					{
-						Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
-						transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
-						transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
-					}
-				}
-			}
-		}
+			UpdatePlayingActor();
 		else
-		{		
-			for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
-			{
-				if (it->second && it->first)
-				{
-					if (it->second->GetType() == ETypePhysic::DYNAMIC)
-					{	
-						PxTransform transform = it->second->GetObjectDynamic()->GetRigid()->getGlobalPose();
-
-						Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
-						transform.p = PxVec3(pos.x, pos.y, pos.z);
-
-						Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
-						transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
-
-						it->second->GetObjectDynamic()->GetRigid()->setGlobalPose(transform);
-					}
-					else
-					{
-						PxTransform transform = it->second->GetObjectStatic()->GetRigid()->getGlobalPose();
-
-						Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
-						transform.p = PxVec3(pos.x, pos.y, pos.z);
-
-						Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
-						transform.q = PxQuat(quat.v.x, quat.v.y, quat.v.z, quat.w);
-
-						it->second->GetObjectStatic()->GetRigid()->setGlobalPose(transform);
-					}
-				}
-			}
-		}
+			UpdateEditorActor();
 	}
 
 	void PhysicHandler::UpdatePlayingActor()
@@ -433,12 +322,12 @@ namespace Quantix::Physic
 			if (currentActor)
 			{
 				PxTransform transformPhysic = currentActor->getGlobalPose();
+				transformPhysic.q = transformPhysic.q.getConjugate();
 
 				if (((Core::DataStructure::GameObject3D*)currentActor->userData))
 				{
 					// Set Transform GameObject On PhysicActor Transform
 					Transform3D* transform = ((Core::DataStructure::GameObject3D*)currentActor->userData)->GetTransform();
-
 					transform->SetPosition(Math::QXvec3(transformPhysic.p.x, transformPhysic.p.y, transformPhysic.p.z));
 					transform->SetRotation(Math::QXquaternion(transformPhysic.q.w, transformPhysic.q.x, transformPhysic.q.y, transformPhysic.q.z));
 				}
@@ -455,7 +344,7 @@ namespace Quantix::Physic
 				// Set RigidBody Transform On GameOject Transform
 				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
 				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
-				
+				quat = quat.ConjugateQuaternion();
 				if (it->second->GetType() == ETypePhysic::DYNAMIC)
 				{
 					PxTransform transform = it->second->GetObjectDynamic()->GetRigid()->getGlobalPose();

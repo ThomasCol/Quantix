@@ -124,13 +124,13 @@ namespace Quantix::Core::DataStructure
 		}
 	}
 
-	void	GameObject3D::CallOnContact(GameObject3D* other)
+	void	GameObject3D::CallOnContact(GameObject3D* other, Math::QXvec3& position, Math::QXvec3& normal)
 	{
 		if (_toUpdate)
 		{
 			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
 			for (QXsizei i = 0; i < behaviors.size(); ++i)
-				behaviors[i]->OnCollision(this, other);
+				behaviors[i]->OnCollision(this, other, position, normal);
 		}
 	}
 

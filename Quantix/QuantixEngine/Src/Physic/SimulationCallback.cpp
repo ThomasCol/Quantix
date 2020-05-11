@@ -36,9 +36,14 @@ namespace Quantix::Physic
 			{
 				if (pairHeader.actors[2] && pairHeader.actors[1])
 				{
+					PxContactPairPoint buffer[1];
+					pairs[i].extractContacts(buffer, 1);
+					Math::QXvec3 normal = Math::QXvec3(buffer[0].normal.x, buffer[0].normal.y, buffer[0].normal.z);
+					Math::QXvec3 position = Math::QXvec3(buffer[0].position.x, buffer[0].position.y, buffer[0].position.z);
+
 					// Call OnContact Function of each GameObject
-					((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData);
-					((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData);
+					((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData, position, normal);
+					((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData, position, normal);
 				}
 			}
 		}
@@ -46,12 +51,10 @@ namespace Quantix::Physic
 
 	void SimulationCallback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 	{
-		std::cout << "OnTrigger" << std::endl;
-
 		for (PxU32 i = 0; i < count; i++)
 		{
 			// Call OnTrigger Function of GameObject who is trigger
-			((Core::DataStructure::GameObject3D*)pairs->triggerActor->userData)->CallOnTrigger((Core::DataStructure::GameObject3D*)pairs->otherActor->userData);
+			((Core::DataStructure::GameObject3D*)pairs[i].triggerActor->userData)->CallOnTrigger((Core::DataStructure::GameObject3D*)pairs[i].otherActor->userData);
 		}
 	}
 

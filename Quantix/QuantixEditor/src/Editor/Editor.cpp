@@ -301,15 +301,6 @@ void Editor::UpdateScene()
 	SaveLoadScene();
 	STOP_PROFILING("SaveLoad");
 
-
-	START_PROFILING("Camera");
-	//Update Camera
-	if (_play)
-		CameraUpdate();
-	else
-		CameraUpdateEditor();
-	STOP_PROFILING("Camera");
-
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
 	std::vector<Quantix::Core::Components::ICollider*>	colliders;
 
@@ -335,6 +326,14 @@ void Editor::UpdateScene()
 	//Refresh Window
 	_win.Refresh(_app->info);
 	STOP_PROFILING("Refresh");
+
+	START_PROFILING("Camera");
+	//Update Camera
+	if (_play)
+		CameraUpdate();
+	else
+		CameraUpdateEditor();
+	STOP_PROFILING("Camera");
 }
 
 void Editor::UpdateEditor(QXuint FBOGame, QXuint FBOScene)
@@ -608,7 +607,6 @@ void Editor::CheckCamera()
 				++it;
 		}
 	}
-
 }
 
 void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
