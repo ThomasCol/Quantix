@@ -1,7 +1,13 @@
 #include "Editor.h"
+
+#include <fmod.hpp>
+#include <fmod_errors.h>
+
 #include <iostream>
 #include <MathDefines.h>
 #include <Core/UserEntry/InputManager.h>
+#include <Core/SoundCore.h>
+#include <Physic/PhysicHandler.h>
 #include <Core/Profiler/Profiler.h>
 #include "stb_image.h"
 #include "opengl_helper.h"
@@ -101,6 +107,49 @@ void Editor::InitImg()
 
 void Editor::Init()
 {
+	glfwSetWindowUserPointer(_win.GetWindow(), _mouseInput);
+
+	//Init Scene
+	InitScene();
+
+	//Init Editor
+	InitEditor();
+}
+
+void Editor::InitScene()
+{
+	Quantix::Core::Components::Light light;
+	light.ambient = { 0.3f, 0.3f, 0.3f };
+	light.diffuse = { 0.7f, 0.7f, 0.7f };
+	light.specular = { 0.7f, 0.7f, 0.7f };
+	light.position = { -2.0f, 4.0f, -1.0f };
+	light.direction = { 2.0f, -4.0f, 1.f };
+	light.constant = 0.5f;
+	light.linear = 0.09f;
+	light.quadratic = 0.032f;
+	light.cutOff = cos(0.70f);
+	light.outerCutOff = cos(0.76f);
+	light.type = Quantix::Core::Components::ELightType::DIRECTIONAL;
+
+	Quantix::Core::Components::Light light2;
+	light2.ambient = { 0.3f, 0.3f, 0.3f };
+	light2.diffuse = { 1.0f, 1.0f, 1.0f };
+	light2.specular = { 0.50f, 0.50f, 0.50f };
+	light2.position = { 0.0f, 2.f, 7.f };
+	light2.direction = { 0.0f, 0.f, -1.f };
+	light2.constant = 0.5f;
+	light2.linear = 0.09f;
+	light2.quadratic = 0.032f;
+	light2.cutOff = cos(0.70f);
+	light2.outerCutOff = cos(0.76f);
+	light2.type = Quantix::Core::Components::ELightType::SPOT;
+
+	_lights.push_back(light);
+	_lights.push_back(light2);
+}
+
+void Editor::InitEditor()
+{
 	InitImGui();
 
 	_app->info.proj = { Math::QXmat4::CreateProjectionMatrix(_app->info.width, _app->info.height, 0.1f, 1000.f, 80.f) };
@@ -132,7 +181,153 @@ void Editor::InitImGui()
 		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
 }
 
-void Editor::Update(QXuint FBOGame, QXuint FBOScene)
+void	Editor::DebugMode()
+{
+	static QXbool state = false;
+	if (GetKey(QX_KEY_F1) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+	{
+		if (!state)
+			ACTIVATE_PROFILING(!GETSTATE_PROFILING());
+		state = true;
+	}
+	if (GetKey(QX_KEY_F1) != Quantix::Core::UserEntry::EKeyState::RELEASED)
+		state = false;
+}
+
+void Editor::Update()
+{
+	while (!_win.ShouldClose())
+	{
+		Quantix::Core::SoundCore::GetInstance()->Update(); //Update for FMOD
+		UpdateScene();
+	}
+}
+
+void Editor::UpdateMouse(Quantix::Core::Components::Camera* camera)
+{
+	// Mouse state
+	{
+		Math::QXvec2 mousePos = GetMousePos();
+
+		_mouseInput->DeltaMouseX = mousePos.x - _mouseInput->MouseX;
+		_mouseInput->DeltaMouseY = mousePos.y - _mouseInput->MouseY;
+
+		_mouseInput->MouseX = mousePos.x;
+		_mouseInput->MouseY = mousePos.y;
+
+		camera->ChangeView(_mouseInput->DeltaMouseX, _mouseInput->DeltaMouseY, _win.GetWidth(), _win.GetHeight(), _app->info.deltaTime);
+	}
+
+	// Screen size
+	glfwGetWindowSize(_win.GetWindow(), (QXint*)&_app->info.width, (QXint*)&_app->info.height);
+}
+
+void	Editor::CameraUpdateEditor()
+{
+	if (_mouseInput->MouseCaptured)
+	{
+		UpdateMouse(_cameraEditor);
+		if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir() * SPEED));
+		if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir() * SPEED));
+		if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEED));
+		if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEED));
+		_cameraEditor->UpdateLookAt(_cameraEditor->GetPos());
+	}
+	if (_mainCamera->GetObject() != nullptr)
+		_mainCamera->SetPos(((Quantix::Core::DataStructure::GameObject3D*)_mainCamera->GetObject())->GetTransform()->GetPosition());
+	_mainCamera->UpdateLookAt(_mainCamera->GetPos());
+}
+
+void	Editor::CameraUpdate()
+{
+	if (_mouseInput->MouseCaptured)
+	{
+		UpdateMouse(_mainCamera);
+		if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir() * SPEED));
+		if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir() * SPEED));
+		if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEED));
+		if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
+			_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEED));
+		_mainCamera->UpdateLookAt(_mainCamera->GetPos());
+	}
+}
+
+
+void Editor::UpdateScene()
+{
+	static QXbool	sceneChange = false;
+	static Quantix::Resources::Scene* newScene = nullptr;
+	if (GetKey(QX_KEY_ESCAPE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+	{
+		if (_mouseInput->MouseCaptured)
+		{
+			glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			_mouseInput->MouseCaptured = false;
+		}
+	}
+
+	Quantix::Core::UserEntry::InputManager::GetInstance()->Update(_win.GetWindow());
+	Quantix::Core::UserEntry::EKeyState state = GetKey(QX_MOUSE_BUTTON_LEFT);
+
+	DebugMode();
+
+	std::vector<Quantix::Core::Components::Mesh*>	meshes;
+	std::vector<Quantix::Core::Components::ICollider*>	colliders;
+
+	if ((GetKey(QX_KEY_LEFT_CONTROL) == Quantix::Core::UserEntry::EKeyState::PRESSED || GetKey(QX_KEY_LEFT_CONTROL) == Quantix::Core::UserEntry::EKeyState::DOWN) &&
+		(GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::PRESSED || GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN))
+	{
+		_app->manager.SaveScene(_app->scene);
+	}
+	if (GetKey(QX_KEY_F2) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+	{
+		Quantix::Physic::PhysicHandler::GetInstance()->CleanScene();
+		newScene = _app->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
+		sceneChange = true;
+	}
+
+	if (sceneChange)
+	{
+		if (newScene->IsReady())
+		{
+			_app->scene = newScene;
+			_root = _app->scene->GetRoot();
+			sceneChange = false;
+		}
+	}
+
+
+	START_PROFILING("Draw");
+	if (!_pause && _play)
+		_app->Update(meshes, colliders, true);
+	else
+		_app->Update(meshes, colliders);
+
+	//Editor Update
+	if (_play)
+		UpdateEditor(_app->renderer.DrawGame(meshes, _lights, _app->info, _mainCamera),
+			_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor));
+	else
+		UpdateEditor(_app->renderer.DrawGame(meshes, _lights, _app->info, _mainCamera),
+			_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor));
+	STOP_PROFILING("Draw");
+	START_PROFILING("Refresh");
+	_win.Refresh(_app->info);
+	STOP_PROFILING("Refresh");
+	if (_play)
+		CameraUpdate();
+	else
+		CameraUpdateEditor();
+}
+
+void Editor::UpdateEditor(QXuint FBOGame, QXuint FBOScene)
 {
 	InitImGui();
 
