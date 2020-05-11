@@ -70,16 +70,4 @@ namespace Quantix::Core::DataStructure
 
 		return *this;
 	}
-
-	void GameComponent::Start(std::vector<Core::Components::Mesh*>& meshes)
-	{
-		for (QXint i = 0; i < _behaviours.size(); i++)
-			_behaviours[i]->Start();
-	}
-
-	void GameComponent::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders)
-	{
-		for (QXint i = 0; i < _behaviours.size(); i++)
-			_behaviours[i]->Update();
-	}
 }

@@ -25,10 +25,11 @@ namespace Quantix::Core::Components
 
 		//inline virtual void	Start(Core::DataStructure::ResourcesManager * rm) { (void)rm; };
 
-		virtual void	Start() { /*std::cout << "start" << std::endl;*/ };
-		virtual void	Update() { /*std::cout << "update" << std::endl;*/ };
-		virtual void    OnContact(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) { std::cout << "OnContact" << std::endl; }
-		virtual void    OnTrigger(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) { std::cout << "OnTrigger" << std::endl; }
+		virtual void	Awake() {}
+		virtual void	Start() {}
+		virtual void	Update(QXdouble deltaTime) {}
+		virtual void    OnCollision(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) {}
+		virtual void    OnTrigger(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other) {}
 		virtual void	Destroy() override {}
 
 		//inline virtual void	OnCollision(Physics::Collision::Collider * collider) {};

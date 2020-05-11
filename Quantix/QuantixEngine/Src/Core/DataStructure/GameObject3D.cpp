@@ -44,13 +44,10 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
-	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders)
+	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, Platform::AppInfo& info)
 	{
 		if (_toRender)
 		{
-			for (QXint i = 0; i < _behaviours.size(); i++)
-				_behaviours[i]->Update();
-
 			Core::Components::Mesh* mesh = GetComponent<Core::Components::Mesh>();
 
 			if (mesh && mesh->IsEnable())
@@ -58,10 +55,11 @@ namespace Quantix::Core::DataStructure
 		}
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
-			child->GetObject()->Update(meshes, colliders, this);
+			child->GetObject()->Update(meshes, colliders, this, info);
 	}
 
-	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, const GameObject3D* parentObject)
+	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
+			const GameObject3D* parentObject, Platform::AppInfo& info)
 	{
 		if (_toRender)
 		{
@@ -77,36 +75,71 @@ namespace Quantix::Core::DataStructure
 			colliders.push_back(collider);
 		}
 
-		// Update All Behaviours
-		for (QXint i = 0; i < _behaviours.size(); i++)
-			_behaviours[i]->Update();
+		if (_toUpdate)
+		{
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			for (QXsizei i = 0; i < behaviors.size(); ++i)
+				behaviors[i]->Update(info.deltaTime);
+		}
 
 		_transform->Update(parentObject->GetTransform());
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
-			child->GetObject()->Update(meshes, colliders, this);
+			child->GetObject()->Update(meshes, colliders, this, info);
+	}
+
+	void	GameObject3D::Start()
+	{
+		if (_toUpdate)
+		{
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			for (QXsizei i = 0; i < behaviors.size(); ++i)
+				behaviors[i]->Start();
+		}
+
+		for (Physic::Transform3D* child : _transform->GetChilds())
+			child->GetObject()->Start();
+	}
+	
+	void	GameObject3D::Awake()
+	{
+		if (_toUpdate)
+		{
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			for (QXsizei i = 0; i < behaviors.size(); ++i)
+				behaviors[i]->Awake();
+		}
+
+		for (Physic::Transform3D* child : _transform->GetChilds())
+			child->GetObject()->Awake();
 	}
 
 	void	GameObject3D::CallOnTrigger(GameObject3D* other)
 	{
-		for (QXuint i = 0; i < _behaviours.size(); i++)
-			_behaviours[i]->OnTrigger(this, other);
+		if (_toUpdate)
+		{
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			for (QXsizei i = 0; i < behaviors.size(); ++i)
+				behaviors[i]->OnTrigger(this, other);
+		}
 	}
 
 	void	GameObject3D::CallOnContact(GameObject3D* other)
 	{
-		for (QXuint i = 0; i < _behaviours.size(); i++)
-			_behaviours[i]->OnContact(this, other);
+		if (_toUpdate)
+		{
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			for (QXsizei i = 0; i < behaviors.size(); ++i)
+				behaviors[i]->OnCollision(this, other);
+		}
 	}
 
 	void	GameObject3D::SetGlobalPosition(Math::QXvec3 pos)
 	{
-		//_transform.SetGlobalPosition(pos);
 	}
 
 	void	GameObject3D::SetGlobalRotation(Math::QXquaternion rot)
 	{
-		//_transform.SetGlobalRotation(pos);
 	}
 
 	void	GameObject3D::SetLocalPosition(Math::QXvec3 pos)

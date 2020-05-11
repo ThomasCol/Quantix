@@ -2,8 +2,9 @@
 #define __SCENE_H__
 
 #include "Core/DataStructure/GameObject3D.h"
-#include "../Core/DataStructure/GameComponent.h"
+#include "Core/DataStructure/GameComponent.h"
 #include "Core/Components/Collider.h"
+#include "Core/Platform/AppInfo.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -78,7 +79,9 @@ namespace Quantix::Resources
 			 * @brief method that update the world and its hierarchy
 			 *
 			 */
-			void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders) noexcept;
+			void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders, Core::Platform::AppInfo& info) noexcept;
+
+			void	Start() noexcept;
 
 			void Reset()noexcept;
 
