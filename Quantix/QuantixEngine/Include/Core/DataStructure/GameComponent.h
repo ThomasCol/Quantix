@@ -19,14 +19,15 @@ namespace Quantix::Core::DataStructure
 	class QUANTIX_API GameComponent
 	{
 	protected:
-		#pragma region Attributes
+#pragma region Attributes
 		std::vector<Component*>						_component;
-		std::vector<Components::Behaviour*>			_behaviours;
 		std::string									_name;
 		QXint										_layer;
-		QXbool										_isStatic;
-		QXbool										_isActive;
-		QXbool										_toRender;
+		QXbool										_isStatic { false };
+		QXbool										_isActive { true };
+		QXbool										_toRender { false };
+		QXbool										_toUpdate { false };
+		QXbool										_toCollide { false };
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -59,17 +60,9 @@ namespace Quantix::Core::DataStructure
 			return comp;
 		}
 
-		inline void				AddComponent(Quantix::Core::DataStructure::Component* comp)
+		inline void		AddComponent(Quantix::Core::DataStructure::Component* comp)
 		{
 			_component.push_back(comp);
-			Components::Behaviour* beha = dynamic_cast<Components::Behaviour*>(comp);
-			if (beha)
-				AddBehaviour(beha);
-		}
-
-		inline void				AddBehaviour(Quantix::Core::Components::Behaviour* beha)
-		{
-			_behaviours.push_back(beha);
 		}
 
 		/**
@@ -142,24 +135,6 @@ namespace Quantix::Core::DataStructure
 			return _component;
 		}
 
-		inline const std::vector<Core::Components::Behaviour*> GetBehaviours()
-		{
-			return _behaviours;
-		}
-
-		template<typename T>
-		inline T* GetBehaviour()
-		{
-			for (Core::Components::Behaviour* beha : _behaviours)
-			{
-				rttr::type t = beha->get_type();
-
-				if (rttr::type::get<T>() == t)
-					return dynamic_cast<T*>(beha);
-			}
-			return nullptr;
-		}
-
 		inline void				RemoveComponent(Component* component)
 		{
 			for (auto it{_component.begin()}; it != _component.end(); ++it)
@@ -174,60 +149,9 @@ namespace Quantix::Core::DataStructure
 			}
 		}
 
-		inline void			RemoveBehaviour(Core::Components::Behaviour* behaviour)
-		{
-			for (auto it{ _component.begin() }; it != _component.end(); ++it)
-			{
-				if ((*it) == behaviour)
-				{
-					(*it)->EraseEndOfFrame();
-					(*it)->Destroy();
-					_component.erase(it);
-					return;
-				}
-			}
-		}
-
-		/**
-		 * @brief Remove component
-		 * 
-		 * @tparam T Component
-		 * @param component Component you want to remove
-		 */
-		/*template<typename T>
-		inline void				RemoveComponent(T* component)
-		{
-			for (auto it{ _component.begin() }; it != _component.end(); ++it)
-			{
-				if (*it == component)
-				{
-					(*it)->EraseEndOfFrame();
-					return;
-				}
-			}
-		}*/
-
-		/**
-		 * @brief Remove multiple components
-		 * 
-		 * @tparam T type of component you want to remove
-		 */
-		/*template<typename T>
-		inline void				RemoveComponents()
-		{
-			const std::type_info& type{ typeid(T&) };
-
-			for (unsigned i{ 0 }; i < _component.size(); ++i)
-			{
-				if (_component[i]->GetType() == type)
-				{
-					_component[i]->EraseEndOfFrame();
-				}
-			}
-		}*/
-
-		virtual void Start(std::vector<Core::Components::Mesh*>& meshes);
-		virtual void Update(std::vector<Core::Components::Mesh*>& meshes, std::vector < Core::Components::ICollider* > & colliders);
+		virtual void Awake() {};
+		virtual void Start() {};
+		virtual void Update(std::vector<Core::Components::Mesh*>& meshes, std::vector < Core::Components::ICollider* >& colliders, Platform::AppInfo& info) {};
 
 		#pragma endregion Template
 
@@ -282,6 +206,21 @@ namespace Quantix::Core::DataStructure
 		 * @return QXbool
 		 */
 		inline QXbool			GetRender() const { return _toRender; };
+
+		/**
+		 * @brief Set the ToUpdate object
+		 *
+		 * @param update QXbool
+		 */
+		inline void				SetToUpdate(QXbool update) { _toUpdate = update; };
+
+		/**
+		 * @brief Get the ToUpdate object
+		 *
+		 * @return QXbool to update value
+		 */
+		inline QXbool			GetToUpdate() const { return _toUpdate; };
+
 		#pragma endregion Accessors
 		GameComponent&			operator=(const GameComponent& gc);
 		#pragma endregion Methods
