@@ -51,7 +51,7 @@ namespace Quantix::Physic
 
 		// To Delete
 		PxReal mAccumulator = 0.0f;
-		PxReal mStepSize = 1.0f / 60.0f;
+		PxReal mStepSize = 1/240.f;
 #pragma endregion
 
 		std::map<Core::DataStructure::GameComponent*, IPhysicType*>		_physObject;
