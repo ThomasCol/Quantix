@@ -15,14 +15,7 @@ namespace Quantix::Core::Components
 {
 	Behaviour::Behaviour(Core::DataStructure::GameComponent* object) :
 		Component(object)
-	{
-		object->AddBehaviour(this);
-	}
-
-	/*void	Behaviour::Destroy()
-	{
-		//m_object->RemoveBehaviour(this);
-	}*/
+	{}
 
 	Behaviour* Behaviour::Copy() const
 	{
@@ -34,5 +27,7 @@ namespace Quantix::Core::Components
 		_object = object;
 		_isDestroyed = false;
 		_isEnable = true;
+		_object->SetToUpdate(true);
+		Awake();
 	}
 }

@@ -269,7 +269,6 @@ namespace Quantix::Core::Render
 
 			material->SetMat4("TRS", obj->GetTransform()->GetTRS());
 			glBindVertexArray(mesh[i]->GetVAO());
-			material->UseShader();
 
 			glDrawElements(GL_TRIANGLES, (GLsizei)mesh[i]->GetIndices().size(), GL_UNSIGNED_INT, 0);
 

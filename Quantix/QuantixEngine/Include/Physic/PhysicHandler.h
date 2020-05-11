@@ -9,6 +9,7 @@
 #include "Core/DLLHeader.h"
 #include "rttrEnabled.h"
 #include "Physic/PhysicSetting.h"
+#include "Physic/Raycast.h"
 
 #include "Core/DataStructure/GameComponent.h"
 
@@ -198,6 +199,10 @@ namespace Quantix::Physic
 		 * 
 		 */
 		void UpdateEditorActor();
+
+		void Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Raycast& ownRaycast);
+
+		void CleanScene();
 
 #pragma region Operators
 

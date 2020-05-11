@@ -102,8 +102,6 @@ void Hierarchy::RemoveObject(QXbool& select, std::list<Quantix::Physic::Transfor
 		{
 			for (QXuint i = 0; i < (*it)->GetObject()->GetComponents().size(); i++)
 				(*it)->GetObject()->RemoveComponent((*it)->GetObject()->GetComponents()[i]);
-			for (QXuint i = 0; i < (*it)->GetObject()->GetBehaviours().size(); i++)
-				(*it)->GetObject()->RemoveBehaviour((*it)->GetObject()->GetBehaviours()[i]);
 			it = nodes.erase(it);
 			_selected = nullptr;
 			select = false;

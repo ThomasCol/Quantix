@@ -85,11 +85,17 @@ namespace Quantix::Resources
 		gameObject->AddComponent<Core::Components::CubeCollider>()->Init(gameObject);
 	}
 
-	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders) noexcept
+	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders, Core::Platform::AppInfo& info) noexcept
 	{
 		// TODO pas complet update mesh et update gameobject
 		if (_root)
-			_root->Update(meshes, colliders);
+			_root->Update(meshes, colliders, info);
+	}
+
+	void Scene::Start() noexcept
+	{
+		if (_root)
+			_root->Start();
 	}
 
 	void Scene::Rename(const QXstring& str) noexcept

@@ -406,7 +406,7 @@ void Editor::DrawGuizmo()
 			_guizmoType = ImGuizmo::OPERATION::TRANSLATE;
 	}
 
-	if (_hierarchy.GetInspector() != nullptr)
+	if (_hierarchy.GetInspector() != nullptr && _root->GetTransform()->FindTransform(_hierarchy.GetInspector()->GetTransform()) == QX_TRUE)
 		ShowGuizmoObject(_hierarchy.GetInspector()->GetTransform());
 }
 
@@ -436,6 +436,7 @@ void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 		{
 			ImGui::SetWindowFocus(name.c_str());
 			focus = QX_TRUE;
+			_app->scene->Start();
 		}
 	}
 	else if (!_play)
