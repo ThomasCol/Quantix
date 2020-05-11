@@ -22,9 +22,7 @@
 #include <Physic/PhysicHandler.h>
 //#include <Resources\Sound.h>
 
-#define SPEED (0.25f)
-
-QXuint indexPackD;
+/*QXuint indexPackD;
 QXuint indexPackE;
 QXuint indexPackF;
 QXuint indexPackB;
@@ -33,7 +31,7 @@ QXuint indexPackR;
 QXbool state = false;
 
 // Update platform IO from glfw
-void PlatformUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
+void UpdateMouse(Editor* editor, Quantix::Core::Components::Camera* camera)
 {
 	// Mouse state
 	{
@@ -56,7 +54,7 @@ void	CameraUpdateEditor(Editor* editor, Quantix::Core::Components::Camera* camer
 {
 	if (editor->_mouseInput->MouseCaptured)
 	{
-		PlatformUpdate(editor, cameraEditor);
+		UpdateMouse(editor, cameraEditor);
 		if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
 			cameraEditor->SetPos(cameraEditor->GetPos() + (cameraEditor->GetDir() * SPEED));
 		if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
@@ -76,7 +74,7 @@ void	CameraUpdate(Editor* editor, Quantix::Core::Components::Camera* camera)
 {
 	if (editor->_mouseInput->MouseCaptured)
 	{
-		PlatformUpdate(editor, camera);
+		UpdateMouse(editor, camera);
 		if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
 			camera->SetPos(camera->GetPos() + (camera->GetDir() * SPEED));
 		if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
@@ -121,16 +119,6 @@ void InitScene(Editor* editor, std::vector<Quantix::Core::Components::Light>& li
 	lights.push_back(light2);
 }
 
-void InitPack()
-{
-	/*indexPackD = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_F1, Quantix::Core::UserEntry::ETriggerType::PRESSED);
-	indexPackE = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_ESCAPE, Quantix::Core::UserEntry::ETriggerType::PRESSED);
-	indexPackF = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_W, Quantix::Core::UserEntry::ETriggerType::DOWN);
-	indexPackB = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_S, Quantix::Core::UserEntry::ETriggerType::DOWN);
-	indexPackL = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_A, Quantix::Core::UserEntry::ETriggerType::DOWN);
-	indexPackR = AddButton(Quantix::Core::UserEntry::EKey::QX_KEY_D, Quantix::Core::UserEntry::ETriggerType::DOWN);*/
-}
-
 void	DebugMode()
 {
 	if (GetKey(QX_KEY_F1) == Quantix::Core::UserEntry::EKeyState::PRESSED)
@@ -146,9 +134,6 @@ void	DebugMode()
 void Init(Editor* editor, std::vector<Quantix::Core::Components::Light>& lights)
 {
 	glfwSetWindowUserPointer(editor->GetWin().GetWindow(), editor->_mouseInput);
-
-	//Init Pack Input Manager
-	InitPack();
 
 	//Init Scene
 	InitScene(editor, lights);
@@ -225,16 +210,17 @@ void Update(Editor* editor, std::vector<Quantix::Core::Components::Light>& light
 		CameraUpdate(editor, editor->GetMainCamera());
 	else
 		CameraUpdateEditor(editor, editor->GetEditorCamera(), editor->GetMainCamera());
-}
+}*/
 
 int main()
 {
 	try
 	{
 		Editor*											editor = new Editor(1920, 900);
-		
+		editor->Init();
+		editor->Update();
 
-		std::vector<Quantix::Core::Components::Light>	lights;
+		/*std::vector<Quantix::Core::Components::Light>	lights;
 
 		Init(editor, lights);
 
@@ -242,7 +228,7 @@ int main()
 		{
 			Quantix::Core::SoundCore::GetInstance()->Update(); //Update for FMOD
 			Update(editor, lights);
-		}
+		}*/
 
 		delete editor;
 	}

@@ -81,11 +81,27 @@ public:
 	 */
 	void												Init();
 
+	void												InitScene();
+
+	void												InitEditor();
+
 	/**
 	 * @brief Init ImGui
 	 * 
 	 */
 	void												InitImGui();
+
+	void												DebugMode();
+
+	void												Update();
+
+	void												UpdateMouse(Quantix::Core::Components::Camera* camera);
+
+	void												CameraUpdateEditor();
+
+	void												CameraUpdate();
+
+	void												UpdateScene();
 
 	/**
 	 * @brief Update Editor
@@ -93,7 +109,7 @@ public:
 	 * @param FBOGame 
 	 * @param FBOScene 
 	 */
-	void												Update(QXuint FBOGame, QXuint FBOScene);
+	void												UpdateEditor(QXuint FBOGame, QXuint FBOScene);
 
 	/**
 	 * @brief Draw All Frame
@@ -304,6 +320,7 @@ public:
 
 	#pragma region Attributes
 	MouseTest*											_mouseInput;
+	std::vector<Quantix::Core::Components::Light>		_lights;
 	#pragma endregion Attributes
 private:
 	#pragma region Attributes

@@ -91,12 +91,12 @@
                 },
                 {
                     "GameObject1": {
-                        "name": "Cube",
+                        "name": "Sphere",
                         "Transform": {
                             "position": {
-                                "x": 3.4530794620513918,
-                                "y": 3.78015398979187,
-                                "z": 0.10302400588989258
+                                "x": -10.099985122680664,
+                                "y": -0.30457454919815066,
+                                "z": -0.30457502603530886
                             },
                             "rotation": {
                                 "x": 0.0,
@@ -114,37 +114,8 @@
                             {
                                 "Mesh": {
                                     "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
+                                    "Model": "media/Mesh/sphere.obj",
                                     "Material": "media/Material/DefaultMaterial1.mat"
-                                }
-                            },
-                            {
-                                "SphereCollider": {
-                                    "Enable": true,
-                                    "ToRender": true,
-                                    "Local Position": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Local Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "Collide Group": {
-                                        "PawnGroup": false,
-                                        "MineGroup": false,
-                                        "CrabGroup": false
-                                    },
-                                    "Shape Flag": {
-                                        "Query Shape": true,
-                                        "Simulation Shape": true,
-                                        "Trigger Shape": false,
-                                        "Visualization Shape": false
-                                    },
-                                    "Radius": 1.0
                                 }
                             }
                         ],

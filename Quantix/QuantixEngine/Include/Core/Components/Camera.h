@@ -8,6 +8,8 @@
 #include "Core/DataStructure/Component.h"
 #include "rttrEnabled.h"
 
+#define SPEED (0.25f)
+
 namespace Quantix::Core::Components
 {
 	class QUANTIX_API Camera : public virtual Core::DataStructure::Component
