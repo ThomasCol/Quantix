@@ -13,7 +13,7 @@ public:
 	void			Init(Quantix::Core::Platform::Application* app);
 	void			PrintLog();
 	void			ConsoleUI();
-	void			Update();
+	void			Update(const QXstring& name, ImGuiWindowFlags flags);
 
 private:
 	QXuint												_sizeLog;

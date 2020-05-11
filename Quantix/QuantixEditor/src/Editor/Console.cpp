@@ -61,27 +61,31 @@ void Console::ConsoleUI()
 	}
 }
 
-void Console::Update()
+void Console::Update(const QXstring& name, ImGuiWindowFlags flags)
 {
-	static QXbool ShowDemoWindow = QX_FALSE;
-	// Display GPU infos
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::Checkbox("Demo window", &ShowDemoWindow);
-
-	if (ImGui::CollapsingHeader("System info"))
+	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		ImGui::Text("GL_VERSION: %s", glGetString(GL_VERSION));
-		ImGui::Text("GL_RENDERER: %s", glGetString(GL_RENDERER));
-		ImGui::Text("GL_SHADING_LANGUAGE_VERSION: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		static QXbool ShowDemoWindow = QX_FALSE;
+		// Display GPU infos
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Checkbox("Demo window", &ShowDemoWindow);
+
+		if (ImGui::CollapsingHeader("System info"))
+		{
+			ImGui::Text("GL_VERSION: %s", glGetString(GL_VERSION));
+			ImGui::Text("GL_RENDERER: %s", glGetString(GL_RENDERER));
+			ImGui::Text("GL_SHADING_LANGUAGE_VERSION: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		}
+
+		if (ShowDemoWindow)
+			ImGui::ShowDemoWindow(&ShowDemoWindow);
+
+		ImGui::BeginTabBar("Log");
+		ConsoleUI();
+		ImGui::BeginChild("Logger");
+		PrintLog();
+		ImGui::EndChild();
+		ImGui::EndTabBar();
 	}
-
-	if (ShowDemoWindow)
-		ImGui::ShowDemoWindow(&ShowDemoWindow);
-
-	ImGui::BeginTabBar("Log");
-	ConsoleUI();
-	ImGui::BeginChild("Logger");
-	PrintLog();
-	ImGui::EndChild();
-	ImGui::EndTabBar();
+	ImGui::End();
 }

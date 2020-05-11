@@ -576,11 +576,7 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 
 void Editor::DrawConsole(const QXstring& name, ImGuiWindowFlags flags)
 {
-	ImGui::Begin(name.c_str(), NULL, flags);
-	{
-		_console.Update();
-	}
-	ImGui::End();
+	_console.Update(name, flags);
 }
 
 void Editor::DrawExplorer(const QXstring& name, ImGuiWindowFlags flags)
@@ -588,32 +584,45 @@ void Editor::DrawExplorer(const QXstring& name, ImGuiWindowFlags flags)
 	_explorer.Update(_app->manager, name, flags);
 }
 
+void Editor::CheckCamera()
+{
+	if (_hasCamera.size() == 0)
+	{
+		if (_hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponent<Quantix::Core::Components::Camera>() != nullptr)
+		{
+			_mainCamera = _hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponent<Quantix::Core::Components::Camera>();
+			_hasCamera.insert(std::make_pair(QX_TRUE, _hierarchy.GetInspector()->GetTransform()->GetObject()));
+		}
+		else
+			_mainCamera = _defaultCamera;
+	}
+	else
+	{
+		for (auto it = _hasCamera.begin(); it != _hasCamera.end();)
+		{
+			if (!_root->GetTransform()->FindTransform(it->second->GetTransform()))
+				it = _hasCamera.erase(it);
+			else if (it->second->GetComponent<Quantix::Core::Components::Camera>() == nullptr)
+				it = _hasCamera.erase(it);
+			else
+				++it;
+		}
+	}
+
+}
+
 void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		static bool setCamera = QX_FALSE;
-
 		if (_hierarchy.GetInspector() != nullptr)
 		{
 			if (_root->GetTransform()->FindTransform(_hierarchy.GetInspector()->GetTransform()) == QX_FALSE)
 				_hierarchy.GetInspector()->SetEnable(QX_FALSE);
 			
 			_hierarchy.GetInspector()->Update(_win, _app);
-			if (!setCamera)
-			{
-				if (_hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponents().size() > 0)
-				{
-					rttr::type type = _hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponents().back()->get_type();
-					if (type == rttr::type::get<Quantix::Core::Components::Camera*>().get_raw_type())
-					{
-						_mainCamera = dynamic_cast<Quantix::Core::Components::Camera*>(_hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponents().back());
-						setCamera = QX_TRUE;
-					}
-				}
-			}
+			CheckCamera();
 		}
-
 	}
 	ImGui::End();
 }

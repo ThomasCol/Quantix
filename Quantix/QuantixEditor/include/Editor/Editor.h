@@ -256,6 +256,8 @@ public:
 	 */
 	void												DrawExplorer(const QXstring& name, ImGuiWindowFlags flags);
 
+	void												CheckCamera();
+
 	/**
 	 * @brief Draw Inspector Console
 	 * 
@@ -324,36 +326,37 @@ public:
 	#pragma endregion Methods
 
 	#pragma region Attributes
-	MouseTest*											_mouseInput;
-	std::vector<Quantix::Core::Components::Light>		_lights;
+	MouseTest*															_mouseInput;
+	std::vector<Quantix::Core::Components::Light>						_lights;
 	#pragma endregion Attributes
 private:
 	#pragma region Attributes
-	Quantix::Core::Platform::Window						_win;
-	Quantix::Core::Platform::Application*				_app;
-	rttr::library										_lib;
-	Quantix::Core::DataStructure::GameObject3D*			_root;
-	Quantix::Core::Components::Camera*					_cameraEditor;
-	Quantix::Core::Components::Camera*					_mainCamera;
-	Quantix::Core::Components::Camera*					_defaultCamera;
+	Quantix::Core::Platform::Window										_win;
+	Quantix::Core::Platform::Application*								_app;
+	rttr::library														_lib;
+	Quantix::Core::DataStructure::GameObject3D*							_root;
+	Quantix::Core::Components::Camera*									_cameraEditor;
+	Quantix::Core::Components::Camera*									_mainCamera;
+	Quantix::Core::Components::Camera*									_defaultCamera;
 
-	Guizmo												_guizmo;
-	Console												_console;
-	Docker												_docker;
-	Folder												_folder;
-	MenuBar												_menuBar;
-	Hierarchy											_hierarchy;
-	Explorer											_explorer;
+	Guizmo																_guizmo;
+	Console																_console;
+	Docker																_docker;
+	Folder																_folder;
+	MenuBar																_menuBar;
+	Hierarchy															_hierarchy;
+	Explorer															_explorer;
 
-	std::map<QXstring, Quantix::Resources::Texture*>	_simImg;
-	std::map<QXstring, QXbool>							_simState;
-	QXbool												_play;
-	QXbool												_pause;
-	QXbool												_activateFocus;
+	std::map<QXstring, Quantix::Resources::Texture*>					_simImg;
+	std::map<QXstring, QXbool>											_simState;
+	std::map<QXbool, Quantix::Core::DataStructure::GameObject3D*>		_hasCamera;
+	QXbool																_play;
+	QXbool																_pause;
+	QXbool																_activateFocus;
 
-	QXuint												_fboScene;
-	QXuint												_fboGame;
-	ImGuiWindowFlags									_flagsEditor;
+	QXuint																_fboScene;
+	QXuint																_fboGame;
+	ImGuiWindowFlags													_flagsEditor;
 	#pragma endregion Attributes
 };
 
