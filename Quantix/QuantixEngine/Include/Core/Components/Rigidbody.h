@@ -25,6 +25,7 @@ namespace Quantix::Core::Components
 
 		Physic::ActorFlag actorFlag;
 		Physic::RigidBodyFlag rigidFlag;
+		Physic::RigidBodyLockFlag rigidLockFlag;
 		QXfloat mass {1.f};
 
 #pragma endregion
@@ -288,6 +289,20 @@ namespace Quantix::Core::Components
 		bool GetActorFlagDisableSimulation() { return actorFlag.disableSimulation; }
 
 		bool GetActorFlagSendSleepNotifies() { return actorFlag.sendSleepNotifies; }
+
+		bool GetRigidLockFlagLinearX() { return rigidLockFlag.lockLinearX; }
+		bool GetRigidLockFlagLinearY() { return rigidLockFlag.lockLinearY; }
+		bool GetRigidLockFlagLinearZ() { return rigidLockFlag.lockLinearZ; }
+		bool GetRigidLockFlagAngularX() { return rigidLockFlag.lockAngularX; }
+		bool GetRigidLockFlagAngularY() { return rigidLockFlag.lockAngularY; }
+		bool GetRigidLockFlagAngularZ() { return rigidLockFlag.lockAngularZ; }
+
+		void SetRigidLockFlagLinearX(bool b);
+		void SetRigidLockFlagLinearY(bool b);
+		void SetRigidLockFlagLinearZ(bool b);
+		void SetRigidLockFlagAngularX(bool b);
+		void SetRigidLockFlagAngularY(bool b);
+		void SetRigidLockFlagAngularZ(bool b);
 #pragma endregion 
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);

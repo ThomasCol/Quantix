@@ -63,7 +63,6 @@ void Hierarchy::DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal,
 			break;
 		}
 		ImGui::PopID();
-
 	}
 }
 
@@ -286,7 +285,7 @@ void Hierarchy::MenuRename2D(std::list<Quantix::Physic::Transform2D*>& nodes, Qu
 QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Physic::Transform2D* node, Quantix::Core::Platform::Application* app)
 {
 	static QXbool isRemoved = QX_FALSE;
-	if (ImGui::BeginPopupContextItem("Context Item"))
+	if (ImGui::BeginPopupContextItem("Context Item 2D"))
 	{
 		if (_selected == nullptr)
 			_selected = node->GetObject();
@@ -314,7 +313,7 @@ QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& node
 QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Core::Platform::Application* app)
 {
 	static QXbool isRemoved = QX_FALSE;
-	if (ImGui::BeginPopupContextItem("Context Item"))
+	if (ImGui::BeginPopupContextItem("Context Item 3D"))
 	{
 		if (_selected == nullptr)
 			_selected = node->GetObject();
@@ -354,7 +353,7 @@ QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Physic::Transform3D*>& nodes,
 QXbool Hierarchy::PopUpMenuItemGC(Quantix::Core::DataStructure::GameComponent* node, Quantix::Core::Platform::Application* app)
 {
 	static QXbool isRemoved = QX_FALSE;
-	if (ImGui::BeginPopupContextItem("Context Item"))
+	if (ImGui::BeginPopupContextItem("Context Item GC"))
 	{
 		if (_selected == nullptr)
 			_selected = node;
