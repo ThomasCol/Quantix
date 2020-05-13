@@ -38,6 +38,17 @@ namespace Quantix::Physic
 		bool					ccdMaxContactImpulse = false;
 	};
 
+	// Wrapper PxRigidLockFlag
+	struct QUANTIX_API RigidBodyLockFlag
+	{
+		bool					lockLinearX = false;
+		bool					lockLinearY = false;
+		bool					lockLinearZ = false;
+		bool					lockAngularX = false;
+		bool					lockAngularY = false;
+		bool					lockAngularZ = false;
+	};
+
 	// Wrapper PxBaseFlag
 	struct QUANTIX_API BaseFlag
 	{
