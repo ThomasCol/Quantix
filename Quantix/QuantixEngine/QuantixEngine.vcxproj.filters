@@ -49,6 +49,9 @@
     <ClCompile Include="Src\Core\Components\SoundEmitter.cpp" />
     <ClCompile Include="Src\Core\Components\SoundListener.cpp" />
     <ClCompile Include="Src\Physic\Raycast.cpp" />
+    <ClCompile Include="Src\Core\Components\CharacterController.cpp" />
+    <ClCompile Include="Src\Physic\ControllerBehaviorCallback.cpp" />
+    <ClCompile Include="Src\Physic\ControllerHitReport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -104,5 +107,8 @@
     <ClInclude Include="Include\Core\Components\SoundListener.h" />
     <ClInclude Include="Include\Core\Render\Framebuffers.h" />
     <ClInclude Include="Include\Physic\Raycast.h" />
+    <ClInclude Include="Include\Core\Components\CharacterController.h" />
+    <ClInclude Include="Include\Physic\ControllerBehaviorCallback.h" />
+    <ClInclude Include="Include\Physic\ControllerHitReport.h" />
   </ItemGroup>
 </Project>

@@ -18,6 +18,19 @@ namespace Quantix::Physic
 		};
 	};
 
+	enum class NonWalkableMode
+	{
+		PREVENTCLIMBING,
+		PREVENTCLIMBINGANDFORCESLIDING
+	};
+
+	enum class ClimbingMode
+	{
+		CONSTRAINED,
+		EASY,
+		LAST
+	};
+
 	struct QUANTIX_API CollideGroup
 	{
 		bool pawn = false;

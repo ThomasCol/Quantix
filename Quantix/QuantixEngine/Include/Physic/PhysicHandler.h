@@ -44,10 +44,10 @@ namespace Quantix::Physic
 		PxPvd* pPvd;
 		PxSimulationFilterShader pDefaultFilterShader = PxDefaultSimulationFilterShader;
 		PxDefaultCpuDispatcher* mCpuDispatcher;
-		PxScene* mScene;
-		PxMaterial* mMaterial;
-
-		PxCollection* collection;
+		PxScene* mScene = nullptr;
+		PxMaterial* mMaterial = nullptr;
+		PxControllerManager* manager = nullptr;
+		PxCollection* collection = nullptr;
 
 		// To Delete
 		PxReal mAccumulator = 0.0f;
@@ -172,6 +172,8 @@ namespace Quantix::Physic
 		 */
 		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
 
+
+		PxCapsuleController* CreateController(Core::DataStructure::GameComponent* object);
 
 		// Update
 		/**
