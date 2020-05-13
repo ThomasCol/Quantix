@@ -166,6 +166,140 @@ namespace Quantix::Core::Components
 		void SetMyFilterGroup(Physic::FilterGroup::Enum newGroup);
 		Physic::FilterGroup::Enum GetMyFilterGroup();
 
+		/**
+ * @brief Set the Shape Flag Scene Query object
+ *
+ * @param b Value of the flag
+ */
+		void SetShapeFlagSceneQuery(bool b)
+		{
+			shapeFlag.sceneQuery = b;
+			shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, b);
+		}
+
+		/**
+		 * @brief Get the Shape Flag Scene Query object
+		 *
+		 * @return true Flag is at true
+		 * @return false Flag is at false
+		 */
+		bool GetShapeFlagSceneQuery() { return shapeFlag.sceneQuery; };
+
+		/**
+		 * @brief Set the Shape Flag Simulation object
+		 *
+		 * @param b Value of the flag
+		 */
+		void SetShapeFlagSimulation(bool b)
+		{
+			shapeFlag.simulation = b;
+			shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, b);
+		}
+
+		/**
+		 * @brief Get the Shape Flag Simulation object
+		 *
+		 * @return true Flag is at true
+		 * @return false  Flag is at false
+		 */
+		bool GetShapeFlagSimulation() { return shapeFlag.simulation; };
+
+		/**
+		 * @brief Set the Shape Flag Trigger object
+		 *
+		 * @param b Value of the Flag
+		 */
+		void SetShapeFlagTrigger(bool b)
+		{
+			shapeFlag.trigger = b;
+			shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, b);
+		}
+
+		/**
+		 * @brief Get the Shape Flag Trigger object
+		 *
+		 * @return true Flag is at true
+		 * @return false Flag is at false
+		 */
+		bool GetShapeFlagTrigger() { return shapeFlag.trigger; };
+
+		/**
+		 * @brief Set the Shape Flag Visualization object
+		 *
+		 * @param b Value of the Flag
+		 */
+		void SetShapeFlagVisualization(bool b)
+		{
+			shapeFlag.visualization = b;
+			shape->setFlag(physx::PxShapeFlag::eVISUALIZATION, b);
+		}
+
+		/**
+		 * @brief Get the Shape Flag Visualization object
+		 *
+		 * @return Value of the flag
+		 */
+		bool GetShapeFlagVisualization() { return shapeFlag.visualization; };
+
+		bool GetCollideFilterPawn() { return collideFilter.pawn; };
+		bool GetCollideFilterMine() { return collideFilter.mine; };
+		bool GetCollideFilterCrab() { return collideFilter.crab; };
+		void SetCollideFilterPawn(bool b)
+		{
+			collideFilter.pawn = b;
+
+			physx::PxFilterData filterData;
+			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
+
+			physx::PxU32 mask;
+			if (GetCollideFilterCrab())
+				mask |= Physic::FilterGroup::Enum::eCRAB;
+			if (GetCollideFilterPawn())
+				mask |= Physic::FilterGroup::Enum::PAWN;
+			if (GetCollideFilterMine())
+				mask |= Physic::FilterGroup::Enum::eMINE_HEAD;
+			filterData.word1 = mask;  // word1 = ID mask to filter pairs that trigger a
+									  // contact callback;
+			shape->setSimulationFilterData(filterData);
+		}
+		void SetCollideFilterMine(bool b)
+		{
+			collideFilter.mine = b;
+
+			physx::PxFilterData filterData;
+			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
+
+			physx::PxU32 mask;
+			if (GetCollideFilterCrab())
+				mask |= Physic::FilterGroup::Enum::eCRAB;
+			if (GetCollideFilterPawn())
+				mask |= Physic::FilterGroup::Enum::PAWN;
+			if (GetCollideFilterMine())
+				mask |= Physic::FilterGroup::Enum::eMINE_HEAD;
+			filterData.word1 = mask;  // word1 = ID mask to filter pairs that trigger a
+									  // contact callback;
+			shape->setSimulationFilterData(filterData);
+		}
+		void SetCollideFilterCrab(bool b)
+		{
+			collideFilter.crab = b;
+
+			physx::PxFilterData filterData;
+			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
+
+			physx::PxU32 mask;
+			if (GetCollideFilterCrab())
+				mask |= Physic::FilterGroup::Enum::eCRAB;
+			if (GetCollideFilterPawn())
+				mask |= Physic::FilterGroup::Enum::PAWN;
+			if (GetCollideFilterMine())
+				mask |= Physic::FilterGroup::Enum::eMINE_HEAD;
+			filterData.word1 = mask;  // word1 = ID mask to filter pairs that trigger a
+									  // contact callback;
+			shape->setSimulationFilterData(filterData);
+		}
+
+
 #pragma endregion
 
 #pragma endregion

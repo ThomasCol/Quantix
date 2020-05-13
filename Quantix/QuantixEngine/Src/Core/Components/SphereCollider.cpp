@@ -74,7 +74,5 @@ namespace Quantix::Core::Components
 			shape = Physic::PhysicHandler::GetInstance()->CreateSphereCollider(par, false);
 			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
 		}
-		shapeFlag.shape = shape;
-		collideFilter.shape = shape;
 	}
 }
