@@ -1,6 +1,7 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
+#include "Core/DataStructure/GameObject2D.h"
 #include "Core/DataStructure/GameObject3D.h"
 #include "Core/DataStructure/GameComponent.h"
 #include "Core/Components/Collider.h"
@@ -20,9 +21,13 @@ namespace Quantix::Resources
 			#pragma region Attributes
 
 			QXstring											_name = "Default";
+			Core::DataStructure::GameComponent*					_rootComponent;
+			Core::DataStructure::GameObject2D*					_root2D;
 			Core::DataStructure::GameObject3D*					_root;
 			QXuint												_id;
 
+			std::list<Core::DataStructure::GameComponent*>		_objectsComponent;
+			std::vector<Core::DataStructure::GameObject2D*>		_objects2D;
 			std::vector<Core::DataStructure::GameObject3D*>		_objects;
 			
 			std::atomic_bool									_isReady { false };
@@ -68,6 +73,8 @@ namespace Quantix::Resources
 			#pragma region Functions
 
 			Core::DataStructure::GameObject3D*	AddGameObject(const QXstring& name, void* parent = nullptr);
+			Core::DataStructure::GameObject2D*	AddGameObject2D(const QXstring& name, void* parent = nullptr);
+			Core::DataStructure::GameComponent*	AddGameComponent(const QXstring& name, void* parent = nullptr);
 
 			/**
 			 * @brief method that init the scene
@@ -86,6 +93,8 @@ namespace Quantix::Resources
 			void Reset()noexcept;
 
 			void Rename(const QXstring& str) noexcept;
+
+			QXbool	FindGameComponent(Core::DataStructure::GameComponent* gc) noexcept;
 
 			template<class Archive>
 			void save(Archive& archive) const
@@ -128,9 +137,13 @@ namespace Quantix::Resources
 			const QXuint& GetID()const noexcept { return _id; }
 			QXuint& GetID() noexcept { return _id; }
 
-			inline Core::DataStructure::GameObject3D* GetRoot() { return _root; }
+			inline Core::DataStructure::GameObject3D*	GetRoot() { return _root; }
+			inline Core::DataStructure::GameObject2D*	GetRoot2D() { return _root2D; }
+			inline Core::DataStructure::GameComponent*	GetRootGameComponent() { return _rootComponent; }
+			inline std::list<Core::DataStructure::GameComponent*>& GetGameComponents() { return _objectsComponent; }
 
-			Core::DataStructure::GameObject3D* GetGameObject(const QXstring& name) noexcept;
+			Core::DataStructure::GameObject3D*	GetGameObject(const QXstring& name) noexcept;
+			Core::DataStructure::GameObject2D*	GetGameObject2D(const QXstring& name) noexcept;
 
 			inline QXbool						IsReady() const { return _isReady.load(); }
 

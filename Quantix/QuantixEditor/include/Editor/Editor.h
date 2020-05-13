@@ -352,7 +352,8 @@ private:
 	std::map<QXbool, Quantix::Core::DataStructure::GameObject3D*>		_hasCamera;
 	QXbool																_play;
 	QXbool																_pause;
-	QXbool																_activateFocus;
+	QXbool																_sceneFocus;
+	QXbool																_gameFocus;
 
 	QXuint																_fboScene;
 	QXuint																_fboGame;

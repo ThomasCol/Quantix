@@ -2,7 +2,7 @@
 #define _GUIZMO_H_
 
 #include <vector>
-#include <Inspector.h>
+#include "Inspector.h"
 #include <imGuizmo.h>
 
 class Guizmo

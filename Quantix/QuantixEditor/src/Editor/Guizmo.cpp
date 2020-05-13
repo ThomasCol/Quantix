@@ -137,12 +137,16 @@ void Guizmo::DrawGuizmo(Inspector* inspector, Quantix::Core::DataStructure::Game
 			_guizmoType = ImGuizmo::OPERATION::TRANSLATE;
 	}
 
-	if (inspector != nullptr && root->GetTransform()->FindTransform(inspector->GetTransform()) == QX_TRUE)
-		ShowGuizmoObject(inspector->GetTransform());
+	if (inspector != nullptr && root->GetTransform()->FindTransform(inspector->GetTransform3D()) == QX_TRUE)
+		ShowGuizmoObject(inspector->GetTransform3D());
 }
 
 void Guizmo::Update(Inspector* inspector, Quantix::Core::DataStructure::GameObject3D* root, Quantix::Core::Components::Camera* camera)
 {
 	_camera = camera;
-	DrawGuizmo(inspector, root);
+	if (inspector)
+	{
+		if (inspector->Get3D())
+			DrawGuizmo(inspector, root);
+	}
 }

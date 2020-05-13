@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <cstdint>
 #include <iostream>
-#include <tiny_obj_loader.h>
 
 #include "Core/Debugger/Logger.h"
 
@@ -103,62 +102,34 @@ namespace Quantix::Resources
 
 	void Model::LoadWithLib(const QXstring& file)
 	{
-		tinyobj::attrib_t attrib;
-		std::vector<tinyobj::shape_t> shapes;
-		std::vector<tinyobj::material_t> materials;
-		std::string warn, err;
+		Assimp::Importer Importer;
+		const aiScene* pScene = Importer.ReadFile(file.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
 
-		if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, file.c_str()))
+		const aiMesh* paiMesh = pScene->mMeshes[0];
+
+		const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
+
+		for (unsigned int i = 0; i < paiMesh->mNumVertices; i++)
 		{
-			LOG(ERROR, warn + err);
-			_status.store(EResourceStatus::FAILED);
-			return;
+			const aiVector3D* pPos = &(paiMesh->mVertices[i]);
+			const aiVector3D* pNormal = paiMesh->HasNormals() ? &(paiMesh->mNormals[i]) : &Zero3D;
+			const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
+
+			Vertex vertex = { Math::QXvec3(pPos->x, pPos->y, pPos->z),
+							Math::QXvec2(pTexCoord->x, pTexCoord->y),
+							Math::QXvec3(pNormal->x, pNormal->y, pNormal->z) };
+
+			_vertices.push_back(vertex);
 		}
 
-		std::unordered_map<Vertex, QXuint> uniqueVertices;
-
-		bool has_normals = !attrib.normals.empty();
-		bool has_tex_coords = !attrib.texcoords.empty();
-
-		for (const auto& shape : shapes)
+		for (unsigned int i = 0; i < paiMesh->mNumFaces; i++)
 		{
-			for (const auto& index : shape.mesh.indices)
-			{
-				Vertex vertex = {};
-
-				vertex.position = {
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 0],
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 1],
-					attrib.vertices[3 * (QXsizei)index.vertex_index + 2]
-				};
-
-				if (has_tex_coords)
-				{
-					vertex.uv = {
-						attrib.texcoords[2 * (QXsizei)index.texcoord_index + 0],
-						attrib.texcoords[2 * (QXsizei)index.texcoord_index + 1]
-					};
-				}
-
-				if (has_normals)
-				{
-					vertex.normal = {
-						attrib.normals[3 * (QXsizei)index.normal_index + 0],
-						attrib.normals[3 * (QXsizei)index.normal_index + 1],
-						attrib.normals[3 * (QXsizei)index.normal_index + 2]
-					};
-				}
-
-				if (uniqueVertices.count(vertex) == 0)
-				{
-					uniqueVertices[vertex] = static_cast<QXuint>(_vertices.size());
-					_vertices.push_back(vertex);
-				}
-
-				_indices.push_back(uniqueVertices[vertex]);
-			}
+			const aiFace& Face = paiMesh->mFaces[i];
+			_indices.push_back(Face.mIndices[0]);
+			_indices.push_back(Face.mIndices[1]);
+			_indices.push_back(Face.mIndices[2]);
 		}
-
+		
 		_status.store(EResourceStatus::LOADED);
 	}
 

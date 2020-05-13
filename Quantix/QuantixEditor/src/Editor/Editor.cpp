@@ -12,11 +12,6 @@
 #include "stb_image.h"
 #include "opengl_helper.h"
 
-void IsTriggered(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	//Quantix::Core::UserEntry::InputMgr::GetInstance()->CheckKeys(key, action);
-}
-
 Editor::Editor(QXuint width, QXuint height) :
 	_win{ width, height },
 	_lib{ "QuantixEngine" },
@@ -24,8 +19,10 @@ Editor::Editor(QXuint width, QXuint height) :
 	_folder{},
 	_menuBar{},
 	_hierarchy{},
-	_play{ QX_TRUE },
-	_pause{ QX_TRUE },
+	_play{ QX_FALSE },
+	_pause{ QX_FALSE },
+	_sceneFocus{ QX_FALSE },
+	_gameFocus{ QX_FALSE },
 	_flagsEditor{}
 {
 	_cameraEditor = new Quantix::Core::Components::Camera({ 0, 7, -10 }, { 0, -1, 1 }, Math::QXvec3::up);
@@ -33,9 +30,6 @@ Editor::Editor(QXuint width, QXuint height) :
 	_lib.load();
 	if (!_lib.is_loaded())
 		std::cout << _lib.get_error_string() << std::endl;
-
-	//Init Callback
-	glfwSetKeyCallback(_win.GetWindow(), IsTriggered);
 
 	_mouseInput = new MouseTest({ QX_FALSE, 0.0f, 0.0f, GetMousePos().x, GetMousePos().y });
 
@@ -218,46 +212,49 @@ void Editor::UpdateMouse(Quantix::Core::Components::Camera* camera)
 
 void	Editor::CameraUpdateEditor()
 {
-	if (_mouseInput->MouseCaptured)
+	if (_sceneFocus)
 	{
-		UpdateMouse(_cameraEditor);
-		if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
-			_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir() * SPEED));
-		if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
-			_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir() * SPEED));
-		if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
-			_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEED));
-		if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
-			_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEED));
-		_cameraEditor->UpdateLookAt(_cameraEditor->GetPos());
+		if (_mouseInput->MouseCaptured)
+		{
+			UpdateMouse(_cameraEditor);
+			if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
+				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir() * SPEED));
+			if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
+				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir() * SPEED));
+			if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
+				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEED));
+			if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
+				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEED));
+			_cameraEditor->UpdateLookAt(_cameraEditor->GetPos());
+		}
+		if (_mainCamera->GetObject() != nullptr)
+			_mainCamera->SetPos(((Quantix::Core::DataStructure::GameObject3D*)_mainCamera->GetObject())->GetTransform()->GetPosition());
+		_mainCamera->UpdateLookAt(_mainCamera->GetPos());
 	}
-	if (_mainCamera->GetObject() != nullptr)
-		_mainCamera->SetPos(((Quantix::Core::DataStructure::GameObject3D*)_mainCamera->GetObject())->GetTransform()->GetPosition());
-	_mainCamera->UpdateLookAt(_mainCamera->GetPos());
 }
 
 void	Editor::CameraUpdate()
 {
-	if (_mouseInput->MouseCaptured)
+	if (_gameFocus)
 	{
-		UpdateMouse(_mainCamera);
-		if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
-			_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir() * SPEED));
-		if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
-			_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir() * SPEED));
-		if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
-			_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEED));
-		if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
-			_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEED));
-		_mainCamera->UpdateLookAt(_mainCamera->GetPos());
+		if (_mouseInput->MouseCaptured)
+		{
+			UpdateMouse(_mainCamera);
+			if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
+				_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir() * SPEED));
+			if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
+				_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir() * SPEED));
+			if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
+				_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEED));
+			if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
+				_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEED));
+			_mainCamera->UpdateLookAt(_mainCamera->GetPos());
+		}
 	}
 }
 
 void Editor::SaveLoadScene()
 {
-	static QXbool	sceneChange = false;
-	static Quantix::Resources::Scene* newScene = nullptr;
-
 	if ((GetKey(QX_KEY_LEFT_CONTROL) == Quantix::Core::UserEntry::EKeyState::PRESSED || GetKey(QX_KEY_LEFT_CONTROL) == Quantix::Core::UserEntry::EKeyState::DOWN) &&
 		(GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::PRESSED || GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN))
 	{
@@ -266,17 +263,18 @@ void Editor::SaveLoadScene()
 	if (GetKey(QX_KEY_F2) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		Quantix::Physic::PhysicHandler::GetInstance()->CleanScene();
-		newScene = _app->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
-		sceneChange = true;
+		_app->newScene = _app->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
+		_app->sceneChange = true;
 	}
 
-	if (sceneChange)
+	if (_app->sceneChange)
 	{
-		if (newScene->IsReady())
+		if (_app->newScene->IsReady())
 		{
-			_app->scene = newScene;
+			_app->scene = _app->newScene;
 			_root = _app->scene->GetRoot();
-			sceneChange = false;
+			_app->sceneChange = false;
+			_app->newScene = nullptr;
 		}
 	}
 }
@@ -288,7 +286,8 @@ void Editor::UpdateScene()
 		if (_mouseInput->MouseCaptured)
 		{
 			glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			_mouseInput->MouseCaptured = false;
+			_mouseInput->MouseCaptured = QX_FALSE;
+			_gameFocus = _sceneFocus = QX_FALSE;
 		}
 	}
 	Quantix::Core::UserEntry::InputManager::GetInstance()->Update(_win.GetWindow());
@@ -312,28 +311,22 @@ void Editor::UpdateScene()
 		_app->Update(meshes, colliders);
 	STOP_PROFILING("Application");
 
+	START_PROFILING("Camera");
+	//Update Camera
+	CameraUpdate();
+	CameraUpdateEditor();
+	STOP_PROFILING("Camera");
+
 	START_PROFILING("Draw");
 	//Update Editor + Draw Scene
-	if (_play)
-		UpdateEditor(_app->renderer.DrawGame(meshes, _lights, _app->info, _mainCamera),
-			_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor));
-	else
-		UpdateEditor(_app->renderer.DrawGame(meshes, _lights, _app->info, _mainCamera),
-			_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor));
+	UpdateEditor(_app->renderer.DrawGame(meshes, _lights, _app->info, _mainCamera),
+		_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor));
 	STOP_PROFILING("Draw");
 
 	START_PROFILING("Refresh");
 	//Refresh Window
 	_win.Refresh(_app->info);
 	STOP_PROFILING("Refresh");
-
-	START_PROFILING("Camera");
-	//Update Camera
-	if (_play)
-		CameraUpdate();
-	else
-		CameraUpdateEditor();
-	STOP_PROFILING("Camera");
 }
 
 void Editor::UpdateEditor(QXuint FBOGame, QXuint FBOScene)
@@ -407,7 +400,7 @@ void Editor::DrawMenuBar()
 
 void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 {
-	_hierarchy.Update(name, flags, _root->GetTransform(), _app->scene);
+	_hierarchy.Update(name, flags, _root->GetTransform(), _app);
 }
 
 void Editor::DrawShader(const QXstring& name, ImGuiWindowFlags flags)
@@ -454,30 +447,16 @@ void Editor::ChangeStateSimulation()
 		{
 			//Update Scene
 			_play = QX_TRUE;
-			if (!_activateFocus)
-			{
-				_mouseInput->MouseCaptured = QX_TRUE;
-				glfwSetInputMode(_win.GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-				Math::QXvec2 mousePos = GetMousePos();
-				_mouseInput->MouseX = mousePos.x;
-				_mouseInput->MouseY = mousePos.y;
-
-				_activateFocus = QX_TRUE;
-			}
+			_pause = QX_FALSE;
 		}
 		else
-		{
 			_pause = QX_TRUE;
-			_activateFocus = QX_FALSE;
-		}
 	}
 	else
 	{
 		_play = QX_FALSE;
 		_pause = QX_FALSE;
 		_simState["Pause"] = QX_FALSE;
-		_activateFocus = QX_FALSE;
 	}
 }
 
@@ -509,23 +488,14 @@ void Editor::DrawSimulation()
 
 void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 {
-	static QXbool focus = QX_FALSE;
-
-	if (!focus)
-	{
-		if (_play)
-		{
-			ImGui::SetWindowFocus(name.c_str());
-			focus = QX_TRUE;
-			_app->scene->Start();
-		}
-	}
-	else if (!_play)
-		focus = QX_FALSE;
-
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		FocusScene();
+		if (_play && !_pause)
+		{
+			FocusScene();
+			_gameFocus = QX_TRUE;
+			_sceneFocus = QX_FALSE;
+		}
 		ImVec2 size = ImGui::GetWindowSize();
 		size.y -= 50;
 		ImGui::Image((ImTextureID)(size_t)_fboGame, size, { 0.f, 1.f }, { 1.f, 0.f });
@@ -535,35 +505,15 @@ void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 
 void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 {
-	static QXbool focus = QX_FALSE;
-	static QXbool firstTime = QX_FALSE;
-
-	if (!focus)
-	{
-		if (!_play)
-		{
-			ImGui::SetWindowFocus(name.c_str());
-			if (firstTime)
-				focus = QX_TRUE;
-			else
-				firstTime = QX_TRUE;
-		}
-	}
-	else if (_play)
-	{
-		focus = QX_FALSE;
-		firstTime = QX_FALSE;
-	}
-
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
-		if (i == 0)
+		if (_pause || !_play)
 		{
-			Quantix::Core::Debugger::Logger::GetInstance()->SetError("No Scene load.");
-			i++;
+			FocusScene();
+			_sceneFocus = QX_TRUE;
+			_gameFocus = QX_FALSE;
 		}
-		FocusScene();
 		ImVec2 size = ImGui::GetWindowSize();
 		size.y -= 50;
 		ImGui::Image((ImTextureID)(size_t)_fboScene, size, { 0.f, 1.f }, { 1.f, 0.f });
@@ -587,13 +537,16 @@ void Editor::CheckCamera()
 {
 	if (_hasCamera.size() == 0)
 	{
-		if (_hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponent<Quantix::Core::Components::Camera>() != nullptr)
+		if (_hierarchy.GetInspector()->Get3D())
 		{
-			_mainCamera = _hierarchy.GetInspector()->GetTransform()->GetObject()->GetComponent<Quantix::Core::Components::Camera>();
-			_hasCamera.insert(std::make_pair(QX_TRUE, _hierarchy.GetInspector()->GetTransform()->GetObject()));
+			if (((Quantix::Core::DataStructure::GameObject3D*)_hierarchy.GetInspector()->GetGameComponent())->GetComponent<Quantix::Core::Components::Camera>() != nullptr)
+			{
+				_mainCamera = ((Quantix::Core::DataStructure::GameObject3D*)_hierarchy.GetInspector()->GetGameComponent())->GetComponent<Quantix::Core::Components::Camera>();
+				_hasCamera.insert(std::make_pair(QX_TRUE, (Quantix::Core::DataStructure::GameObject3D*)_hierarchy.GetInspector()->GetGameComponent()));
+			}
+			else
+				_mainCamera = _defaultCamera;
 		}
-		else
-			_mainCamera = _defaultCamera;
 	}
 	else
 	{
@@ -615,8 +568,21 @@ void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
 	{
 		if (_hierarchy.GetInspector() != nullptr)
 		{
-			if (_root->GetTransform()->FindTransform(_hierarchy.GetInspector()->GetTransform()) == QX_FALSE)
-				_hierarchy.GetInspector()->SetEnable(QX_FALSE);
+			if (_hierarchy.GetInspector()->Get3D())
+			{
+				if (_root->GetTransform()->FindTransform(_hierarchy.GetInspector()->GetTransform3D()) == QX_FALSE)
+					_hierarchy.GetInspector()->SetEnable(QX_FALSE);
+			}
+			else if (_hierarchy.GetInspector()->Get2D())
+			{
+				if (_app->scene->GetRoot2D()->GetTransform()->FindTransform(_hierarchy.GetInspector()->GetTransform2D()) == QX_FALSE)
+					_hierarchy.GetInspector()->SetEnable(QX_FALSE);
+			}
+			else
+			{
+				if (_app->scene->FindGameComponent(_hierarchy.GetInspector()->GetGameComponent()) == QX_FALSE)
+					_hierarchy.GetInspector()->SetEnable(QX_FALSE);
+			}
 			
 			_hierarchy.GetInspector()->Update(_win, _app);
 			CheckCamera();

@@ -10,9 +10,11 @@
 #include <filesystem>
 
 
-Inspector::Inspector(Quantix::Physic::Transform3D* transform) :
-	_transform{ transform },
-	_enable{ QX_TRUE }
+Inspector::Inspector(Quantix::Core::DataStructure::GameComponent* object) :
+	_object{ object },
+	_enable{ QX_TRUE },
+	_is3D{ QX_FALSE },
+	_is2D{ QX_FALSE }
 {
 }
 
@@ -34,6 +36,55 @@ static void TreeNodeImage(const QXstring& name, const QXstring& imgPath, Quantix
 	ImGui::Text(name.c_str());
 }
 
+void Inspector::ShowTransform3D(Quantix::Core::Platform::Application* app)
+{
+	ImVec2 cursorPos = ImGui::GetCursorPos();
+	QXbool open = ImGui::TreeNodeEx("##Transform", ImGuiTreeNodeFlags_Framed);
+	TreeNodeImage("Transform 3D", "Other/IconEditor/Simulation/Transform.png", app, cursorPos);
+
+	if (open)
+	{
+		Math::QXvec3		pos = ((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetPosition();
+		Math::QXvec3		rot = ((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation().QuaternionToEuler();
+		Math::QXvec3		rotTmp = ((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation().QuaternionToEuler();
+		Math::QXvec3		scale = ((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetScale();
+
+		ImGui::Text("Position");	ImGui::SameLine(150.f); ImGui::DragFloat3("##Position", pos.e, 0.25f);
+		ImGui::Text("Rotation");	ImGui::SameLine(150.f); ImGui::DragFloat3("##Rotation", rot.e, 0.25f);
+		ImGui::Text("Scale");		ImGui::SameLine(150.f); ImGui::DragFloat3("##Scale", scale.e, 0.25f);
+
+		((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(pos);
+		((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(rot - rotTmp));
+		((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetScale(scale);
+
+		ImGui::TreePop();
+	}
+}
+
+void Inspector::ShowTransform2D(Quantix::Core::Platform::Application* app)
+{
+	ImVec2 cursorPos = ImGui::GetCursorPos();
+	QXbool open = ImGui::TreeNodeEx("##Transform", ImGuiTreeNodeFlags_Framed);
+	TreeNodeImage("Transform 2D", "Other/IconEditor/Simulation/Transform.png", app, cursorPos);
+
+	if (open)
+	{
+		Math::QXvec2		pos = ((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform()->GetPosition();
+		QXfloat				rot = ((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform()->GetRotationAngle();
+		Math::QXvec2		scale = ((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform()->GetScale();
+
+		ImGui::Text("Position");	ImGui::SameLine(150.f); ImGui::DragFloat2("##Position", pos.e, 0.25f);
+		ImGui::Text("Rotation");	ImGui::SameLine(150.f); ImGui::DragFloat("##Rotation", &rot, 0.25f);
+		ImGui::Text("Scale");		ImGui::SameLine(150.f); ImGui::DragFloat2("##Scale", scale.e, 0.25f);
+
+		((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform()->SetPosition(pos);
+		((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform()->SetRotationAngle(rot);
+		((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform()->SetScale(scale);
+
+		ImGui::TreePop();
+	}
+}
+
 void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Platform::Application* app)
 {
 	if (_enable)
@@ -41,45 +92,28 @@ void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Plat
 		QXstring name;
 		QXchar currName[64];
 
-		memcpy(currName, _transform->GetObject()->GetName().c_str(), _transform->GetObject()->GetName().size() + 1);
+		memcpy(currName, _object->GetName().c_str(), _object->GetName().size() + 1);
 		ImGui::Text("GameObject: "); ImGui::SameLine();
 		if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
-			_transform->GetObject()->SetName(currName);
+			_object->SetName(currName);
 
-		ImVec2 cursorPos = ImGui::GetCursorPos();
-		QXbool open = ImGui::TreeNodeEx("##Transform", ImGuiTreeNodeFlags_Framed);
-		TreeNodeImage("Transform", "Other/IconEditor/Simulation/Transform.png", app, cursorPos);
+		if (_is3D)
+			ShowTransform3D(app);
+		else if (_is2D)
+			ShowTransform2D(app);
 
-		if (open)
-		{
-			Math::QXvec3		pos = _transform->GetPosition();
-			Math::QXvec3		rot = _transform->GetRotation().QuaternionToEuler();
-			Math::QXvec3		rotTmp = _transform->GetRotation().QuaternionToEuler();
-			Math::QXvec3		scale = _transform->GetScale();
-
-			ImGui::Text("Position");	ImGui::SameLine(150.f); ImGui::DragFloat3("##Position", pos.e, 0.25f);
-			ImGui::Text("Rotation");	ImGui::SameLine(150.f); ImGui::DragFloat3("##Rotation", rot.e, 0.25f);
-			ImGui::Text("Scale");		ImGui::SameLine(150.f); ImGui::DragFloat3("##Scale", scale.e, 0.25f);
-
-			_transform->SetPosition(pos);
-			_transform->Rotate(Math::QXquaternion::EulerToQuaternion(rot - rotTmp));
-			_transform->SetScale(scale);
-
-			ImGui::TreePop();
-		}
-
-		for (int i = 0; i < _transform->GetObject()->GetComponents().size(); i++)
+		for (int i = 0; i < _object->GetComponents().size(); i++)
 		{
 			ImGui::PushID(i);
-			auto currentComp = _transform->GetObject()->GetComponents()[i];
+			auto currentComp = _object->GetComponents()[i];
 
-			if (_transform->GetObject()->GetComponents()[i] != nullptr)
+			if (_object->GetComponents()[i] != nullptr)
 			{
-				rttr::type t = _transform->GetObject()->GetComponents()[i]->get_type();
+				rttr::type t = _object->GetComponents()[i]->get_type();
 				GetInstance(currentComp, t, app);
 			}
 
-			PopUpMenuItem(_transform->GetObject()->GetComponents()[i]);
+			PopUpMenuItem(_object->GetComponents()[i]);
 			ImGui::PopID(); 
 		}
 
@@ -95,7 +129,7 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 		
 		ImGui::Selectable("Remove Component", &selection);
 		if (selection)
-			_transform->GetObject()->RemoveComponent(component);
+			_object->RemoveComponent(component);
 
 		ImGui::EndPopup();
 	}
@@ -115,8 +149,8 @@ void Inspector::ShowComponent()
 			ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
 			if (enable)
 			{
-				_transform->GetObject()->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-				_transform->GetObject()->GetComponents().back()->Init(_transform->GetObject());
+				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+				_object->GetComponents().back()->Init(_object);
 			}
 
 			ImGui::PopID();
@@ -159,7 +193,7 @@ void Inspector::DrawMaterialPath(rttr::instance inst, rttr::property currentProp
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
 		{
 			QXstring pathTmp = (const QXchar*)payload->Data;
-			if (pathTmp.find(".mat") != QXstring::npos)
+			if (pathTmp.find(".mat") != QXstring::npos || pathTmp.find(".FBX") != QXstring::npos || pathTmp.find(".fbx") != QXstring::npos)
 				path = pathTmp;
 			Quantix::Resources::Material* material = app->manager.CreateMaterial(path);
 			currentProp.set_value(inst, material);
@@ -190,7 +224,8 @@ void Inspector::DrawModelPath(rttr::instance inst, rttr::property currentProp, Q
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
 		{
 			QXstring pathTmp = (const QXchar*)payload->Data;
-			if (pathTmp.find(".obj") != QXstring::npos && pathTmp.find(".quantix") == QXstring::npos)
+			if ((pathTmp.find(".obj") != QXstring::npos && pathTmp.find(".quantix") == QXstring::npos)
+				|| (pathTmp.find(".FBX") != QXstring::npos || pathTmp.find(".fbx") != QXstring::npos))
 				path = pathTmp;
 			Quantix::Resources::Model* model = app->manager.CreateModel(path);
 			currentProp.set_value(inst, model);

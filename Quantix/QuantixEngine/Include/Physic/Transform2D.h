@@ -1,11 +1,16 @@
 #ifndef __TRANSFORM2D_H__
 #define __TRANSFORM2D_H__
 
-#include <vector>
+#include <list>
 #include <Type.h>
 #include <Vec2.h>
 #include <Mat4.h>
 #include "Core/DLLHeader.h"
+
+namespace Quantix::Core::DataStructure
+{
+	class GameObject2D;
+}
 
 namespace Quantix::Physic
 {
@@ -15,15 +20,16 @@ namespace Quantix::Physic
 
 		#pragma region Attributes
 
+			Transform2D*				_parent;
 			Math::QXvec2				_position;
 			QXfloat						_rotationAngle;
 			Math::QXvec2				_scale;
 
 			Math::QXmat4				_trs;
 
-			std::vector<Transform2D*>	_childs;
+			std::list<Transform2D*>		_childs;
 
-			//Pointer GameComponent
+			Quantix::Core::DataStructure::GameObject2D* _gameObject;
 
 		#pragma endregion
 
@@ -43,6 +49,13 @@ namespace Quantix::Physic
 			 * @brief Construct a new 2D Transform object
 			 */
 			Transform2D();
+
+			/**
+			 * @brief Construct a new 2D Transform object
+			 *
+			 * @param GameObject2D object
+			 */
+			Transform2D(Quantix::Core::DataStructure::GameObject2D* object);
 
 			/**
 			 * @brief Construct a copy of the 2D Transform object
@@ -86,6 +99,10 @@ namespace Quantix::Physic
 		#pragma region Methods
 
 		#pragma region Getters&Setters
+
+			inline Core::DataStructure::GameObject2D*	GetObject() const { return _gameObject; };
+
+			inline std::list<Transform2D*>&				GetChilds() { return _childs; };
 
 			/**
 			 * @brief Get the position of the current transform
@@ -145,7 +162,7 @@ namespace Quantix::Physic
 			 *
 			 * @param trsParent The parent TRS to convert its own trs in global
 			 */
-			void			Update(const Math::QXmat4& trsParent) const;
+			void			Update(const Transform2D* parentTransform);
 
 			/**
 			 * @brief Translate the current transform
@@ -174,6 +191,8 @@ namespace Quantix::Physic
 			 * @param child The 2D transform child to add to the current transform
 			 */
 			void			AddChild(Transform2D* child);
+
+			QXbool			FindTransform(Transform2D* toFind);
 
 		#pragma endregion
 

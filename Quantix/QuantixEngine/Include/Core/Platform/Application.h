@@ -26,6 +26,8 @@ namespace Quantix::Core::Platform
 		Render::Renderer 				renderer;
 		DataStructure::SceneManager		sceneManager;
 		Resources::Scene*				scene;
+		Quantix::Resources::Scene*		newScene{ nullptr };
+		QXbool							sceneChange{ false };
 
 #pragma endregion
 

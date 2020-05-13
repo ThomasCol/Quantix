@@ -10,24 +10,31 @@ namespace Quantix::Resources
 
 	Scene::Scene()
 	{
-		_root = new Quantix::Core::DataStructure::GameObject3D("root");
+		_root = new Quantix::Core::DataStructure::GameObject3D("root3D");
+		_root2D = new Quantix::Core::DataStructure::GameObject2D("root2D");
 	}
 
 	Scene::Scene(const QXstring& name, Core::DataStructure::GameObject3D* root, const QXuint& id) noexcept :
 		_name{ name },
 		_root {root},
 		_id {id}
-	{}
+	{
+		_root2D = new Quantix::Core::DataStructure::GameObject2D("root2D");
+	}
 
 	Scene::Scene(const Scene& copy) noexcept :
 		_name {copy._name}, 
 		_root {copy._root},
+		_root2D{ copy._root2D },
+		_rootComponent{ copy._rootComponent },
 		_id {copy._id}
 	{}
 
 	Scene::Scene(Scene&& copy) noexcept :
 		_name { std::move(copy._name) }, 
 		_root{ std::move(copy._root) },
+		_root2D{ std::move(copy._root2D) },
+		_rootComponent{ std::move(copy._rootComponent) },
 		_id{ std::move(copy._id) }
 	{}
 
@@ -35,6 +42,10 @@ namespace Quantix::Resources
 	{
 		for (QXsizei i = 0; i < _objects.size(); ++i)
 			delete _objects[i];
+		for (QXsizei i = 0; i < _objects2D.size(); ++i)
+			delete _objects2D[i];
+		for (auto it = _objectsComponent.begin(); it != _objectsComponent.end();)
+			it = _objectsComponent.erase(it);
 	}
 
 	#pragma endregion
@@ -70,6 +81,40 @@ namespace Quantix::Resources
 		return object;
 	}
 
+	Core::DataStructure::GameObject2D* Scene::AddGameObject2D(const QXstring& name, void* parent)
+	{
+		Core::DataStructure::GameObject2D* object = new Core::DataStructure::GameObject2D(name);
+		QXbool is_set = false;
+
+		if (parent == nullptr)
+			_root2D->AddChild(object);
+		else
+		{
+			for (QXsizei i = 0; i < _objects2D.size(); ++i)
+			{
+				if (_objects2D[i] == parent)
+				{
+					_objects2D[i]->AddChild(object);
+					is_set = true;
+					break;
+				}
+			}
+
+			if (!is_set)
+				_root2D->AddChild(object);
+		}
+
+		_objects2D.push_back(object);
+		return object;
+	}
+
+	Core::DataStructure::GameComponent* Scene::AddGameComponent(const QXstring& name, void* parent)
+	{
+		Core::DataStructure::GameComponent* object = new Core::DataStructure::GameComponent(name);
+		_objectsComponent.push_back(object);
+		return object;
+	}
+
 	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept
 	{
 		AddGameObject("Mesh");
@@ -90,12 +135,16 @@ namespace Quantix::Resources
 		// TODO pas complet update mesh et update gameobject
 		if (_root)
 			_root->Update(meshes, colliders, info);
+		if (_root2D)
+			_root2D->Update();
 	}
 
 	void Scene::Start() noexcept
 	{
 		if (_root)
 			_root->Start();
+		if (_root2D)
+			_root2D->Start();
 	}
 
 	void Scene::Rename(const QXstring& str) noexcept
@@ -108,6 +157,16 @@ namespace Quantix::Resources
 		// TODO
 	}
 
+	QXbool	Scene::FindGameComponent(Core::DataStructure::GameComponent* gc) noexcept
+	{
+		for (auto it = _objectsComponent.begin(); it != _objectsComponent.end(); ++it)
+		{
+			if ((*it) == gc)
+				return QX_TRUE;
+		}
+		return QX_FALSE;
+	}
+
 	Core::DataStructure::GameObject3D* Scene::GetGameObject(const QXstring& name) noexcept
 	{
 		for (QXsizei i = 0; i < _objects.size(); ++i)
@@ -118,6 +177,18 @@ namespace Quantix::Resources
 			}
 		}
 
+		return nullptr;
+	}
+
+	Core::DataStructure::GameObject2D* Scene::GetGameObject2D(const QXstring& name) noexcept
+	{
+		for (QXsizei i = 0; i < _objects2D.size(); ++i)
+		{
+			if (_objects2D[i]->GetName() == name)
+			{
+				return _objects2D[i];
+			}
+		}
 		return nullptr;
 	}
 

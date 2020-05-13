@@ -7,6 +7,7 @@
 
 #define RGB_CHANNEL 3
 #define RGBA_CHANNEL 4
+#define DEFAULTTEXTURESPATH "media/Textures/"
 
 namespace Quantix::Resources
 {
