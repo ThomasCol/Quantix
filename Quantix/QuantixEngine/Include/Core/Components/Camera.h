@@ -5,13 +5,16 @@
 #include <Mat4.h>
 
 #include "Core/DLLHeader.h"
-#include "Core/DataStructure/Component.h"
 #include "rttrEnabled.h"
+#include "Core/DataStructure/Component.h"
 
-#define SPEED (0.25f)
+#define SPEED (1000)
+#define SPEEDFREECAM (4.f)
 
 namespace Quantix::Core::Components
 {
+	struct Rigidbody;
+
 	class QUANTIX_API Camera : public virtual Core::DataStructure::Component
 	{
 	private:
@@ -22,9 +25,12 @@ namespace Quantix::Core::Components
 		Math::QXvec3	_angle;
 
 		Math::QXmat4	_lookAt;
+
 		#pragma endregion Attributes
 	public:
-		#pragma region Constructors/Destructor
+		Rigidbody* _rigid = nullptr;
+
+#pragma region Constructors/Destructor
 		/**
 		 * @brief Construct a new Camera object
 		 * 
@@ -70,6 +76,8 @@ namespace Quantix::Core::Components
 		Camera* Copy() const override;
 
 		void	Init(Core::DataStructure::GameComponent* object) override;
+
+		void	ActualizeRigid(Rigidbody* rig);
 
 		/**
 		 * @brief Update the LookAtMatrix of the Camera
@@ -125,6 +133,8 @@ namespace Quantix::Core::Components
 		 * @return Math::QXvec3 
 		 */
 		Math::QXvec3				GetPos();
+
+		void SetPhysicPos(Math::QXvec3 pos);
 
 		/**
 		 * @brief Set the Dir object

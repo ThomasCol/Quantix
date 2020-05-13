@@ -58,6 +58,7 @@ namespace Quantix::Core::Components
 
 	void Rigidbody::AddForce(Math::QXvec3 vec) noexcept
 	{
+		std::cout << "addforce" << std::endl;
 		actorPhysic->GetObjectDynamic()->GetRigid()->addForce(physx::PxVec3(vec.x, vec.y, vec.z));
 	}
 
@@ -78,6 +79,10 @@ namespace Quantix::Core::Components
 		_isEnable = true;
 
 		actorPhysic = (Physic::PhysicDynamic*)Physic::PhysicHandler::GetInstance()->GetObject(par, true);
+
+		Camera* cam = _object->GetComponent<Camera>();
+		/*if (cam)
+			cam->ActualizeRigid(this);*/
 
 		// Actualize the pointer in colliders
 		std::vector<ICollider*> vector{ _object->GetComponents<ICollider>() };
