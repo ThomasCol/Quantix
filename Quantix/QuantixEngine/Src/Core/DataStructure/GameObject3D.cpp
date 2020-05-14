@@ -24,7 +24,7 @@ RTTR_PLUGIN_REGISTRATION
 namespace Quantix::Core::DataStructure
 {
 	GameObject3D::GameObject3D(const QXstring& name, const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca) noexcept :
-		GameComponent(name),
+		GameComponent(name, QX_FALSE, QX_TRUE),
 		_transform { new Physic::Transform3D(pos, rot, sca, this) }
 	{}
 

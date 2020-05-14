@@ -7,7 +7,9 @@ namespace Quantix::Core::DataStructure
 		_layer{ object._layer },
 		_isStatic{ object._isStatic },
 		_isActive{ object._isActive },
-		_toRender{ false }
+		_toRender{ QX_FALSE },
+		_is2D{ object._is2D },
+		_is3D{ object._is3D }
 	{
 		for (size_t i = 0; i < object._component.size(); i++)
 		{
@@ -21,16 +23,20 @@ namespace Quantix::Core::DataStructure
 		_layer{ std::move(object._layer) },
 		_isStatic{ std::move(object._isStatic) },
 		_isActive{ std::move(object._isActive) },
-		_toRender{ std::move(object._toRender) }
+		_toRender{ std::move(object._toRender) },
+		_is2D{ std::move(object._is2D) },
+		_is3D{ std::move(object._is3D) }
 	{
 	}
 
-	GameComponent::GameComponent(const QXstring& name, const QXbool& isStatic) noexcept :
+	GameComponent::GameComponent(const QXstring& name, const QXbool& is2D, const QXbool& is3D, const QXbool& isStatic) noexcept :
 		_name{ name },
 		_layer{ 0 },
 		_isStatic{ isStatic },
 		_isActive{ false },
-		_toRender { false }
+		_toRender { false },
+		_is2D{ is2D },
+		_is3D{ is3D }
 	{
 	}
 

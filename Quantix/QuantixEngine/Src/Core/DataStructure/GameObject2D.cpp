@@ -29,7 +29,7 @@ namespace Quantix::Core::DataStructure
 	}
 
 	GameObject2D::GameObject2D(const QXstring& name) noexcept :
-		GameComponent(name),
+		GameComponent(name, QX_TRUE),
 		_transform { new Quantix::Physic::Transform2D(this) }
 	{
 	}

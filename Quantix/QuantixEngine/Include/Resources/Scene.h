@@ -3,7 +3,6 @@
 
 #include "Core/DataStructure/GameObject2D.h"
 #include "Core/DataStructure/GameObject3D.h"
-//#include "Core/DataStructure/GameComponent.h"
 #include "Core/Components/Collider.h"
 #include "Core/Platform/AppInfo.h"
 

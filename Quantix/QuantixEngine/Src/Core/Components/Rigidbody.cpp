@@ -92,7 +92,7 @@ namespace Quantix::Core::Components
 		/*if (cam)
 			cam->ActualizeRigid(this);*/
 
-		// Actualize the pointer in colliders
+			// Actualize the pointer in colliders
 		std::vector<ICollider*> vector{ _object->GetComponents<ICollider>() };
 		for (QXuint i = 0; i < vector.size(); i++)
 			vector[i]->UpdateActorPhysic();
