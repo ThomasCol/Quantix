@@ -1,7 +1,7 @@
 #include "Core/Components/Camera.h"
 #include "Core/DataStructure/GameObject3D.h"
 #include "MathDefines.h"
-#include "Core/Components/Rigidbody.h"
+#include "Core/Components/CharacterController.h"
 
 #define SENSIBILITY 0.05f
 
@@ -69,8 +69,8 @@ namespace Quantix::Core::Components
 			_pos = ((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetPosition();
 			_angle = ((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation().QuaternionToEuler();
 			
-			if (_object->GetComponent<Rigidbody>() != nullptr)
-				_rigid = _object->GetComponent<Rigidbody>();
+			if (_object->GetComponent<CharacterController>() != nullptr)
+				_controller = _object->GetComponent<CharacterController>();
 		}
 		else
 		{
@@ -79,9 +79,9 @@ namespace Quantix::Core::Components
 		}
 	}
 
-	void Camera::ActualizeRigid(Rigidbody* rig)
+	void Camera::ActualizeRigid(CharacterController* con)
 	{
-		_rigid = rig;
+		_controller = con;
 	}
 
 	void	Camera::UpdateLookAt(Math::QXvec3 pos)

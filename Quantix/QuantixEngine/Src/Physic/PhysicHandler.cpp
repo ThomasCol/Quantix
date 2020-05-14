@@ -274,6 +274,7 @@ namespace Quantix::Physic
 	void PhysicHandler::ReleaseSystem()
 	{
 		manager->purgeControllers();
+		manager->release();
 		collection->release();
 		mCooking->release();
 		PxCloseExtensions();
@@ -312,11 +313,11 @@ namespace Quantix::Physic
 		desc.radius = 0.5f; // radius of the capsule
 		desc.height = 2; // height of the capsule
 		desc.upDirection = PxVec3(0, 1, 0); // Specifies the 'up'
-		desc.material = NULL;
+		desc.material = mMaterial;
 
 
-		desc.reportCallback = new ControllerHitReport();
-		desc.behaviorCallback = new ControllerBehaviorCallback();
+		//desc.reportCallback = new ControllerHitReport();
+		//desc.behaviorCallback = new ControllerBehaviorCallback();
 
 
 		desc.userData = (Core::DataStructure::GameObject3D*)object;
@@ -374,6 +375,19 @@ namespace Quantix::Physic
 				}
 			}
 		}
+
+		int numController = manager->getNbControllers(); 
+		for (int i = 0; i < numController; i++)
+		{
+			PxController* controller = manager->getController(i);
+
+			if (controller)
+			{
+				PxExtendedVec3 pos = controller->getPosition();
+				((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->SetPosition(Math::QXvec3(pos.x, pos.y, pos.z));
+			}
+		}
+		
 	}
 
 	void PhysicHandler::UpdateEditorActor()
@@ -404,6 +418,18 @@ namespace Quantix::Physic
 
 					it->second->GetObjectStatic()->GetRigid()->setGlobalPose(transform);
 				}
+			}
+		}
+
+		int numController = manager->getNbControllers();
+		for (int i = 0; i < numController; i++)
+		{
+			PxController* controller = manager->getController(i);
+
+			if (controller)
+			{
+				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->GetPosition();
+				controller->setPosition(PxExtendedVec3(pos.x, pos.y, pos.z));
 			}
 		}
 	}

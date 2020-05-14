@@ -1,5 +1,6 @@
 #include "Core/Components/CharacterController.h"
 #include "Physic/PhysicSetting.h"
+#include "Physic/Raycast.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -34,6 +35,13 @@ namespace Quantix::Core::Components
 	CharacterController* CharacterController::Copy() const noexcept
 	{
 		return new CharacterController(*this);
+	}
+
+	void CharacterController::Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime)
+	{
+		physx::PxControllerFilters filters;
+
+		physx::PxControllerCollisionFlags tmp = controller->move(physx::PxVec3(vec.x, vec.y, vec.z), minDist, deltaTime, filters);
 	}
 
 	QXfloat CharacterController::GetRadius()

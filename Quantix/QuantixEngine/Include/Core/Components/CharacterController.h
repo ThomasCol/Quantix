@@ -7,6 +7,8 @@
 
 #include "Physic/PhysicHandler.h"
 
+#define GRAVITY Math::QXvec3(0, -9.81, 0)
+
 namespace Quantix::Core::Components
 {
 	struct QUANTIX_API CharacterController : public Quantix::Core::DataStructure::Component
@@ -22,6 +24,8 @@ namespace Quantix::Core::Components
 		CharacterController* Copy() const noexcept override;
 		void	Init(Core::DataStructure::GameComponent* object) noexcept override;
 		void	Destroy() noexcept override {};
+
+		void Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
 
 		QXfloat GetRadius();
 		void SetRadius(QXfloat f);
