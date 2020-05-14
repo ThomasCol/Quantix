@@ -3,7 +3,7 @@
 
 #include "Core/DataStructure/GameObject2D.h"
 #include "Core/DataStructure/GameObject3D.h"
-#include "Core/DataStructure/GameComponent.h"
+//#include "Core/DataStructure/GameComponent.h"
 #include "Core/Components/Collider.h"
 #include "Core/Platform/AppInfo.h"
 
@@ -132,22 +132,24 @@ namespace Quantix::Resources
 
 			#pragma region Accessors
 
-			const QXstring& GetName() noexcept { return _name; }
+			const QXstring&											GetName() noexcept { return _name; }
 
-			const QXuint& GetID()const noexcept { return _id; }
-			QXuint& GetID() noexcept { return _id; }
+			const QXuint&											GetID()const noexcept { return _id; }
+			QXuint&													GetID() noexcept { return _id; }
 
-			inline Core::DataStructure::GameObject3D*	GetRoot() { return _root; }
-			inline Core::DataStructure::GameObject2D*	GetRoot2D() { return _root2D; }
-			inline Core::DataStructure::GameComponent*	GetRootGameComponent() { return _rootComponent; }
-			inline std::list<Core::DataStructure::GameComponent*>& GetGameComponents() { return _objectsComponent; }
+			inline Core::DataStructure::GameObject3D*				GetRoot() { return _root; }
+			inline Core::DataStructure::GameObject2D*				GetRoot2D() { return _root2D; }
+			inline Core::DataStructure::GameComponent*				GetRootGameComponent() { return _rootComponent; }
+			inline std::vector<Core::DataStructure::GameObject3D*>	GetGameObjects3D() { return _objects; }
+			inline std::vector<Core::DataStructure::GameObject2D*>	GetGameObjects2D() { return _objects2D; }
+			inline std::list<Core::DataStructure::GameComponent*>&	GetGameComponents() { return _objectsComponent; }
 
-			Core::DataStructure::GameObject3D*	GetGameObject(const QXstring& name) noexcept;
-			Core::DataStructure::GameObject2D*	GetGameObject2D(const QXstring& name) noexcept;
+			Core::DataStructure::GameObject3D*						GetGameObject(const QXstring& name) noexcept;
+			Core::DataStructure::GameObject2D*						GetGameObject2D(const QXstring& name) noexcept;
 
-			inline QXbool						IsReady() const { return _isReady.load(); }
+			inline QXbool											IsReady() const { return _isReady.load(); }
 
-			inline void							SetReady(QXbool ready) { _isReady.store(ready); }
+			inline void												SetReady(QXbool ready) { _isReady.store(ready); }
 
 			#pragma endregion
 

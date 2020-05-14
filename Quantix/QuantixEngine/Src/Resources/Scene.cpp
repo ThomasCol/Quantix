@@ -40,10 +40,10 @@ namespace Quantix::Resources
 
 	Scene::~Scene()
 	{
-		for (QXsizei i = 0; i < _objects.size(); ++i)
-			delete _objects[i];
-		for (QXsizei i = 0; i < _objects2D.size(); ++i)
-			delete _objects2D[i];
+		for (auto it = _objects.begin(); it != _objects.end();)
+			it = _objects.erase(it);
+		for (auto it = _objects2D.begin(); it != _objects2D.end();)
+			it = _objects2D.erase(it);
 		for (auto it = _objectsComponent.begin(); it != _objectsComponent.end();)
 			it = _objectsComponent.erase(it);
 	}
@@ -63,11 +63,11 @@ namespace Quantix::Resources
 			_root->AddChild(object);
 		else
 		{
-			for (QXsizei i = 0; i < _objects.size(); ++i)
+			for (auto it = _objects.begin(); it != _objects.end(); ++it)
 			{
-				if (_objects[i] == parent)
+				if ((*it) == parent)
 				{
-					_objects[i]->AddChild(object);
+					(*it)->AddChild(object);
 					is_set = true;
 					break;
 				}
@@ -90,11 +90,11 @@ namespace Quantix::Resources
 			_root2D->AddChild(object);
 		else
 		{
-			for (QXsizei i = 0; i < _objects2D.size(); ++i)
+			for (auto it = _objects2D.begin(); it != _objects2D.end(); ++it)
 			{
-				if (_objects2D[i] == parent)
+				if ((*it) == parent)
 				{
-					_objects2D[i]->AddChild(object);
+					(*it)->AddChild(object);
 					is_set = true;
 					break;
 				}
@@ -169,11 +169,11 @@ namespace Quantix::Resources
 
 	Core::DataStructure::GameObject3D* Scene::GetGameObject(const QXstring& name) noexcept
 	{
-		for (QXsizei i = 0; i < _objects.size(); ++i)
+		for (auto it = _objects.begin(); it != _objects.end(); ++it)
 		{
-			if (_objects[i]->GetName() == name)
+			if ((*it)->GetName() == name)
 			{
-				return _objects[i];
+				return (*it);
 			}
 		}
 
@@ -182,11 +182,11 @@ namespace Quantix::Resources
 
 	Core::DataStructure::GameObject2D* Scene::GetGameObject2D(const QXstring& name) noexcept
 	{
-		for (QXsizei i = 0; i < _objects2D.size(); ++i)
+		for (auto it = _objects2D.begin(); it != _objects2D.end(); ++it)
 		{
-			if (_objects2D[i]->GetName() == name)
+			if ((*it)->GetName() == name)
 			{
-				return _objects2D[i];
+				return (*it);
 			}
 		}
 		return nullptr;
