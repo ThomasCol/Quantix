@@ -36,17 +36,6 @@ public:
 	void				Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::Transform3D* gameComponents, Quantix::Core::Platform::Application* app);
 
 	/**
-	 * @brief Set the Selectable object
-	 * 
-	 * @param nodeGlobal std::list<Quantix::Physic::Transform3D*>&
-	 * @param node std::list<Quantix::Physic::Transform3D*>&
-	 * @param i QXint
-	 */
-	void				SetSelectable(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>::iterator& it);
-
-	void				SetSelectable2D(std::list<Quantix::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Physic::Transform2D*>::iterator& it);
-
-	/**
 	 * @brief Draw Object
 	 * 
 	 * @param nodeGlobal std::list<Quantix::Physic::Transform3D*>&
@@ -58,6 +47,8 @@ public:
 	void				DrawGameComponent(Quantix::Core::Platform::Application* app);
 
 	void				DrawObject2D(std::list<Quantix::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Physic::Transform2D*>& node, Quantix::Core::Platform::Application* app);
+
+	void				DesactiveAllNodes(void* ptr, Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Create a Child object
@@ -75,16 +66,6 @@ public:
 	void				RemoveGC(QXbool& select, std::list<Quantix::Core::DataStructure::GameComponent*>& nodes, Quantix::Core::Platform::Application* app);
 
 	QXstring			Rename(const QXchar* name, QXsizei size);
-
-	/**
-	 * @brief Rename Menu
-	 * 
-	 * @param nodes std::list<Quantix::Physic::Transform3D*>&
-	 * @param scene Scene*
-	 */
-	void				MenuRename(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app);
-
-	void				MenuRename2D(std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app);
 
 	QXbool				PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Physic::Transform2D* node, Quantix::Core::Platform::Application* app);
 
@@ -161,18 +142,6 @@ public:
 	 * @param scene Scene*
 	 */
 	void				PopUpMenu(Quantix::Core::Platform::Application* app);
-
-	void				DesactivatePrevInspector2D(std::list<Quantix::Physic::Transform2D*>& nodes, std::list<Quantix::Physic::Transform2D*>::iterator& node);
-
-	/**
-	 * @brief Desactivate Previous Inspector
-	 * 
-	 * @param gameComponents std::list<Quantix::Physic::Transform3D*>&
-	 * @param gameComponent Transform3D*
-	 */
-	void				DesactivatePrevInspector(std::list<Quantix::Physic::Transform3D*>& gameComponents, std::list<Quantix::Physic::Transform3D*>::iterator& gameComponent);
-
-
 	#pragma region Getter
 	/**
 	 * @brief Get the Inspector object

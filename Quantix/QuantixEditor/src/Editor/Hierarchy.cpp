@@ -7,34 +7,6 @@
 #include "Hierarchy.h"
 #include <Core/Debugger/Logger.h>
 
-void Hierarchy::SetSelectable(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>::iterator& it)
-{
-	(*it)->GetObject()->SetIsActive(!(*it)->GetObject()->GetIsActive());
-	if (_inspector == nullptr)
-	{
-		_inspector = new Inspector((*it)->GetObject());
-		_inspector->Set3D(QX_TRUE);
-	}
-	else if (!(*it)->GetObject()->GetIsActive())
-		_inspector->SetEnable(QX_FALSE);
-	else
-		DesactivatePrevInspector(nodeGlobal, it);
-}
-
-void Hierarchy::SetSelectable2D(std::list<Quantix::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Physic::Transform2D*>::iterator& it)
-{
-	(*it)->GetObject()->SetIsActive(!(*it)->GetObject()->GetIsActive());
-	if (_inspector == nullptr)
-	{
-		_inspector = new Inspector((*it)->GetObject());
-		_inspector->Set2D(QX_TRUE);
-	}
-	else if (!(*it)->GetObject()->GetIsActive())
-		_inspector->SetEnable(QX_FALSE);
-	else
-		DesactivatePrevInspector2D(nodeGlobal, it);
-}
-
 void Hierarchy::DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app)
 {
 	for (auto it = node.begin(); it != node.end(); ++it)
@@ -44,13 +16,23 @@ void Hierarchy::DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal,
 		{
 			ImGui::Bullet();
 			if (ImGui::Selectable((*it)->GetObject()->GetName().c_str(), (*it)->GetObject()->GetIsActive()))
-				SetSelectable(nodeGlobal, it);
+			{
+				(*it)->GetObject()->SetIsActive(QX_TRUE);
+				_inspector = new Inspector((*it)->GetObject());
+				_inspector->Set3D(QX_TRUE);
+				DesactiveAllNodes((*it), app);
+			}
 		}
 		else
 		{
 			QXbool isOpen = ImGui::TreeNodeEx(&(*it), ImGuiTreeNodeFlags_Selected, (*it)->GetObject()->GetName().c_str());
 			if (ImGui::IsItemClicked(0))
-				SetSelectable(nodeGlobal, it);
+			{
+				(*it)->GetObject()->SetIsActive(QX_TRUE);
+				_inspector = new Inspector((*it)->GetObject());
+				_inspector->Set3D(QX_TRUE);
+				DesactiveAllNodes((*it), app);
+			}
 			if (isOpen)
 			{
 				DrawObject(nodeGlobal, (*it)->GetChilds(), app);
@@ -75,13 +57,23 @@ void Hierarchy::DrawObject2D(std::list<Quantix::Physic::Transform2D*>& nodeGloba
 		{
 			ImGui::Bullet();
 			if (ImGui::Selectable((*it)->GetObject()->GetName().c_str(), (*it)->GetObject()->GetIsActive()))
-				SetSelectable2D(nodeGlobal, it);
+			{
+				(*it)->GetObject()->SetIsActive(QX_TRUE);
+				_inspector = new Inspector((*it)->GetObject());
+				_inspector->Set2D(QX_TRUE);
+				DesactiveAllNodes((*it), app);
+			}
 		}
 		else
 		{
 			QXbool isOpen = ImGui::TreeNodeEx(&(*it), ImGuiTreeNodeFlags_Selected, (*it)->GetObject()->GetName().c_str());
 			if (ImGui::IsItemClicked(0))
-				SetSelectable2D(nodeGlobal, it);
+			{
+				(*it)->GetObject()->SetIsActive(QX_TRUE);
+				_inspector = new Inspector((*it)->GetObject());
+				_inspector->Set2D(QX_TRUE);
+				DesactiveAllNodes((*it), app);
+			}
 			if (isOpen)
 			{
 				DrawObject2D(nodeGlobal, (*it)->GetChilds(), app);
@@ -98,6 +90,25 @@ void Hierarchy::DrawObject2D(std::list<Quantix::Physic::Transform2D*>& nodeGloba
 	}
 }
 
+void Hierarchy::DesactiveAllNodes(void* ptr, Quantix::Core::Platform::Application* app)
+{
+	for (auto it = app->scene->GetGameComponents().begin(); it != app->scene->GetGameComponents().end(); ++it)
+	{
+		if ((*it) != ptr)
+			(*it)->SetIsActive(QX_FALSE);
+	}
+	for (QXuint i = 0; i < app->scene->GetGameObjects2D().size(); i++)
+	{
+		if (app->scene->GetGameObjects2D()[i]->GetTransform() != ptr)
+			app->scene->GetGameObjects2D()[i]->SetIsActive(QX_FALSE);
+	}
+	for (QXuint i = 0; i < app->scene->GetGameObjects3D().size(); i++)
+	{
+		if (app->scene->GetGameObjects3D()[i]->GetTransform() != ptr)
+			app->scene->GetGameObjects3D()[i]->SetIsActive(QX_FALSE);
+	}
+}
+
 void Hierarchy::DrawGameComponent(Quantix::Core::Platform::Application* app)
 {
 	for (auto it = app->scene->GetGameComponents().begin(); it != app->scene->GetGameComponents().end(); ++it)
@@ -105,14 +116,17 @@ void Hierarchy::DrawGameComponent(Quantix::Core::Platform::Application* app)
 		ImGui::PushID((*it));
 		ImGui::Bullet();
 		if (ImGui::Selectable((*it)->GetName().c_str(), (*it)->GetIsActive()))
+		{
+			(*it)->SetIsActive(QX_TRUE);
 			_inspector = new Inspector((*it));
+			DesactiveAllNodes((*it), app);
+		}
 		if (PopUpMenuItemGC((*it), app))
 		{
 			ImGui::PopID();
 			break;
 		}
 		ImGui::PopID();
-
 	}
 }
 
@@ -213,6 +227,7 @@ void Hierarchy::RemoveGC(QXbool& select, std::list<Quantix::Core::DataStructure:
 				(*it)->RemoveComponent((*it)->GetComponents()[i]);
 			it = nodes.erase(it);
 			_selected = nullptr;
+			select = false;
 			ImGui::CloseCurrentPopup();
 		}
 		else
@@ -230,61 +245,9 @@ QXstring Hierarchy::Rename(const QXchar* name, QXsizei size)
 	return "";
 }
 
-void Hierarchy::MenuRename(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app)
-{
-	for (auto it = nodes.begin(); it != nodes.end(); ++it)
-	{
-		if ((*it)->GetChilds().size() != 0)
-		{
-			std::list<Quantix::Physic::Transform3D*> child = (*it)->GetChilds();
-			MenuRename(child, app);
-		}
-
-		if ((*it)->GetObject() == _selected)
-		{
-			QXstring name = Rename((*it)->GetObject()->GetName().c_str(), (*it)->GetObject()->GetName().size() + 1);
-			if (name != "")
-			{
-				app->scene->GetGameObject((*it)->GetObject()->GetName())->SetName(name);
-				if (_inspector != nullptr)
-					_inspector->SetNode((*it)->GetObject());
-				_selected = nullptr;
-				ImGui::CloseCurrentPopup();
-			}
-
-		}
-	}
-}
-
-void Hierarchy::MenuRename2D(std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app)
-{
-	for (auto it = nodes.begin(); it != nodes.end(); ++it)
-	{
-		if ((*it)->GetChilds().size() != 0)
-		{
-			std::list<Quantix::Physic::Transform2D*> child = (*it)->GetChilds();
-			MenuRename2D(child, app);
-		}
-
-		if ((*it)->GetObject() == _selected)
-		{
-			QXstring name = Rename((*it)->GetObject()->GetName().c_str(), (*it)->GetObject()->GetName().size() + 1);
-			if (name != "")
-			{
-				app->scene->GetGameObject((*it)->GetObject()->GetName())->SetName(name);
-				if (_inspector != nullptr)
-					_inspector->SetNode((*it)->GetObject());
-				_selected = nullptr;
-				ImGui::CloseCurrentPopup();
-			}
-
-		}
-	}
-}
-
 QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Physic::Transform2D* node, Quantix::Core::Platform::Application* app)
 {
-	static QXbool isRemoved = QX_FALSE;
+	QXbool isRemoved = QX_FALSE;
 	if (ImGui::BeginPopupContextItem("Context Item 2D"))
 	{
 		if (_selected == nullptr)
@@ -295,24 +258,19 @@ QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& node
 			if (ImGui::Selectable("Create Empty", &selection[0]))
 				CreateEmptyObject2D(selection[0], app);
 			if (ImGui::Selectable("Remove", &selection[1]))
+			{
 				RemoveObject2D(selection[1], nodes, app);
-			if (selection[1])
 				isRemoved = QX_TRUE;
-			MenuRename2D(nodes, app);
+			}
 		}
 		ImGui::EndPopup();
 	}
-	if (isRemoved)
-	{
-		isRemoved = QX_FALSE;
-		return QX_TRUE;
-	}
-	return QX_FALSE;
+	return isRemoved;
 }
 
 QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Core::Platform::Application* app)
 {
-	static QXbool isRemoved = QX_FALSE;
+	QXbool isRemoved = QX_FALSE;
 	if (ImGui::BeginPopupContextItem("Context Item 3D"))
 	{
 		if (_selected == nullptr)
@@ -335,24 +293,19 @@ QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Physic::Transform3D*>& nodes,
 			}
 			static QXbool selection = QX_FALSE;
 			if (ImGui::Selectable("Remove", &selection))
+			{
 				RemoveObject(selection, nodes, app);
-			if (selection)
 				isRemoved = QX_TRUE;
-			MenuRename(nodes, app);
+			}
 		}
 		ImGui::EndPopup();
 	}
-	if (isRemoved)
-	{
-		isRemoved = QX_FALSE;
-		return QX_TRUE;
-	}
-	return QX_FALSE;
+	return isRemoved;
 }
 
 QXbool Hierarchy::PopUpMenuItemGC(Quantix::Core::DataStructure::GameComponent* node, Quantix::Core::Platform::Application* app)
 {
-	static QXbool isRemoved = QX_FALSE;
+	QXbool isRemoved = QX_FALSE;
 	if (ImGui::BeginPopupContextItem("Context Item GC"))
 	{
 		if (_selected == nullptr)
@@ -361,21 +314,14 @@ QXbool Hierarchy::PopUpMenuItemGC(Quantix::Core::DataStructure::GameComponent* n
 		{
 			static QXbool selection = QX_FALSE;
 			if (ImGui::Selectable("Remove", &selection))
-				RemoveGC(selection, app->scene->GetGameComponents(), app);
-			if (selection)
 			{
+				RemoveGC(selection, app->scene->GetGameComponents(), app);
 				isRemoved = QX_TRUE;
-				selection = QX_FALSE;
 			}
 		}
 		ImGui::EndPopup();
 	}
-	if (isRemoved)
-	{
-		isRemoved = QX_FALSE;
-		return QX_TRUE;
-	}
-	return QX_FALSE;
+	return isRemoved;
 }
 
 void Hierarchy::CreateGameComponent(QXbool& selection, Quantix::Core::Platform::Application* app)
@@ -411,7 +357,7 @@ void Hierarchy::CreateEmptyObject3D(QXbool& selection, Quantix::Core::Platform::
 		}
 		else
 		{
-			std::string name = "GameObject" + std::to_string((QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size());
+			std::string name = "GameObject" + std::to_string(value);
 			app->scene->AddGameObject(name, (Quantix::Physic::Transform3D*)_selected);
 		}
 		_selected = nullptr;
@@ -435,7 +381,7 @@ void Hierarchy::CreateCube(QXbool& selection, Quantix::Core::Platform::Applicati
 		}
 		else
 		{
-			QXstring name = "Cube" + std::to_string((QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size());
+			QXstring name = "Cube" + std::to_string(value);
 			obj = app->scene->AddGameObject(name, (Quantix::Physic::Transform3D*)_selected);
 		}
 		obj->AddComponent<Quantix::Core::Components::Mesh>();
@@ -464,7 +410,7 @@ void Hierarchy::CreateSphere(QXbool& selection, Quantix::Core::Platform::Applica
 		}
 		else
 		{
-			QXstring name = "Sphere" + std::to_string((QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size());
+			QXstring name = "Sphere" + std::to_string(value);
 			obj = app->scene->AddGameObject(name, (Quantix::Physic::Transform3D*)_selected);
 		}
 		obj->AddComponent<Quantix::Core::Components::Mesh>();
@@ -493,7 +439,7 @@ void Hierarchy::CreateCapsule(QXbool& selection, Quantix::Core::Platform::Applic
 		}
 		else
 		{
-			QXstring name = "Capsule" + std::to_string((QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size());
+			QXstring name = "Capsule" + std::to_string(value);
 			obj = app->scene->AddGameObject(name, (Quantix::Physic::Transform3D*)_selected);
 		}
 		obj->AddComponent<Quantix::Core::Components::Mesh>();
@@ -521,7 +467,7 @@ void Hierarchy::CreateEmptyObject2D(QXbool& selection, Quantix::Core::Platform::
 		}
 		else
 		{
-			std::string name = "GameObject" + std::to_string((QXuint)app->scene->GetRoot2D()->GetTransform()->GetChilds().size());
+			std::string name = "GameObject" + std::to_string(value);
 			app->scene->AddGameObject2D(name, (Quantix::Physic::Transform2D*)_selected);
 		}
 		_selected = nullptr;
@@ -559,43 +505,5 @@ void Hierarchy::PopUpMenu(Quantix::Core::Platform::Application* app)
 			ImGui::EndMenu();
 		}
 		ImGui::EndPopup();
-	}
-}
-
-void Hierarchy::DesactivatePrevInspector2D(std::list<Quantix::Physic::Transform2D*>& nodes, std::list<Quantix::Physic::Transform2D*>::iterator& node)
-{
-	for (auto it = nodes.begin(); it != nodes.end(); ++it)
-	{
-		if ((*it)->GetChilds().size() > 0)
-			DesactivatePrevInspector2D((*it)->GetChilds(), node);
-		if ((*it)->GetChilds().size() == 0)
-		{
-			if ((*it)->GetObject() != (*node)->GetObject() && (*it)->GetObject()->GetIsActive())
-				(*it)->GetObject()->SetIsActive(!(*it)->GetObject()->GetIsActive());
-		}
-		if ((*it)->GetObject() == (*node)->GetObject() && (*it)->GetObject()->GetName() == (*node)->GetObject()->GetName())
-		{
-			_inspector = new Inspector((*node)->GetObject());
-			_inspector->Set2D(QX_TRUE);
-		}
-	}
-}
-
-void Hierarchy::DesactivatePrevInspector(std::list<Quantix::Physic::Transform3D*>& nodes, std::list<Quantix::Physic::Transform3D*>::iterator& node)
-{
-	for (auto it = nodes.begin(); it != nodes.end(); ++it)
-	{
-		if ((*it)->GetChilds().size() > 0)
-			DesactivatePrevInspector((*it)->GetChilds(), node);
-		if ((*it)->GetChilds().size() == 0)
-		{
-			if ((*it)->GetObject() != (*node)->GetObject() && (*it)->GetObject()->GetIsActive())
-				(*it)->GetObject()->SetIsActive(!(*it)->GetObject()->GetIsActive());
-		}
-		if ((*it)->GetObject() == (*node)->GetObject() && (*it)->GetObject()->GetName() == (*node)->GetObject()->GetName())
-		{
-			_inspector = new Inspector((*node)->GetObject());
-			_inspector->Set3D(QX_TRUE);
-		}
 	}
 }
