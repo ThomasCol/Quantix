@@ -7,6 +7,7 @@
 
 #include "Inspector.h"
 #include <Core/UserEntry/InputManager.h>
+#include <Core/Profiler/Profiler.h>
 #include <filesystem>
 
 
@@ -149,8 +150,21 @@ void Inspector::ShowComponent()
 			ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
 			if (enable)
 			{
-				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-				_object->GetComponents().back()->Init(_object);
+				QXbool activate = QX_TRUE;
+				if (it.get_name().to_string() != "Behaviour")
+				{
+					if (!_object->Get3D())
+					{
+						activate = QX_FALSE;
+						QXstring message = "Cannot create " + it.get_name().to_string() + " with a non GameObject3D";
+						LOG(WARNING, message);
+					}
+				}
+				if (activate)
+				{
+					_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+					_object->GetComponents().back()->Init(_object);
+				}
 			}
 
 			ImGui::PopID();

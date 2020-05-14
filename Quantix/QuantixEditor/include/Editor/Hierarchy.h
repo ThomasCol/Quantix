@@ -3,7 +3,6 @@
 
 #include <list>
 #include <string>
-#include <Node.h>
 #include <Inspector.h>
 #include <Core/Platform/Application.h>
 
