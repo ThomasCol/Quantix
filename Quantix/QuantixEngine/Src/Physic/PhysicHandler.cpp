@@ -337,6 +337,8 @@ namespace Quantix::Physic
 
 		//PxRevoluteJointCreate
 		PxRevoluteJoint* joint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(), type1->GetRigid(), PxTransform());
+
+		return joint;
 	}
 
 

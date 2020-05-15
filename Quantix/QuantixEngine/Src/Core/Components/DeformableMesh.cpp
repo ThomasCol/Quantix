@@ -43,13 +43,13 @@ namespace Quantix::Core::Components
 			{
 				for (QXint k = 0; k < numCubeInDepth; k++)
 				{
-					gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(z)), this);
+					gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)), this);
 					
-					gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * numCubeInWidth, j * numCubeInHeight, z * numCubeInDepth));
+					gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * numCubeInWidth, j * numCubeInHeight, k * numCubeInDepth));
 					
 					AddComponent(gameobjects[i][j][k]);
 
-					if (i == 0 && j == 0 && z == 0)
+					if (i == 0 && j == 0 && k == 0)
 						continue;
 					else
 					{
