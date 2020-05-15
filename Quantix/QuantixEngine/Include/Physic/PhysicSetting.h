@@ -31,6 +31,14 @@ namespace Quantix::Physic
 		LAST
 	};
 
+	enum class ForceMode
+	{
+		ACCELERATION,
+		IMPULSE,
+		VELOCITYCHANGE,
+		FORCE
+	};
+
 	struct QUANTIX_API CollideGroup
 	{
 		bool pawn = false;

@@ -64,10 +64,16 @@ namespace Quantix::Core::Components
 		actorPhysic{ std::move(by_ref.actorPhysic) }
 	{}
 
-	void Rigidbody::AddForce(Math::QXvec3 vec) noexcept
+	void Rigidbody::AddForce(Math::QXvec3 vec, Physic::ForceMode mode) noexcept
 	{
-		std::cout << "addforce" << std::endl;
-		actorPhysic->GetObjectDynamic()->GetRigid()->addForce(physx::PxVec3(vec.x, vec.y, vec.z));
+		if (mode == Physic::ForceMode::ACCELERATION)
+			actorPhysic->GetObjectDynamic()->GetRigid()->addForce(physx::PxVec3(vec.x, vec.y, vec.z), physx::PxForceMode::eACCELERATION);
+		else if (mode == Physic::ForceMode::IMPULSE)
+			actorPhysic->GetObjectDynamic()->GetRigid()->addForce(physx::PxVec3(vec.x, vec.y, vec.z), physx::PxForceMode::eIMPULSE);
+		else if (mode == Physic::ForceMode::VELOCITYCHANGE)
+			actorPhysic->GetObjectDynamic()->GetRigid()->addForce(physx::PxVec3(vec.x, vec.y, vec.z), physx::PxForceMode::eVELOCITY_CHANGE);
+		else
+			actorPhysic->GetObjectDynamic()->GetRigid()->addForce(physx::PxVec3(vec.x, vec.y, vec.z));
 	}
 
 	void Rigidbody::AddTorque(Math::QXvec3 vec) noexcept

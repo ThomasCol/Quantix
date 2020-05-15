@@ -74,7 +74,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param vec Force To Add
 		 */
-		void AddForce(Math::QXvec3 vec) noexcept;
+		void AddForce(Math::QXvec3 vec, Physic::ForceMode mode = Physic::ForceMode::FORCE) noexcept;
 
 		/**
 		 * @brief Add Torque On The Rigidbody
