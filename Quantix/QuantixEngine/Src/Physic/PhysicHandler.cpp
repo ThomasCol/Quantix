@@ -315,7 +315,6 @@ namespace Quantix::Physic
 		desc.upDirection = PxVec3(0, 1, 0); // Specifies the 'up'
 		desc.material = mMaterial;
 
-
 		//desc.reportCallback = new ControllerHitReport();
 		//desc.behaviorCallback = new ControllerBehaviorCallback();
 
@@ -429,7 +428,13 @@ namespace Quantix::Physic
 			if (controller)
 			{
 				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->GetPosition();
-				controller->setPosition(PxExtendedVec3(pos.x, pos.y, pos.z));
+
+				PxTransform transform = controller->getActor()->getGlobalPose();
+
+				transform.p = PxVec3(pos.x, pos.y, pos.z);
+
+				controller->getActor()->setGlobalPose(transform);
+				//controller->setPosition(PxExtendedVec3(pos.x, pos.y, pos.z));
 			}
 		}
 	}

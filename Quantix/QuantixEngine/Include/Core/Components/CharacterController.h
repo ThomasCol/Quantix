@@ -16,6 +16,8 @@ namespace Quantix::Core::Components
 		// pointeur de controlelr
 		physx::PxCapsuleController* controller = nullptr;
 
+		Math::QXvec3 _velocity;
+
 		CharacterController() = default;
 		CharacterController(const CharacterController& src) = default;
 		CharacterController(CharacterController&& src) = default;
@@ -26,6 +28,7 @@ namespace Quantix::Core::Components
 		void	Destroy() noexcept override {};
 
 		void Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
+		void Jump(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
 
 		QXfloat GetRadius();
 		void SetRadius(QXfloat f);

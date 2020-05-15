@@ -244,14 +244,22 @@ void	Editor::CameraUpdate()
 			if (_mainCamera->_controller)
 			{
 				if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
-					_mainCamera->_controller->Move(_mainCamera->GetDir()* _app->info.deltaTime, 0, _app->info.deltaTime);
+					_mainCamera->_controller->_velocity += _mainCamera->GetDir();
 				if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
-					_mainCamera->_controller->Move(- _mainCamera->GetDir() * _app->info.deltaTime, 0, _app->info.deltaTime);
+					_mainCamera->_controller->_velocity -= _mainCamera->GetDir();
 				if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
-					_mainCamera->_controller->Move(- _mainCamera->GetDir().Cross(_mainCamera->GetUp()) * _app->info.deltaTime, 0, _app->info.deltaTime);
+					_mainCamera->_controller->_velocity -= _mainCamera->GetDir().Cross(_mainCamera->GetUp());
 				if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
-					_mainCamera->_controller->Move(_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * _app->info.deltaTime, 0, _app->info.deltaTime);
-				_mainCamera->_controller->Move(GRAVITY * _app->info.deltaTime, 0, _app->info.deltaTime);
+					_mainCamera->_controller->_velocity += _mainCamera->GetDir().Cross(_mainCamera->GetUp());
+				if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+					_mainCamera->_controller->_velocity += _mainCamera->_controller->GetUpDirection() * 30;
+				
+				_mainCamera->_controller->_velocity.y *= 0.95;
+
+				_mainCamera->_controller->Move((GRAVITY + _mainCamera->_controller->_velocity) * _app->info.deltaTime, 0, _app->info.deltaTime);
+
+				_mainCamera->_controller->_velocity.x = 0;
+				_mainCamera->_controller->_velocity.z = 0;
 			}
 			else
 			{

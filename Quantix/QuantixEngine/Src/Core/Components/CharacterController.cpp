@@ -29,7 +29,7 @@ namespace Quantix::Core::Components
 	void CharacterController::Init(Core::DataStructure::GameComponent* object) noexcept
 	{
 		controller = Physic::PhysicHandler::GetInstance()->CreateController(object);
-	
+		_velocity = Math::QXvec3(0, 0, 0);
 	}
 
 	CharacterController* CharacterController::Copy() const noexcept
@@ -40,8 +40,17 @@ namespace Quantix::Core::Components
 	void CharacterController::Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime)
 	{
 		physx::PxControllerFilters filters;
-
+		
 		physx::PxControllerCollisionFlags tmp = controller->move(physx::PxVec3(vec.x, vec.y, vec.z), minDist, deltaTime, filters);
+	}
+
+	void CharacterController::Jump(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime)
+	{
+		//physx::PxControllerFilters filters;
+		//controller->move(physx::PxVec3(vec.x, vec.y, vec.z), minDist, deltaTime, filters);
+		controller->getActor()->addForce(physx::PxVec3(vec.x, vec.y, vec.z));
+
+		//controller->getActor()->setLinearVelocity(controller->getActor()->getLinearVelocity() + physx::PxVec3(vec.x, vec.y, vec.z));
 	}
 
 	QXfloat CharacterController::GetRadius()
