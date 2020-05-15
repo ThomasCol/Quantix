@@ -7,12 +7,16 @@
 
 #include "Physic/PhysicHandler.h"
 
+#define GRAVITY Math::QXvec3(0, -9.81, 0)
+
 namespace Quantix::Core::Components
 {
 	struct QUANTIX_API CharacterController : public Quantix::Core::DataStructure::Component
 	{
 		// pointeur de controlelr
 		physx::PxCapsuleController* controller = nullptr;
+
+		Math::QXvec3 _velocity;
 
 		CharacterController() = default;
 		CharacterController(const CharacterController& src) = default;
@@ -22,6 +26,9 @@ namespace Quantix::Core::Components
 		CharacterController* Copy() const noexcept override;
 		void	Init(Core::DataStructure::GameComponent* object) noexcept override;
 		void	Destroy() noexcept override {};
+
+		void Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
+		void Jump(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
 
 		QXfloat GetRadius();
 		void SetRadius(QXfloat f);

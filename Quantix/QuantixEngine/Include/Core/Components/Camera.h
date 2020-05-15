@@ -13,7 +13,7 @@
 
 namespace Quantix::Core::Components
 {
-	struct Rigidbody;
+	struct CharacterController;
 
 	class QUANTIX_API Camera : public virtual Core::DataStructure::Component
 	{
@@ -28,7 +28,7 @@ namespace Quantix::Core::Components
 
 		#pragma endregion Attributes
 	public:
-		Rigidbody* _rigid = nullptr;
+		CharacterController* _controller = nullptr;
 
 #pragma region Constructors/Destructor
 		/**
@@ -77,7 +77,7 @@ namespace Quantix::Core::Components
 
 		void	Init(Core::DataStructure::GameComponent* object) override;
 
-		void	ActualizeRigid(Rigidbody* rig);
+		void	ActualizeRigid(CharacterController* rig);
 
 		/**
 		 * @brief Update the LookAtMatrix of the Camera
@@ -132,7 +132,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @return Math::QXvec3 
 		 */
-		Math::QXvec3				GetPos();
+		Math::QXvec3					GetPos();
 
 		void SetPhysicPos(Math::QXvec3 pos);
 
