@@ -331,7 +331,12 @@ namespace Quantix::Physic
 
 	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other)
 	{
+		PhysicDynamic* type0 = GetObject(object, true)->GetObjectDynamic();
+
+		PhysicDynamic* type1 = GetObject(other, true)->GetObjectDynamic();
+
 		//PxRevoluteJointCreate
+		PxRevoluteJoint* joint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(), type1->GetRigid(), PxTransform());
 	}
 
 

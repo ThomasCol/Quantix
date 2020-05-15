@@ -34,26 +34,42 @@ namespace Quantix::Core::Components
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
 		Core::DataStructure::GameObject3D* gameobject = nullptr;
 
+		//Core::DataStructure::GameObject3D gameobjects[numCubeInWidth][numCubeInHeight][numCubeInDepth];
+		std::vector<std::vector<std::vector<Core::DataStructure::GameObject3D*>>> gameobjects;
+
 		for (QXint i = 0; i < numCubeInWidth; i++)
 		{
 			for (QXint j = 0; j < numCubeInHeight; j++)
 			{
-				for (QXint z = 0; z < numCubeInDepth; z++)
+				for (QXint k = 0; k < numCubeInDepth; k++)
 				{
-					gameobject = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(z)), this);
+					gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(z)), this);
 					
-					gameobject->SetLocalPosition(Math::QXvec3(i * numCubeInWidth, j * numCubeInHeight, z * numCubeInDepth));
+					gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * numCubeInWidth, j * numCubeInHeight, z * numCubeInDepth));
 					
-					AddComponent(gameobject);
+					AddComponent(gameobjects[i][j][k]);
 
 					if (i == 0 && j == 0 && z == 0)
 						continue;
 					else
 					{
-						//if (j != 0)
-
+						if (i != 0)
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i-1][j][k]); 
+						if (j != 0)
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k]);
+						if (k != 0)
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1]);
 					}
 				}
+			}
+		}
+
+		for (int i = 0; i < numCubeInWidth; i++)
+		{
+			for (int j = 0; j < numCubeInWidth; j++)
+			{
+				for (int k = 0; k < numCubeInWidth; k++)
+					delete gameobjects[i][j][k];
 			}
 		}
 	}
