@@ -329,6 +329,12 @@ namespace Quantix::Physic
 		return (PxCapsuleController*)c;
 	}
 
+	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other)
+	{
+		//PxRevoluteJointCreate
+	}
+
+
 	void PhysicHandler::UpdateSystem(double deltaTime)
 	{
 		mAccumulator += (physx::PxReal)deltaTime;

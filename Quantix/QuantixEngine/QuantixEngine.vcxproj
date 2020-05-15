@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\DeformableMesh.cpp" />
     <ClCompile Include="Src\Physic\ControllerHitReport.cpp" />
     <ClCompile Include="Src\Physic\ControllerBehaviorCallback.cpp" />
     <ClCompile Include="Src\Core\Components\CharacterController.cpp" />
@@ -253,6 +254,7 @@
     <ClCompile Include="Src\Resources\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
     <ClInclude Include="Include\Physic\ControllerHitReport.h" />
     <ClInclude Include="Include\Physic\ControllerBehaviorCallback.h" />
     <ClInclude Include="Include\Core\Components\CharacterController.h" />

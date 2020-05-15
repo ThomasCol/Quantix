@@ -174,6 +174,7 @@ namespace Quantix::Physic
 
 
 		PxCapsuleController* CreateController(Core::DataStructure::GameComponent* object);
+		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other);
 
 		// Update
 		/**
