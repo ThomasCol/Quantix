@@ -251,7 +251,7 @@ void	Editor::CameraUpdate()
 					_mainCamera->_controller->_velocity -= _mainCamera->GetDir().Cross(_mainCamera->GetUp());
 				if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
 					_mainCamera->_controller->_velocity += _mainCamera->GetDir().Cross(_mainCamera->GetUp());
-				if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
+				if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED && _mainCamera->_controller->CheckIsFalling())
 					_mainCamera->_controller->_velocity += _mainCamera->_controller->GetUpDirection() * 30;
 				
 				_mainCamera->_controller->_velocity.y *= 0.95;

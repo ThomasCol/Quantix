@@ -53,6 +53,17 @@ namespace Quantix::Core::Components
 		//controller->getActor()->setLinearVelocity(controller->getActor()->getLinearVelocity() + physx::PxVec3(vec.x, vec.y, vec.z));
 	}
 
+	QXbool CharacterController::CheckIsFalling()
+	{
+		Physic::Raycast ray(GetFootPosition(), -GetUpDirection(), 0.01);
+
+		if (ray.actorClosestBlock)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	QXfloat CharacterController::GetRadius()
 	{
 		return controller->getRadius();
@@ -127,6 +138,12 @@ namespace Quantix::Core::Components
 			return Physic::NonWalkableMode::PREVENTCLIMBING;
 		else
 			return Physic::NonWalkableMode::PREVENTCLIMBINGANDFORCESLIDING;
+	}
+
+	Math::QXvec3 CharacterController::GetLinearVelocity()
+	{
+		physx::PxVec3 v = controller->getActor()->getLinearVelocity();
+		return Math::QXvec3(v.x, v.y, v.z);
 	}
 
 	void CharacterController::SetClimbingMode(Physic::ClimbingMode mode)

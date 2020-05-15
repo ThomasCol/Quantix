@@ -15,7 +15,7 @@ namespace Quantix::Physic
 		Math::QXvec3 normalClosestBlock;
 		Math::QXvec3 positionClosestBlock;
 		QXfloat distanceClosestBlock;
-		Core::DataStructure::GameObject3D* actorClosestBlock;
+		Core::DataStructure::GameObject3D* actorClosestBlock = nullptr;
 
 		Raycast() = delete;
 		Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax);

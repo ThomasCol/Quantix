@@ -29,6 +29,7 @@ namespace Quantix::Core::Components
 
 		void Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
 		void Jump(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
+		QXbool CheckIsFalling();
 
 		QXfloat GetRadius();
 		void SetRadius(QXfloat f);
@@ -52,6 +53,8 @@ namespace Quantix::Core::Components
 
 		void SetClimbingMode(Physic::ClimbingMode mode);
 		Physic::ClimbingMode GetClimbingMode();
+
+		Math::QXvec3 GetLinearVelocity();
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};
