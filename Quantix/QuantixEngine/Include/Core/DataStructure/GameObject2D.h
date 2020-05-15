@@ -19,7 +19,7 @@ namespace Quantix::Core::DataStructure
 	public:
 		#pragma region Constructors/Destructor
 		GameObject2D() noexcept;
-		GameObject2D(const QXstring& name, Quantix::Physic::Transform2D* transform) noexcept;
+		GameObject2D(const QXstring& name) noexcept;
 		GameObject2D(const GameObject2D& g2d) noexcept;
 		GameObject2D(GameObject2D&& g2d) noexcept;
 		~GameObject2D();
@@ -27,7 +27,27 @@ namespace Quantix::Core::DataStructure
 
 		#pragma region Methods
 
-		inline void								AddChild(const GameObject2D* object) { _transform->AddChild(object->GetTransform()); }
+		void										Start() override;
+		
+		void										Awake() override;
+
+		void										Update();
+
+		void										Update(const GameObject2D* parentObject);
+
+		template<class Archive>
+		void save(Archive& archive) const
+		{
+			archive(_component);
+		}
+
+		template<class Archive>
+		void load(Archive& archive)
+		{
+			archive(_component);
+		}
+
+		inline void									AddChild(const GameObject2D* object) { _transform->AddChild(object->GetTransform()); }
 
 		#pragma region Accessors
 		/**

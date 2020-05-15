@@ -1,6 +1,8 @@
 #include "Core/Components/Camera.h"
 #include "Core/DataStructure/GameObject3D.h"
 #include "MathDefines.h"
+#include "Core/Components/CharacterController.h"
+#include <Core/Profiler/Profiler.h>
 
 #define SENSIBILITY 0.05f
 
@@ -67,12 +69,20 @@ namespace Quantix::Core::Components
 		{
 			_pos = ((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetPosition();
 			_angle = ((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation().QuaternionToEuler();
+			
+			if (_object->GetComponent<CharacterController>() != nullptr)
+				_controller = _object->GetComponent<CharacterController>();
 		}
 		else
 		{
 			_pos = Math::QXvec3(0, 0, 0);
 			_angle = Math::QXvec3(0, 0, 0);
 		}
+	}
+
+	void Camera::ActualizeRigid(CharacterController* con)
+	{
+		_controller = con;
 	}
 
 	void	Camera::UpdateLookAt(Math::QXvec3 pos)
@@ -83,7 +93,7 @@ namespace Quantix::Core::Components
 		{
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(_pos);
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(_angle));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(-_angle));
 		}
 	}
 
@@ -108,7 +118,7 @@ namespace Quantix::Core::Components
 		_dir.x = cos(_angle.x) * sin(_angle.y);
 		if (_object)
 		{
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(rotate));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(-rotate));
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetUp(((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation() * Math::QXvec3::up);
 		}
@@ -122,5 +132,13 @@ namespace Quantix::Core::Components
 		}
 		
 		return _pos;
+	}
+
+	void Camera::SetPhysicPos(Math::QXvec3 pos)
+	{
+		/*Rigidbody* rigid = _object->GetComponent<Rigidbody>();
+
+		if (rigid)
+			rigid->SetTransformPosition(pos);*/
 	}
 }

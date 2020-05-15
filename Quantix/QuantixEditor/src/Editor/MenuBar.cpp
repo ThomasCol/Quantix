@@ -9,14 +9,22 @@
 
 #define DEFAULTPATH "media"
 
-void MenuBar::FileButton()
+void MenuBar::LoadScene(Quantix::Core::Platform::Application* app)
+{
+	Quantix::Physic::PhysicHandler::GetInstance()->CleanScene();
+	app->newScene = app->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
+	app->sceneChange = true;
+}
+
+void MenuBar::FileButton(Quantix::Core::Platform::Application* app)
 {
 	if (ImGui::BeginMenu("File"))
 	{
-		static bool selection[3] = { QX_FALSE, QX_FALSE, QX_FALSE };
-		ImGui::Selectable("New Project", &selection[0]);
-		ImGui::Selectable("Save", &selection[1]);
-		ImGui::Selectable("Save As", &selection[2]);
+		static bool selection[2] = { QX_FALSE, QX_FALSE };
+		if (ImGui::Selectable("Save Scene", &selection[1]))
+			app->manager.SaveScene(app->scene);
+		if (ImGui::Selectable("Load Scene", &selection[2]))
+			LoadScene(app);
 		ImGui::EndMenu();
 	}
 }
@@ -98,7 +106,7 @@ void MenuBar::Update(Quantix::Core::Platform::Application* app)
 	if (ImGui::BeginMenuBar())
 	{
 		ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(1, 1, 1, 1));
-		FileButton();
+		FileButton(app);
 		EditButton();
 		AssetButton();
 		GameObjectButton(app);

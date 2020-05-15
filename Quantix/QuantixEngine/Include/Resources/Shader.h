@@ -7,6 +7,9 @@
 
 #include "Core/DLLHeader.h"
 
+#define DEFAULTVERTEX "../QuantixEngine/Media/Shader/vertexShader.vert"
+#define DEFAULTFRAGMENT "../QuantixEngine/Media/Shader/fragmentShader.frag"
+
 namespace Quantix::Resources
 {
 	enum class EShaderType

@@ -53,13 +53,17 @@ namespace Quantix::Core::DataStructure
 		 */
 		Scene*				CreateDefaultScene() noexcept;
 
+		Material*			LoadMaterialFromFbx(const QXstring& filePath);
+
+		Material*			LoadMaterialFromFile(const QXstring& filePath);
+
 		/**
 		 * @brief Load a material
 		 * 
 		 * @param filePath Path to the material
 		 * @return Material* new material
 		 */
-		Material*			LoadMaterial(const QXstring& filePath) noexcept;
+		Material*			LoadMaterial(const QXstring& filePath, const QXbool& isFbx = false) noexcept;
 
 		/**
 		 * @brief Load a model

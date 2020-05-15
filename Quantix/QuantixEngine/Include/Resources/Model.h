@@ -1,6 +1,11 @@
 #ifndef __MODEL_H__
 #define __MODEL_H__
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/matrix4x4.h>
+#include <assimp/cimport.h>
 #include <rttrEnabled.h>
 #include <vector>
 #include <Vec2.h>

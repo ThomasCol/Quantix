@@ -13,13 +13,15 @@ namespace Quantix::Core::DataStructure
 	{
 		for (auto it = _materials.begin(); it != _materials.end(); ++it)
 		{
-			SaveMaterialToCache(it->first, it->second);
+			if (it->first.find(".fbx") == QXstring::npos && it->first.find(".FBX") == QXstring::npos)
+				SaveMaterialToCache(it->first, it->second);
 			delete it->second;
 		}
 
 		for (auto it = _models.begin(); it != _models.end(); ++it)
 		{
-			SaveModelToCache(it->first, it->second);
+			if (it->first.find(".fbx") == QXstring::npos && it->first.find(".FBX") == QXstring::npos)
+				SaveModelToCache(it->first, it->second);
 			delete it->second;
 		}
 
@@ -91,14 +93,18 @@ namespace Quantix::Core::DataStructure
 	{
 		if (filePath == "")
 			return CreateDefaultMaterial();
-
+	
 		auto it = _materials.find(filePath);
 		if (it != _materials.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
 
-		Material* material = LoadMaterial(filePath);
+		Material* material;
+		if (filePath.find(".fbx") != QXstring::npos || filePath.find(".FBX") != QXstring::npos)
+			material = LoadMaterial(filePath, QX_TRUE);
+		else
+			material = LoadMaterial(filePath);
 
 		_materials[filePath] = material;
 
@@ -126,9 +132,13 @@ namespace Quantix::Core::DataStructure
 	Components::Mesh* ResourcesManager::CreateMesh(Components::Mesh* mesh, const QXstring& modelPath, const QXstring& materialPath) noexcept
 	{
 		QXstring key = modelPath + materialPath;
+		QXbool isFbx = (modelPath.find(".fbx") != QXstring::npos ? true : false);
 
 		mesh->SetModel(CreateModel(modelPath));
-		mesh->SetMaterial(CreateMaterial(materialPath));
+		if (isFbx)
+			mesh->SetMaterial(CreateMaterial(modelPath));
+		else
+			mesh->SetMaterial(CreateMaterial(materialPath));
 
 		_meshes[key] = mesh;
 
@@ -148,8 +158,6 @@ namespace Quantix::Core::DataStructure
 			return it->second;
 		}
 
-		std::vector<Vertex> vertices;
-		std::vector<QXuint> indices;
 		Model* model = new Model;
 		Threading::TaskSystem::GetInstance()->AddTask(&Model::Load, model, filePath);
 		_resourcesToBind.push_back(model);
@@ -228,7 +236,41 @@ namespace Quantix::Core::DataStructure
 		return texture;
 	}
 
-	Material* ResourcesManager::LoadMaterial(const QXstring& filePath) noexcept
+	Material* ResourcesManager::LoadMaterialFromFbx(const QXstring& filePath)
+	{
+		Assimp::Importer Importer;
+		const aiScene* pScene = Importer.ReadFile(filePath.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+		QXstring diffuse_path, emissive_path;
+		Material* material = new Material(CreateShaderProgram(DEFAULTVERTEX, DEFAULTFRAGMENT));
+		const aiMaterial* pMaterial = pScene->mMaterials[pScene->mMeshes[0]->mMaterialIndex];
+
+		if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+		{
+			aiString Path;
+
+			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+			{
+				diffuse_path = DEFAULTTEXTURESPATH;
+				diffuse_path += Path.data;
+				material->SetDiffuseTexture(CreateTexture(diffuse_path));
+			}
+		}
+
+		if (pMaterial->GetTextureCount(aiTextureType_EMISSIVE) > 0)
+		{
+			aiString Path;
+
+			if (pMaterial->GetTexture(aiTextureType_EMISSIVE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+			{
+				emissive_path = DEFAULTTEXTURESPATH;
+				emissive_path += Path.data;
+				material->SetEmissiveTexture(CreateTexture(emissive_path));
+			}
+		}
+		return material;
+	}
+
+	Material* ResourcesManager::LoadMaterialFromFile(const QXstring& filePath)
 	{
 		FILE* file;
 
@@ -271,8 +313,14 @@ namespace Quantix::Core::DataStructure
 		}
 
 		fclose(file);
-
 		return material;
+	}
+
+	Material* ResourcesManager::LoadMaterial(const QXstring& filePath, const QXbool& isFbx) noexcept
+	{
+		if (isFbx)
+			return LoadMaterialFromFbx(filePath);
+		return LoadMaterialFromFile(filePath);
 	}
 
 	void ResourcesManager::SaveMaterialToCache(const QXstring& filePath, const Material* material) noexcept

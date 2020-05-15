@@ -22,7 +22,10 @@ Folder::Folder(Quantix::Core::DataStructure::ResourcesManager& cache, const fs::
 		if (fs::is_directory(dir_itr->status()))
 			_folder.push_back(dir_itr->path().filename().string());
 		else if (fs::is_regular_file(dir_itr->status()))
-			_file.push_back(dir_itr->path().filename().string());
+		{
+			if (dir_itr->path().filename().string().find(".quantix") == QXstring::npos)
+				_file.push_back(dir_itr->path().filename().string());
+		}
 		else
 			_imgFile.push_back(dir_itr->path().filename().string());
 		++dir_itr;

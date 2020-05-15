@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <typeinfo>
+#include <Type.h>
 #include <Vec2.h>
 #include <Vec3.h>
 #include <Mat4.h>
@@ -23,18 +23,20 @@ namespace Quantix::Core::DataStructure
 		std::vector<Component*>						_component;
 		std::string									_name;
 		QXint										_layer;
-		QXbool										_isStatic { false };
-		QXbool										_isActive { true };
-		QXbool										_toRender { false };
-		QXbool										_toUpdate { false };
-		QXbool										_toCollide { false };
+		QXbool										_isStatic { QX_FALSE };
+		QXbool										_isActive{ QX_TRUE };
+		QXbool										_toRender{ QX_FALSE };
+		QXbool										_toUpdate{ QX_FALSE };
+		QXbool										_toCollide{ QX_FALSE };
+		QXbool										_is2D{ QX_FALSE };
+		QXbool										_is3D{ QX_FALSE };
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
 		GameComponent() = default;
 		GameComponent(const GameComponent& object) noexcept;
 		GameComponent(GameComponent&& object) noexcept;
-		GameComponent(const QXstring& name, const QXbool& isStatic = false) noexcept;
+		GameComponent(const QXstring& name, const QXbool& is2D = QX_FALSE, const QXbool& is3D = QX_FALSE, const QXbool& isStatic = QX_FALSE) noexcept;
 		~GameComponent();
 		#pragma endregion Constructors/Destructor
 
@@ -156,6 +158,8 @@ namespace Quantix::Core::DataStructure
 		#pragma endregion Template
 
 		#pragma region Accessors
+		inline QXbool			Get3D() const { return _is3D; };
+
 		inline void				SetIsActive(QXbool IsActive) { _isActive = IsActive; };
 
 		inline QXbool			GetIsActive() const { return _isActive; };

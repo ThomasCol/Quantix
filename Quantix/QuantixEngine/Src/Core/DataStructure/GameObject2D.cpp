@@ -5,7 +5,7 @@ RTTR_PLUGIN_REGISTRATION
 	using namespace Quantix::Core::DataStructure;
 	rttr::registration::class_<GameObject2D>("GameObject2D")
 	.constructor<>()
-	.constructor<const QXstring&, Quantix::Physic::Transform2D*>()
+	.constructor<const QXstring&>()
 	.constructor<const GameObject2D&>()
 	.constructor<GameObject2D&&>()
 	.method("SetGlobalPosition", &GameObject2D::SetGlobalPosition)
@@ -24,13 +24,13 @@ namespace Quantix::Core::DataStructure
 {
 	GameObject2D::GameObject2D() noexcept :
 		GameComponent(),
-		_transform{ new Quantix::Physic::Transform2D() }
+		_transform{ new Quantix::Physic::Transform2D(this) }
 	{
 	}
 
-	GameObject2D::GameObject2D(const QXstring& name, Quantix::Physic::Transform2D* transform) noexcept :
-		GameComponent(name),
-		_transform { transform }
+	GameObject2D::GameObject2D(const QXstring& name) noexcept :
+		GameComponent(name, QX_TRUE),
+		_transform { new Quantix::Physic::Transform2D(this) }
 	{
 	}
 
@@ -48,6 +48,31 @@ namespace Quantix::Core::DataStructure
 
 	GameObject2D::~GameObject2D()
 	{
+	}
+
+	void	GameObject2D::Start()
+	{
+		for (Physic::Transform2D* child : _transform->GetChilds())
+			child->GetObject()->Start();
+	}
+
+	void	GameObject2D::Awake()
+	{
+		for (Physic::Transform2D* child : _transform->GetChilds())
+			child->GetObject()->Awake();
+	}
+
+	void	GameObject2D::Update()
+	{
+ 		for (Physic::Transform2D* child : _transform->GetChilds())
+			child->GetObject()->Update(this);
+	}
+
+	void	GameObject2D::Update(const GameObject2D* parentObject)
+	{
+		_transform->Update(parentObject->GetTransform());
+		for (Physic::Transform2D* child : _transform->GetChilds())
+			child->GetObject()->Update(this);
 	}
 
 	void	GameObject2D::SetGlobalPosition(Math::QXvec2 pos)

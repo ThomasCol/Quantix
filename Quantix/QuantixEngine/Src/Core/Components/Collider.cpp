@@ -5,13 +5,13 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
-	rttr::registration::class_<ICollider>("Collider")
-	.constructor<>()
-	.constructor<Quantix::Core::DataStructure::GameComponent*>()
-	.constructor<const ICollider&>()
-	.constructor<ICollider&&>()
-	.enumeration<Quantix::Physic::FilterGroup::Enum>("FilterGroup")
-	(rttr::value("Pawn", Quantix::Physic::FilterGroup::Enum::PAWN),
+rttr::registration::class_<ICollider>("Collider")
+.constructor<>()
+.constructor<Quantix::Core::DataStructure::GameComponent*>()
+.constructor<const ICollider&>()
+.constructor<ICollider&&>()
+.enumeration<Quantix::Physic::FilterGroup::Enum>("FilterGroup")
+(rttr::value("Pawn", Quantix::Physic::FilterGroup::Enum::PAWN),
 	rttr::value("Crab", Quantix::Physic::FilterGroup::Enum::eCRAB),
 	rttr::value("MineHead", Quantix::Physic::FilterGroup::Enum::eMINE_HEAD))
 	.property("ToRender", &ICollider::toRender)
@@ -19,20 +19,20 @@ RTTR_PLUGIN_REGISTRATION
 	.property("Local Rotation", &ICollider::GetRotation, &ICollider::SetRotation)
 	.property("MyGroup", &ICollider::GetMyFilterGroup, &ICollider::SetMyFilterGroup)
 	.property("Collide Group", &ICollider::collideFilter)
-	.property("Shape Flag", &ICollider::shapeFlag);
+	.property("Shape Flag", &ICollider::shapeFlag)
 
-	rttr::registration::class_<Quantix::Physic::CollideGroup>("Collide Group")
-		.constructor<>()
-		.property("PawnGroup", &Quantix::Physic::CollideGroup::GetCollideFilterPawn, &Quantix::Physic::CollideGroup::SetCollideFilterPawn)
-		.property("MineGroup", &Quantix::Physic::CollideGroup::GetCollideFilterMine, &Quantix::Physic::CollideGroup::SetCollideFilterMine)
-		.property("CrabGroup", &Quantix::Physic::CollideGroup::GetCollideFilterCrab, &Quantix::Physic::CollideGroup::SetCollideFilterCrab);
+	.property("PawnGroup", &ICollider::GetCollideFilterPawn, &ICollider::SetCollideFilterPawn)
+	(rttr::metadata("Description", "Collide Group"))
+	.property("MineGroup", &ICollider::GetCollideFilterMine, &ICollider::SetCollideFilterMine)
+	.property("CrabGroup", &ICollider::GetCollideFilterCrab, &ICollider::SetCollideFilterCrab)
+		(rttr::metadata("Description", "End"))
 
-	rttr::registration::class_<Quantix::Physic::ShapeFlag>("Shape Flag")
-	.constructor<>()
-	.property("Query Shape", &Quantix::Physic::ShapeFlag::GetShapeFlagSceneQuery, &Quantix::Physic::ShapeFlag::SetShapeFlagSceneQuery)
-	.property("Simulation Shape", &Quantix::Physic::ShapeFlag::GetShapeFlagSimulation, &Quantix::Physic::ShapeFlag::SetShapeFlagSimulation)
-	.property("Trigger Shape", &Quantix::Physic::ShapeFlag::GetShapeFlagTrigger, &Quantix::Physic::ShapeFlag::SetShapeFlagTrigger)
-	.property("Visualization Shape", &Quantix::Physic::ShapeFlag::GetShapeFlagVisualization, &Quantix::Physic::ShapeFlag::SetShapeFlagVisualization);
+	.property("Query Shape", &ICollider::GetShapeFlagSceneQuery, &ICollider::SetShapeFlagSceneQuery)
+		(rttr::metadata("Description", "Shape Flags"))
+	.property("Simulation Shape", &ICollider::GetShapeFlagSimulation, &ICollider::SetShapeFlagSimulation)
+	.property("Trigger Shape", &ICollider::GetShapeFlagTrigger, &ICollider::SetShapeFlagTrigger)
+	.property("Visualization Shape", &ICollider::GetShapeFlagVisualization, &ICollider::SetShapeFlagVisualization)
+		(rttr::metadata("Description", "End"));
 }
 
 namespace Quantix::Core::Components

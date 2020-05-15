@@ -93,11 +93,13 @@ public:
 	 */
 	void CreateLightObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app);
 
+	void LoadScene(Quantix::Core::Platform::Application* app);
+
 	/**
 	 * @brief File Button in Menu Bar
 	 * 
 	 */
-	void FileButton();
+	void FileButton(Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Show a Window with the PhysX Settings

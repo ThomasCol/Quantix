@@ -8,13 +8,10 @@
 #include <imgui_impl_glfw.h>
 
 #include <Type.h>
-#include <Node.h>
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/Platform/Application.h>
 
 #include <rttr/registration.h>
-
-#include "Type.h"
 
 #define PATHIMG "Other/IconEditor/Simulation/"
 #define PNG ".png"
@@ -34,7 +31,7 @@ public:
 	 * 
 	 * @param transform 
 	 */
-	Inspector(Quantix::Physic::Transform3D* transform);
+	Inspector(Quantix::Core::DataStructure::GameComponent* object);
 
 	/**
 	 * @brief Construct a new Inspector object
@@ -71,15 +68,57 @@ public:
 	 * 
 	 * @param transform Quantix::Physic::Transform3D*
 	 */
-	inline void												SetNode(Quantix::Physic::Transform3D* transform) { _transform = transform; };
+	inline void												SetNode(Quantix::Core::DataStructure::GameComponent* object) { _object = object; };
 
 	/**
-	 * @brief Get the Transform object
+	 * @brief Set the Object Type object
+	 *
+	 * @param type3D QXbool
+	 */
+	inline void												Set3D(QXbool type3D) { _is3D = type3D; };
+
+	/**
+	 * @brief Set the Object Type object
+	 *
+	 * @param type2D QXbool
+	 */
+	inline void												Set2D(QXbool type2D) { _is2D = type2D; };
+
+
+	/**
+	 * @brief Get the Object Type object
+	 *
+	 * @Return type3D QXbool
+	 */
+	inline QXbool											Get3D() { return _is3D; };
+
+	/**
+	 * @brief Get the Object Type object
+	 *
+	 * @Return type2D QXbool
+	 */
+	inline QXbool											Get2D() { return _is2D; };
+
+	/**
+	 * @brief Get the Transform3D object
 	 * 
 	 * @return Transform3D* 
 	 */
-	inline Quantix::Physic::Transform3D*					GetTransform() { return _transform; };
+	inline Quantix::Physic::Transform3D*					GetTransform3D() { return ((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform(); };
+
+	/**
+	 * @brief Get the Transform2D object
+	 *
+	 * @return Transform2D*
+	 */
+	inline Quantix::Physic::Transform2D*					GetTransform2D() { return ((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform(); };
+
+	inline Quantix::Core::DataStructure::GameComponent*		GetGameComponent() { return _object; };
 	#pragma endregion Getters&Setters
+
+	void													ShowTransform3D(Quantix::Core::Platform::Application* app);
+
+	void													ShowTransform2D(Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Update
@@ -204,9 +243,11 @@ public:
 
 private:
 	#pragma region Attributes
-	Quantix::Physic::Transform3D*							_transform;
+	Quantix::Core::DataStructure::GameComponent*			_object;
 	QXbool													_enable;
+	QXbool													_is3D;
+	QXbool													_is2D;
 	#pragma endregion Attributes
 };
 
-#endif // !_INSPECTOR_H_
+#endif  // !_INSPECTOR_H_

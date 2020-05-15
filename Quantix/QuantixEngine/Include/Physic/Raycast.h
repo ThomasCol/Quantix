@@ -4,12 +4,13 @@
 #include "Core/DLLHeader.h"
 #include "Core/MathHeader.h"
 #include "Core/DataStructure//GameObject3D.h"
+#include "Type.h"
 
 namespace Quantix::Physic
 {
-	struct Raycast
+	struct QUANTIX_API Raycast
 	{
-		bool status{ false };
+		QXbool status{ QX_FALSE };
 
 		Math::QXvec3 normalClosestBlock;
 		Math::QXvec3 positionClosestBlock;

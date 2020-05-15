@@ -4,6 +4,11 @@
 #include "Core/MathHeader.h"
 #include "Core/DataStructure/GameObject3D.h"
 #include "Physic/SimulationCallback.h"
+#include "characterkinematic/PxController.h"
+
+#include "Physic/ControllerBehaviorCallback.h"
+#include "Physic/ControllerHitReport.h"
+
 #include <vector>
 
 #define PVD_HOST "127.0.0.1"	//Set this to the IP address of the system running the PhysX Visual Debugger that you want to connect to.
@@ -225,6 +230,7 @@ namespace Quantix::Physic
 		collection = PxCreateCollection();            
 
 		InitScene();
+		manager = PxCreateControllerManager(*mScene);
 
 		// Init Default Material
 		mMaterial = mSDK->createMaterial(0.5f, 0.5f, 0.1f);
@@ -251,7 +257,6 @@ namespace Quantix::Physic
 
 		//physx::PxCudaContextManagerDesc cudaContextManagerDesc;
 		//sceneDesc.cudaContextManager = PxCreateCudaContextManager(*pDefaultFundation, cudaContextManagerDesc);
-
 		sceneDesc.filterShader = &contactReportFilterShader;
 		sceneDesc.simulationEventCallback = new SimulationCallback();
 		//sceneDesc.broadPhaseType = physx::PxBroadPhaseType::;
@@ -268,6 +273,8 @@ namespace Quantix::Physic
 
 	void PhysicHandler::ReleaseSystem()
 	{
+		manager->purgeControllers();
+		manager->release();
 		collection->release();
 		mCooking->release();
 		PxCloseExtensions();
@@ -288,6 +295,40 @@ namespace Quantix::Physic
 	void PhysicHandler::Destroy()
 	{
 		delete _instance;
+	}
+
+	PxCapsuleController* PhysicHandler::CreateController(Core::DataStructure::GameComponent* object)
+	{
+		PxCapsuleControllerDesc desc;
+		PxControllerDesc* cDesc;
+
+		// Initial Position
+		desc.position = PxExtendedVec3(0, 0, 0);
+		// Controller skin within which contacts generated
+		desc.contactOffset = 0.05f;
+		// Max Obstacle hieght the caracther can climb
+		desc.stepOffset = 0.01;
+
+		desc.slopeLimit = 0.5f; // max slope the character can walk
+		desc.radius = 0.5f; // radius of the capsule
+		desc.height = 2; // height of the capsule
+		desc.upDirection = PxVec3(0, 1, 0); // Specifies the 'up'
+		desc.material = mMaterial;
+
+		//desc.reportCallback = new ControllerHitReport();
+		//desc.behaviorCallback = new ControllerBehaviorCallback();
+
+
+		desc.userData = (Core::DataStructure::GameObject3D*)object;
+
+		cDesc = &desc;
+		
+		std::cout << manager->getNbControllers() << std::endl;
+		PxController* c = manager->createController(*cDesc); 
+		//PxController* c = manager->createController(desc);
+		std::cout << manager->getNbControllers() << std::endl;
+		
+		return (PxCapsuleController*)c;
 	}
 
 	void PhysicHandler::UpdateSystem(double deltaTime)
@@ -333,6 +374,19 @@ namespace Quantix::Physic
 				}
 			}
 		}
+
+		int numController = manager->getNbControllers(); 
+		for (int i = 0; i < numController; i++)
+		{
+			PxController* controller = manager->getController(i);
+
+			if (controller)
+			{
+				PxExtendedVec3 pos = controller->getPosition();
+				((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->SetPosition(Math::QXvec3(pos.x, pos.y, pos.z));
+			}
+		}
+		
 	}
 
 	void PhysicHandler::UpdateEditorActor()
@@ -363,6 +417,24 @@ namespace Quantix::Physic
 
 					it->second->GetObjectStatic()->GetRigid()->setGlobalPose(transform);
 				}
+			}
+		}
+
+		int numController = manager->getNbControllers();
+		for (int i = 0; i < numController; i++)
+		{
+			PxController* controller = manager->getController(i);
+
+			if (controller)
+			{
+				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->GetPosition();
+
+				PxTransform transform = controller->getActor()->getGlobalPose();
+
+				transform.p = PxVec3(pos.x, pos.y, pos.z);
+
+				controller->getActor()->setGlobalPose(transform);
+				//controller->setPosition(PxExtendedVec3(pos.x, pos.y, pos.z));
 			}
 		}
 	}
