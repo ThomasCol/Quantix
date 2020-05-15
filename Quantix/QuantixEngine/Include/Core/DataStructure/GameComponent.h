@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <typeinfo>
+#include <Type.h>
 #include <Vec2.h>
 #include <Vec3.h>
 #include <Mat4.h>

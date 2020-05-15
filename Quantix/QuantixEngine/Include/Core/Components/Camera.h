@@ -9,7 +9,7 @@
 #include "Core/DataStructure/Component.h"
 
 #define SPEED (1000)
-#define SPEEDFREECAM (4.f)
+#define SPEEDFREECAM (10.f)
 
 namespace Quantix::Core::Components
 {
@@ -132,7 +132,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @return Math::QXvec3 
 		 */
-		Math::QXvec3				GetPos();
+		Math::QXvec3					GetPos();
 
 		void SetPhysicPos(Math::QXvec3 pos);
 

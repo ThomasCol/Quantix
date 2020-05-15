@@ -2,6 +2,7 @@
 #include "Core/DataStructure/GameObject3D.h"
 #include "MathDefines.h"
 #include "Core/Components/CharacterController.h"
+#include <Core/Profiler/Profiler.h>
 
 #define SENSIBILITY 0.05f
 
@@ -92,7 +93,7 @@ namespace Quantix::Core::Components
 		{
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(_pos);
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(_angle));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(-_angle));
 		}
 	}
 
@@ -117,7 +118,7 @@ namespace Quantix::Core::Components
 		_dir.x = cos(_angle.x) * sin(_angle.y);
 		if (_object)
 		{
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(rotate));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(-rotate));
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetUp(((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation() * Math::QXvec3::up);
 		}
