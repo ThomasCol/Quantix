@@ -104,6 +104,8 @@ public:
 
 	void												CameraUpdate();
 
+	void												CheckNewSceneCamera(Quantix::Core::DataStructure::GameObject3D* object);
+
 	void												SaveLoadScene();
 
 	void												UpdateScene();

@@ -2,6 +2,7 @@
 #include "Core/DataStructure/GameObject3D.h"
 #include "MathDefines.h"
 #include "Core/Components/Rigidbody.h"
+#include <Core/Profiler/Profiler.h>
 
 #define SENSIBILITY 0.05f
 
@@ -88,6 +89,7 @@ namespace Quantix::Core::Components
 	{
 		_pos = pos;
 		_lookAt = Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up);
+		LOG(INFOS, "Pos: " + _pos.ToString());
 		if (_object)
 		{
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(_pos);

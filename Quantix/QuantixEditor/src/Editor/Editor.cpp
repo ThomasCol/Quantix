@@ -219,13 +219,13 @@ void	Editor::CameraUpdateEditor()
 		{
 			UpdateMouse(_cameraEditor);
 			if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
-				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir() * SPEED));
+				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir() * SPEEDFREECAM * _app->info.deltaTime));
 			if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
-				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir() * SPEED));
+				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir() * SPEEDFREECAM * _app->info.deltaTime));
 			if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
-				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEED));
+				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEEDFREECAM * _app->info.deltaTime));
 			if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
-				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEED));
+				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEEDFREECAM * _app->info.deltaTime));
 			_cameraEditor->UpdateLookAt(_cameraEditor->GetPos());
 		}
 		if (_mainCamera->GetObject() != nullptr)
@@ -254,7 +254,6 @@ void	Editor::CameraUpdate()
 			}
 			else
 			{
-				
 				if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
 					_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir() * SPEEDFREECAM * _app->info.deltaTime));
 				if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
@@ -269,6 +268,31 @@ void	Editor::CameraUpdate()
 	}
 }
 
+void Editor::CheckNewSceneCamera(Quantix::Core::DataStructure::GameObject3D* object)
+{
+	for (auto it = object->GetTransform()->GetChilds().begin(); it != object->GetTransform()->GetChilds().end(); ++it)
+	{
+		if ((*it)->GetChilds().size() > 0)
+			CheckNewSceneCamera((*it)->GetObject());
+
+		if ((*it)->GetObject()->GetComponent<Quantix::Core::Components::Camera>())
+		{
+			for (auto it = _hasCamera.begin(); it != _hasCamera.end();)
+			{
+				if (!_root->GetTransform()->FindTransform(it->second->GetTransform()))
+					it = _hasCamera.erase(it);
+				else if (it->second->GetComponent<Quantix::Core::Components::Camera>() == nullptr)
+					it = _hasCamera.erase(it);
+				else
+					++it;
+			}
+			_hasCamera.insert(std::make_pair(QX_TRUE, (*it)->GetObject()));
+			_mainCamera = (*it)->GetObject()->GetComponent<Quantix::Core::Components::Camera>();
+			break;
+		}
+	}
+}
+
 void Editor::SaveLoadScene()
 {
 	if ((GetKey(QX_KEY_LEFT_CONTROL) == Quantix::Core::UserEntry::EKeyState::PRESSED || GetKey(QX_KEY_LEFT_CONTROL) == Quantix::Core::UserEntry::EKeyState::DOWN) &&
@@ -276,6 +300,7 @@ void Editor::SaveLoadScene()
 	{
 		_app->manager.SaveScene(_app->scene);
 	}
+
 	if (GetKey(QX_KEY_F2) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
 		Quantix::Physic::PhysicHandler::GetInstance()->CleanScene();
@@ -291,6 +316,7 @@ void Editor::SaveLoadScene()
 			_root = _app->scene->GetRoot();
 			_app->sceneChange = false;
 			_app->newScene = nullptr;
+			CheckNewSceneCamera(_root);
 		}
 	}
 }

@@ -2,7 +2,7 @@
     "Scene": {
         "name": "Default",
         "GameObject0": {
-            "name": "root",
+            "name": "root3D",
             "Transform": {
                 "position": {
                     "x": 0.0,
@@ -67,17 +67,15 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "Collide Group": {
-                                        "PawnGroup": false,
-                                        "MineGroup": false,
-                                        "CrabGroup": false
-                                    },
-                                    "Shape Flag": {
-                                        "Query Shape": true,
-                                        "Simulation Shape": true,
-                                        "Trigger Shape": false,
-                                        "Visualization Shape": false
-                                    },
+                                    "structQuantix::Physic::CollideGroup": {},
+                                    "structQuantix::Physic::ShapeFlag": {},
+                                    "PawnGroup": false,
+                                    "MineGroup": false,
+                                    "CrabGroup": false,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
                                     "HalfExtent": {
                                         "x": 0.5,
                                         "y": 0.5,
@@ -115,7 +113,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "./media/Mesh/SK_Mannequin_Arms.FBX",
-                                    "Material": "media/Material/DefaultMaterial1.mat"
+                                    "Material": ""
                                 }
                             }
                         ],
@@ -148,7 +146,12 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial2.mat"
+                                    "Material": ""
+                                }
+                            },
+                            {
+                                "Camera": {
+                                    "Enable": true
                                 }
                             }
                         ],
