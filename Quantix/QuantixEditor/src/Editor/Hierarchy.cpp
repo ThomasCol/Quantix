@@ -348,9 +348,9 @@ void Hierarchy::CreateEmptyObject3D(QXbool& selection, Quantix::Core::Platform::
 	{
 		QXuint value = 0;
 		if (_selected)
-			value = ((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
 		else
-			value = app->scene->GetRoot()->GetTransform()->GetChilds().size();
+			value = (QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
 			app->scene->AddGameObject("GameObject", (Quantix::Physic::Transform3D*)_selected);
@@ -372,9 +372,9 @@ void Hierarchy::CreateCube(QXbool& selection, Quantix::Core::Platform::Applicati
 		Quantix::Core::DataStructure::GameObject3D* obj;
 		QXuint value = 0;
 		if (_selected)
-			value = ((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
 		else
-			value = app->scene->GetRoot()->GetTransform()->GetChilds().size();
+			value = (QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
 			obj = app->scene->AddGameObject("Cube", (Quantix::Physic::Transform3D*)_selected);
@@ -401,9 +401,9 @@ void Hierarchy::CreateSphere(QXbool& selection, Quantix::Core::Platform::Applica
 		Quantix::Core::DataStructure::GameObject3D* obj;
 		QXuint value = 0;
 		if (_selected)
-			value = ((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
 		else
-			value = app->scene->GetRoot()->GetTransform()->GetChilds().size();
+			value = (QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
 			obj = app->scene->AddGameObject("Sphere", (Quantix::Physic::Transform3D*)_selected);
@@ -430,9 +430,9 @@ void Hierarchy::CreateCapsule(QXbool& selection, Quantix::Core::Platform::Applic
 		Quantix::Core::DataStructure::GameObject3D* obj;
 		QXuint value = 0;
 		if (_selected)
-			value = ((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
 		else
-			value = app->scene->GetRoot()->GetTransform()->GetChilds().size();
+			value = (QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
 			obj = app->scene->AddGameObject("Capsule", (Quantix::Physic::Transform3D*)_selected);
@@ -458,9 +458,9 @@ void Hierarchy::CreateEmptyObject2D(QXbool& selection, Quantix::Core::Platform::
 	{
 		QXuint value = 0;
 		if (_selected)
-			value = ((Quantix::Physic::Transform2D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Physic::Transform2D*)_selected)->GetChilds().size();
 		else
-			value = app->scene->GetRoot2D()->GetTransform()->GetChilds().size();
+			value = (QXuint)app->scene->GetRoot2D()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
 			app->scene->AddGameObject2D("GameObject", (Quantix::Physic::Transform2D*)_selected);

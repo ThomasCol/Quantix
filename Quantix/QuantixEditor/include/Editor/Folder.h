@@ -168,8 +168,8 @@ private:
 	std::vector<QXstring>			_file;
 	std::vector<QXstring>			_imgFile;
 
-	ImVec2							_sizeFile;
-	QXint							_sizeFolder;
+	ImVec2							_sizeFile{ 0.f, 0.f };
+	QXint							_sizeFolder{ 0 };
 
 	Quantix::Resources::Texture*	_folderGLu{ nullptr };
 	Quantix::Resources::Texture*	_cppGLu{ nullptr };

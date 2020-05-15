@@ -69,7 +69,10 @@ namespace Quantix::Resources
 				SetInt("material.hasEmissive", 0);
 		}
 		else
-			SetInt("material.textured", 0);
+		{
+			SetInt("material.hasEmissive", 0);
+			SetInt("material.isTextured", 0);
+		}
 	}
 
 	void Material::SetFloat(QXstring location, QXfloat value)
