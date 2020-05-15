@@ -4,6 +4,7 @@
 #include <../characterkinematic/PxControllerBehavior.h>
 #include "PxSimulationEventCallback.h"
 #include <PxPhysicsAPI.h>
+#include <iostream>
 namespace Quantix::Physic
 {
 	class ControllerHitReport : public physx::PxUserControllerHitReport

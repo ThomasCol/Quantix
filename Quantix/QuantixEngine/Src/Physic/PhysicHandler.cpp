@@ -315,9 +315,8 @@ namespace Quantix::Physic
 		desc.upDirection = PxVec3(0, 1, 0); // Specifies the 'up'
 		desc.material = mMaterial;
 
-		//desc.reportCallback = new ControllerHitReport();
-		//desc.behaviorCallback = new ControllerBehaviorCallback();
-
+		desc.reportCallback = new ControllerHitReport();
+		desc.behaviorCallback = new ControllerBehaviorCallback();
 
 		desc.userData = (Core::DataStructure::GameObject3D*)object;
 
@@ -325,7 +324,6 @@ namespace Quantix::Physic
 		
 		std::cout << manager->getNbControllers() << std::endl;
 		PxController* c = manager->createController(*cDesc); 
-		//PxController* c = manager->createController(desc);
 		std::cout << manager->getNbControllers() << std::endl;
 		
 		return (PxCapsuleController*)c;
@@ -434,7 +432,6 @@ namespace Quantix::Physic
 				transform.p = PxVec3(pos.x, pos.y, pos.z);
 
 				controller->getActor()->setGlobalPose(transform);
-				//controller->setPosition(PxExtendedVec3(pos.x, pos.y, pos.z));
 			}
 		}
 	}

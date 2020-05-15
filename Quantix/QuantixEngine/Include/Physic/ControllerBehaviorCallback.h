@@ -7,11 +7,11 @@ namespace Quantix::Physic
 {
     class ControllerBehaviorCallback : public physx::PxControllerBehaviorCallback
     {
-        virtual physx::PxControllerBehaviorFlags		getBehaviorFlags(const physx::PxShape& shape, const physx::PxActor& actor) { return physx::PxControllerBehaviorFlag::eCCT_CAN_RIDE_ON_OBJECT; };
+        physx::PxControllerBehaviorFlags		getBehaviorFlags(const physx::PxShape& shape, const physx::PxActor& actor) override;
 
-        virtual physx::PxControllerBehaviorFlags		getBehaviorFlags(const physx::PxController& controller) { return physx::PxControllerBehaviorFlag::eCCT_CAN_RIDE_ON_OBJECT; };
+        physx::PxControllerBehaviorFlags		getBehaviorFlags(const physx::PxController& controller) override;
 
-        virtual physx::PxControllerBehaviorFlags		getBehaviorFlags(const physx::PxObstacle& obstacle) { return physx::PxControllerBehaviorFlag::eCCT_CAN_RIDE_ON_OBJECT; };
+        physx::PxControllerBehaviorFlags		getBehaviorFlags(const physx::PxObstacle& obstacle) override;
     };
 }
  
