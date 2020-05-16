@@ -4,7 +4,7 @@
 
 Guizmo::Guizmo() :
 	_guizmoType{ ImGuizmo::OPERATION::TRANSLATE },
-	_guizmoMode{ ImGuizmo::MODE::WORLD }
+	_guizmoMode{ ImGuizmo::MODE::LOCAL }
 {
 }
 
@@ -33,7 +33,7 @@ void Guizmo::ChangeGuizmoOperation(QXuint index)
 void Guizmo::LocalWorldGuizmo(QXint pos)
 {
 	pos += 20;
-	ImGui::SetCursorPos(ImVec2(pos, 0));
+	ImGui::SetCursorPos(ImVec2((QXfloat)pos, 0.f));
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 1));
 
 	if (_guizmoMode == ImGuizmo::MODE::LOCAL)
@@ -47,7 +47,7 @@ void Guizmo::LocalWorldGuizmo(QXint pos)
 
 	ImGui::PopStyleColor();
 	pos += 50;
-	ImGui::SetCursorPos(ImVec2(pos, 0));
+	ImGui::SetCursorPos(ImVec2((QXfloat)pos, 0.f));
 
 	if (_guizmoMode == ImGuizmo::MODE::WORLD)
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(44 / 255, 62 / 255, 80 / 255, 1));
@@ -67,7 +67,7 @@ void Guizmo::GuizmoUI()
 	QXint pos = 0;
 	for (QXuint i = 0; i < _imgGuizmo.size(); i++)
 	{
-		ImGui::SetCursorPos(ImVec2(pos, 0));
+		ImGui::SetCursorPos(ImVec2((QXfloat)pos, 0.f));
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(128 / 255.f, 128 / 255.f, 128 / 255.f, 1));
 		if (ImGui::ImageButton((ImTextureID)_imgGuizmo[i]->GetId(), ImVec2(20, 20)))
 			ChangeGuizmoOperation(i);
@@ -105,13 +105,22 @@ void Guizmo::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& m
 		transform->Scale(scale - scaleTmp);
 	}
 
-	transform->SetTRS(matrix);
+	//transform->SetTRS(matrix);
 }
 
 void Guizmo::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 {
-	Math::QXmat4 matrix = transform->GetTRS();
-	Math::QXmat4 matrixTmp = transform->GetTRS();
+	Math::QXmat4 matrix, matrixTmp;
+	/*if (_guizmoMode == ImGuizmo::MODE::WORLD)
+	{
+		transform->SetSpace(Quantix::Physic::Space::WORLD);
+		matrixTmp = matrix = transform->GetTRS();
+	}
+	else if (_guizmoMode == ImGuizmo::MODE::LOCAL)
+	{*/
+		//transform->SetSpace(Quantix::Physic::Space::LOCAL);
+		matrixTmp = matrix = transform->GetLocalTRS();
+	//}
 	ImVec2 size = ImGui::GetWindowSize();
 	ImVec2 pos = ImGui::GetWindowPos();
 	ImGuiIO& io = ImGui::GetIO();

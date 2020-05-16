@@ -13,6 +13,12 @@ namespace Quantix::Core::DataStructure
 
 namespace Quantix::Physic
 {
+	enum class QUANTIX_API Space
+	{
+		WORLD,
+		LOCAL
+	};
+
 	class QUANTIX_API Transform3D
 	{
 		private:
@@ -30,10 +36,14 @@ namespace Quantix::Physic
 			Math::QXvec3								_up;
 
 			Math::QXmat4								_trs;
+			Math::QXmat4								_trsLocal;
 
 			std::list<Transform3D*>						_childs;
 
 			Quantix::Core::DataStructure::GameObject3D* _gameObject;
+
+			Space										_space;
+			QXbool										_globalHasChanged;
 
 		#pragma endregion
 			
@@ -43,6 +53,10 @@ namespace Quantix::Physic
 			 * @brief Update the TRS of the Transform
 			 */
 			void	UpdateTRS();
+
+			void	UpdateTRSLocal(const Transform3D* parentTransform);
+
+			void	UpdateGlobalTransform();
 
 		#pragma endregion
 
@@ -135,6 +149,8 @@ namespace Quantix::Physic
 			 */
 			const Math::QXmat4&								GetTRS();
 
+			inline const Math::QXmat4&						GetLocalTRS() { return _trsLocal; };
+
 			void											SetTRS(Math::QXmat4& trs);
 
 			/**
@@ -171,6 +187,9 @@ namespace Quantix::Physic
 			inline Core::DataStructure::GameObject3D*		GetObject() const { return _gameObject; };
 
 			inline std::list<Transform3D*>&					GetChilds() { return _childs; };
+
+			void											SetSpace(Space space);
+			inline Space									GetSpace() { return _space; };
 
 		#pragma endregion
 

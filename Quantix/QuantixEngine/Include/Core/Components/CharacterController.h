@@ -7,7 +7,7 @@
 
 #include "Physic/PhysicHandler.h"
 
-#define GRAVITY Math::QXvec3(0, -9.81, 0)
+#define GRAVITY Math::QXvec3(0.f, -9.81f, 0.f)
 
 namespace Quantix::Core::Components
 {

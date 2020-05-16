@@ -36,7 +36,7 @@ void Console::PrintLog()
 	}
 	if (Quantix::Core::Debugger::Logger::GetInstance()->GetData().size() != _sizeLog)
 	{
-		_sizeLog = Quantix::Core::Debugger::Logger::GetInstance()->GetData().size();
+		_sizeLog = (QXuint)Quantix::Core::Debugger::Logger::GetInstance()->GetData().size();
 		ImGui::SetScrollHereY(1.f);
 	}
 }

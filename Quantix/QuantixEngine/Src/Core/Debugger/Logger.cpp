@@ -54,6 +54,7 @@ namespace Quantix::Core::Debugger
 			case Quantix::Core::Debugger::TypeLog::INFOS: _instance->SetInfo(message); break;
 			case Quantix::Core::Debugger::TypeLog::WARNING: _instance->SetWarning(message);  break;
 			case Quantix::Core::Debugger::TypeLog::ERROR: _instance->SetError(message); break;
+			case Quantix::Core::Debugger::TypeLog::PROFILING: _instance->SetProfiling(message); break;
 			default: break;
 		}
 	}

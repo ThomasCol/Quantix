@@ -177,7 +177,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\FMod\include\Core;$(ProjectDir)\Lib\FMod\include\Studio;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions;$(SolutionDir)\QuantixEngine\externals\rapidjson\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\Glad\include;$(ProjectDir)\Lib\FMod\include\Core;$(ProjectDir)\Lib\FMod\include\Studio;$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Include;$(ProjectDir)\Lib\SPIRV-Cross\Include;$(ProjectDir)\Lib\MathLib\Solution\MathLib\Include;%(AdditionalIncludeDirectories);$(ProjectDir)\Lib\TinyObjLoader;$(ProjectDir)\Lib\STB;$(ProjectDir)externals;$(ProjectDir)externals\Assimp;$(ProjectDir)externals\include;$(ProjectDir)externals\physx\include;$(ProjectDir)externals\pxshared\include;$(ProjectDir)externals\physx\include\extensions;$(SolutionDir)\QuantixEngine\externals\rapidjson\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
@@ -189,8 +189,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\FMod\lib\Core;$(ProjectDir)\Lib\FMod\lib\Studio;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Win64\Release;$(ProjectDir)\Lib\MathLib\Lib\Release_x64;$(ProjectDir)externals\release\lib;$(ProjectDir)Lib\physx\release</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib;fmodL_vc.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;rttr_core_s.lib;glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXVehicle_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Lib\GLFW\lib-vc2019;$(ProjectDir)\Lib\FMod\lib\Core;$(ProjectDir)\Lib\FMod\lib\Studio;$(ProjectDir)\Lib\SPIRV-Cross\Lib\Win64\Release;$(ProjectDir)\Lib\MathLib\Lib\Release_x64;$(ProjectDir)Lib\Assimp\lib;$(ProjectDir)externals\release\lib;$(ProjectDir)Lib\physx\release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc142-mtd.lib;IrrXMLd.lib;zlibd.lib;fmod_vc.lib;fmodL_vc.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;rttr_core_s.lib;glfw3dll.lib;MathLib.lib;%(AdditionalDependencies)PhysX_64.lib;PhysXCooking_64.lib;PhysXCommon_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXVehicle_static_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Lib\GLFW\lib-vc2019\glfw3.dll" "$(OutDir)"</Command>

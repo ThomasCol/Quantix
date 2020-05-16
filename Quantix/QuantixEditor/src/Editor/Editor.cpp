@@ -219,13 +219,13 @@ void	Editor::CameraUpdateEditor()
 		{
 			UpdateMouse(_cameraEditor);
 			if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
-				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir() * SPEEDFREECAM * _app->info.deltaTime));
+				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir() * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 			if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
-				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir() * SPEEDFREECAM * _app->info.deltaTime));
+				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir() * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 			if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
-				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEEDFREECAM * _app->info.deltaTime));
+				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 			if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
-				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEEDFREECAM * _app->info.deltaTime));
+				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 			_cameraEditor->UpdateLookAt(_cameraEditor->GetPos());
 		}
 		if (_mainCamera->GetObject() != nullptr)
@@ -254,23 +254,23 @@ void	Editor::CameraUpdate()
 				if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED && _mainCamera->_controller->CheckIsFalling())
 					_mainCamera->_controller->_velocity += _mainCamera->_controller->GetUpDirection() * 30;
 				
-				_mainCamera->_controller->_velocity.y *= 0.95;
+				_mainCamera->_controller->_velocity.y *= 0.95f;
 
-				_mainCamera->_controller->Move((GRAVITY + _mainCamera->_controller->_velocity) * _app->info.deltaTime, 0, _app->info.deltaTime);
+				_mainCamera->_controller->Move((GRAVITY + _mainCamera->_controller->_velocity) * (QXfloat)_app->info.deltaTime, 0, (QXfloat)_app->info.deltaTime);
 
-				_mainCamera->_controller->_velocity.x = 0;
-				_mainCamera->_controller->_velocity.z = 0;
+				_mainCamera->_controller->_velocity.x = 0.f;
+				_mainCamera->_controller->_velocity.z = 0.f;
 			}
 			else
 			{
 				if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
-					_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir() * SPEEDFREECAM * _app->info.deltaTime));
+					_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir() * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 				if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
-					_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir() * SPEEDFREECAM * _app->info.deltaTime));
+					_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir() * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 				if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
-					_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEEDFREECAM * _app->info.deltaTime));
+					_mainCamera->SetPos(_mainCamera->GetPos() - (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 				if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
-					_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEEDFREECAM * _app->info.deltaTime));
+					_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 			}
 			_mainCamera->UpdateLookAt(_mainCamera->GetPos());
 		}

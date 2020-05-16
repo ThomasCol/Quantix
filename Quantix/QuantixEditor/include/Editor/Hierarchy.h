@@ -153,7 +153,7 @@ public:
 
 private:
 	#pragma region Attributes
-	Inspector*				_inspector;
+	Inspector*				_inspector{ nullptr };
 	void*					_selected{ nullptr };
 	#pragma endregion Attributes
 };

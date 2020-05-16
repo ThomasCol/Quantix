@@ -21,7 +21,7 @@ public:
 	void Update(Inspector* inspector, Quantix::Core::DataStructure::GameObject3D* root, Quantix::Core::Components::Camera* camera);
 
 private:
-	Quantix::Core::Components::Camera*					_camera;
+	Quantix::Core::Components::Camera*					_camera{ nullptr };
 
 	std::vector<Quantix::Resources::Texture*>			_imgGuizmo;
 	ImGuizmo::OPERATION									_guizmoType;
