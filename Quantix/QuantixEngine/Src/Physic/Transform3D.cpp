@@ -59,6 +59,7 @@ namespace Quantix::Physic
 		_position{ std::move(pos) }, _rotation{ std::move(rot) }, _scale{ std::move(sca) }, 
 		_trs{ Math::QXmat4::CreateTRSMatrix(std::move(pos), std::move(rot), std::move(sca)) }, _childs{}, _space{ Space::LOCAL }, _globalHasChanged{ QX_FALSE }
 	{
+		_trsLocal = Math::QXmat4::CreateTRSMatrix(pos, rot, sca);
 		_forward = _rotation * Math::QXvec3::forward;
 		_up = _rotation * Math::QXvec3::up;
 	}
@@ -200,7 +201,7 @@ namespace Quantix::Physic
 	{
 		_trs = Math::QXmat4::CreateTRSMatrix(_globalPosition, _globalRotation, _globalScale);
 		_globalHasChanged = QX_FALSE;
-		_trsLocal = _trs * parentTransform->_trs.Inverse();
+		_trsLocal = parentTransform->_trs.Inverse() * _trs ;
 		_position.x = _trsLocal[0][3];
 		_position.y = _trsLocal[1][3];
 		_position.z = _trsLocal[2][3];
@@ -235,7 +236,7 @@ namespace Quantix::Physic
 		_up = _rotation * Math::QXvec3::up;
 
 		_trs = _trsLocal * parentTransform->_trs;
-		//UpdateGlobalTransform();
+		UpdateGlobalTransform();
 	}
 
 	void	Transform3D::Translate(const Math::QXvec3& pos)

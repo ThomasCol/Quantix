@@ -202,6 +202,10 @@ public:
 	 */
 	void													SetSound(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app);
 
+	void													GenerateDeformableMesh(rttr::type t, rttr::instance inst);
+
+	void													CheckSpecClass(rttr::type t, rttr::instance inst);
+
 	/**
 	 * @brief Get the Instance object
 	 * 
@@ -229,6 +233,8 @@ public:
 	 * @param app 
 	 */
 	void													LookType(rttr::instance inst, rttr::type type, rttr::property currentProp, Quantix::Core::Platform::Application* app);
+
+	QXbool													CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Draw Variable

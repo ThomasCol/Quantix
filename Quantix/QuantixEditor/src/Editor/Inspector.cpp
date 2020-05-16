@@ -340,6 +340,27 @@ void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property curre
 			DrawSoundEmitterPath(inst, t, currentProp, app);
 }
 
+void Inspector::GenerateDeformableMesh(rttr::type t, rttr::instance inst)
+{
+	ImGui::Indent(ImGui::GetWindowSize().x / 3);
+	if (ImGui::Button("Generate", ImVec2(100.f, 25.f)))
+	{
+		auto tmpInst = inst.get_derived_type();
+
+		tmpInst.invoke("Generate", inst, {});
+	}
+}
+
+void Inspector::CheckSpecClass(rttr::type t, rttr::instance inst)
+{
+	if (t == rttr::type::get<Quantix::Core::Components::SoundListener>())
+		SetAttributesListener(inst, inst.get_type());
+	if (t == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
+		PlaySound(inst, t);
+	/*if (t == rttr::type::get<Quantix::Core::Components::DeformableMesh>())
+		GenerateDeformableMesh(inst, t);*/
+}
+
 void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
 {
 	if (t != rttr::type::get<Quantix::Resources::Texture*>())
@@ -394,10 +415,7 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				}
 
 			}
-			if (t == rttr::type::get<Quantix::Core::Components::SoundListener>())
-				SetAttributesListener(inst, inst.get_type());
-			if (t == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
-				PlaySound(inst, t);
+			CheckSpecClass(t, inst);
 			ImGui::TreePop();
 		}
 	}
@@ -430,13 +448,14 @@ void Inspector::LookType(rttr::instance inst, rttr::type type, rttr::property cu
 	SetSound(inst, type, currentProp, app);
 }
 
-void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
+QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
 {
 	if (type == rttr::type::get<QXbool>())
 	{
 		QXbool enable = currentProp.get_value(inst).to_bool();
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::Checkbox("", &enable);
 		currentProp.set_value(inst, enable);
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<QXfloat>())
 	{
@@ -450,35 +469,48 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::DragFloat("", &value);
 		}
 		currentProp.set_value(inst, value);
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<QXdouble>())
 	{
 		QXdouble value = currentProp.get_value(inst).to_double();
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputDouble("", &value);
 		currentProp.set_value(inst, value);
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<QXint>())
 	{
 		QXint value = currentProp.get_value(inst).to_int();
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
+		return QX_TRUE;
+	}
+	else if (type == rttr::type::get<QXuint>())
+	{
+		QXint value = currentProp.get_value(inst).to_int();
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputInt("", &value);
+		currentProp.set_value(inst, value);
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<QXsizei>())
 	{
 		int value = currentProp.get_value(inst).to_int();
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, value);
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<QXstring>() && currentProp.get_name() != "Path")
 	{
 		QXstring value = currentProp.get_value(inst).to_string();
 		ImGui::Text(value.c_str());
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<Math::QXvec2>())
 	{
 		Math::QXvec2 value = currentProp.get_value(inst).get_value<Math::QXvec2>();
 		ImGui::DragFloat2(currentProp.get_name().to_string().c_str(), value.e);
 		currentProp.set_value(inst, value);
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<Math::QXvec3>())
 	{
@@ -493,6 +525,7 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::DragFloat3("", value.e);
 		}
 		currentProp.set_value(inst, value);
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<Math::QXvec4>())
 	{
@@ -507,31 +540,40 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::DragFloat4("", value.e);
 		}
 		currentProp.set_value(inst, value);
+		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<Math::QXquaternion>())
 	{
 		Math::QXquaternion q = currentProp.get_value(inst).get_value<Math::QXquaternion>();
 		Math::QXvec3 value = q.QuaternionToEuler();
-		
+
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::DragFloat3("", value.e);
 
 		q = Math::QXquaternion::EulerToQuaternion(value);
 		currentProp.set_value(inst, q);
+		return QX_TRUE;
 	}
-	else if (currentProp.is_enumeration())
+}
+
+void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
+{
+	if (!CheckPrimitiveType(inst, currentProp, type, app))
 	{
-		ShowEnum(currentProp, inst, type);
-	}
-	else if (type.is_class() || (type.is_pointer() && type.get_raw_type().is_class()))
-	{
-		LookType(inst, inst.get_type(), currentProp, app);
-		
-		if (type != rttr::type::get<QXstring>() && type != rttr::type::get<Quantix::Resources::Sound*>() && type != rttr::type::get<FMOD::ChannelGroup*>()
-			&& type != rttr::type::get<Quantix::Resources::Model*>())
+		if (currentProp.is_enumeration())
 		{
-			GetInstance(currentProp.get_value(inst), type, app);
+			ShowEnum(currentProp, inst, type);
 		}
+		else if (type.is_class() || (type.is_pointer() && type.get_raw_type().is_class()))
+		{
+			LookType(inst, inst.get_type(), currentProp, app);
+
+			if (type != rttr::type::get<QXstring>() && type != rttr::type::get<Quantix::Resources::Sound*>() && type != rttr::type::get<FMOD::ChannelGroup*>()
+				&& type != rttr::type::get<Quantix::Resources::Model*>())
+			{
+				GetInstance(currentProp.get_value(inst), type, app);
+			}
+		}
+		//	else
+		//		ImGui::Text("Type: % s\nName : % s\nValue : % s\n\n",  currentProp.get_type().get_name().to_string().c_str(), currentProp.get_name().to_string().c_str(), currentProp.get_value(inst).to_string().c_str());
 	}
-	//	else
-	//		ImGui::Text("Type: % s\nName : % s\nValue : % s\n\n",  currentProp.get_type().get_name().to_string().c_str(), currentProp.get_name().to_string().c_str(), currentProp.get_value(inst).to_string().c_str());
 }
