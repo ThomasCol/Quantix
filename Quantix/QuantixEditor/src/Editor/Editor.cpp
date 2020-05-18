@@ -54,6 +54,9 @@ Editor::Editor(QXuint width, QXuint height) :
 
 	_root = _app->scene->GetRoot();
 
+	_app->renderer.CreateRenderFramebuffer(width, height, _sceneBuffer);
+	_app->renderer.CreateRenderFramebuffer(width, height, _gameBuffer);
+
 	InitImg();
 }
 
@@ -370,8 +373,8 @@ void Editor::UpdateScene()
 
 	START_PROFILING("Draw");
 	//Update Editor + Draw Scene
-	UpdateEditor(_app->renderer.DrawGame(meshes, _lights, _app->info, _mainCamera),
-		_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor));
+	UpdateEditor(_app->renderer.Draw(meshes, colliders, _lights, _app->info, _mainCamera, _gameBuffer, false),
+		_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor, _sceneBuffer, true));
 	STOP_PROFILING("Draw");
 
 	START_PROFILING("Refresh");
