@@ -341,6 +341,9 @@ private:
 	Quantix::Core::Components::Camera*									_mainCamera;
 	Quantix::Core::Components::Camera*									_defaultCamera;
 
+	Quantix::Core::Render::RenderFramebuffer							_sceneBuffer;
+	Quantix::Core::Render::RenderFramebuffer							_gameBuffer;
+
 	Guizmo																_guizmo;
 	Console																_console;
 	Docker																_docker;

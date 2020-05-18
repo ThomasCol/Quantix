@@ -157,7 +157,7 @@ namespace Quantix::Core::Render::PostProcess
         // Apply final bloom
         {
             glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_DEPTH_BUFFER_BIT);
 
             _bloomProgram->Use();
             // Bind base scene texture and blured texture
