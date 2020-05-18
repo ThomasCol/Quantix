@@ -3,7 +3,7 @@
 
 #include "Core/DLLHeader.h"
 #include "Core/MathHeader.h"
-#include "Core/DataStructure//GameObject3D.h"
+#include "Core/DataStructure/GameObject3D.h"
 #include "Type.h"
 
 namespace Quantix::Physic

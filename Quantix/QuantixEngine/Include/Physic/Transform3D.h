@@ -112,81 +112,95 @@ namespace Quantix::Physic
 		#pragma region Getters&Setters
 
 			/**
+			 * @brief Get the parent of the current transform
+			 *
+			 * @return const Transform3D* Current Parent
+			 */
+			Transform3D*								GetParent() const;
+			
+			/**
 			 * @brief Get the position of the current transform
 			 *
 			 * @return const Math::QXvec3& Current Position
 			 */
-			const Math::QXvec3&								GetPosition();
+			const Math::QXvec3&							GetPosition();
 
-			const Math::QXvec3&								GetGlobalPosition();
+			const Math::QXvec3&							GetGlobalPosition();
 
 			/**
 			 * @brief Get the rotation of the current transform
 			 *
 			 * @return const Math::QXvec3& Current Rotation
 			 */
-			Math::QXquaternion&								GetRotation();
+			Math::QXquaternion&							GetRotation();
 
-			Math::QXquaternion&								GetGlobalRotation();
+			Math::QXquaternion&							GetGlobalRotation();
 
 			/**
 			 * @brief Get the scale of the current transform
 			 *
 			 * @return const Math::QXvec3& Current Scale
 			 */
-			const Math::QXvec3&								GetScale();
+			const Math::QXvec3&							GetScale();
 
-			const Math::QXvec3&								GetGlobalScale();
+			const Math::QXvec3&							GetGlobalScale();
 
-			const Math::QXvec3&								GetForward();
+			const Math::QXvec3&							GetForward();
 
-			const Math::QXvec3&								GetUp();
+			const Math::QXvec3&							GetUp();
 
 			/**
 			 * @brief Get the trs of the current transform
 			 *
 			 * @return const Math::QXmat4& Current TRS
 			 */
-			const Math::QXmat4&								GetTRS();
+			const Math::QXmat4&							GetTRS();
 
 			inline const Math::QXmat4&						GetLocalTRS() { return _trsLocal; };
 
 			void											SetTRS(Math::QXmat4& trs);
 
 			/**
+			 * @brief Set the parent of the current transform
+			 *
+			 * @param newParent the new parent of the current transform
+			 */
+			void										SetParent(Transform3D* newParent);
+
+			/**
 			 * @brief Set the position of the current transform
 			 *
 			 * @param newPos the new position of the current transform
 			 */
-			void											SetPosition(const Math::QXvec3& newPos);
+			void										SetPosition(const Math::QXvec3& newPos);
 
-			void											SetGlobalPosition(const Math::QXvec3& newPos);
+			void										SetGlobalPosition(const Math::QXvec3& newPos);
 
 			/**
 			 * @brief Set the rotation of the current transform
 			 *
 			 * @param newPos the new rotation of the current transform
 			 */
-			void											SetRotation(const Math::QXquaternion& newRot);
+			void										SetRotation(const Math::QXquaternion& newRot);
 
-			void											SetGlobalRotation(const Math::QXquaternion& newRot);
+			void										SetGlobalRotation(const Math::QXquaternion& newRot);
 
 			/**
 			 * @brief Set the scale of the current transform
 			 *
 			 * @param newPos the new scale of the current transform
 			 */
-			void											SetScale(const Math::QXvec3& newSca);
+			void										SetScale(const Math::QXvec3& newSca);
 
-			void											SetGlobalScale(const Math::QXvec3& newSca);
+			void										SetGlobalScale(const Math::QXvec3& newSca);
 
-			void											SetForward(const Math::QXvec3& newFor);
+			void										SetForward(const Math::QXvec3& newFor);
 
-			void											SetUp(const Math::QXvec3& newUp);
+			void										SetUp(const Math::QXvec3& newUp);
 
-			inline Core::DataStructure::GameObject3D*		GetObject() const { return _gameObject; };
+			inline Core::DataStructure::GameObject3D*	GetObject() const { return _gameObject; };
 
-			inline std::list<Transform3D*>&					GetChilds() { return _childs; };
+			inline std::list<Transform3D*>&				GetChilds() { return _childs; };
 
 			void											SetSpace(Space space);
 			inline Space									GetSpace() { return _space; };
@@ -200,37 +214,50 @@ namespace Quantix::Physic
 			 *
 			 * @param trsParent The parent TRS to convert its own trs in global
 			 */
-			void											Update(const Transform3D* parentTransform);
+			void										Update(const Transform3D* parentTransform);
 
 			/**
 			 * @brief Translate the current transform
 			 *
 			 * @param pos The position that it will go further
 			 */
-			void											Translate(const Math::QXvec3& pos);
+			void										Translate(const Math::QXvec3& pos);
 
 			/**
 			 * @brief Rotate the current transform
 			 *
 			 * @param rot The rotation that it will turn further
 			 */
-			void											Rotate(const Math::QXquaternion& rot);
+			void										Rotate(const Math::QXquaternion& rot);
 
 			/**
 			 * @brief Scale the current transform
 			 *
 			 * @param sca The scale that it will be further
 			 */
-			void											Scale(const Math::QXvec3& sca);
+			void										Scale(const Math::QXvec3& sca);
 
 			/**
 			 * @brief Add a child to the current transform
 			 *
 			 * @param child The 3D transform child to add to the current transform
 			 */
-			void											AddChild(Transform3D* child);
+			void										AddChild(Transform3D* child);
 
-			QXbool											FindTransform(Transform3D* toFind);
+			/**
+			 * @brief Remove a child to the current transform
+			 *
+			 * @param child The 3D transform child to remove from the current transform
+			 */
+			void										RemoveChild(Transform3D* toRemove);
+
+			/**
+			 * @brief Detach the current transform from any parent
+			 *
+			 */
+			void										Detach();
+
+			QXbool										FindTransform(Transform3D* toFind);
 			template<class Archive>
 			void save(Archive& archive) const
 			{

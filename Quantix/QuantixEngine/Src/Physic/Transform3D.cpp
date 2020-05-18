@@ -6,6 +6,7 @@ namespace Quantix::Physic
 	#pragma region Constructors&Destructor
 
 	Transform3D::Transform3D() :
+		_parent {nullptr},
 		_position {0.f, 0.f, 0.f},
 		_rotation {1.0f, 0.f, 0.f, 0.f},
 		_scale {1.f, 1.f, 1.f},
@@ -19,6 +20,7 @@ namespace Quantix::Physic
 	{}
 
 	Transform3D::Transform3D(const Transform3D& t) noexcept:
+		_parent{ t._parent },
 		_position{ t._position },
 		_rotation{ t._rotation },
 		_scale{ t._scale },
@@ -30,11 +32,13 @@ namespace Quantix::Physic
 	{
 		for (auto it = t._childs.begin(); it != t._childs.end(); ++it)
 		{
+			(*it)->SetParent(this);
 			_childs.push_back(*it);
 		}
 	}
 
 	Transform3D::Transform3D(Transform3D&& t) noexcept:
+		_parent{ std::move(t._parent) },
 		_position{ std::move(t._position) },
 		_rotation{ std::move(t._rotation) },
 		_scale{ std::move(t._scale) },
@@ -72,6 +76,11 @@ namespace Quantix::Physic
 	#pragma region Methods
 
 	#pragma region Getters&Setters
+
+	Transform3D* Transform3D::GetParent() const
+	{
+		return _parent;
+	}
 
 	const Math::QXvec3& Transform3D::GetPosition()
 	{
@@ -136,6 +145,14 @@ namespace Quantix::Physic
 	void Transform3D::SetTRS(Math::QXmat4& trs)
 	{
 		_trs = trs;
+	}
+
+	void Transform3D::SetParent(Transform3D* newParent)
+	{
+		if (_parent)
+			_parent->RemoveChild(this);
+
+		_parent = newParent;
 	}
 
 	void	Transform3D::SetPosition(const Math::QXvec3& newPos)
@@ -274,10 +291,27 @@ namespace Quantix::Physic
 
 	void	Transform3D::AddChild(Transform3D* child)
 	{
+		child->SetParent(this);
 		_childs.push_back(child);
 	}
 
-	QXbool Transform3D::FindTransform(Transform3D* toFind)
+	void	Transform3D::RemoveChild(Transform3D* toRemove)
+	{
+		_childs.remove(toRemove);
+		toRemove->SetParent(nullptr);
+	}
+
+	void	Transform3D::Detach()
+	{
+		Transform3D* world	{ this };
+
+		while (world->GetParent() != nullptr)
+			world = world->GetParent();
+
+		_parent->SetParent(world);
+	}
+
+	QXbool	Transform3D::FindTransform(Transform3D* toFind)
 	{
 		for (auto it = _childs.begin(); it != _childs.end(); ++it)
 		{

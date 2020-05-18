@@ -135,6 +135,10 @@ public:
 	 */
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 
+	void													ShowBehaviour();
+
+	void													ShowAddComponent();
+
 	/**
 	 * @brief Show Component
 	 * 

@@ -5,6 +5,7 @@
 #include <Core/Components/SoundListener.h>
 #include <Core/Components/DeformableMesh.h>
 #include <Core/DataStructure/Component.h>
+#include <Core/Components/Behaviour.h>
 
 #include "Inspector.h"
 #include <Core/UserEntry/InputManager.h>
@@ -137,39 +138,84 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 	}
 }
 
+void Inspector::ShowBehaviour()
+{
+	rttr::array_range behavioursAvailable = rttr::type::get<Quantix::Core::Components::Behaviour>().get_derived_classes();
+
+	std::cout << "Show Behaviour" << std::endl;
+	QXuint i = 0;
+	for (auto it : behavioursAvailable)
+	{
+		std::cout << it.get_name().to_string() << std::endl;
+		QXbool enable = QX_FALSE;
+		ImGui::PushID(i);
+
+		ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
+		if (enable)
+		{
+			QXbool activate = QX_TRUE;
+			if (it.get_name().to_string() != "Behaviour")
+			{
+				if (!_object->Get3D())
+				{
+					activate = QX_FALSE;
+					QXstring message = "Cannot create " + it.get_name().to_string() + " with a non GameObject3D";
+					LOG(WARNING, message);
+				}
+			}
+			if (activate)
+			{
+				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+				_object->GetComponents().back()->Init(_object);
+			}
+		}
+
+		ImGui::PopID();
+	}
+}
+
+void Inspector::ShowAddComponent()
+{
+	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
+
+	QXuint i = 0;
+	for (auto it : componentsAvailable)
+	{
+		QXbool enable = QX_FALSE;
+		ImGui::PushID(i);
+
+		ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
+		if (enable)
+		{
+			QXbool activate = QX_TRUE;
+			if (it.get_name().to_string() != "Behaviour")
+			{
+				if (!_object->Get3D())
+				{
+					activate = QX_FALSE;
+					QXstring message = "Cannot create " + it.get_name().to_string() + " with a non GameObject3D";
+					LOG(WARNING, message);
+				}
+			}
+			if (activate)
+			{
+				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+				_object->GetComponents().back()->Init(_object);
+			}
+		}
+
+		ImGui::PopID();
+	}
+	ShowBehaviour();
+
+}
+
 void Inspector::ShowComponent()
 {
 	if (ImGui::BeginPopup("Item Component"))
 	{
-		rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
-		QXuint i = 0;
-		for (auto it : componentsAvailable)
-		{
-			QXbool enable = QX_FALSE;
-			ImGui::PushID(i);
 
-			ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
-			if (enable)
-			{
-				QXbool activate = QX_TRUE;
-				if (it.get_name().to_string() != "Behaviour")
-				{
-					if (!_object->Get3D())
-					{
-						activate = QX_FALSE;
-						QXstring message = "Cannot create " + it.get_name().to_string() + " with a non GameObject3D";
-						LOG(WARNING, message);
-					}
-				}
-				if (activate)
-				{
-					_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-					_object->GetComponents().back()->Init(_object);
-				}
-			}
-
-			ImGui::PopID();
-		}
+		ShowAddComponent();
 		ImGui::EndPopup();
 	}
 
