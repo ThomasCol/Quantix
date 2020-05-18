@@ -3,6 +3,7 @@
 #include <Resources/Sound.h>
 #include <Core/Components/SoundEmitter.h>
 #include <Core/Components/SoundListener.h>
+#include <Core/Components/DeformableMesh.h>
 #include <Core/DataStructure/Component.h>
 
 #include "Inspector.h"
@@ -357,8 +358,8 @@ void Inspector::CheckSpecClass(rttr::type t, rttr::instance inst)
 		SetAttributesListener(inst, inst.get_type());
 	if (t == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
 		PlaySound(inst, t);
-	/*if (t == rttr::type::get<Quantix::Core::Components::DeformableMesh>())
-		GenerateDeformableMesh(inst, t);*/
+	if (t == rttr::type::get<Quantix::Core::Components::DeformableMesh>())
+		GenerateDeformableMesh(t, inst);
 }
 
 void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)

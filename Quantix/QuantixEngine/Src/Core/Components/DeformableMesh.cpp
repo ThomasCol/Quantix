@@ -11,9 +11,10 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<const Quantix::Core::Components::DeformableMesh&>()
 	.constructor<Quantix::Core::Components::DeformableMesh&&>()
 	.property("cubeSize", &Quantix::Core::Components::DeformableMesh::cubeSize)
-	.property("numCubeInWidth", &Quantix::Core::Components::DeformableMesh::numCubeInWidth)
+	.property("numCubeInWidth", &Quantix::Core::Components::DeformableMesh::GetNumWidth, &Quantix::Core::Components::DeformableMesh::SetNumWidth)
 	.property("numCubeInHeight", &Quantix::Core::Components::DeformableMesh::numCubeInHeight)
-	.property("numCubeInDepth", &Quantix::Core::Components::DeformableMesh::numCubeInDepth);
+	.property("numCubeInDepth", &Quantix::Core::Components::DeformableMesh::numCubeInDepth)
+	.method("Generate", &Quantix::Core::Components::DeformableMesh::Generate);
 }
 namespace Quantix::Core::Components
 {

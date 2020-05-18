@@ -12,9 +12,9 @@ namespace Quantix::Core::Components
 	{
 		Math::QXvec3 cubeSize;
 
-		QXuint numCubeInWidth;
-		QXuint numCubeInHeight;
-		QXuint numCubeInDepth;
+		QXuint numCubeInWidth = 1;
+		QXuint numCubeInHeight = 1;
+		QXuint numCubeInDepth = 1;
 
 		DeformableMesh() = default;
 		//DeformableMesh(DataStructure::GameComponent* par);
@@ -30,6 +30,12 @@ namespace Quantix::Core::Components
 		void Init(DataStructure::GameComponent* par) override;
 		void Generate(Resources::Scene* scene);
 		void AddComponent(DataStructure::GameObject3D* object);
+
+		QXuint GetNumWidth() { std::cout << numCubeInWidth << std::endl; return numCubeInWidth; }
+		void SetNumWidth(QXuint i) 
+		{ 
+			std::cout << numCubeInWidth << std::endl; numCubeInWidth = i; 
+		}
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};
