@@ -93,6 +93,9 @@
     <ClCompile Include="src\Gameplay\Grabbing.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="media\Gameplay\Grabbing.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\Editor.h">
@@ -132,6 +135,9 @@
       <Filter>Fichiers d%27en-tête\Ext</Filter>
     </ClInclude>
     <ClInclude Include="include\Gameplay\Grabbing.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="media\Gameplay\Grabbing.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

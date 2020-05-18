@@ -20,6 +20,7 @@ namespace Quantix::Gameplay
 
 			#pragma region Methods
 
+			void	Use();
 			void	Grab();
 			void	Drop();
 
@@ -33,7 +34,6 @@ namespace Quantix::Gameplay
 			void	Start() override;
 			void	Update(QXdouble deltaTime) override;
 
-			void	Use();
 			
 			#pragma endregion
 	};
