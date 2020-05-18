@@ -206,6 +206,7 @@
     <ClCompile Include="src\Editor\Hierarchy.cpp" />
     <ClCompile Include="src\Editor\Inspector.cpp" />
     <ClCompile Include="src\Editor\MenuBar.cpp" />
+    <ClCompile Include="src\Gameplay\Grabbing.cpp" />
     <ClCompile Include="src\opengl_helpers_imgui.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
@@ -219,6 +220,7 @@
     <ClInclude Include="include\Editor\Hierarchy.h" />
     <ClInclude Include="include\Editor\Inspector.h" />
     <ClInclude Include="include\Editor\MenuBar.h" />
+    <ClInclude Include="include\Gameplay\Grabbing.h" />
     <ClInclude Include="include\opengl_helper.h" />
     <ClInclude Include="include\Window.h" />
     <ClInclude Include="resource.h" />

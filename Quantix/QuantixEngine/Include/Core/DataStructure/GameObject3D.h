@@ -14,7 +14,7 @@ namespace Quantix::Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		Quantix::Physic::Transform3D*		_transform;
+		Quantix::Physic::Transform3D* _transform	{ nullptr };
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -27,7 +27,11 @@ namespace Quantix::Core::DataStructure
 
 		#pragma region Methods
 
-		inline void								AddChild(const GameObject3D* object) { _transform->AddChild(object->GetTransform()); }
+		inline void								AddChild(const GameObject3D* object)	{ _transform->AddChild(object->GetTransform()); }
+
+		inline void								RemoveChild(const GameObject3D* object)	{ _transform->RemoveChild(object->GetTransform()); }
+
+		inline void								Detach()								{ _transform->Detach(); }
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, Platform::AppInfo& info) override;
 
@@ -71,13 +75,13 @@ namespace Quantix::Core::DataStructure
 		* @brief Get the Global Position object
 		*
 		*/
-		//Math::QXvec3							GetGlobalPosition() const { return _transform.GetGlobalPosition(); };
+		inline Math::QXvec3						GetGlobalPosition() const { return _transform->GetGlobalPosition(); };
 
 		/**
 		* @brief Get the Global Rotation object
 		*
 		*/
-		//Math::QXvec3							GetGlobalRotation() const { return _transform.GetGlobalRotation(); };
+		inline Math::QXquaternion				GetGlobalRotation() const { return _transform->GetGlobalRotation(); };
 
 		/**
 		* @brief Set the Local Position object

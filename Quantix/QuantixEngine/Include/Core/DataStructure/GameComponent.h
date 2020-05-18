@@ -21,13 +21,13 @@ namespace Quantix::Core::DataStructure
 	protected:
 #pragma region Attributes
 		std::vector<Component*>						_component;
-		std::string									_name;
-		QXint										_layer;
-		QXbool										_isStatic { false };
-		QXbool										_isActive { true };
-		QXbool										_toRender { false };
-		QXbool										_toUpdate { false };
-		QXbool										_toCollide { false };
+		std::string									_name		{ "" };
+		QXint										_layer		{ -1 };
+		QXbool										_isStatic	{ false };
+		QXbool										_isActive	{ true };
+		QXbool										_toRender	{ false };
+		QXbool										_toUpdate	{ false };
+		QXbool										_toCollide	{ false };
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor

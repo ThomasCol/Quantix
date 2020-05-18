@@ -3,11 +3,11 @@
 
 #include "Core/DLLHeader.h"
 #include "Core/MathHeader.h"
-#include "Core/DataStructure//GameObject3D.h"
+#include "Core/DataStructure/GameObject3D.h"
 
 namespace Quantix::Physic
 {
-	struct Raycast
+	struct QUANTIX_API Raycast
 	{
 		bool status{ false };
 

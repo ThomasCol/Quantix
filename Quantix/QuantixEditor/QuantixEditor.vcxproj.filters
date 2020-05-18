@@ -90,6 +90,9 @@
     <ClCompile Include="src\opengl_helpers_imgui.cpp">
       <Filter>Fichiers sources\Ext</Filter>
     </ClCompile>
+    <ClCompile Include="src\Gameplay\Grabbing.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Editor\Editor.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="include\opengl_helper.h">
       <Filter>Fichiers d%27en-tête\Ext</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Gameplay\Grabbing.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
