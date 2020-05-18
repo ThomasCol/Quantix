@@ -35,13 +35,13 @@ RTTR_PLUGIN_REGISTRATION
 	.property("PoseIntPreview", &Quantix::Core::Components::Rigidbody::GetRigidFlagPosePreview, &Quantix::Core::Components::Rigidbody::SetRigidFlagPosePreview)
 	.property("CCDMaxImpulse", &Quantix::Core::Components::Rigidbody::GetRigidFlagCCDMaxContactImpulse, &Quantix::Core::Components::Rigidbody::SetRigidFlagCCDMaxContactImpulse)
 			(rttr::metadata("Description", "End"))
-	.property("LockLinearX", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagLinearX, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagLinearX)
+	.property("Position X", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagLinearX, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagLinearX)
 		(rttr::metadata("Description", "RigidLock Flags"))
-	.property("LockLinearY", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagLinearY, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagLinearY)
-	.property("LockLinearZ", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagLinearZ, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagLinearZ)
-	.property("LockAngularX", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagAngularX, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagAngularX)
-	.property("LockAngularY", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagAngularY, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagAngularY)
-	.property("LockAngularZ", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagAngularZ, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagAngularZ)
+	.property("Position Y", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagLinearY, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagLinearY)
+	.property("Position Z", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagLinearZ, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagLinearZ)
+	.property("Rotation X", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagAngularX, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagAngularX)
+	.property("Rotation Y", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagAngularY, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagAngularY)
+	.property("Rotation Z", &Quantix::Core::Components::Rigidbody::GetRigidLockFlagAngularZ, &Quantix::Core::Components::Rigidbody::SetRigidLockFlagAngularZ)
 		(rttr::metadata("Description", "End"));
 
 }

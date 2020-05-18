@@ -116,7 +116,7 @@ public:
 	 * @param FBOGame 
 	 * @param FBOScene 
 	 */
-	void												UpdateEditor(QXuint FBOGame, QXuint FBOScene);
+	void												UpdateEditor();
 
 	/**
 	 * @brief Draw All Frame
@@ -161,52 +161,10 @@ public:
 	void												ChangeStateSimulation();
 
 	/**
-	 * @brief Change Guizmo Operation
-	 * 
-	 * @param index 
-	 */
-	void												ChangeGuizmoOperation(QXuint index);
-
-	/**
-	 * @brief Modify Guizmo
-	 * 
-	 * @param pos 
-	 */
-	void												LocalWorldGuizmo(QXint pos);
-
-	/**
-	 * @brief Set Guizmo UI
-	 * 
-	 */
-	void												GuizmoUI();
-
-	/**
 	 * @brief Show Simulation Window
 	 * 
 	 */
 	void												DrawSimulation();
-
-	/**
-	 * @brief Move Object with Guizmo
-	 * 
-	 * @param transform 
-	 * @param matrix 
-	 * @param matrixTmp 
-	 */
-	void												MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp);
-
-	/**
-	 * @brief Show Guizmo on Object
-	 * 
-	 * @param transform 
-	 */
-	void												ShowGuizmoObject(Quantix::Physic::Transform3D* transform);
-
-	/**
-	 * @brief Draw Guizmo
-	 * 
-	 */
-	void												DrawGuizmo();
 
 	/**
 	 * @brief Set the scene focus
@@ -229,18 +187,6 @@ public:
 	 * @param flags 
 	 */
 	void												DrawScene(const QXstring& name, ImGuiWindowFlags flags);
-
-	/**
-	 * @brief Print the log in Console Window
-	 * 
-	 */
-	void												PrintLog();
-
-	/**
-	 * @brief UI of the Console
-	 * 
-	 */
-	void												ConsoleUI();
 
 	/**
 	 * @brief Draw Window Console
@@ -355,13 +301,12 @@ private:
 	std::map<QXstring, Quantix::Resources::Texture*>					_simImg;
 	std::map<QXstring, QXbool>											_simState;
 	std::map<QXbool, Quantix::Core::DataStructure::GameObject3D*>		_hasCamera;
+
 	QXbool																_play;
 	QXbool																_pause;
 	QXbool																_sceneFocus;
 	QXbool																_gameFocus;
 
-	QXuint																_fboScene;
-	QXuint																_fboGame;
 	ImGuiWindowFlags													_flagsEditor;
 	#pragma endregion Attributes
 };

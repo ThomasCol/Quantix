@@ -406,8 +406,8 @@ namespace Quantix::Physic
 			if (it->second && it->first)
 			{
 				// Set RigidBody Transform On GameOject Transform
-				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
-				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
+				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalPosition();
+				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalRotation();
 				quat = quat.ConjugateQuaternion();
 				if (it->second->GetType() == ETypePhysic::DYNAMIC)
 				{

@@ -71,13 +71,13 @@ namespace Quantix::Core::DataStructure
 		* @brief Get the Global Position object
 		*
 		*/
-		//Math::QXvec3							GetGlobalPosition() const { return _transform.GetGlobalPosition(); };
+		Math::QXvec3							GetGlobalPosition() const { return _transform->GetGlobalPosition(); };
 
 		/**
 		* @brief Get the Global Rotation object
 		*
 		*/
-		//Math::QXvec3							GetGlobalRotation() const { return _transform.GetGlobalRotation(); };
+		Math::QXquaternion						GetGlobalRotation() const { return _transform->GetGlobalRotation(); };
 
 		/**
 		* @brief Set the Local Position object

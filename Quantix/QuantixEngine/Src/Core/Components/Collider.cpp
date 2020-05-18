@@ -5,24 +5,22 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
-rttr::registration::class_<ICollider>("Collider")
-.constructor<>()
-.constructor<Quantix::Core::DataStructure::GameComponent*>()
-.constructor<const ICollider&>()
-.constructor<ICollider&&>()
-.enumeration<Quantix::Physic::FilterGroup::Enum>("FilterGroup")
-(rttr::value("Pawn", Quantix::Physic::FilterGroup::Enum::PAWN),
-	rttr::value("Crab", Quantix::Physic::FilterGroup::Enum::eCRAB),
-	rttr::value("MineHead", Quantix::Physic::FilterGroup::Enum::eMINE_HEAD))
+	rttr::registration::class_<ICollider>("Collider")
+	.constructor<>()
+	.constructor<Quantix::Core::DataStructure::GameComponent*>()
+	.constructor<const ICollider&>()
+	.constructor<ICollider&&>()
+	.enumeration<Quantix::Physic::FilterGroup::Enum>("FilterGroup")
+		(rttr::value("Pawn", Quantix::Physic::FilterGroup::Enum::PAWN),
+		rttr::value("Crab", Quantix::Physic::FilterGroup::Enum::eCRAB),
+		rttr::value("MineHead", Quantix::Physic::FilterGroup::Enum::eMINE_HEAD))
 	.property("ToRender", &ICollider::toRender)
 	.property("Local Position", &ICollider::GetPosition, &ICollider::SetPosition)
 	.property("Local Rotation", &ICollider::GetRotation, &ICollider::SetRotation)
 	.property("MyGroup", &ICollider::GetMyFilterGroup, &ICollider::SetMyFilterGroup)
-	.property("Collide Group", &ICollider::collideFilter)
-	.property("Shape Flag", &ICollider::shapeFlag)
 
 	.property("PawnGroup", &ICollider::GetCollideFilterPawn, &ICollider::SetCollideFilterPawn)
-	(rttr::metadata("Description", "Collide Group"))
+		(rttr::metadata("Description", "Collide Group"))
 	.property("MineGroup", &ICollider::GetCollideFilterMine, &ICollider::SetCollideFilterMine)
 	.property("CrabGroup", &ICollider::GetCollideFilterCrab, &ICollider::SetCollideFilterCrab)
 		(rttr::metadata("Description", "End"))

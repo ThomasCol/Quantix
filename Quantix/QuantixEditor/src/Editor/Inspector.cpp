@@ -362,6 +362,50 @@ void Inspector::CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Core:
 		GenerateDeformableMesh(t, inst, app);
 }
 
+void Inspector::ShowXYZ(QXbool& isOpen, QXstring& name)
+{
+	if (isOpen && name == "RigidLock Flags")
+	{
+		ImGui::Text("");
+		ImGui::SameLine(172.f);
+		ImGui::Text("X");
+		ImGui::SameLine(222.f);
+		ImGui::Text("Y");
+		ImGui::SameLine(272.f);
+		ImGui::Text("Z");
+	}
+}
+
+QXbool Inspector::DrawRigidLock(rttr::instance inst, rttr::property currentProp, QXstring& name)
+{
+	if (name == "RigidLock Flags")
+	{
+		static QXfloat indent = 165.f;
+		if (currentProp.get_type() == rttr::type::get<QXbool>())
+		{
+			QXbool enable = currentProp.get_value(inst).to_bool();
+			if (currentProp.get_name().to_string().find("Position X") != QXstring::npos)
+			{
+				indent = 165.f;
+				ImGui::Text("Position"); ImGui::SameLine(indent);
+			}
+			else if (currentProp.get_name().to_string().find("Rotation X") != QXstring::npos)
+			{
+				indent = 165.f;
+				ImGui::Text("Rotation"); ImGui::SameLine(indent);
+			}
+			else
+				ImGui::SameLine(indent);
+			ImGui::Checkbox("", &enable);
+			currentProp.set_value(inst, enable);
+			indent += 50.f;
+		}
+		return QX_TRUE;
+	}
+
+	return QX_FALSE;
+}
+
 void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
 {
 	if (t != rttr::type::get<Quantix::Resources::Texture*>())
@@ -394,6 +438,7 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				{
 					nodeName = meta.get_value<QXstring>();
 					isOpen = ImGui::TreeNodeEx(nodeName.c_str(), ImGuiTreeNodeFlags_Framed);
+					ShowXYZ(isOpen, nodeName);
 					node = true;
 				}
 
@@ -401,7 +446,10 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				if (node)
 				{
 					if (isOpen)
-						DrawVariable(inst, currentProp, type, app);
+					{
+						if (!DrawRigidLock(inst, currentProp, nodeName))
+							DrawVariable(inst, currentProp, type, app);
+					}
 				}
 				else
 					DrawVariable(inst, currentProp, type, app);

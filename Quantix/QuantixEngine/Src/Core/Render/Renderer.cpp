@@ -322,7 +322,7 @@ namespace Quantix::Core::Render
 		for (QXuint i = 0; i < colliders.size(); ++i)
 		{
 			obj = (Quantix::Core::DataStructure::GameObject3D*)colliders[i]->GetObject();
-			trs = Math::QXmat4::CreateTRSMatrix(obj->GetLocalPosition() + colliders[i]->GetPosition(), obj->GetLocalRotation() * colliders[i]->GetRotation(),
+			trs = Math::QXmat4::CreateTRSMatrix(obj->GetGlobalPosition() + colliders[i]->GetPosition(), obj->GetGlobalRotation() * colliders[i]->GetRotation(),
 				colliders[i]->scale);
 
 			glUniformMatrix4fv(_wireFrameProgram->GetLocation("TRS"), 1, false, trs.array);
