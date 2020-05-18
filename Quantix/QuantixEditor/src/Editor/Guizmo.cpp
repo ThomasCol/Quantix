@@ -115,10 +115,10 @@ void Guizmo::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 	{
 		transform->SetSpace(Quantix::Physic::Space::WORLD);
 		matrixTmp = matrix = transform->GetTRS();
-	}*/
-	/*else if (_guizmoMode == ImGuizmo::MODE::LOCAL)
-	{
-		transform->SetSpace(Quantix::Physic::Space::LOCAL);*/
+	}
+	else if (_guizmoMode == ImGuizmo::MODE::LOCAL)
+	{*/
+		//transform->SetSpace(Quantix::Physic::Space::LOCAL);
 		matrixTmp = matrix = transform->GetLocalTRS();
 	//}
 	ImVec2 size = ImGui::GetWindowSize();
