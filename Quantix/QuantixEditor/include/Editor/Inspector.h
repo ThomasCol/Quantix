@@ -206,6 +206,10 @@ public:
 
 	void													CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app);
 
+	void													ShowXYZ(QXbool& isOpen, QXstring& name);
+
+	QXbool													DrawRigidLock(rttr::instance inst, rttr::property currentProp, QXstring& name);
+
 	/**
 	 * @brief Get the Instance object
 	 * 

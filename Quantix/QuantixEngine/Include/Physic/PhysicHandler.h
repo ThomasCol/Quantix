@@ -172,9 +172,8 @@ namespace Quantix::Physic
 		 */
 		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
 
-
 		PxCapsuleController* CreateController(Core::DataStructure::GameComponent* object);
-		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other);
+		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec);
 
 		// Update
 		/**

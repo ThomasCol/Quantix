@@ -10,7 +10,7 @@ namespace Quantix::Core::Components
 {
 	struct QUANTIX_API DeformableMesh : public Core::DataStructure::Component
 	{
-		Math::QXvec3 cubeSize;
+		Math::QXvec3 cubeSize {Math::QXvec3(1,1,1)};
 
 		QXuint numCubeInWidth = 1;
 		QXuint numCubeInHeight = 1;
@@ -31,11 +31,8 @@ namespace Quantix::Core::Components
 		void Generate(Resources::Scene* scene);
 		void AddComponent(DataStructure::GameObject3D* object);
 
-		QXuint GetNumWidth() { std::cout << numCubeInWidth << std::endl; return numCubeInWidth; }
-		void SetNumWidth(QXuint i) 
-		{ 
-			std::cout << numCubeInWidth << std::endl; numCubeInWidth = i; 
-		}
+		QXuint GetNumWidth() { return numCubeInWidth; }
+		void SetNumWidth(QXuint i) { numCubeInWidth = i; }
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};

@@ -322,22 +322,21 @@ namespace Quantix::Physic
 
 		cDesc = &desc;
 		
-		std::cout << manager->getNbControllers() << std::endl;
 		PxController* c = manager->createController(*cDesc); 
-		std::cout << manager->getNbControllers() << std::endl;
 		
 		return (PxCapsuleController*)c;
 	}
 
-	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other)
+	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec)
 	{
 		PhysicDynamic* type0 = GetObject(object, true)->GetObjectDynamic();
 
 		PhysicDynamic* type1 = GetObject(other, true)->GetObjectDynamic();
 
 		//PxRevoluteJointCreate
-		PxRevoluteJoint* joint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(), type1->GetRigid(), PxTransform());
+		PxRevoluteJoint* joint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(-physx::PxVec3(vec.x, vec.y, vec.z)), type1->GetRigid(), PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
 
+		joint->setBreakForce(0.1, 0.1);
 		return joint;
 	}
 
@@ -407,8 +406,8 @@ namespace Quantix::Physic
 			if (it->second && it->first)
 			{
 				// Set RigidBody Transform On GameOject Transform
-				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetPosition();
-				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetRotation();
+				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalPosition();
+				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalRotation();
 				quat = quat.ConjugateQuaternion();
 				if (it->second->GetType() == ETypePhysic::DYNAMIC)
 				{

@@ -104,8 +104,6 @@ void Guizmo::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& m
 		ImGuizmo::DecomposeMatrixToComponents(matrix.array, translation.e, rotation.e, scale.e);
 		transform->Scale(scale - scaleTmp);
 	}
-
-	//transform->SetTRS(matrix);
 }
 
 void Guizmo::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
@@ -119,7 +117,7 @@ void Guizmo::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
 	else if (_guizmoMode == ImGuizmo::MODE::LOCAL)
 	{*/
 		//transform->SetSpace(Quantix::Physic::Space::LOCAL);
-		matrixTmp = matrix = transform->GetLocalTRS();
+		matrixTmp = matrix = transform->GetTRS();
 	//}
 	ImVec2 size = ImGui::GetWindowSize();
 	ImVec2 pos = ImGui::GetWindowPos();
