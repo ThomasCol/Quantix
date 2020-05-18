@@ -278,7 +278,6 @@ namespace Quantix::Core::Render
 	{
 		_shadowProgram->Use();
 
-		glCullFace(GL_FRONT);
 		glBindFramebuffer(GL_FRAMEBUFFER, _shadowBuffer.FBO);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_DEPTH_BUFFER_BIT);
