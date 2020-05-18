@@ -54,6 +54,9 @@ Editor::Editor(QXuint width, QXuint height) :
 
 	_root = _app->scene->GetRoot();
 
+	_app->renderer.CreateRenderFramebuffer(width, height, _sceneBuffer);
+	_app->renderer.CreateRenderFramebuffer(width, height, _gameBuffer);
+
 	InitImg();
 }
 
@@ -369,9 +372,10 @@ void Editor::UpdateScene()
 	STOP_PROFILING("Camera");
 
 	START_PROFILING("Draw");
+	_app->renderer.Draw(meshes, colliders, _lights, _app->info, _mainCamera, _gameBuffer, false);
+	_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor, _sceneBuffer, true);
 	//Update Editor + Draw Scene
-	UpdateEditor(_app->renderer.DrawGame(meshes, _lights, _app->info, _mainCamera),
-		_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor));
+	UpdateEditor();
 	STOP_PROFILING("Draw");
 
 	START_PROFILING("Refresh");
@@ -380,12 +384,10 @@ void Editor::UpdateScene()
 	STOP_PROFILING("Refresh");
 }
 
-void Editor::UpdateEditor(QXuint FBOGame, QXuint FBOScene)
+void Editor::UpdateEditor()
 {
 	InitImGui();
 
-	_fboScene = FBOScene;
-	_fboGame = FBOGame;
 	static QXint i = 0;
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
@@ -549,7 +551,7 @@ void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 		}
 		ImVec2 size = ImGui::GetWindowSize();
 		size.y -= 50;
-		ImGui::Image((ImTextureID)(size_t)_fboGame, size, { 0.f, 1.f }, { 1.f, 0.f });
+		ImGui::Image((ImTextureID)(size_t)_gameBuffer.texture[0], size, { 0.f, 1.f }, { 1.f, 0.f });
 	}
 	ImGui::End();
 }
@@ -567,7 +569,7 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 		}
 		ImVec2 size = ImGui::GetWindowSize();
 		size.y -= 50;
-		ImGui::Image((ImTextureID)(size_t)_fboScene, size, { 0.f, 1.f }, { 1.f, 0.f });
+		ImGui::Image((ImTextureID)(size_t)_sceneBuffer.texture[0], size, { 0.f, 1.f }, { 1.f, 0.f });
 		ImGuizmo::SetDrawlist();
 		_guizmo.Update(_hierarchy.GetInspector(), _root, _cameraEditor);
 	}

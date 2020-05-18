@@ -49,15 +49,6 @@ namespace Quantix::Core::Render
 		#pragma region Functions
 
 		/**
-		 * @brief Create a Render Framebuffer object
-		 * 
-		 * @param width Width of the window
-		 * @param height Height of the window
-		 * @param fbo fbo to initialize
-		 */
-		void CreateRenderFramebuffer(QXuint width, QXuint height, RenderFramebuffer& fbo) noexcept;
-
-		/**
 		 * @brief Create a Framebuffer object
 		 * 
 		 * @param width Width of the window
@@ -89,6 +80,10 @@ namespace Quantix::Core::Render
 		 */
 		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
 			std::vector<Core::Components::Light> & lights);
+
+		void RenderColliders(std::vector<Components::ICollider*>& colliders);
+
+		void SendUniformBuffer(std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam);
 
 		#pragma endregion
 
@@ -152,6 +147,15 @@ namespace Quantix::Core::Render
 		#pragma region Functions
 
 		/**
+		 * @brief Create a Render Framebuffer object
+		 *
+		 * @param width Width of the window
+		 * @param height Height of the window
+		 * @param fbo fbo to initialize
+		 */
+		void CreateRenderFramebuffer(QXuint width, QXuint height, RenderFramebuffer & fbo) noexcept;
+
+		/**
 		 * @brief Function to draw current scene as a scene
 		 * 
 		 * @param meshes meshes to draw
@@ -162,19 +166,7 @@ namespace Quantix::Core::Render
 		 * @return QXuint created texture
 		 */
 		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
-				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
-
-		/**
-		 * @brief Function to draw current scene as game
-		 * 
-		 * @param meshes meshes to draw
-		 * @param colliders colliders to draw
-		 * @param lights lights to use
-		 * @param info app info
-		 * @param cam camera to use
-		 * @return QXuint created texture
-		 */
-		QXuint DrawGame(std::vector<Components::Mesh*>& mesh, std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
+				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam, RenderFramebuffer& buffer, bool displayColliders) noexcept;
 
 		#pragma endregion
 	};
