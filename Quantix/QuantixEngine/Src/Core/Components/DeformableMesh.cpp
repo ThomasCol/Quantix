@@ -39,28 +39,27 @@ namespace Quantix::Core::Components
 
 		//Core::DataStructure::GameObject3D**** gameobjects = nullptr;
 		//std::vector<std::vector<std::vector<Core::DataStructure::GameObject3D*>>> gameobjects;
-		Core::DataStructure::GameObject3D* gameobjects[3][3][3];
-		for (QXint i = 0; i < 3; i++)
+		Core::DataStructure::GameObject3D* gameobjects[1][3][2];
+		for (QXint i = 0; i < 1; i++)
 		{
 			//gameobjects.push_back(new Core::DataStructure::GameObject3D());
 			for (QXint j = 0; j < 3; j++)
 			{
-				for (QXint k = 0; k < 3; k++)
+				for (QXint k = 0; k < 2; k++)
 				{
 					gameobjects[i][j][k] = new Core::DataStructure::GameObject3D();
 				}
 			}
 		}
 
-		for (QXint i = 0; i < 3; i++)
+		for (QXint i = 0; i < 1; i++)
 		{
 			for (QXint j = 0; j < 3; j++)
 			{
-				for (QXint k = 0; k < 3; k++)
+				for (QXint k = 0; k < 2; k++)
 				{
 					gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)), _object);
-					
-					gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * numCubeInWidth, j * numCubeInHeight, k * numCubeInDepth));
+					gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * cubeSize.x, j * cubeSize.y, k * cubeSize.z));
 					
 					AddComponent(gameobjects[i][j][k]);
 
@@ -69,11 +68,11 @@ namespace Quantix::Core::Components
 					else
 					{
 						if (i != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i-1][j][k]); 
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i-1][j][k], Math::QXvec3(cubeSize.x * 0.5, 0, 0));
 						if (j != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k]);
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k], Math::QXvec3(0, cubeSize.y * 0.5, 0));
 						if (k != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1]);
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1], Math::QXvec3(0, 0, cubeSize.z * 0.5));
 					}
 				}
 			}
@@ -99,6 +98,7 @@ namespace Quantix::Core::Components
 		// Add Rigid
 		Core::Components::Rigidbody* rigid = new Rigidbody();
 		rigid->Init(object);
+		rigid->SetMass(0.001);
 		object->AddComponent(rigid);
 
 		// Add Cubecollider

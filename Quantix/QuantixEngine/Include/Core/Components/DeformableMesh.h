@@ -31,11 +31,8 @@ namespace Quantix::Core::Components
 		void Generate(Resources::Scene* scene);
 		void AddComponent(DataStructure::GameObject3D* object);
 
-		QXuint GetNumWidth() { /*std::cout << numCubeInWidth << std::endl;*/ return numCubeInWidth; }
-		void SetNumWidth(QXuint i) 
-		{ 
-			std::cout << numCubeInWidth << std::endl; numCubeInWidth = i; 
-		}
+		QXuint GetNumWidth() { return numCubeInWidth; }
+		void SetNumWidth(QXuint i) { numCubeInWidth = i; }
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};

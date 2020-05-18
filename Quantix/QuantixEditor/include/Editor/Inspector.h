@@ -202,9 +202,9 @@ public:
 	 */
 	void													SetSound(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app);
 
-	void													GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quantix::Resources::Scene* scene);
+	void													GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app);
 
-	void													CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Resources::Scene* scene);
+	void													CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Get the Instance object
