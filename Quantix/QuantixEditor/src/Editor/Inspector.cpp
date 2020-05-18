@@ -341,25 +341,25 @@ void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property curre
 			DrawSoundEmitterPath(inst, t, currentProp, app);
 }
 
-void Inspector::GenerateDeformableMesh(rttr::type t, rttr::instance inst)
+void Inspector::GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quantix::Resources::Scene* scene)
 {
 	ImGui::Indent(ImGui::GetWindowSize().x / 3);
 	if (ImGui::Button("Generate", ImVec2(100.f, 25.f)))
 	{
 		auto tmpInst = inst.get_derived_type();
 
-		tmpInst.invoke("Generate", inst, {});
+		tmpInst.invoke("Generate", inst, {scene});
 	}
 }
 
-void Inspector::CheckSpecClass(rttr::type t, rttr::instance inst)
+void Inspector::CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Resources::Scene* scene)
 {
 	if (t == rttr::type::get<Quantix::Core::Components::SoundListener>())
 		SetAttributesListener(inst, inst.get_type());
 	if (t == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
 		PlaySound(inst, t);
 	if (t == rttr::type::get<Quantix::Core::Components::DeformableMesh>())
-		GenerateDeformableMesh(t, inst);
+		GenerateDeformableMesh(t, inst, scene);
 }
 
 void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
@@ -416,7 +416,7 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				}
 
 			}
-			CheckSpecClass(t, inst);
+			CheckSpecClass(t, inst, app->scene);
 			ImGui::TreePop();
 		}
 	}

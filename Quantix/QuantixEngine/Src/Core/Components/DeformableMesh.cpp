@@ -35,16 +35,30 @@ namespace Quantix::Core::Components
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
 		Core::DataStructure::GameObject3D* gameobject = nullptr;
 
-		//Core::DataStructure::GameObject3D gameobjects[numCubeInWidth][numCubeInHeight][numCubeInDepth];
-		std::vector<std::vector<std::vector<Core::DataStructure::GameObject3D*>>> gameobjects;
+		const int tmp = numCubeInHeight;
 
-		for (QXint i = 0; i < numCubeInWidth; i++)
+		//Core::DataStructure::GameObject3D**** gameobjects = nullptr;
+		//std::vector<std::vector<std::vector<Core::DataStructure::GameObject3D*>>> gameobjects;
+		Core::DataStructure::GameObject3D* gameobjects[3][3][3];
+		for (QXint i = 0; i < 3; i++)
 		{
-			for (QXint j = 0; j < numCubeInHeight; j++)
+			//gameobjects.push_back(new Core::DataStructure::GameObject3D());
+			for (QXint j = 0; j < 3; j++)
 			{
-				for (QXint k = 0; k < numCubeInDepth; k++)
+				for (QXint k = 0; k < 3; k++)
 				{
-					gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)), this);
+					gameobjects[i][j][k] = new Core::DataStructure::GameObject3D();
+				}
+			}
+		}
+
+		for (QXint i = 0; i < 3; i++)
+		{
+			for (QXint j = 0; j < 3; j++)
+			{
+				for (QXint k = 0; k < 3; k++)
+				{
+					gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)), _object);
 					
 					gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * numCubeInWidth, j * numCubeInHeight, k * numCubeInDepth));
 					
@@ -65,14 +79,14 @@ namespace Quantix::Core::Components
 			}
 		}
 
-		for (int i = 0; i < numCubeInWidth; i++)
+		/*for (int i = 0; i < numCubeInWidth; i++)
 		{
 			for (int j = 0; j < numCubeInWidth; j++)
 			{
 				for (int k = 0; k < numCubeInWidth; k++)
 					delete gameobjects[i][j][k];
 			}
-		}
+		}*/
 	}
 
 	void DeformableMesh::AddComponent(DataStructure::GameObject3D* object)
