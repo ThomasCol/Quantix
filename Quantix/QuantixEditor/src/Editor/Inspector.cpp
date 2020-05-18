@@ -449,6 +449,18 @@ void Inspector::LookType(rttr::instance inst, rttr::type type, rttr::property cu
 	SetSound(inst, type, currentProp, app);
 }
 
+QXbool Inspector::CheckColorType(rttr::property currentProp, rttr::instance inst)
+{
+	if (inst.get_type().get_raw_type() == rttr::type::get<Quantix::Resources::Material*>().get_raw_type()
+		|| inst.get_type() == rttr::type::get<Quantix::Resources::Material>())
+		return QX_TRUE;
+	else if ((inst.get_derived_type().get_raw_type() == rttr::type::get<Quantix::Core::Components::Light*>().get_raw_type()
+		|| inst.get_derived_type() == rttr::type::get<Quantix::Core::Components::Light>()) 
+		&& (currentProp.get_name().to_string() != "position" && currentProp.get_name().to_string() != "direction"))
+		return QX_TRUE;
+	return QX_FALSE;
+}
+
 QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
 {
 	if (type == rttr::type::get<QXbool>())
@@ -497,7 +509,7 @@ QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property current
 	{
 		int value = currentProp.get_value(inst).to_int();
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputInt("", &value);
-		currentProp.set_value(inst, value);
+		currentProp.set_value(inst, (QXsizei)value);
 		return QX_TRUE;
 	}
 	else if (type == rttr::type::get<QXstring>() && currentProp.get_name() != "Path")
@@ -516,8 +528,7 @@ QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property current
 	else if (type == rttr::type::get<Math::QXvec3>())
 	{
 		Math::QXvec3 value = currentProp.get_value(inst).get_value<Math::QXvec3>();
-		if ((inst.get_type().get_raw_type() == rttr::type::get<Quantix::Resources::Material*>().get_raw_type())
-			|| (inst.get_type() == rttr::type::get<Quantix::Resources::Material>()))
+		if (CheckColorType(currentProp, inst))
 		{
 			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::ColorEdit3("", value.e);
 		}
@@ -531,8 +542,7 @@ QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property current
 	else if (type == rttr::type::get<Math::QXvec4>())
 	{
 		Math::QXvec4 value = currentProp.get_value(inst).get_value<Math::QXvec4>();
-		if ((inst.get_type().get_raw_type() == rttr::type::get<Quantix::Resources::Material*>().get_raw_type())
-			|| (inst.get_type() == rttr::type::get<Quantix::Resources::Material>()))
+		if (CheckColorType(currentProp, inst))
 		{
 			ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(150.f); ImGui::ColorEdit4("", value.e);
 		}

@@ -234,6 +234,8 @@ public:
 	 */
 	void													LookType(rttr::instance inst, rttr::type type, rttr::property currentProp, Quantix::Core::Platform::Application* app);
 
+	QXbool													CheckColorType(rttr::property currentProp, rttr::instance inst);
+
 	QXbool													CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app);
 
 	/**
