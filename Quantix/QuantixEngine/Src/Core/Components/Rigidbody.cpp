@@ -3,6 +3,7 @@
 
 #include "Physic/PhysicHandler.h"
 #include "Physic/PhysicDynamic.h"
+#include <functional>
 
 #include "Core/MathHeader.h"
 
@@ -102,9 +103,9 @@ namespace Quantix::Core::Components
 		std::vector<ICollider*> vector{ _object->GetComponents<ICollider>() };
 		for (QXuint i = 0; i < vector.size(); i++)
 			vector[i]->UpdateActorPhysic();
-
-		//physx::PxRigidDynamicLockFlag::
 	}
+
+
 
 	void Rigidbody::Destroy()
 	{

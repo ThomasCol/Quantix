@@ -112,5 +112,6 @@
     <ClInclude Include="Include\Physic\ControllerBehaviorCallback.h" />
     <ClInclude Include="Include\Physic\ControllerHitReport.h" />
     <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
+    <ClInclude Include="Include\Core\Event\Event.h" />
   </ItemGroup>
 </Project>
