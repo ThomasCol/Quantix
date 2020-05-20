@@ -33,42 +33,29 @@ namespace Quantix::Core::Components
 	void DeformableMesh::Generate(Resources::Scene* scene)
 	{
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
-		Core::DataStructure::GameObject3D* gameobject = nullptr;
+		Core::DataStructure::GameObject3D* gameobject = (Core::DataStructure::GameObject3D*)_object;
 
-		const int tmp = numCubeInHeight;
-
-		//Core::DataStructure::GameObject3D**** gameobjects = nullptr;
-		//std::vector<std::vector<std::vector<Core::DataStructure::GameObject3D*>>> gameobjects;
 		Core::DataStructure::GameObject3D* gameobjects[4][4][4];
 		for (QXint i = 0; i < 4; i++)
 		{
-			//gameobjects.push_back(new Core::DataStructure::GameObject3D());
 			for (QXint j = 0; j < 4; j++)
 			{
 				for (QXint k = 0; k < 4; k++)
 				{
 					gameobjects[i][j][k] = new Core::DataStructure::GameObject3D();
-				}
-			}
-		}
-
-		for (QXint i = 0; i < 4; i++)
-		{
-			for (QXint j = 0; j < 4; j++)
-			{
-				for (QXint k = 0; k < 4; k++)
-				{
-					gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)), _object);
-					gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * cubeSize.x, j * cubeSize.y, k * cubeSize.z));
-					
-					AddComponent(gameobjects[i][j][k]);
 
 					if (i == 0 && j == 0 && k == 0)
-						continue;
+					{
+						gameobjects[i][j][k] = gameobject;
+						AddComponent(gameobjects[i][j][k]);
+					}
 					else
 					{
+						gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)));
+						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * cubeSize.x, j * cubeSize.y, k * cubeSize.z) + gameobjects[0][0][0]->GetGlobalPosition());
+						AddComponent(gameobjects[i][j][k]);
 						if (i != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i-1][j][k], Math::QXvec3(cubeSize.x * 0.5, 0, 0));
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i - 1][j][k], Math::QXvec3(cubeSize.x * 0.5, 0, 0));
 						if (j != 0)
 							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k], Math::QXvec3(0, cubeSize.y * 0.5, 0));
 						if (k != 0)
