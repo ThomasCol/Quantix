@@ -1,5 +1,19 @@
 #include "Core\DataStructure\GameComponent.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Core::DataStructure::GameComponent>("GameComponent")
+	.constructor<>()
+	.constructor<const Quantix::Core::DataStructure::GameComponent&>()
+	.constructor<Quantix::Core::DataStructure::GameComponent&&>()
+	.constructor<const QXstring&, const QXbool&, const QXbool&, const QXbool&>()
+	.enumeration<Quantix::Core::DataStructure::Layer>("Layer")
+					 (rttr::value("Default", Quantix::Core::DataStructure::Layer::DEFAULT),
+					 rttr::value("Player", Quantix::Core::DataStructure::Layer::PLAYER),
+					 rttr::value("Selectable", Quantix::Core::DataStructure::Layer::SELECTABLE))
+	.property("layer", &Quantix::Core::DataStructure::GameComponent::_layer);
+}
+
 namespace Quantix::Core::DataStructure
 {
 	GameComponent::GameComponent(const GameComponent& object) noexcept :

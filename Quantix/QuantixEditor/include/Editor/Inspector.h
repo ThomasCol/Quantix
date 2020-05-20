@@ -120,6 +120,8 @@ public:
 
 	void													ShowTransform2D(Quantix::Core::Platform::Application* app);
 
+	void													LayerObject(rttr::property currentProp, rttr::instance inst);
+
 	/**
 	 * @brief Update
 	 * 
@@ -230,7 +232,7 @@ public:
 	 * @param inst
 	 * @param type
 	 */
-	void													ShowEnum(rttr::property currentProp, rttr::instance inst, rttr::type type);
+	void													ShowEnum(rttr::property currentProp, rttr::instance inst);
 
 	/**
 	 * @brief Look Type of Instance or Property

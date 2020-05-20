@@ -16,13 +16,20 @@
 
 namespace Quantix::Core::DataStructure
 {
+	enum class QUANTIX_API Layer
+	{
+		DEFAULT = (1 << 0),
+		PLAYER = (1 << 1),
+		SELECTABLE = (1 << 2)
+	};
+
 	class QUANTIX_API GameComponent
 	{
 	protected:
 #pragma region Attributes
 		std::vector<Component*>						_component;
 		std::string									_name;
-		QXint										_layer;
+		Layer										_layer{ Layer::DEFAULT };
 		QXbool										_isStatic { QX_FALSE };
 		QXbool										_isActive{ QX_TRUE };
 		QXbool										_toRender{ QX_FALSE };
@@ -187,14 +194,14 @@ namespace Quantix::Core::DataStructure
 		 * 
 		 * @param layer QXint
 		 */
-		inline void				SetLayer(QXint layer) { _layer = layer; };
+		inline void				SetLayer(Layer layer) { _layer = layer; };
 
 		/**
 		 * @brief Get the Layer object
 		 * 
 		 * @return QXint 
 		 */
-		inline QXint			GetLayer() const { return _layer; };
+		inline Layer			GetLayer() const { return _layer; };
 
 
 		/**

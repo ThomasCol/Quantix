@@ -56,7 +56,7 @@ namespace Quantix::Gameplay
 		{
 			Physic::Raycast	ray{ go->GetGlobalPosition(), go->GetTransform()->GetForward(), 100.f };
 
-			if (ray.actorClosestBlock && ray.actorClosestBlock->GetName() == "CubeToGrab")// is a Cube
+			if (ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
 				//Change hierarchy of the object
 				_originOfObject = ray.actorClosestBlock->GetTransform()->GetParent();
@@ -91,7 +91,7 @@ namespace Quantix::Gameplay
 
 	//Questions to ask my teammates
 	/*
-	* Comment j'accède à la liste des layers pour comparer le layer actuel à ceux existants ?
+	* Comment j'accï¿½de ï¿½ la liste des layers pour comparer le layer actuel ï¿½ ceux existants ?
 	*/ 
 
 	//TODO:
