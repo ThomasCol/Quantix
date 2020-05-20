@@ -17,7 +17,7 @@ namespace Quantix::Gameplay
 			QXbool								_isUsed;
 			Physic::Transform3D*				_originOfObject;
 			Core::DataStructure::GameObject3D*	_grabbedObject;
-
+			Core::DataStructure::GameObject3D* go = nullptr;
 			#pragma endregion
 
 			#pragma region Methods

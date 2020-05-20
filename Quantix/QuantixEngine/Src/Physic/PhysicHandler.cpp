@@ -253,8 +253,8 @@ namespace Quantix::Physic
 		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
 
 		sceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
-		sceneDesc.flags |= PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS;
-
+		//sceneDesc.flags |= PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS;
+		//sceneDesc.flags |= PxSceneFlag::;
 		//physx::PxCudaContextManagerDesc cudaContextManagerDesc;
 		//sceneDesc.cudaContextManager = PxCreateCudaContextManager(*pDefaultFundation, cudaContextManagerDesc);
 		sceneDesc.filterShader = &contactReportFilterShader;

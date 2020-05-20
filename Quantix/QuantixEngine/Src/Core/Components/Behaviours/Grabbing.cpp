@@ -2,6 +2,7 @@
 
 #include <Physic/Raycast.h>
 #include "Core/UserEntry/InputManager.h"
+#include "Core/Components/Rigidbody.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -25,7 +26,9 @@ namespace Quantix::Gameplay
 	}
 
 	void Grabbing::Awake()
-	{}
+	{
+		go = static_cast<Core::DataStructure::GameObject3D*>(_object);
+	}
 
 	void Grabbing::Start()
 	{}
@@ -35,6 +38,12 @@ namespace Quantix::Gameplay
 		if (GetKey(QX_KEY_E) == Core::UserEntry::EKeyState::PRESSED)
 		{
 			Use();
+		}
+
+		if (_isUsed)
+		{
+			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetKinematicTarget(go->GetGlobalPosition() + go->GetTransform()->GetForward() * 2);
+			_grabbedObject->SetGlobalPosition(go->GetGlobalPosition() + go->GetTransform()->GetForward() * 2);
 		}
 	}
 
@@ -49,9 +58,6 @@ namespace Quantix::Gameplay
 	void Grabbing::Grab()
 	{
 		//Grab
-
-		Core::DataStructure::GameObject3D* go = static_cast<Core::DataStructure::GameObject3D*>(_object);
-
 		if (go)
 		{
 			Physic::Raycast	ray{ go->GetGlobalPosition()+ go->GetTransform()->GetForward() * 2, go->GetTransform()->GetForward(), 100.f};
@@ -62,11 +68,9 @@ namespace Quantix::Gameplay
 				_originOfObject = ray.actorClosestBlock->GetTransform()->GetParent();
 				_grabbedObject = ray.actorClosestBlock;
 				
-				go->AddChild(_grabbedObject);
-
-
-				//Set new pos of Object
-				_grabbedObject->SetGlobalPosition(go->GetGlobalPosition() + Math::QXvec3(0.f, 0.f, 2.f));
+				_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKinematic(true);
+				_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKineForQueries(true);
+				_isUsed = QX_TRUE;
 			}
 			else
 				return;
@@ -74,16 +78,13 @@ namespace Quantix::Gameplay
 		else
 			return;
 
-		_isUsed = QX_TRUE;
 	}
 
 	void Grabbing::Drop()
 	{
 		//Drop
-
-		//Turn back Hierarchy
-		_grabbedObject->GetTransform()->SetParent(_originOfObject);
-
+		_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKinematic(false);
+		_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKineForQueries(false);
 
 		_grabbedObject = nullptr;
 		_originOfObject = nullptr;

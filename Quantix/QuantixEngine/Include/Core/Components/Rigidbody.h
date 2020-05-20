@@ -107,6 +107,8 @@ namespace Quantix::Core::Components
 
 #pragma region Accessors 
 
+		void SetKinematicTarget(Math::QXvec3 vec);
+
 		/**
 		 * @brief Get the Mass object
 		 * 

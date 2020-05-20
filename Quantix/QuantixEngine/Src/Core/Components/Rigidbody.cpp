@@ -118,6 +118,12 @@ namespace Quantix::Core::Components
 			vector[i]->UpdateActorPhysic();
 	}
 
+	void Rigidbody::SetKinematicTarget(Math::QXvec3 vec)
+	{
+		actorPhysic->GetRigid()->setKinematicTarget(physx::PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
+	}
+
+
 	QXfloat Rigidbody::GetMass()
 	{
 		return mass;
