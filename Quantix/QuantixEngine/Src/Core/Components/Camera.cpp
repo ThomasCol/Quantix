@@ -118,7 +118,7 @@ namespace Quantix::Core::Components
 		_dir.x = cos(_angle.x) * sin(_angle.y);
 		if (_object)
 		{
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(-rotate));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(rotate));
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetUp(((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation() * Math::QXvec3::up);
 		}

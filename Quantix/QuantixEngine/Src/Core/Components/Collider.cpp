@@ -121,6 +121,7 @@ namespace Quantix::Core::Components
 	Math::QXquaternion ICollider::GetRotation()
 	{
 		physx::PxQuat tmp = shape->getLocalPose().q;
+
 		return Math::QXquaternion(tmp.w, tmp.x, tmp.y, tmp.z);
 	}
 
