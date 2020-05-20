@@ -10,7 +10,8 @@ RTTR_PLUGIN_REGISTRATION
 	.enumeration<Quantix::Core::DataStructure::Layer>("Layer")
 					 (rttr::value("Default", Quantix::Core::DataStructure::Layer::DEFAULT),
 					 rttr::value("Player", Quantix::Core::DataStructure::Layer::PLAYER),
-					 rttr::value("Selectable", Quantix::Core::DataStructure::Layer::SELECTABLE))
+					 rttr::value("Selectable", Quantix::Core::DataStructure::Layer::SELECTABLE),
+					 rttr::value("KillZone", Quantix::Core::DataStructure::Layer::KILLZONE))
 	.property("layer", &Quantix::Core::DataStructure::GameComponent::_layer);
 }
 

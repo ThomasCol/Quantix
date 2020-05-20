@@ -337,6 +337,7 @@ namespace Quantix::Physic
 		PxRevoluteJoint* joint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(-physx::PxVec3(vec.x, vec.y, vec.z)), type1->GetRigid(), PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
 
 		joint->setBreakForce(0.1, 0.1);
+		//joint->setConstraintFlag(physx::PxConstraintFlag::)
 		return joint;
 	}
 

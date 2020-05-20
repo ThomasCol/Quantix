@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\Behaviours\Killzone.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Arms.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Cube.cpp" />
     <ClCompile Include="Src\Core\Components\DeformableMesh.cpp" />
@@ -316,6 +317,7 @@
     <ClInclude Include="Include\Physic\PhysicHandler.h" />
     <ClInclude Include="Include\Physic\SimulationCallback.h" />
     <ClInclude Include="Include\Physic\Raycast.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\Killzone.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

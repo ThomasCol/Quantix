@@ -20,7 +20,8 @@ namespace Quantix::Core::DataStructure
 	{
 		DEFAULT = (1 << 0),
 		PLAYER = (1 << 1),
-		SELECTABLE = (1 << 2)
+		SELECTABLE = (1 << 2),
+		KILLZONE = (1 << 3)
 	};
 
 	class QUANTIX_API GameComponent
@@ -161,6 +162,7 @@ namespace Quantix::Core::DataStructure
 		virtual void Awake() {};
 		virtual void Start() {};
 		virtual void Update(std::vector<Core::Components::Mesh*>& meshes, std::vector < Core::Components::ICollider* >& colliders, Platform::AppInfo& info) {};
+		virtual void									Destroy() {};
 
 		#pragma endregion Template
 

@@ -41,6 +41,8 @@ namespace Quantix::Core::DataStructure
 		
 		void									Awake() override;
 
+		void									Destroy() override;
+
 		template<class Archive>
 		void save(Archive& archive) const
 		{

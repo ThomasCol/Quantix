@@ -161,7 +161,7 @@ void Inspector::ShowBehaviour()
 	QXuint i = 0;
 	for (auto it : behavioursAvailable)
 	{
-		std::cout << it.get_name().to_string() << std::endl;
+		//std::cout << it.get_name().to_string() << std::endl;
 		QXbool enable = QX_FALSE;
 		ImGui::PushID(i);
 

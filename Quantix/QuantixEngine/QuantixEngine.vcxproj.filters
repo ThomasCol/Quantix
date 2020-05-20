@@ -55,6 +55,7 @@
     <ClCompile Include="Src\Core\Components\DeformableMesh.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Cube.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Arms.cpp" />
+    <ClCompile Include="Src\Core\Components\Behaviours\Killzone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -117,5 +118,6 @@
     <ClInclude Include="Include\Core\Event\Event.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Arms.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Cube.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\Killzone.h" />
   </ItemGroup>
 </Project>

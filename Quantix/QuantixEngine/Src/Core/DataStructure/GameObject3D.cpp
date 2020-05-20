@@ -114,11 +114,16 @@ namespace Quantix::Core::DataStructure
 			child->GetObject()->Awake();
 	}
 
+	void GameObject3D::Destroy()	
+	{
+		std::cout << "Destroy" << std::endl;
+	}
+
 	void	GameObject3D::CallOnTrigger(GameObject3D* other)
 	{
 		if (_toUpdate)
 		{
-			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>(true);
 			for (QXsizei i = 0; i < behaviors.size(); ++i)
 				behaviors[i]->OnTrigger(this, other);
 		}
@@ -128,7 +133,7 @@ namespace Quantix::Core::DataStructure
 	{
 		if (_toUpdate)
 		{
-			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>(true);
 			for (QXsizei i = 0; i < behaviors.size(); ++i)
 				behaviors[i]->OnCollision(this, other, position, normal);
 		}
