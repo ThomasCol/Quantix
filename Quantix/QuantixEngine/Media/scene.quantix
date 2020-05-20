@@ -111,7 +111,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial1.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -173,7 +173,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial2.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -235,7 +235,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial3.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -297,7 +297,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial4.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -359,7 +359,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial5.mat"
+                                    "Material": ""
                                 }
                             }
                         ],
@@ -392,7 +392,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial6.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -454,7 +454,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial7.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -516,7 +516,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial8.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -578,7 +578,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial9.mat"
                                 }
                             },
                             {
@@ -672,7 +672,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial10.mat"
+                                    "Material": ""
                                 }
                             },
                             {

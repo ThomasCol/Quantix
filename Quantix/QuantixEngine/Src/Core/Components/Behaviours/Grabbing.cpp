@@ -54,18 +54,19 @@ namespace Quantix::Gameplay
 
 		if (go)
 		{
-			Physic::Raycast	ray{ go->GetGlobalPosition(), go->GetTransform()->GetForward(), 100.f };
+			Physic::Raycast	ray{ go->GetGlobalPosition()+ go->GetTransform()->GetForward() * 2, go->GetTransform()->GetForward(), 100.f};
 
-			if (ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
+			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
 				//Change hierarchy of the object
 				_originOfObject = ray.actorClosestBlock->GetTransform()->GetParent();
-				go->AddChild(ray.actorClosestBlock);
-
 				_grabbedObject = ray.actorClosestBlock;
+				
+				go->AddChild(_grabbedObject);
+
 
 				//Set new pos of Object
-				_grabbedObject->SetGlobalPosition(go->GetGlobalPosition() + Math::QXvec3(0.f, 0.f, 5.f));
+				_grabbedObject->SetGlobalPosition(go->GetGlobalPosition() + Math::QXvec3(0.f, 0.f, 2.f));
 			}
 			else
 				return;
@@ -82,6 +83,7 @@ namespace Quantix::Gameplay
 
 		//Turn back Hierarchy
 		_grabbedObject->GetTransform()->SetParent(_originOfObject);
+
 
 		_grabbedObject = nullptr;
 		_originOfObject = nullptr;

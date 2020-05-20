@@ -27,7 +27,11 @@ namespace Quantix::Core::DataStructure
 
 		#pragma region Methods
 
-		inline void								AddChild(const GameObject3D* object) { _transform->AddChild(object->GetTransform()); }
+		inline void								AddChild(const GameObject3D* object) 
+		{ 
+			_transform->AddChild(object->GetTransform()); 
+			//object->GetTransform()->SetParent(this->GetTransform()); 
+		}
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, Platform::AppInfo& info) override;
 

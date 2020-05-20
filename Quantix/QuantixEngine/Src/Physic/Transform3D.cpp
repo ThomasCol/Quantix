@@ -149,10 +149,11 @@ namespace Quantix::Physic
 
 	void Transform3D::SetParent(Transform3D* newParent)
 	{
-		if (_parent)
-			_parent->RemoveChild(this);
-
+		Transform3D* tmp = _parent;
 		_parent = newParent;
+
+		if (tmp)
+			tmp->RemoveChild(this);
 	}
 
 	void	Transform3D::SetPosition(const Math::QXvec3& newPos)
@@ -243,11 +244,13 @@ namespace Quantix::Physic
 		GetGlobalScale();
 	}
 
-	void	Transform3D::Update(const Transform3D* parentTransform)
+	void	Transform3D::Update(Transform3D* parentTransform)
 	{
 		if (_globalHasChanged)
 			UpdateTRSLocal(parentTransform);
 		UpdateTRS();
+
+		_parent = parentTransform;
 
 		_forward = _rotation * Math::QXvec3::forward;
 		_up = _rotation * Math::QXvec3::up;

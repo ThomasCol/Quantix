@@ -59,9 +59,9 @@ namespace Quantix::Core::Components
 
 		if (ray.actorClosestBlock)
 		{
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	QXfloat CharacterController::GetRadius()
