@@ -4,8 +4,27 @@
 #include "Core/UserEntry/InputManager.h"
 #include "Core/Components/Rigidbody.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Gameplay::Cube>("Cube")
+		.constructor<>()
+		.constructor<Quantix::Core::DataStructure::GameComponent*>()
+		.constructor<const Quantix::Gameplay::Cube&>()
+		.constructor<Quantix::Gameplay::Cube&&>();
+}
+
 namespace Quantix::Gameplay
 {
+	Cube::Cube(Quantix::Core::DataStructure::GameComponent* par) :
+		Component(par),
+		Behaviour(par)
+	{}
+
+	Cube* Cube::Copy() const
+	{
+		return new Cube(*this);
+	}
+
 	void Cube::Awake()
 	{}
 

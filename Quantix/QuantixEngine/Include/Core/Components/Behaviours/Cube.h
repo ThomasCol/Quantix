@@ -2,6 +2,7 @@
 #define __CUBE_H__
 
 #include "Core\Components\Behaviour.h"
+#include "rttrEnabled.h"
 
 namespace Quantix::Gameplay
 {
@@ -33,6 +34,13 @@ namespace Quantix::Gameplay
 		
 		public:
 
+			Cube() = default;
+			Cube(Quantix::Core::DataStructure::GameComponent * par);
+			Cube(const Cube&) = default;
+			Cube(Cube&&) = default;
+			~Cube() = default;
+
+			Cube* Copy() const override;
 			#pragma region Methods
 
 			void		Awake() override;
@@ -43,6 +51,8 @@ namespace Quantix::Gameplay
 			inline ECubeState	GetState() { return _state; };
 			
 			#pragma endregion
+
+			CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::Behaviour);
 	};
 }
 #endif //__CUBE_H__

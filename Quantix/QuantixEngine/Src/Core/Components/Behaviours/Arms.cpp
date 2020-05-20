@@ -1,11 +1,30 @@
-#include "Core\Components\Behaviours\Arms.h"
-
+//#include "Core\Components\Behaviours\Arms.h"
+#include "Core/Components/Behaviours/Arms.h"
 #include <Physic/Raycast.h>
 #include "Core/UserEntry/InputManager.h"
 #include "Core\Components\Behaviours\Cube.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Gameplay::Arms>("Arms")
+		.constructor<>()
+		.constructor<Quantix::Core::DataStructure::GameComponent*>()
+		.constructor<const Quantix::Gameplay::Arms&>()
+		.constructor<Quantix::Gameplay::Arms&&>();
+}
+
 namespace Quantix::Gameplay
 {
+	Arms::Arms(Quantix::Core::DataStructure::GameComponent* par) :
+		Component(par),
+		Behaviour(par)
+	{}
+
+	Arms* Arms::Copy() const
+	{
+		return new Arms(*this);
+	}
+
 	void Arms::Awake()
 	{
 		_gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
@@ -26,6 +45,8 @@ namespace Quantix::Gameplay
 			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2);
 			_grabbedObject->SetGlobalPosition(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2);
 		}
+		if (rigid)
+			std::cout << rigid->GetRigidFlagKinematic() << std::endl;
 	}
 
 	void Arms::UseHands()
@@ -43,7 +64,7 @@ namespace Quantix::Gameplay
 		if (_gameobject)
 		{
 			//Cast a ray to check if a cube is near enough to be grabbed
-			Physic::Raycast	ray{ _gameobject->GetGlobalPosition(), _gameobject->GetTransform()->GetForward(), 10.f };
+			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 100.f };
 
 			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
@@ -89,11 +110,11 @@ namespace Quantix::Gameplay
 		if (_gameobject)
 		{
 			//Cast a ray to check if a cube can be frozen
-			Physic::Raycast	ray{ _gameobject->GetGlobalPosition(), _gameobject->GetTransform()->GetForward(), 100.f };
+			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 100 };
 
 			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
-				Core::Components::Rigidbody* rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
+				rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
 				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
 
 				if (cube->GetState() != ECubeState::GRABBED)
@@ -117,13 +138,15 @@ namespace Quantix::Gameplay
 	void	Arms::Freeze(Core::Components::Rigidbody* cube)
 	{
 		//Stop Kinematic
-		cube->SetRigidFlagKinematic(false);
+		cube->SetRigidFlagKinematic(true);
+		cube->SetRigidFlagKineForQueries(true);
 	}
 
 	void	Arms::UnFreeze(Core::Components::Rigidbody* cube)
 	{
 		//Re-Activate Kinematic
-		cube->SetRigidFlagKinematic(true);
+		cube->SetRigidFlagKinematic(false);
+		cube->SetRigidFlagKineForQueries(false);
 	}
 
 	//Questions to ask my teammates
