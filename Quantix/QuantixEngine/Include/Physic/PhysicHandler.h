@@ -10,6 +10,7 @@
 #include "rttrEnabled.h"
 #include "Physic/PhysicSetting.h"
 #include "Physic/Raycast.h"
+#include "Physic/Joint.h"
 
 #include "Core/DataStructure/GameComponent.h"
 
@@ -173,7 +174,7 @@ namespace Quantix::Physic
 		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
 
 		PxCapsuleController* CreateController(Core::DataStructure::GameComponent* object);
-		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec);
+		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec, Physic::Joint joint);
 
 		// Update
 		/**

@@ -318,6 +318,7 @@
     <ClInclude Include="Include\Physic\SimulationCallback.h" />
     <ClInclude Include="Include\Physic\Raycast.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Killzone.h" />
+    <ClInclude Include="Include\Physic\Joint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

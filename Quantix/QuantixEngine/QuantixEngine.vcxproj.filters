@@ -119,5 +119,6 @@
     <ClInclude Include="Include\Core\Components\Behaviours\Arms.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Cube.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Killzone.h" />
+    <ClInclude Include="Include\Physic\Joint.h" />
   </ItemGroup>
 </Project>

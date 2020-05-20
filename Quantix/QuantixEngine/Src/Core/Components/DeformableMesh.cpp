@@ -14,6 +14,10 @@ RTTR_PLUGIN_REGISTRATION
 	.property("numCubeInWidth", &Quantix::Core::Components::DeformableMesh::GetNumWidth, &Quantix::Core::Components::DeformableMesh::SetNumWidth)
 	.property("numCubeInHeight", &Quantix::Core::Components::DeformableMesh::numCubeInHeight)
 	.property("numCubeInDepth", &Quantix::Core::Components::DeformableMesh::numCubeInDepth)
+	.property("BreakForce", &Quantix::Core::Components::DeformableMesh::GetBreakForce, &Quantix::Core::Components::DeformableMesh::SetBreakForce)
+		(rttr::metadata("Description", "Joint"))
+	.property("BreakTorque Z", &Quantix::Core::Components::DeformableMesh::GetBreakTorque, &Quantix::Core::Components::DeformableMesh::SetBreakTorque)
+		(rttr::metadata("Description", "End"))
 	.method("Generate", &Quantix::Core::Components::DeformableMesh::Generate);
 }
 namespace Quantix::Core::Components
@@ -68,11 +72,11 @@ namespace Quantix::Core::Components
 						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * cubeSize.x, j * cubeSize.y, k * cubeSize.z) + gameobjects[0][0][0]->GetGlobalPosition());
 						AddComponent(gameobjects[i][j][k]);
 						if (i != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i - 1][j][k], Math::QXvec3(cubeSize.x * 0.5, 0, 0));
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i - 1][j][k], Math::QXvec3(cubeSize.x * 0.5, 0, 0), joint);
 						if (j != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k], Math::QXvec3(0, cubeSize.y * 0.5, 0));
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k], Math::QXvec3(0, cubeSize.y * 0.5, 0), joint);
 						if (k != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1], Math::QXvec3(0, 0, cubeSize.z * 0.5));
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1], Math::QXvec3(0, 0, cubeSize.z * 0.5), joint);
 					}
 				}
 			}

@@ -327,18 +327,19 @@ namespace Quantix::Physic
 		return (PxCapsuleController*)c;
 	}
 
-	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec)
+	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec, Physic::Joint joint)
 	{
 		PhysicDynamic* type0 = GetObject(object, true)->GetObjectDynamic();
 
 		PhysicDynamic* type1 = GetObject(other, true)->GetObjectDynamic();
 
 		//PxRevoluteJointCreate
-		PxRevoluteJoint* joint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(-physx::PxVec3(vec.x, vec.y, vec.z)), type1->GetRigid(), PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
+		PxRevoluteJoint* newJoint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(-physx::PxVec3(vec.x, vec.y, vec.z)), type1->GetRigid(), PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
 
-		joint->setBreakForce(0.1, 0.1);
+		newJoint->setBreakForce(joint.breakForce, joint.breakTorque);
+
 		//joint->setConstraintFlag(physx::PxConstraintFlag::)
-		return joint;
+		return newJoint;
 	}
 
 	void PhysicHandler::UpdateSystem(double deltaTime)

@@ -5,6 +5,7 @@
 #include "Core/MathHeader.h"
 #include "Core./DataStructure//Component.h"
 #include "Resources/Scene.h"
+#include "Physic/Joint.h"
 
 namespace Quantix::Core::Components
 {
@@ -16,8 +17,9 @@ namespace Quantix::Core::Components
 		QXuint numCubeInHeight = 1;
 		QXuint numCubeInDepth = 1;
 
-		Core::DataStructure::GameObject3D* gameobjects[4][4][4];
+		Physic::Joint joint;
 
+		Core::DataStructure::GameObject3D* gameobjects[4][4][4];
 
 		DeformableMesh() = default;
 		//DeformableMesh(DataStructure::GameComponent* par);
@@ -36,6 +38,12 @@ namespace Quantix::Core::Components
 
 		QXuint GetNumWidth() { return numCubeInWidth; }
 		void SetNumWidth(QXuint i) { numCubeInWidth = i; }
+
+		QXuint GetBreakForce() { return joint.breakForce; }
+		void SetBreakForce(QXuint i) { joint.breakForce = i; }
+
+		QXuint GetBreakTorque() { return joint.breakTorque; }
+		void SetBreakTorque(QXuint i) { joint.breakTorque = i; }
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};
