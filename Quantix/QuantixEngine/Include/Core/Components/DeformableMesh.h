@@ -16,6 +16,9 @@ namespace Quantix::Core::Components
 		QXuint numCubeInHeight = 1;
 		QXuint numCubeInDepth = 1;
 
+		Core::DataStructure::GameObject3D* gameobjects[4][4][4];
+
+
 		DeformableMesh() = default;
 		//DeformableMesh(DataStructure::GameComponent* par);
 		DeformableMesh(const DeformableMesh& src) = default;

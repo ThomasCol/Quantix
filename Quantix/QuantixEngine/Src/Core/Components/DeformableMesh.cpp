@@ -35,7 +35,20 @@ namespace Quantix::Core::Components
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
 		Core::DataStructure::GameObject3D* gameobject = (Core::DataStructure::GameObject3D*)_object;
 
-		Core::DataStructure::GameObject3D* gameobjects[4][4][4];
+		if (gameobjects[0][0][1])
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					for (int k = 0; k < 4; k++)
+					{
+						//Detruire gameobjects[i][j][k]
+					}
+				}
+			}
+		}
+
 		for (QXint i = 0; i < 4; i++)
 		{
 			for (QXint j = 0; j < 4; j++)
