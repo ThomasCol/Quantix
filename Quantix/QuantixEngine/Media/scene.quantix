@@ -29,7 +29,7 @@
                         "Transform": {
                             "position": {
                                 "x": 0.0,
-                                "y": 0.0,
+                                "y": -1.3673858642578126,
                                 "z": 0.0
                             },
                             "rotation": {
@@ -546,6 +546,205 @@
                                         "y": 0.5,
                                         "z": 5.0
                                     }
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                },
+                {
+                    "GameObject9": {
+                        "name": "Cube",
+                        "Transform": {
+                            "position": {
+                                "x": 0.0,
+                                "y": 2.8360037803649904,
+                                "z": 0.0
+                            },
+                            "rotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": -0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Mesh": {
+                                    "Enable": true,
+                                    "Model": "media/Mesh/cube.obj",
+                                    "Material": ""
+                                }
+                            },
+                            {
+                                "Grabbing": {
+                                    "Enable": true
+                                }
+                            },
+                            {
+                                "CharacterController": {
+                                    "Enable": true,
+                                    "Radius": 0.5,
+                                    "Height": 2.0,
+                                    "UpDirection": {
+                                        "x": 0.0,
+                                        "y": 1.0,
+                                        "z": 0.0
+                                    },
+                                    "Pos": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "FootPos": {
+                                        "x": 0.0,
+                                        "y": -1.5499999523162842,
+                                        "z": 0.0
+                                    }
+                                }
+                            },
+                            {
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "PawnGroup": false,
+                                    "MineGroup": false,
+                                    "CrabGroup": false,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                }
+                            },
+                            {
+                                "Camera": {
+                                    "Enable": true
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                },
+                {
+                    "GameObject10": {
+                        "name": "CubeToGrab",
+                        "Transform": {
+                            "position": {
+                                "x": 0.0,
+                                "y": 1.7278215885162354,
+                                "z": 3.835787534713745
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Mesh": {
+                                    "Enable": true,
+                                    "Model": "media/Mesh/cube.obj",
+                                    "Material": "media/Material/DefaultMaterial10.mat"
+                                }
+                            },
+                            {
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "PawnGroup": false,
+                                    "MineGroup": false,
+                                    "CrabGroup": false,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                }
+                            },
+                            {
+                                "Rigidbody": {
+                                    "Enable": true,
+                                    "Mass": 1.0,
+                                    "LinearVelocity": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "AngularVelocity": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Position": {
+                                        "x": 0.0,
+                                        "y": 1.7278215885162354,
+                                        "z": 3.835787534713745
+                                    },
+                                    "Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "DisableGravity": false,
+                                    "DisableSimulation": false,
+                                    "Kinematic": false,
+                                    "CCD": false,
+                                    "CCDFriction": false,
+                                    "SpeculativeCCD": false,
+                                    "RetainAcceleration": false,
+                                    "KinematicQueries": false,
+                                    "PoseIntPreview": false,
+                                    "CCDMaxImpulse": false,
+                                    "Position X": false,
+                                    "Position Y": false,
+                                    "Position Z": false,
+                                    "Rotation X": false,
+                                    "Rotation Y": false,
+                                    "Rotation Z": false
                                 }
                             }
                         ],

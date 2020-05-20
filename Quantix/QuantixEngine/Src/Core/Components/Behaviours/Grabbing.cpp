@@ -1,10 +1,29 @@
-#include "Gameplay/Grabbing.h"
+#include "Core/Components/Behaviours/Grabbing.h"
 
 #include <Physic/Raycast.h>
 #include "Core/UserEntry/InputManager.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+	rttr::registration::class_<Quantix::Gameplay::Grabbing>("Grabbing")
+		.constructor<>()
+		.constructor<Quantix::Core::DataStructure::GameComponent*>()
+		.constructor<const Quantix::Gameplay::Grabbing&>()
+		.constructor<Quantix::Gameplay::Grabbing&&>();
+}
+
 namespace Quantix::Gameplay
 {
+	Grabbing::Grabbing(Quantix::Core::DataStructure::GameComponent* par) :
+		Component(par),
+		Behaviour(par)
+	{}
+
+	Grabbing* Grabbing::Copy() const
+	{
+		return new Grabbing(*this);
+	}
+
 	void Grabbing::Awake()
 	{}
 
@@ -14,7 +33,9 @@ namespace Quantix::Gameplay
 	void Grabbing::Update(QXdouble deltaTime)
 	{
 		if (GetKey(QX_KEY_E) == Core::UserEntry::EKeyState::PRESSED)
+		{
 			Use();
+		}
 	}
 
 	void Grabbing::Use()
@@ -33,9 +54,9 @@ namespace Quantix::Gameplay
 
 		if (go)
 		{
-			Physic::Raycast	ray{ go->GetGlobalPosition(), go->GetTransform()->GetForward(), 10.f };
+			Physic::Raycast	ray{ go->GetGlobalPosition(), go->GetTransform()->GetForward(), 100.f };
 
-			if (ray.actorClosestBlock->GetLayer() == 8/*Layer?*/)// is a Cube
+			if (ray.actorClosestBlock && ray.actorClosestBlock->GetName() == "CubeToGrab")// is a Cube
 			{
 				//Change hierarchy of the object
 				_originOfObject = ray.actorClosestBlock->GetTransform()->GetParent();

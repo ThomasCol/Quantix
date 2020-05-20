@@ -77,7 +77,7 @@ namespace Quantix::Core::DataStructure
 
 		if (_toUpdate)
 		{
-			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>(true);
 			for (QXsizei i = 0; i < behaviors.size(); ++i)
 				behaviors[i]->Update(info.deltaTime);
 		}

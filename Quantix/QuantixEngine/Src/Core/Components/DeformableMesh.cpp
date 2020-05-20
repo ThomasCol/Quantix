@@ -39,24 +39,24 @@ namespace Quantix::Core::Components
 
 		//Core::DataStructure::GameObject3D**** gameobjects = nullptr;
 		//std::vector<std::vector<std::vector<Core::DataStructure::GameObject3D*>>> gameobjects;
-		Core::DataStructure::GameObject3D* gameobjects[1][3][2];
-		for (QXint i = 0; i < 1; i++)
+		Core::DataStructure::GameObject3D* gameobjects[4][4][4];
+		for (QXint i = 0; i < 4; i++)
 		{
 			//gameobjects.push_back(new Core::DataStructure::GameObject3D());
-			for (QXint j = 0; j < 3; j++)
+			for (QXint j = 0; j < 4; j++)
 			{
-				for (QXint k = 0; k < 2; k++)
+				for (QXint k = 0; k < 4; k++)
 				{
 					gameobjects[i][j][k] = new Core::DataStructure::GameObject3D();
 				}
 			}
 		}
 
-		for (QXint i = 0; i < 1; i++)
+		for (QXint i = 0; i < 4; i++)
 		{
-			for (QXint j = 0; j < 3; j++)
+			for (QXint j = 0; j < 4; j++)
 			{
-				for (QXint k = 0; k < 2; k++)
+				for (QXint k = 0; k < 4; k++)
 				{
 					gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)), _object);
 					gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * cubeSize.x, j * cubeSize.y, k * cubeSize.z));
@@ -93,6 +93,7 @@ namespace Quantix::Core::Components
 		// Add Mesh
 		Core::Components::Mesh* mesh = new Mesh();
 		mesh->Init(object);
+
 		object->AddComponent(mesh);
 
 		// Add Rigid

@@ -16,7 +16,7 @@ namespace Quantix::Core::DataStructure
 namespace Quantix::Core::Components
 {
 
-	struct Behaviour : public virtual Core::DataStructure::Component
+	struct QUANTIX_API Behaviour : public virtual Core::DataStructure::Component
 	{
 		Behaviour() = default;
 		Behaviour(Core::DataStructure::GameComponent* object);

@@ -199,7 +199,6 @@
     <ClCompile Include="externals\imgui\src\imgui_widgets.cpp" />
     <ClCompile Include="externals\stb_image.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="media\Scripts\Gameplay\Grabbing.cpp" />
     <ClCompile Include="src\Docking\Docker.cpp" />
     <ClCompile Include="src\Editor\Console.cpp" />
     <ClCompile Include="src\Editor\Editor.cpp" />
@@ -226,7 +225,6 @@
     <ClInclude Include="include\Editor\MenuBar.h" />
     <ClInclude Include="include\opengl_helper.h" />
     <ClInclude Include="include\Window.h" />
-    <ClInclude Include="media\Scripts\Gameplay\Grabbing.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,9 @@
 #define __GRABBING_H__
 
 #include "Core\Components\Behaviour.h"
-#include "Core\DataStructure\GameObject3D.h"
+#include "rttrEnabled.h"
+
+#include "Physic/Transform3D.h"
 
 namespace Quantix::Gameplay
 {
@@ -27,6 +29,16 @@ namespace Quantix::Gameplay
 		
 		public:
 
+			Grabbing() = default;
+			Grabbing(Quantix::Core::DataStructure::GameComponent* par);
+			Grabbing(const Grabbing&) = default;
+			Grabbing(Grabbing&&) = default;
+			~Grabbing() = default;
+
+			Grabbing* Copy() const override;
+			//void Init(Core::DataStructure::GameComponent* object) override;
+			//void Init(Core::DataStructure::GameComponent* object) override;
+
 			#pragma region Methods
 
 			void	Awake() override;
@@ -36,6 +48,7 @@ namespace Quantix::Gameplay
 			void	Use();
 			
 			#pragma endregion
+			CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::Behaviour);
 	};
 }
 #endif //__GRABBING_H__
