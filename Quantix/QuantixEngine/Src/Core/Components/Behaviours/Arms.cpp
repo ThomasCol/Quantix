@@ -39,6 +39,8 @@ namespace Quantix::Gameplay
 			UseHands();
 		if (GetKey(QX_KEY_F) == Core::UserEntry::EKeyState::PRESSED)
 			UseIce();
+		if (GetKey(QX_KEY_Q) == Core::UserEntry::EKeyState::PRESSED)
+			UsePunch();
 
 		if (_isGrabbingObject)
 		{
@@ -147,6 +149,26 @@ namespace Quantix::Gameplay
 		//Re-Activate Kinematic
 		cube->SetRigidFlagKinematic(false);
 		cube->SetRigidFlagKineForQueries(false);
+	}
+
+	void	Arms::UsePunch()
+	{
+		if (_isGrabbingObject && _grabbedObject->GetComponent<Cube>()->GetState() == ECubeState::GRABBED)
+		{
+			_grabbedObject->GetComponent<Cube>()->ChangeState(ECubeState::DEFAULT);
+
+			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKinematic(false);
+			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKineForQueries(false);
+
+			Core::Components::Rigidbody* cube = _grabbedObject->GetComponent<Core::Components::Rigidbody>();
+			if (cube)
+				cube->AddForce(_gameobject->GetTransform()->GetForward() * 50, Physic::ForceMode::IMPULSE);
+
+			_grabbedObject = nullptr;
+			_originOfGrabbedObject = nullptr;
+
+			_isGrabbingObject = QX_FALSE;
+		}
 	}
 
 	//Questions to ask my teammates

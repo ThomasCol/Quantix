@@ -30,6 +30,7 @@ namespace Quantix::Gameplay
 			void	UseIce();
 			void	Freeze(Core::Components::Rigidbody* cube);
 			void	UnFreeze(Core::Components::Rigidbody* cube);
+			void	UsePunch();
 
 			#pragma endregion
 		
