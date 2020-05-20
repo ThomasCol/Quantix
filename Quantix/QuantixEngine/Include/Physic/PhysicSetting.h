@@ -31,6 +31,7 @@ namespace Quantix::Physic
 		LAST
 	};
 
+	// Different way to apply a force
 	enum class ForceMode
 	{
 		ACCELERATION,

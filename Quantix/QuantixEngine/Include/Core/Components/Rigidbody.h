@@ -107,6 +107,11 @@ namespace Quantix::Core::Components
 
 #pragma region Accessors 
 
+		/**
+		 * @brief Set the Kinematic Target object
+		 * 
+		 * @param vec 
+		 */
 		void SetKinematicTarget(Math::QXvec3 vec);
 
 		/**
@@ -180,16 +185,23 @@ namespace Quantix::Core::Components
 		void SetTransformRotation(Math::QXquaternion q);
 
 		/**
-	 * @brief Get the Rigid Flag Kinematic object
-	 *
-	 * @return Value of the Flag
-	 */
+	 	* @brief Get the Rigid Flag Kinematic object
+	 	*
+	 	* @return Value of the Flag
+	 	*/
 		bool GetRigidFlagKinematic() { return rigidFlag.kinematic; }
 		bool GetRigidFlagCCD() { return rigidFlag.ccd; }
 		bool GetRigidFlagCCDFriction() { return rigidFlag.ccdFriction; }
 		bool GetRigidFlagSpeculativeCCD() { return rigidFlag.speculativeCCD; }
 		bool GetRigidFlagRetainAcceleration() { return rigidFlag.retainAcceleration; }
+
+		/**
+		 * @brief Get the Rigid Flag Kine For Queries object
+		 * 
+		 * @return true if Kinematic used for queries
+		 */
 		bool GetRigidFlagKineForQueries() { return rigidFlag.useKinematicTargetForQueries; }
+		
 		bool GetRigidFlagPosePreview() { return rigidFlag.poseIntegrationPreview; }
 		bool GetRigidFlagCCDMaxContactImpulse() { return rigidFlag.ccdMaxContactImpulse; }
 
@@ -229,6 +241,11 @@ namespace Quantix::Core::Components
 			actorPhysic->GetRigid()->setRigidBodyFlag(physx::PxRigidBodyFlag::eRETAIN_ACCELERATIONS, b);
 		}
 
+		/**
+		 * @brief Set the Rigid Flag Kine For Queries object
+		 * 
+		 * @param b 
+		 */
 		void SetRigidFlagKineForQueries(bool b)
 		{
 			rigidFlag.useKinematicTargetForQueries = b;
@@ -292,18 +309,88 @@ namespace Quantix::Core::Components
 
 		bool GetActorFlagSendSleepNotifies() { return actorFlag.sendSleepNotifies; }
 
+		/**
+		 * @brief Get the Rigid Lock Flag Linear X object
+		 * 
+		 * @return true if LinearX is lock
+		 */
 		bool GetRigidLockFlagLinearX() { return rigidLockFlag.lockLinearX; }
+	
+		/**
+		 * @brief Get the Rigid Lock Flag Linear Y object
+		 * 
+		 * @return true if LinearY is lock
+		 */
 		bool GetRigidLockFlagLinearY() { return rigidLockFlag.lockLinearY; }
+
+		/**
+		 * @brief Get the Rigid Lock Flag Linear Z object
+		 * 
+		 * @return true if LinearZ is lock
+		 */
 		bool GetRigidLockFlagLinearZ() { return rigidLockFlag.lockLinearZ; }
+
+		/**
+		 * @brief Get the Rigid Lock Flag angular X object
+		 * 
+		 * @return true if angular X is lock
+		 */
 		bool GetRigidLockFlagAngularX() { return rigidLockFlag.lockAngularX; }
+
+		/**
+		 * @brief Get the Rigid Lock Flag angular Y object
+		 * 
+		 * @return true if angular Y is lock
+		 */
 		bool GetRigidLockFlagAngularY() { return rigidLockFlag.lockAngularY; }
+
+		/**
+		 * @brief Get the Rigid Lock Flag angular Z object
+		 * 
+		 * @return true if angular Z is lock
+		 */
 		bool GetRigidLockFlagAngularZ() { return rigidLockFlag.lockAngularZ; }
 
+		/**
+		 * @brief Set the Rigid Lock Flag Linear X object
+		 * 
+		 * @param b 
+		 */
 		void SetRigidLockFlagLinearX(bool b);
+
+		/**
+		 * @brief Set the Rigid Lock Flag Linear Y object
+		 * 
+		 * @param b 
+		 */
 		void SetRigidLockFlagLinearY(bool b);
+
+		/**
+		 * @brief Set the Rigid Lock Flag Linear Z object
+		 * 
+		 * @param b 
+		 */
 		void SetRigidLockFlagLinearZ(bool b);
+
+		/**
+		 * @brief Set the Rigid Lock Flag Angular X object
+		 * 
+		 * @param b 
+		 */
 		void SetRigidLockFlagAngularX(bool b);
+
+		/**
+		 * @brief Set the Rigid Lock Flag Angular Y object
+		 * 
+		 * @param b 
+		 */
 		void SetRigidLockFlagAngularY(bool b);
+
+		/**
+		 * @brief Set the Rigid Lock Flag Angular Z object
+		 * 
+		 * @param b 
+		 */
 		void SetRigidLockFlagAngularZ(bool b);
 #pragma endregion 
 
