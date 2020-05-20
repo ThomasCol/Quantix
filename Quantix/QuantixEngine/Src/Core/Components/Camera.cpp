@@ -99,7 +99,7 @@ namespace Quantix::Core::Components
 
 	void			Camera::ChangeView(QXfloat posX, QXfloat posY, QXint width, QXint height, QXdouble frameTime)
 	{
-		Math::QXvec3	rotDir{ -posY, -posX, 0.f };
+		Math::QXvec3	rotDir{ posY, -posX, 0.f };
 
 		Rotate(rotDir * (QXfloat)frameTime * SENSIBILITY);
 	}
@@ -114,7 +114,7 @@ namespace Quantix::Core::Components
 			_angle.x = -Q_PI / 3.f;
 
 		_dir.z = cos(_angle.x) * cos(_angle.y);
-		_dir.y = sin(_angle.x);
+		_dir.y = sin(-_angle.x);
 		_dir.x = cos(_angle.x) * sin(_angle.y);
 		if (_object)
 		{

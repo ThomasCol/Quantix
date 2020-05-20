@@ -35,7 +35,7 @@ namespace Quantix::Gameplay
 		{
 			Physic::Raycast	ray{ go->GetGlobalPosition(), go->GetTransform()->GetForward(), 10.f };
 
-			if (ray.actorClosestBlock->GetLayer() == 8/*Layer?*/)// is a Cube
+			if (ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
 				//Change hierarchy of the object
 				_originOfObject = ray.actorClosestBlock->GetTransform()->GetParent();

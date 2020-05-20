@@ -88,6 +88,20 @@ void Inspector::ShowTransform2D(Quantix::Core::Platform::Application* app)
 	}
 }
 
+void Inspector::LayerObject(rttr::property currentProp, rttr::instance inst)
+{
+	auto value = currentProp.get_enumeration().value_to_name(currentProp.get_value(inst)).to_string();
+
+	ImGui::Text("%s", currentProp.get_enumeration().get_name().to_string().c_str()); ImGui::SameLine();
+	if (ImGui::BeginCombo("##", value.c_str()))
+	{
+		for (auto it = currentProp.get_enumeration().get_names().begin(); it != currentProp.get_enumeration().get_names().end(); ++it)
+			if (ImGui::Selectable((*it).to_string().c_str()))
+				currentProp.set_value(inst, currentProp.get_enumeration().name_to_value((*it).to_string()));
+		ImGui::EndCombo();
+	}
+}
+
 void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Platform::Application* app)
 {
 	if (_enable)
@@ -99,6 +113,8 @@ void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Plat
 		ImGui::Text("GameObject: "); ImGui::SameLine();
 		if (ImGui::InputText("##Input", currName, IM_ARRAYSIZE(currName), ImGuiInputTextFlags_EnterReturnsTrue))
 			_object->SetName(currName);
+
+		LayerObject(_object->get_type().get_property("layer"), _object);
 
 		if (_is3D)
 			ShowTransform3D(app);
@@ -142,7 +158,6 @@ void Inspector::ShowBehaviour()
 {
 	rttr::array_range behavioursAvailable = rttr::type::get<Quantix::Core::Components::Behaviour>().get_derived_classes();
 
-	std::cout << "Show Behaviour" << std::endl;
 	QXuint i = 0;
 	for (auto it : behavioursAvailable)
 	{
@@ -516,7 +531,7 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 	}
 }
 
-void Inspector::ShowEnum(rttr::property currentProp, rttr::instance inst, rttr::type type)
+void Inspector::ShowEnum(rttr::property currentProp, rttr::instance inst)
 {
 	auto value = currentProp.get_enumeration().value_to_name(currentProp.get_value(inst)).to_string();
 
@@ -657,7 +672,7 @@ void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rt
 	{
 		if (currentProp.is_enumeration())
 		{
-			ShowEnum(currentProp, inst, type);
+			ShowEnum(currentProp, inst);
 		}
 		else if (type.is_class() || (type.is_pointer() && type.get_raw_type().is_class()))
 		{
