@@ -46,7 +46,7 @@ namespace Quantix::Physic
 		// If it is a trigger
 		if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 		{
-			//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+			if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 				pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
 			return physx::PxFilterFlag::eDEFAULT;
 		}
@@ -54,7 +54,7 @@ namespace Quantix::Physic
 		// generate contacts for all that were not filtered above
 		std::cout << "Not Trigger" << std::endl;
 
-		//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 		{
 			pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 			pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;

@@ -41,9 +41,9 @@ namespace Quantix::Physic
 
 	struct QUANTIX_API CollideGroup
 	{
-		bool pawn = false;
-		bool mine = false;
-		bool crab = false;
+		bool pawn = true;
+		bool mine = true;
+		bool crab = true;
 	};
 
 	// Wrapper PxRigidFlag

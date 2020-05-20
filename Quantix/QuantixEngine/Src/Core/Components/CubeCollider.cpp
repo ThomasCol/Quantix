@@ -71,5 +71,10 @@ namespace Quantix::Core::Components
 			shape = Physic::PhysicHandler::GetInstance()->CreateCubeCollider(par, false);
 			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
 		}
+
+		SetCollideFilterCrab(true);
+		SetCollideFilterMine(true);
+		SetCollideFilterPawn(true);
+		SetMyFilterGroup(Physic::FilterGroup::eCRAB);
 	}
 }
