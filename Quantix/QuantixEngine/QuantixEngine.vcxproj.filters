@@ -53,7 +53,8 @@
     <ClCompile Include="Src\Physic\ControllerBehaviorCallback.cpp" />
     <ClCompile Include="Src\Physic\ControllerHitReport.cpp" />
     <ClCompile Include="Src\Core\Components\DeformableMesh.cpp" />
-    <ClCompile Include="Src\Core\Components\Behaviours\Grabbing.cpp" />
+    <ClCompile Include="Src\Core\Components\Behaviours\Cube.cpp" />
+    <ClCompile Include="Src\Core\Components\Behaviours\Arms.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="Include\Physic\ControllerHitReport.h" />
     <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
     <ClInclude Include="Include\Core\Event\Event.h" />
-    <ClInclude Include="Include\Core\Components\Behaviours\Grabbing.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\Arms.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\Cube.h" />
   </ItemGroup>
 </Project>
