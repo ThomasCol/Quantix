@@ -341,7 +341,6 @@ namespace Quantix::Physic
 		return joint;
 	}
 
-
 	void PhysicHandler::UpdateSystem(double deltaTime)
 	{
 		mAccumulator += (physx::PxReal)deltaTime;
@@ -461,6 +460,32 @@ namespace Quantix::Physic
 			ownRaycast.distanceClosestBlock = hitRaycast.block.distance;
 			ownRaycast.actorClosestBlock = (Core::DataStructure::GameObject3D*)hitRaycast.block.actor->userData;
 		}
+	}
+
+	std::vector<Core::DataStructure::GameObject3D*> PhysicHandler::OverlapSphere(QXfloat radius, Physic::Transform3D* transform)
+	{
+		Math::QXvec3 p = transform->GetGlobalPosition();
+		Math::QXquaternion q = transform->GetGlobalRotation();
+		PxTransform shapePosition = PxTransform(p.x, p.y, p.z, PxQuat(q.v.x, q.v.y, q.v.z, q.w));
+
+		PxSphereGeometry overlapGeometrie = PxSphereGeometry(radius);
+
+		PxQueryFilterData fd;
+		fd.flags |= PxQueryFlag::eDYNAMIC; // note the OR with the default value
+
+		PxOverlapBuffer hit;
+
+		bool status = mScene->overlap(overlapGeometrie, shapePosition, hit, fd);
+
+		std::vector<Core::DataStructure::GameObject3D*> list;
+		if (status)
+		{
+			QXint nbTouch = hit.getNbTouches();
+			for (QXint i = 0; i < nbTouch; i++)
+				list.push_back((Core::DataStructure::GameObject3D*)(hit.getTouch(i).actor->userData));
+		}
+
+		return list;
 	}
 
 	void PhysicHandler::CleanScene()

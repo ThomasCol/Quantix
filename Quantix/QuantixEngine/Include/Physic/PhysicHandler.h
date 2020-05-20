@@ -203,6 +203,7 @@ namespace Quantix::Physic
 		void UpdateEditorActor();
 
 		void Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Raycast& ownRaycast);
+		std::vector<Core::DataStructure::GameObject3D*> OverlapSphere(QXfloat radius, Physic::Transform3D* transform);
 
 		void CleanScene();
 
