@@ -205,7 +205,6 @@ namespace Quantix::Core::Components
 		bool GetRigidFlagPosePreview() { return rigidFlag.poseIntegrationPreview; }
 		bool GetRigidFlagCCDMaxContactImpulse() { return rigidFlag.ccdMaxContactImpulse; }
 
-
 		void SetRigidFlagCCD(bool b)
 		{
 			rigidFlag.ccd = b;

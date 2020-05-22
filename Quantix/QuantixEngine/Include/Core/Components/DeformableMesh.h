@@ -6,6 +6,7 @@
 #include "Core./DataStructure//Component.h"
 #include "Resources/Scene.h"
 #include "Physic/Joint.h"
+#include "Core/Platform/Application.h"
 
 namespace Quantix::Core::Components
 {
@@ -82,14 +83,14 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param scene Current scene
 		 */
-		void Generate(Resources::Scene* scene);
+		void Generate(Core::Platform::Application* app);
 
 		/**
 		 * @brief addComponent for the deformableMesh during Generation
 		 * 
 		 * @param object 
 		 */
-		void AddComponent(DataStructure::GameObject3D* object);
+		void AddComponent(DataStructure::GameObject3D* object, Core::Platform::Application* app);
 
 		/**
 		 * @brief Get the Num Width object

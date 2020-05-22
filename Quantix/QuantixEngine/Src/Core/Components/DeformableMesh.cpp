@@ -34,7 +34,7 @@ namespace Quantix::Core::Components
 		_isEnable = true;
 	}
 
-	void DeformableMesh::Generate(Resources::Scene* scene)
+	void DeformableMesh::Generate(Core::Platform::Application* app)
 	{
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
 		Core::DataStructure::GameObject3D* gameobject = (Core::DataStructure::GameObject3D*)_object;
@@ -64,13 +64,13 @@ namespace Quantix::Core::Components
 					if (i == 0 && j == 0 && k == 0)
 					{
 						gameobjects[i][j][k] = gameobject;
-						AddComponent(gameobjects[i][j][k]);
+						AddComponent(gameobjects[i][j][k], app);
 					}
 					else
 					{
-						gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)));
+						gameobjects[i][j][k] = app->scene->AddGameObject(QXstring("Cube" + std::to_string(i) + std::to_string(j) + std::to_string(k)));
 						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * cubeSize.x, j * cubeSize.y, k * cubeSize.z) + gameobjects[0][0][0]->GetGlobalPosition());
-						AddComponent(gameobjects[i][j][k]);
+						AddComponent(gameobjects[i][j][k], app);
 						if (i != 0)
 							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i - 1][j][k], Math::QXvec3(cubeSize.x * 0.5, 0, 0), joint);
 						if (j != 0)
@@ -92,12 +92,12 @@ namespace Quantix::Core::Components
 		}*/
 	}
 
-	void DeformableMesh::AddComponent(DataStructure::GameObject3D* object)
+	void DeformableMesh::AddComponent(DataStructure::GameObject3D* object, Core::Platform::Application* app)
 	{
 		// Add Mesh
 		Core::Components::Mesh* mesh = new Mesh();
 		mesh->Init(object);
-
+		app->manager.CreateMesh(mesh, "media/Mesh/cube.obj");
 		object->AddComponent(mesh);
 
 		// Add Rigid

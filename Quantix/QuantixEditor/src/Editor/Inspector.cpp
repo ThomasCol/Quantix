@@ -409,7 +409,7 @@ void Inspector::GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quanti
 	{
 		auto tmpInst = inst.get_derived_type();
 
-		tmpInst.invoke("Generate", inst, { app->scene });
+		tmpInst.invoke("Generate", inst, { app });
 	}
 }
 
