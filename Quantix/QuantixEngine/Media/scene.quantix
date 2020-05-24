@@ -29,7 +29,7 @@
                         "Transform": {
                             "position": {
                                 "x": 0.0,
-                                "y": 0.0,
+                                "y": -2.1742875576019289,
                                 "z": 0.0
                             },
                             "rotation": {
@@ -67,9 +67,9 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "PawnGroup": false,
-                                    "MineGroup": false,
-                                    "CrabGroup": false,
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
                                     "Query Shape": true,
                                     "Simulation Shape": true,
                                     "Trigger Shape": false,
@@ -129,9 +129,9 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "PawnGroup": false,
-                                    "MineGroup": false,
-                                    "CrabGroup": false,
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
                                     "Query Shape": true,
                                     "Simulation Shape": true,
                                     "Trigger Shape": false,
@@ -191,9 +191,9 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "PawnGroup": false,
-                                    "MineGroup": false,
-                                    "CrabGroup": false,
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
                                     "Query Shape": true,
                                     "Simulation Shape": true,
                                     "Trigger Shape": false,
@@ -253,9 +253,9 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "PawnGroup": false,
-                                    "MineGroup": false,
-                                    "CrabGroup": false,
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
                                     "Query Shape": true,
                                     "Simulation Shape": true,
                                     "Trigger Shape": false,
@@ -315,9 +315,9 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "PawnGroup": false,
-                                    "MineGroup": false,
-                                    "CrabGroup": false,
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
                                     "Query Shape": true,
                                     "Simulation Shape": true,
                                     "Trigger Shape": false,
@@ -385,9 +385,9 @@
                                     "Trigger Shape": false,
                                     "Visualization Shape": false,
                                     "HalfExtent": {
-                                        "x": 0.5,
+                                        "x": 2.0,
                                         "y": 0.5,
-                                        "z": 0.5
+                                        "z": 5.0
                                     }
                                 }
                             }
@@ -439,9 +439,9 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "PawnGroup": false,
-                                    "MineGroup": false,
-                                    "CrabGroup": false,
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
                                     "Query Shape": true,
                                     "Simulation Shape": true,
                                     "Trigger Shape": false,
@@ -501,9 +501,9 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "PawnGroup": false,
-                                    "MineGroup": false,
-                                    "CrabGroup": false,
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
                                     "Query Shape": true,
                                     "Simulation Shape": true,
                                     "Trigger Shape": false,
@@ -563,9 +563,9 @@
                                         "z": 0.0,
                                         "w": 1.0
                                     },
-                                    "PawnGroup": false,
-                                    "MineGroup": false,
-                                    "CrabGroup": false,
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
                                     "Query Shape": true,
                                     "Simulation Shape": true,
                                     "Trigger Shape": false,
@@ -586,7 +586,7 @@
                         "name": "Player",
                         "Transform": {
                             "position": {
-                                "x": 13.235770225524903,
+                                "x": 0.039315104484558108,
                                 "y": 2.3818702697753908,
                                 "z": 0.0
                             },
@@ -606,6 +606,28 @@
                             {
                                 "Arms": {
                                     "Enable": true
+                                }
+                            },
+                            {
+                                "CharacterController": {
+                                    "Enable": true,
+                                    "Radius": 0.5,
+                                    "Height": 2.0,
+                                    "UpDirection": {
+                                        "x": 0.0,
+                                        "y": 1.0,
+                                        "z": 0.0
+                                    },
+                                    "Pos": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "FootPos": {
+                                        "x": 0.0,
+                                        "y": -1.5499999523162842,
+                                        "z": 0.0
+                                    }
                                 }
                             },
                             {
@@ -693,6 +715,35 @@
                                 "Cube": {
                                     "Enable": true
                                 }
+                            },
+                            {
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                }
                             }
                         ],
                         "Childs": []
@@ -703,9 +754,9 @@
                         "name": "Cube11",
                         "Transform": {
                             "position": {
-                                "x": 9.312040328979493,
+                                "x": 0.8203529119491577,
                                 "y": 2.386181592941284,
-                                "z": 4.847893238067627
+                                "z": 7.266559600830078
                             },
                             "rotation": {
                                 "x": 0.0,
@@ -747,9 +798,9 @@
                                         "z": 0.0
                                     },
                                     "Position": {
-                                        "x": 9.312040328979493,
+                                        "x": 0.8203529119491577,
                                         "y": 2.386181592941284,
-                                        "z": 4.847893238067627
+                                        "z": 7.266559600830078
                                     },
                                     "Rotation": {
                                         "x": 0.0,
@@ -773,6 +824,35 @@
                                     "Rotation X": false,
                                     "Rotation Y": false,
                                     "Rotation Z": false
+                                }
+                            },
+                            {
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
                                 }
                             }
                         ],

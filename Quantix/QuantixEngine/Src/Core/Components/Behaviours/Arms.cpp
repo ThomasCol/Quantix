@@ -43,7 +43,7 @@ namespace Quantix::Gameplay
 			UsePunch();
 		if (GetKey(QX_KEY_R) == Core::UserEntry::EKeyState::PRESSED)
 			UseMagnet(QX_TRUE);
-		if (GetKey(QX_KEY_R) == Core::UserEntry::EKeyState::PRESSED)
+		if (GetKey(QX_KEY_T) == Core::UserEntry::EKeyState::PRESSED)
 			UseMagnet(QX_FALSE);
 
 		if (_isGrabbingObject)

@@ -476,6 +476,7 @@ namespace Quantix::Physic
 
 		PxQueryFilterData fd;
 		fd.flags |= PxQueryFlag::eDYNAMIC; // note the OR with the default value
+		fd.flags |= PxQueryFlag::eANY_HIT;
 
 		PxOverlapBuffer hit;
 
