@@ -22,6 +22,11 @@ RTTR_PLUGIN_REGISTRATION
 }
 namespace Quantix::Core::Components
 {
+	DeformableMesh::~DeformableMesh()
+	{
+		Destroy();
+	}
+
 	DeformableMesh* DeformableMesh::Copy() const
 	{
 		return new DeformableMesh(*this);
@@ -179,5 +184,25 @@ namespace Quantix::Core::Components
 		Core::Components::CubeCollider* collider = new CubeCollider();
 		collider->Init(object);
 		object->AddComponent(collider);
+	}
+
+	void DeformableMesh::Destroy()
+	{
+		if (gameobjects)
+		{
+			for (QXuint i = 0; i < numCubeInWidth; i++)
+			{
+				for (QXuint j = 0; j < numCubeInHeight; j++)
+				{
+					for (QXuint k = 0; k < numCubeInHeight; k++)
+					{
+						gameobjects[i][j][k] = nullptr;
+					}
+					free(gameobjects[i][j]);
+				}
+				free(gameobjects[i]);
+			}
+			free(gameobjects);
+		}
 	}
 }

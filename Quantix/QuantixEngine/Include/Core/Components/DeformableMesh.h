@@ -46,7 +46,7 @@ namespace Quantix::Core::Components
 		 * @brief Destroy the Deformable Mesh object
 		 * 
 		 */
-		~DeformableMesh() = default;
+		~DeformableMesh();
 
 		/**
 		 * @brief Operator = per copy
@@ -70,6 +70,8 @@ namespace Quantix::Core::Components
 		 * @return DeformableMesh* 
 		 */
 		DeformableMesh* Copy() const override;
+
+		void Destroy() override;
 
 		/**
 		 * @brief Init a new DeformableMesh
