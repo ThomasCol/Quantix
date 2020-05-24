@@ -234,9 +234,6 @@ namespace Quantix::Physic
 			exit(1);
 		}
 
-		// Create a collection
-		collection = PxCreateCollection();            
-
 		InitScene();
 		manager = PxCreateControllerManager(*mScene);
 
@@ -261,13 +258,9 @@ namespace Quantix::Physic
 		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
 
 		sceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
-		//sceneDesc.flags |= PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS;
-		//sceneDesc.flags |= PxSceneFlag::;
-		//physx::PxCudaContextManagerDesc cudaContextManagerDesc;
-		//sceneDesc.cudaContextManager = PxCreateCudaContextManager(*pDefaultFundation, cudaContextManagerDesc);
+		
 		sceneDesc.filterShader = &contactReportFilterShader;
 		sceneDesc.simulationEventCallback = new SimulationCallback();
-		//sceneDesc.broadPhaseType = physx::PxBroadPhaseType::;
 
 		mCpuDispatcher = PxDefaultCpuDispatcherCreate(4);
 		if (!mCpuDispatcher)
@@ -283,9 +276,11 @@ namespace Quantix::Physic
 	{
 		manager->purgeControllers();
 		manager->release();
-		collection->release();
 		mCooking->release();
+
 		PxCloseExtensions();
+
+		mCpuDispatcher->release();
 		mSDK->release();
 
 		if (pPvd)
