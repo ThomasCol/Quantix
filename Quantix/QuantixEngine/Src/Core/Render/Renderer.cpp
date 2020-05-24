@@ -20,9 +20,8 @@ namespace Quantix::Core::Render
 	{
 		CreateRenderFramebuffer(info.width, info.height, _mainBuffer);
 		CreateRenderFramebuffer(info.width, info.height, _gameBuffer);
-		CreateFramebuffer(info.width, info.height, _finalGameBuffer);
-		CreateFramebuffer(info.width, info.height, _finalSceneBuffer);
-		InitShadowBuffer();
+		InitUnidirectionnalShadowBuffer();
+		InitOmnidirectionnalShadowBuffer();
 
 		_cube = manager.CreateModel("media/Mesh/cube.obj");
 		_sphere = manager.CreateModel("media/Mesh/sphere.obj");
@@ -157,7 +156,7 @@ namespace Quantix::Core::Render
 		fbo.depthBuffer = depth_stencil_renderbuffer;
 	}
 
-	void Renderer::InitShadowBuffer() noexcept
+	void Renderer::InitUnidirectionnalShadowBuffer() noexcept
 	{
 		const QXuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 		QXuint depthMapFBO;
@@ -181,8 +180,41 @@ namespace Quantix::Core::Render
 		glReadBuffer(GL_NONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		_shadowBuffer.FBO = depthMapFBO;
-		_shadowBuffer.texture = depthMap;
+		_uniShadowBuffer.FBO = depthMapFBO;
+		_uniShadowBuffer.texture = depthMap;
+	}
+
+	void Renderer::InitOmnidirectionnalShadowBuffer() noexcept
+	{
+		const QXuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+		QXuint depthMapFBO;
+		glGenFramebuffers(1, &depthMapFBO);
+		// create depth texture
+		QXuint depthMap;
+		glGenTextures(1, &depthMap);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, depthMap);
+
+		for (QXuint i = 0; i < 6; ++i)
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+		QXfloat borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+		// attach depth texture as FBO's depth buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthMap, 0);
+
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		_omniShadowBuffer.FBO = depthMapFBO;
+		_omniShadowBuffer.texture = depthMap;
 	}
 
 	void Renderer::InitPostProcessEffects(DataStructure::ResourcesManager& manager, Platform::AppInfo& info) noexcept
@@ -223,7 +255,7 @@ namespace Quantix::Core::Render
 		glEnable(GL_DEPTH_TEST);
 
 		Resources::Material* material;
-		Quantix::Core::DataStructure::GameObject3D* obj;
+		DataStructure::GameObject3D* obj;
 
 		for (QXuint i = 0; i < mesh.size(); i++)
 		{
@@ -242,7 +274,7 @@ namespace Quantix::Core::Render
 			// Compare Meshes key for binding each texture once per shader
 			if (mesh[i]->textureID != last_texture_id)
 			{
-				material->SendData(_shadowBuffer.texture);
+				material->SendData(_uniShadowBuffer.texture);
 				last_texture_id = mesh[i]->textureID;
 			}
 
@@ -278,7 +310,7 @@ namespace Quantix::Core::Render
 	{
 		_shadowProgram->Use();
 
-		glBindFramebuffer(GL_FRAMEBUFFER, _shadowBuffer.FBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, _uniShadowBuffer.FBO);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, 1024, 1024);
@@ -361,6 +393,12 @@ namespace Quantix::Core::Render
 	void Renderer::SendUniformBuffer(std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
 	{
 		QXuint	light_size = (QXuint)lights.size();
+
+		for (QXsizei i = 0; i < light_size; ++i)
+		{
+			lights[i].position = ((DataStructure::GameObject3D*)lights[i].GetObject())->GetLocalPosition();
+			lights[i].direction = ((DataStructure::GameObject3D*)lights[i].GetObject())->GetTransform()->GetForward();
+		}
 
 		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), cam->GetLookAt().array);
