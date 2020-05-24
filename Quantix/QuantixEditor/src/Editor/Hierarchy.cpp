@@ -7,6 +7,11 @@
 #include "Hierarchy.h"
 #include <Core/Debugger/Logger.h>
 
+Hierarchy::~Hierarchy()
+{
+	delete _inspector;
+}
+
 void Hierarchy::DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app)
 {
 	for (auto it = node.begin(); it != node.end(); ++it)

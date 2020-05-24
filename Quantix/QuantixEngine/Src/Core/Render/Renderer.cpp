@@ -15,11 +15,8 @@ namespace Quantix::Core::Render
 #pragma region Constructors
 
 	Renderer::Renderer(Platform::AppInfo& info, DataStructure::ResourcesManager& manager) noexcept :
-		_mainBuffer {},
 		_projLight { Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f) }
 	{
-		CreateRenderFramebuffer(info.width, info.height, _mainBuffer);
-		CreateRenderFramebuffer(info.width, info.height, _gameBuffer);
 		InitUnidirectionnalShadowBuffer();
 		InitOmnidirectionnalShadowBuffer();
 
@@ -52,6 +49,17 @@ namespace Quantix::Core::Render
 		glBindBufferBase(GL_UNIFORM_BUFFER, 2, _lightUBO);
 
 		InitPostProcessEffects(manager, info);
+	}
+
+	Renderer::~Renderer()
+	{
+		glDeleteFramebuffers(1, &_uniShadowBuffer.FBO);
+		glDeleteFramebuffers(1, &_omniShadowBuffer.FBO);
+		glDeleteBuffers(1, &_viewProjMatrixUBO);
+		glDeleteBuffers(1, &_viewProjShadowMatrixUBO);
+		glDeleteBuffers(1, &_lightUBO);
+		delete _bloom;
+		delete _effects;
 	}
 
 #pragma endregion

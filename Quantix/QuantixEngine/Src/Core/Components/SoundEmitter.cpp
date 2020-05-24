@@ -63,7 +63,6 @@ namespace Quantix::Core::Components
 
 	SoundEmitter::~SoundEmitter()
 	{
-		delete _sound;
 		delete _channel;
 	}
 

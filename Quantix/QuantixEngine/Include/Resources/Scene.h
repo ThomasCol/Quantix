@@ -95,18 +95,6 @@ namespace Quantix::Resources
 
 			QXbool	FindGameComponent(Core::DataStructure::GameComponent* gc) noexcept;
 
-			template<class Archive>
-			void save(Archive& archive) const
-			{
-				archive(_name, _root->GetTransform(), _id);
-			}
-
-			template<class Archive>
-			void load(Archive& archive)
-			{
-				archive(_name, _root->GetTransform(), _id);
-			}
-
 			#pragma endregion
 
 			#pragma region Operators

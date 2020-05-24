@@ -73,7 +73,13 @@ Editor::~Editor()
 
 	delete _app;
 	delete _cameraEditor;
-	delete _defaultCamera;
+	if (_defaultCamera == _mainCamera)
+		delete _defaultCamera;
+	else
+	{
+		delete _mainCamera;
+		delete _defaultCamera;
+	}
 	delete _root;
 	delete _mouseInput;
 }

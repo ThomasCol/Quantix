@@ -21,9 +21,6 @@ namespace Quantix::Core::Render
 	private:
 		#pragma region Attributes
 
-		RenderFramebuffer				_mainBuffer;
-		RenderFramebuffer				_gameBuffer;
-
 		Framebuffer 					_uniShadowBuffer;
 		Framebuffer 					_omniShadowBuffer;
 
@@ -124,7 +121,7 @@ namespace Quantix::Core::Render
 		/**
 		 * @brief Destroy the Renderer object
 		 */
-		~Renderer() = default;
+		~Renderer();
 
 		#pragma endregion
 

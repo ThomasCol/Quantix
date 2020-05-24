@@ -11,7 +11,6 @@ namespace Quantix::Resources
 
 	Texture::~Texture()
 	{
-		LOG(WARNING, "here");
 		if (_image)
 		{
 			stbi_image_free(_image);
@@ -19,7 +18,7 @@ namespace Quantix::Resources
 		}
 		if (_HDRImage)
 		{
-			stbi_image_free(_image);
+			stbi_image_free(_HDRImage);
 			_HDRImage = nullptr;
 		}
 	}

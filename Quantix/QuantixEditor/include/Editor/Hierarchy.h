@@ -20,7 +20,7 @@ public:
 	 * @brief Destroy the Hierarchy object
 	 * 
 	 */
-	~Hierarchy() = default;
+	~Hierarchy();
 	#pragma endregion Constructors&Destructor
 
 	#pragma region Methods
