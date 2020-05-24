@@ -37,14 +37,14 @@ namespace Quantix::Physic
 
 #pragma region PhysX
 		bool recordMemoryAllocations = true;
-		PxPhysics* mSDK = NULL;
-		PxCooking* mCooking = NULL;
+		PxPhysics* mSDK = nullptr;
+		PxCooking* mCooking = nullptr;
 		PxDefaultErrorCallback pDefaultErrorCallback;
 		PxDefaultAllocator pDefaultAllocatorCallback;
-		PxFoundation* pDefaultFundation;
-		PxPvd* pPvd;
+		PxFoundation* pDefaultFundation = nullptr;
+		PxPvd* pPvd = nullptr;
 		PxSimulationFilterShader pDefaultFilterShader = PxDefaultSimulationFilterShader;
-		PxDefaultCpuDispatcher* mCpuDispatcher;
+		PxDefaultCpuDispatcher* mCpuDispatcher = nullptr;
 		PxScene* mScene = nullptr;
 		PxMaterial* mMaterial = nullptr;
 		PxControllerManager* manager = nullptr;

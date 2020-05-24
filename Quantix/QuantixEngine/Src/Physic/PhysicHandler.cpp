@@ -315,7 +315,7 @@ namespace Quantix::Physic
 		// Controller skin within which contacts generated
 		desc.contactOffset = 0.05f;
 		// Max Obstacle hieght the caracther can climb
-		desc.stepOffset = 0.01;
+		desc.stepOffset = 0.01f;
 
 		desc.slopeLimit = 0.5f; // max slope the character can walk
 		desc.radius = 0.5f; // radius of the capsule
@@ -402,7 +402,7 @@ namespace Quantix::Physic
 			if (controller)
 			{
 				PxExtendedVec3 pos = controller->getPosition();
-				((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->SetPosition(Math::QXvec3(pos.x, pos.y, pos.z));
+				((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->SetPosition(Math::QXvec3((QXfloat)pos.x, (QXfloat)pos.y, (QXfloat)pos.z));
 			}
 		}
 		

@@ -20,7 +20,7 @@ namespace Quantix::Core::Components
 
 		Physic::Joint joint;
 
-		Core::DataStructure::GameObject3D**** gameobjects;
+		Core::DataStructure::GameObject3D**** gameobjects = nullptr;
 
 		/**
 		 * @brief Construct a new Deformable Mesh object
@@ -116,28 +116,28 @@ namespace Quantix::Core::Components
 		 * 
 		 * @return QXuint 
 		 */
-		QXuint GetBreakForce() { return joint.breakForce; }
+		QXfloat GetBreakForce() { return joint.breakForce; }
 
 		/**
 		 * @brief Set the Break Force object
 		 * 
 		 * @param i 
 		 */
-		void SetBreakForce(QXuint i) { joint.breakForce = i; }
+		void SetBreakForce(QXfloat i) { joint.breakForce = i; }
 
 		/**
 		 * @brief Get the Break Torque object
 		 * 
 		 * @return QXuint 
 		 */
-		QXuint GetBreakTorque() { return joint.breakTorque; }
+		QXfloat GetBreakTorque() { return joint.breakTorque; }
 
 		/**
 		 * @brief Set the Break Torque object
 		 * 
 		 * @param i 
 		 */
-		void SetBreakTorque(QXuint i) { joint.breakTorque = i; }
+		void SetBreakTorque(QXfloat i) { joint.breakTorque = i; }
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};
