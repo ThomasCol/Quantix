@@ -597,7 +597,7 @@ QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property current
 	}
 	else if (type == rttr::type::get<QXuint>())
 	{
-		QXint value = currentProp.get_value(inst).to_uint64();
+		QXint value = currentProp.get_value(inst).to_uint32();
 		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputInt("", &value);
 		currentProp.set_value(inst, (QXuint)value);
 		return QX_TRUE;

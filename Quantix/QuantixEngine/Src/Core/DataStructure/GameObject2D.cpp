@@ -48,6 +48,7 @@ namespace Quantix::Core::DataStructure
 
 	GameObject2D::~GameObject2D()
 	{
+		delete _transform;
 	}
 
 	void	GameObject2D::Start()
