@@ -24,9 +24,8 @@ namespace Quantix::Core::Render
 		RenderFramebuffer				_mainBuffer;
 		RenderFramebuffer				_gameBuffer;
 
-		Framebuffer 					_shadowBuffer;
-		Framebuffer 					_finalGameBuffer;
-		Framebuffer 					_finalSceneBuffer;
+		Framebuffer 					_uniShadowBuffer;
+		Framebuffer 					_omniShadowBuffer;
 
 		QXuint							_viewProjMatrixUBO = 0;
 		QXuint							_viewProjShadowMatrixUBO = 0;
@@ -58,11 +57,16 @@ namespace Quantix::Core::Render
 		void CreateFramebuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept;
 
 		/**
-		 * @brief Init the shadow buffer
+		 * @brief Init the shadow buffer for unidirectionnal light
 		 * 
 		 */
-		void InitShadowBuffer() noexcept;
+		void InitUnidirectionnalShadowBuffer() noexcept;
 
+		/**
+		 * @brief Init the shadow buffer for unidirectionnal light
+		 *
+		 */
+		void InitOmnidirectionnalShadowBuffer() noexcept;
 
 		/**
 		 * @brief Create post process effects
