@@ -21,6 +21,7 @@ namespace Quantix::Core
 
 	SoundCore::~SoundCore()
 	{
+		_system->close();
 		_system->release();
 	}
 
