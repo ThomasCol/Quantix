@@ -71,7 +71,7 @@ namespace Quantix::Physic
 		 * @brief Destroy the Physic Handler object
 		 * 
 		 */
-		~PhysicHandler() = default;
+		~PhysicHandler();
 
 #pragma endregion
 

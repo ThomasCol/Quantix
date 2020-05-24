@@ -75,6 +75,12 @@ namespace Quantix::Physic
 		return _instance;
 	}
 
+	PhysicHandler::~PhysicHandler()
+	{
+		for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
+			delete it->second;
+	}
+
 	IPhysicType* PhysicHandler::GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody)
 	{
 		auto it = _physObject.find(object);
