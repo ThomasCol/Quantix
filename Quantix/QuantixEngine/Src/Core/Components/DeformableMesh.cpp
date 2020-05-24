@@ -95,11 +95,11 @@ namespace Quantix::Core::Components
 	void DeformableMesh::MoveCube(Core::Platform::Application* app)
 	{
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
-		for (QXint i = 0; i < numCubeInWidth; i++)
+		for (QXuint i = 0; i < numCubeInWidth; i++)
 		{
-			for (QXint j = 0; j < numCubeInHeight; j++)
+			for (QXuint j = 0; j < numCubeInHeight; j++)
 			{
-				for (QXint k = 0; k < numCubeInDepth; k++)
+				for (QXuint k = 0; k < numCubeInDepth; k++)
 				{
 
 					if (i == 0 && j == 0 && k == 0)
@@ -118,11 +118,11 @@ namespace Quantix::Core::Components
 
 						// Add Joint
 						if (i != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i - 1][j][k], Math::QXvec3(cubeSize.x * 0.5, 0, 0), joint);
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i - 1][j][k], Math::QXvec3(cubeSize.x * 0.5f, 0, 0), joint);
 						if (j != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k], Math::QXvec3(0, cubeSize.y * 0.5, 0), joint);
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k], Math::QXvec3(0, cubeSize.y * 0.5f, 0), joint);
 						if (k != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1], Math::QXvec3(0, 0, cubeSize.z * 0.5), joint);
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1], Math::QXvec3(0, 0, cubeSize.z * 0.5f), joint);
 					}
 				}
 			}
@@ -132,11 +132,11 @@ namespace Quantix::Core::Components
 	void DeformableMesh::CreateCube(Core::Platform::Application* app)
 	{
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
-		for (QXint i = 0; i < numCubeInWidth; i++)
+		for (QXuint i = 0; i < numCubeInWidth; i++)
 		{
-			for (QXint j = 0; j < numCubeInHeight; j++)
+			for (QXuint j = 0; j < numCubeInHeight; j++)
 			{
-				for (QXint k = 0; k < numCubeInDepth; k++)
+				for (QXuint k = 0; k < numCubeInDepth; k++)
 				{
 
 					if (i == 0 && j == 0 && k == 0)
@@ -156,11 +156,11 @@ namespace Quantix::Core::Components
 
 						// Add Joint
 						if (i != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i - 1][j][k], Math::QXvec3(cubeSize.x * 0.5, 0, 0), joint);
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i - 1][j][k], Math::QXvec3(cubeSize.x * 0.5f, 0, 0), joint);
 						if (j != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k], Math::QXvec3(0, cubeSize.y * 0.5, 0), joint);
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j - 1][k], Math::QXvec3(0, cubeSize.y * 0.5f, 0), joint);
 						if (k != 0)
-							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1], Math::QXvec3(0, 0, cubeSize.z * 0.5), joint);
+							handler->CreateJoint(gameobjects[i][j][k], gameobjects[i][j][k - 1], Math::QXvec3(0, 0, cubeSize.z * 0.5f), joint);
 					}
 				}
 			}

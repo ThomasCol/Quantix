@@ -285,7 +285,7 @@ namespace Quantix::Core::Components
 			physx::PxFilterData filterData;
 			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
 
-			physx::PxU32 mask;
+			physx::PxU32 mask = 0;
 			if (GetCollideFilterCrab())
 				mask |= Physic::FilterGroup::Enum::eCRAB;
 			if (GetCollideFilterPawn())
@@ -309,7 +309,7 @@ namespace Quantix::Core::Components
 			physx::PxFilterData filterData;
 			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
 
-			physx::PxU32 mask;
+			physx::PxU32 mask = 0;
 			if (GetCollideFilterCrab())
 				mask |= Physic::FilterGroup::Enum::eCRAB;
 			if (GetCollideFilterPawn())
@@ -333,7 +333,7 @@ namespace Quantix::Core::Components
 			physx::PxFilterData filterData;
 			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
 
-			physx::PxU32 mask;
+			physx::PxU32 mask = 0;
 			if (GetCollideFilterCrab())
 				mask |= Physic::FilterGroup::Enum::eCRAB;
 			if (GetCollideFilterPawn())
