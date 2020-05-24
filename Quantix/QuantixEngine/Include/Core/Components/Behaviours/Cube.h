@@ -21,7 +21,8 @@ namespace Quantix::Gameplay
 
 			#pragma region Attributes
 
-			ECubeState	_state	{ ECubeState::DEFAULT };
+			ECubeState	_state			{ ECubeState::DEFAULT };
+			QXfloat		_rangeOfMagnet	{ 15.f };
 
 			#pragma endregion
 
@@ -43,13 +44,20 @@ namespace Quantix::Gameplay
 			Cube* Copy() const override;
 			#pragma region Methods
 
-			void		Awake() override;
-			void		Start() override;
-			void		Update(QXdouble deltaTime) override;
+			void						Awake() override;
+			void						Start() override;
+			void						Update(QXdouble deltaTime) override;
 
-			void		ChangeState(ECubeState newState);
-			inline ECubeState	GetState() { return _state; };
+			#pragma region Accessors
+
+			inline void					ChangeState(ECubeState newState) { _state = newState; };
+			inline const ECubeState&	GetState() { return _state; };
 			
+			inline const float&			GetRAngeOfMagnet() { return _rangeOfMagnet; };
+			inline void					SetRangeOfMagnet(QXfloat range) { _rangeOfMagnet = range; };
+
+			#pragma endregion
+
 			#pragma endregion
 
 			CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::Behaviour);

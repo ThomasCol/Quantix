@@ -41,6 +41,10 @@ namespace Quantix::Gameplay
 			UseIce();
 		if (GetKey(QX_KEY_Q) == Core::UserEntry::EKeyState::PRESSED)
 			UsePunch();
+		if (GetKey(QX_KEY_R) == Core::UserEntry::EKeyState::PRESSED)
+			UseMagnet(QX_TRUE);
+		if (GetKey(QX_KEY_R) == Core::UserEntry::EKeyState::PRESSED)
+			UseMagnet(QX_FALSE);
 
 		if (_isGrabbingObject)
 		{
@@ -72,7 +76,7 @@ namespace Quantix::Gameplay
 			{
 				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
 
-				if (cube->GetState() == ECubeState::DEFAULT)
+				if (cube && cube->GetState() == ECubeState::DEFAULT)
 				{
 					cube->ChangeState(ECubeState::GRABBED);
 
@@ -119,7 +123,7 @@ namespace Quantix::Gameplay
 				rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
 				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
 
-				if (cube->GetState() != ECubeState::GRABBED)
+				if (cube && cube->GetState() != ECubeState::GRABBED)
 				{
 					//Detect if is already frozen or not
 					if (rigid->GetRigidFlagKinematic())
@@ -168,6 +172,31 @@ namespace Quantix::Gameplay
 			_originOfGrabbedObject = nullptr;
 
 			_isGrabbingObject = QX_FALSE;
+		}
+	}
+
+	void	Arms::UseMagnet(QXbool positiveField)
+	{
+		if (_gameobject)
+		{
+			//Cast a ray to check if a cube can be frozen
+			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 100 };
+
+			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
+			{
+				rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
+				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
+
+				if (cube && cube->GetState() == ECubeState::DEFAULT)
+				{
+					if (positiveField)
+						cube->ChangeState(ECubeState::MAGNET_POS);
+					else
+						cube->ChangeState(ECubeState::MAGNET_NEG);
+				}
+				else
+					cube->ChangeState(ECubeState::DEFAULT);
+			}
 		}
 	}
 
