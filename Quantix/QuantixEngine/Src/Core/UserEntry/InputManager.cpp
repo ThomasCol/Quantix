@@ -45,5 +45,7 @@ namespace Quantix::Core::UserEntry
 			if (_inputs[i].key == key)
 				return _inputs[i].state;
 		}
+
+		return EKeyState::UP;
 	}
 }

@@ -41,7 +41,6 @@ namespace Quantix::Resources
 	Sound::~Sound()
 	{
 		_clip->release();
-		delete _channel;
 	}
 
 	#pragma endregion
@@ -161,7 +160,7 @@ namespace Quantix::Resources
 		if (this)
 			return (Core::SoundCore::GetInstance()->Try(_clip->setMode(mode)));
 		else
-			false;
+			return false;
 	}
 
 	#pragma endregion
