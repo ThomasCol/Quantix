@@ -43,18 +43,45 @@ namespace Quantix::Gameplay
 
 	void Cube::Attract(QXdouble deltaTime)
 	{
+		Core::DataStructure::GameObject3D* gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
 
-		//With list of gameobjects or Rigidbodies
-		//foreach member of list
-		// rigidbody->AddForce((actualpos - rigidbodypos))
+		std::vector<Core::DataStructure::GameObject3D*> overlapedObjects = Physic::PhysicHandler::GetInstance()->OverlapSphere(_rangeOfMagnet, gameobject->GetTransform());
+		
+		for (QXuint i = 0; i < overlapedObjects.size(); i++)
+		{
+			Cube* cube = overlapedObjects[i]->GetComponent<Cube>();
+			
+			if (cube)
+			{
+				if ((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()).Length() > 1.f)
+				{
+					Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+
+					if (rigid)
+						rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * deltaTime * 50.f);
+				}
+			}
+		}
 	}
 
 	void Cube::Reject(QXdouble deltaTime)
-	{}
-
-	void Cube::ChangeState(ECubeState newState)
 	{
-		_state = newState;
+		Core::DataStructure::GameObject3D* gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
+
+		std::vector<Core::DataStructure::GameObject3D*> overlapedObjects = Physic::PhysicHandler::GetInstance()->OverlapSphere(_rangeOfMagnet, gameobject->GetTransform());
+
+		for (QXuint i = 0; i < overlapedObjects.size(); i++)
+		{
+			Cube* cube = overlapedObjects[i]->GetComponent<Cube>();
+
+			if (cube)
+			{
+				Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+
+				if (rigid)
+					rigid->AddForce( (overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * deltaTime * 50.f);
+			}
+		}
 	}
 
 	//Questions to ask my teammates
