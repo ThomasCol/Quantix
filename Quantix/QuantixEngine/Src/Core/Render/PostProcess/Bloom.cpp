@@ -126,7 +126,7 @@ namespace Quantix::Core::Render::PostProcess
         glDisable(GL_DEPTH_TEST);
         QXbool horizontal = true, first_iteration = true;
 
-        QXfloat weight[] = { 0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216 };
+        QXfloat weight[] = { 0.227027f, 0.1945946f, 0.1216216f, 0.054054f, 0.016216f };
 
 
         // Apply two-pass gaussian blur on Bright render FBO
@@ -169,8 +169,8 @@ namespace Quantix::Core::Render::PostProcess
             glBindTexture(GL_TEXTURE_2D, _blurBuffer.texture[!horizontal]);
 
             glUniform1i(glGetUniformLocation(_bloomProgram->GetID(), "bloom"), true);
-            glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "exposure"), 0.5);
-            glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "gamma"), 1.7);
+            glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "exposure"), 0.5f);
+            glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "gamma"), 1.7f);
 
             glBindVertexArray(_VAO);
 
