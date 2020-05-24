@@ -43,13 +43,11 @@ namespace Quantix::Physic
 		PxDefaultAllocator pDefaultAllocatorCallback;
 		PxFoundation* pDefaultFundation = nullptr;
 		PxPvd* pPvd = nullptr;
-		PxSimulationFilterShader pDefaultFilterShader = PxDefaultSimulationFilterShader;
 		PxDefaultCpuDispatcher* mCpuDispatcher = nullptr;
 		PxScene* mScene = nullptr;
 		PxMaterial* mMaterial = nullptr;
 		PxControllerManager* manager = nullptr;
-		PxCollection* collection = nullptr;
-
+		
 		PxReal mAccumulator = 0.0f;
 		PxReal mStepSize = 1/240.f;
 #pragma endregion
