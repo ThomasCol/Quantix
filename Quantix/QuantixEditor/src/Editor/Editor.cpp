@@ -80,7 +80,6 @@ Editor::~Editor()
 		delete _mainCamera;
 		delete _defaultCamera;
 	}
-	delete _root;
 	delete _mouseInput;
 }
 

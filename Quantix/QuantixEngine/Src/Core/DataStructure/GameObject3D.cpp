@@ -42,6 +42,7 @@ namespace Quantix::Core::DataStructure
 
 	GameObject3D::~GameObject3D()
 	{
+		delete _transform;
 	}
 
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, Platform::AppInfo& info)

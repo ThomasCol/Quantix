@@ -43,17 +43,6 @@ namespace Quantix::Core::DataStructure
 
 		void									Destroy() override;
 
-		template<class Archive>
-		void save(Archive& archive) const
-		{
-			archive(_component);
-		}
-
-		template<class Archive>
-		void load(Archive& archive)
-		{
-			archive(_component);
-		}
 		void									CallOnTrigger(GameObject3D* other);
 		void									CallOnContact(GameObject3D* other, Math::QXvec3& position, Math::QXvec3& normal);
 

@@ -46,6 +46,9 @@ namespace Quantix::Resources
 			it = _objects2D.erase(it);
 		for (auto it = _objectsComponent.begin(); it != _objectsComponent.end();)
 			it = _objectsComponent.erase(it);
+
+		delete _root;
+		delete _root2D;
 	}
 
 	#pragma endregion
