@@ -20,7 +20,7 @@ namespace Quantix::Core::Components
 
 		Physic::Joint joint;
 
-		Core::DataStructure::GameObject3D* gameobjects[4][4][4];
+		Core::DataStructure::GameObject3D**** gameobjects;
 
 		/**
 		 * @brief Construct a new Deformable Mesh object
@@ -84,6 +84,9 @@ namespace Quantix::Core::Components
 		 * @param scene Current scene
 		 */
 		void Generate(Core::Platform::Application* app);
+
+		void MoveCube(Core::Platform::Application* app);
+		void CreateCube(Core::Platform::Application* app);
 
 		/**
 		 * @brief addComponent for the deformableMesh during Generation
