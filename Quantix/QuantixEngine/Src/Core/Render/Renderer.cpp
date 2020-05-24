@@ -15,7 +15,7 @@ namespace Quantix::Core::Render
 #pragma region Constructors
 
 	Renderer::Renderer(Platform::AppInfo& info, DataStructure::ResourcesManager& manager) noexcept :
-		_projLight { Math::QXmat4::CreateOrthographicProjectionMatrix(20.f, 20.f, 1.0f, 7.5f) }
+		_projLight { Math::QXmat4::CreateOrthographicProjectionMatrix(20, 20, 1.0f, 7.5f) }
 	{
 		InitUnidirectionnalShadowBuffer();
 		InitOmnidirectionnalShadowBuffer();
@@ -88,7 +88,7 @@ namespace Quantix::Core::Render
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, texture[i], 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)i, GL_TEXTURE_2D, texture[i], 0);
 		}
 
 		GLuint depth_stencil_renderbuffer;

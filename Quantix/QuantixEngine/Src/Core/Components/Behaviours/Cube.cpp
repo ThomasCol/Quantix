@@ -58,7 +58,7 @@ namespace Quantix::Gameplay
 					Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
 
 					if (rigid)
-						rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * deltaTime * 50.f);
+						rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * (QXfloat)deltaTime * 50.f);
 				}
 			}
 		}
@@ -79,7 +79,7 @@ namespace Quantix::Gameplay
 				Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
 
 				if (rigid)
-					rigid->AddForce( (overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * deltaTime * 50.f);
+					rigid->AddForce( (overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * (QXfloat)deltaTime * 50.f);
 			}
 		}
 	}
