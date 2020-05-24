@@ -394,12 +394,6 @@ namespace Quantix::Core::Render
 	{
 		QXuint	light_size = (QXuint)lights.size();
 
-		for (QXsizei i = 0; i < light_size; ++i)
-		{
-			lights[i].position = ((DataStructure::GameObject3D*)lights[i].GetObject())->GetLocalPosition();
-			lights[i].direction = ((DataStructure::GameObject3D*)lights[i].GetObject())->GetTransform()->GetForward();
-		}
-
 		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjMatrixUBO);
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4), cam->GetLookAt().array);
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), info.proj.array);
