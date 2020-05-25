@@ -22,7 +22,7 @@ namespace Quantix::Gameplay
 			#pragma region Attributes
 
 			ECubeState	_state			{ ECubeState::DEFAULT };
-			QXfloat		_rangeOfMagnet	{ 15.f };
+			QXfloat		_rangeOfMagnet	{ 150.f };
 
 			#pragma endregion
 

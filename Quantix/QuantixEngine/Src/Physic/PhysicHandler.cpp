@@ -467,27 +467,33 @@ namespace Quantix::Physic
 	std::vector<Core::DataStructure::GameObject3D*> PhysicHandler::OverlapSphere(QXfloat radius, Physic::Transform3D* transform)
 	{
 		Math::QXvec3 p = transform->GetGlobalPosition();
-		Math::QXquaternion q = transform->GetGlobalRotation();
+		Math::QXquaternion q = transform->GetGlobalRotation().ConjugateQuaternion();
+
+
+		std::cout << p << std::endl;
+
 		PxTransform shapePosition = PxTransform(p.x, p.y, p.z, PxQuat(q.v.x, q.v.y, q.v.z, q.w));
 
 		PxSphereGeometry overlapGeometrie = PxSphereGeometry(radius);
 
 		PxQueryFilterData fd;
 		fd.flags |= PxQueryFlag::eDYNAMIC; // note the OR with the default value
-		fd.flags |= PxQueryFlag::eANY_HIT;
+		//fd.flags |= PxQueryFlag::eANY_HIT;
+		fd.flags |= PxQueryFlag::eNO_BLOCK;
 
 		PxOverlapBuffer hit;
+		PxOverlapHit test;
+		PxQueryHit tmp;
 
 		bool status = mScene->overlap(overlapGeometrie, shapePosition, hit, fd);
 
 		std::vector<Core::DataStructure::GameObject3D*> list;
 		if (status)
 		{
-			QXint nbTouch = hit.getNbTouches();
+			QXint nbTouch = hit.getNbAnyHits();
 			for (QXint i = 0; i < nbTouch; i++)
-				list.push_back((Core::DataStructure::GameObject3D*)(hit.getTouch(i).actor->userData));
+				list.push_back((Core::DataStructure::GameObject3D*)(hit.getAnyHit(i).actor->userData));
 		}
-
 		return list;
 	}
 
@@ -504,6 +510,8 @@ namespace Quantix::Physic
 		mScene->getActors(PxActorTypeFlag::eRIGID_STATIC, actorsStat, numActorsStatic);
 
 		mScene->removeActors(actorsStat, numActorsStatic);
+
+		manager->purgeControllers();
 	}
 
 #pragma region FlagSetters
