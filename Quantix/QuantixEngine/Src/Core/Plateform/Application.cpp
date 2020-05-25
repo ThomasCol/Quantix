@@ -6,6 +6,7 @@
 #include "Core/Components/Mesh.h"
 #include "Physic/PhysicHandler.h"
 #include "Core/Threading/TaskSystem.hpp"
+#include "Core/SoundCore.h"
 
 namespace Quantix::Core::Platform
 {
@@ -24,6 +25,7 @@ namespace Quantix::Core::Platform
 	{
 		Physic::PhysicHandler::GetInstance()->ReleaseSystem();
 		Physic::PhysicHandler::GetInstance()->Destroy();
+		Core::SoundCore::GetInstance()->Destroy();
 		Threading::TaskSystem::Destroy();
 		delete scene;
 	}
