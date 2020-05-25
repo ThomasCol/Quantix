@@ -45,7 +45,8 @@ namespace Quantix::Core::DataStructure
 		delete _transform;
 	}
 
-	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, Platform::AppInfo& info)
+	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
+		std::vector<Components::Light>& lights, Platform::AppInfo& info)
 	{
 		if (_toRender)
 		{
@@ -56,11 +57,11 @@ namespace Quantix::Core::DataStructure
 		}
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
-			child->GetObject()->Update(meshes, colliders, this, info);
+			child->GetObject()->Update(meshes, colliders, lights, this, info);
 	}
 
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-			const GameObject3D* parentObject, Platform::AppInfo& info)
+		std::vector<Components::Light>& lights, const GameObject3D* parentObject, Platform::AppInfo& info)
 	{
 		if (_toRender)
 		{
@@ -76,6 +77,14 @@ namespace Quantix::Core::DataStructure
 			colliders.push_back(collider);
 		}
 
+		Core::Components::Light* light = GetComponent<Core::Components::Light>();
+		if (light && light->IsEnable())
+		{
+			light->position = _transform->GetPosition();
+			light->direction = _transform->GetForward();
+			lights.push_back(*light);
+		}
+
 		if (_toUpdate)
 		{
 			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>(true);
@@ -86,7 +95,7 @@ namespace Quantix::Core::DataStructure
 		_transform->Update(parentObject->GetTransform());
 
 		for (Physic::Transform3D* child : _transform->GetChilds())
-			child->GetObject()->Update(meshes, colliders, this, info);
+			child->GetObject()->Update(meshes, colliders, lights, this, info);
 	}
 
 	void	GameObject3D::Start()

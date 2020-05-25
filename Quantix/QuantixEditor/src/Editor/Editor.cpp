@@ -117,7 +117,7 @@ void Editor::Init()
 
 void Editor::InitScene()
 {
-	Quantix::Core::Components::Light light;
+	/*Quantix::Core::Components::Light light;
 	light.ambient = { 0.3f, 0.3f, 0.3f };
 	light.diffuse = { 0.7f, 0.7f, 0.7f };
 	light.specular = { 0.7f, 0.7f, 0.7f };
@@ -144,7 +144,7 @@ void Editor::InitScene()
 	light2.type = Quantix::Core::Components::ELightType::SPOT;
 
 	_lights.push_back(light);
-	_lights.push_back(light2);
+	_lights.push_back(light2);*/
 }
 
 void Editor::InitEditor()
@@ -361,13 +361,14 @@ void Editor::UpdateScene()
 
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
 	std::vector<Quantix::Core::Components::ICollider*>	colliders;
+	_lights.clear();
 
 	START_PROFILING("Application");
 	//Update Application
 	if (!_pause && _play)
-		_app->Update(meshes, colliders, true);
+		_app->Update(meshes, colliders, _lights, true);
 	else
-		_app->Update(meshes, colliders);
+		_app->Update(meshes, colliders, _lights);
 	STOP_PROFILING("Application");
 
 	START_PROFILING("Camera");

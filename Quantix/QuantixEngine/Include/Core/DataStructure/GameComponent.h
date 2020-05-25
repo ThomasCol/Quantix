@@ -159,10 +159,11 @@ namespace Quantix::Core::DataStructure
 			}
 		}
 
-		virtual void Awake() {};
-		virtual void Start() {};
-		virtual void Update(std::vector<Core::Components::Mesh*>& meshes, std::vector < Core::Components::ICollider* >& colliders, Platform::AppInfo& info) {};
-		virtual void									Destroy() {};
+		virtual void	Awake() {};
+		virtual void	Start() {};
+		virtual void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector < Core::Components::ICollider* >& colliders,
+								std::vector<Components::Light>& lights, Platform::AppInfo& info) {};
+		virtual void	Destroy() {};
 
 		#pragma endregion Template
 
