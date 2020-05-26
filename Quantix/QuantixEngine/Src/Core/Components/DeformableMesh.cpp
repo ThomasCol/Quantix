@@ -106,13 +106,15 @@ namespace Quantix::Core::Components
 					{
 						gameobjects[i][j][k] = (Core::DataStructure::GameObject3D*)_object;
 
+						gameobjects[i][j][k]->SetLocalScale(cubeSize);
 						// Add Comp
 						AddComponent(gameobjects[i][j][k], app);
 					}
 					else
 					{
-						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * cubeSize.x, j * cubeSize.y, k * cubeSize.z) + gameobjects[0][0][0]->GetGlobalPosition());
+						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * (cubeSize.x + 0.01), j * (cubeSize.y + 0.01), k * (cubeSize.z + 0.01)) + gameobjects[0][0][0]->GetGlobalPosition());
 
+						gameobjects[i][j][k]->SetLocalScale(cubeSize);
 						// Add Comp
 						AddComponent(gameobjects[i][j][k], app);
 
@@ -144,13 +146,14 @@ namespace Quantix::Core::Components
 						gameobjects[i][j][k] = (Core::DataStructure::GameObject3D*)_object;
 
 						// Add Comp
+						gameobjects[i][j][k]->SetLocalScale(cubeSize);
 						AddComponent(gameobjects[i][j][k], app);
 					}
 					else
 					{
 						gameobjects[i][j][k] = app->scene->AddGameObject(QXstring("Cube " + std::to_string(i) + std::to_string(j) + std::to_string(k)));
-						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * cubeSize.x, j * cubeSize.y, k * cubeSize.z) + gameobjects[0][0][0]->GetGlobalPosition());
-
+						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * (cubeSize.x + 0.01), j * (cubeSize.y + 0.01), k * (cubeSize.z + 0.01)) + gameobjects[0][0][0]->GetGlobalPosition());
+						gameobjects[i][j][k]->SetLocalScale(cubeSize);
 						// Add Comp
 						AddComponent(gameobjects[i][j][k], app);
 
@@ -183,6 +186,7 @@ namespace Quantix::Core::Components
 		// Add Cubecollider
 		Core::Components::CubeCollider* collider = new CubeCollider();
 		collider->Init(object);
+		collider->SetHalfExtents(cubeSize/2);
 		object->AddComponent(collider);
 	}
 

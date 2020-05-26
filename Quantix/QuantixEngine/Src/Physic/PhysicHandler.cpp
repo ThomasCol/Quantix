@@ -334,12 +334,11 @@ namespace Quantix::Physic
 
 		PhysicDynamic* type1 = GetObject(other, true)->GetObjectDynamic();
 
+
 		//PxRevoluteJointCreate
 		PxRevoluteJoint* newJoint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(-physx::PxVec3(vec.x, vec.y, vec.z)), type1->GetRigid(), PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
 
 		newJoint->setBreakForce(joint.breakForce, joint.breakTorque);
-
-		//joint->setConstraintFlag(physx::PxConstraintFlag::)
 		return newJoint;
 	}
 
@@ -410,7 +409,7 @@ namespace Quantix::Physic
 				// Set RigidBody Transform On GameOject Transform
 				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalPosition();
 				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalRotation();
-				quat = quat.ConjugateQuaternion();
+				//quat = quat.ConjugateQuaternion();
 				if (it->second->GetType() == ETypePhysic::DYNAMIC)
 				{
 					PxTransform transform = it->second->GetObjectDynamic()->GetRigid()->getGlobalPose();
@@ -464,6 +463,12 @@ namespace Quantix::Physic
 		}
 	}
 
+	/*struct temp : public PxHitBuffer<PxOverlapHit>
+	{
+		temp() = default;
+		PxAgain processTouches(const PxOverlapHit* buffer, PxU32 nbHits) { PX_UNUSED(buffer); PX_UNUSED(nbHits); return false; }
+	};*/
+
 	std::vector<Core::DataStructure::GameObject3D*> PhysicHandler::OverlapSphere(QXfloat radius, Physic::Transform3D* transform)
 	{
 		Math::QXvec3 p = transform->GetGlobalPosition();
@@ -477,23 +482,24 @@ namespace Quantix::Physic
 		PxSphereGeometry overlapGeometrie = PxSphereGeometry(radius);
 
 		PxQueryFilterData fd;
-		fd.flags |= PxQueryFlag::eDYNAMIC; // note the OR with the default value
-		//fd.flags |= PxQueryFlag::eANY_HIT;
 		fd.flags |= PxQueryFlag::eNO_BLOCK;
 
-		PxOverlapBuffer hit;
-		PxOverlapHit test;
-		PxQueryHit tmp;
+		/*fd.data.word0 = Physic::FilterGroup::Enum::eMINE_HEAD; // word0 = own ID
+
+		physx::PxU32 mask = 0;
+			mask |= Physic::FilterGroup::Enum::eCRAB;
+			mask |= Physic::FilterGroup::Enum::PAWN;
+			mask |= Physic::FilterGroup::Enum::eMINE_HEAD;
+		fd.data.word1 = mask; */ // word1 = ID mask to filter pairs that trigger a
+								  // contact callback;
+
+		PxOverlapHit hitBuffer[256];
+		PxOverlapBuffer hit(hitBuffer, 256);
 
 		bool status = mScene->overlap(overlapGeometrie, shapePosition, hit, fd);
-
 		std::vector<Core::DataStructure::GameObject3D*> list;
-		if (status)
-		{
-			QXint nbTouch = hit.getNbAnyHits();
-			for (QXint i = 0; i < nbTouch; i++)
-				list.push_back((Core::DataStructure::GameObject3D*)(hit.getAnyHit(i).actor->userData));
-		}
+		for (QXint i = 0; i < hit.nbTouches; i++)
+				list.push_back((Core::DataStructure::GameObject3D*)(hit.touches[i].actor->userData));
 		return list;
 	}
 
