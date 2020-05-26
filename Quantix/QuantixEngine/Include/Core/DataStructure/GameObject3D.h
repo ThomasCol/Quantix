@@ -32,10 +32,11 @@ namespace Quantix::Core::DataStructure
 			_transform->AddChild(object->GetTransform()); 
 		}
 
-		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, Platform::AppInfo& info) override;
+		void									Update(std::vector<Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
+													std::vector<Components::Light>& lights, Platform::AppInfo& info) override;
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-													const GameObject3D* parentObject, Platform::AppInfo& info);
+													std::vector<Components::Light>& lights, const GameObject3D* parentObject, Platform::AppInfo& info);
 
 		void									Start() override;
 		

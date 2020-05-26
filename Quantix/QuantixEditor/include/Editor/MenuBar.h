@@ -107,6 +107,8 @@ public:
 	 */
 	void PhysXSettings();
 
+	void PostProcessSettings(Quantix::Core::Platform::Application* app);
+
 	/**
 	 * @brief Dispatch the Settings function
 	 * 
@@ -144,6 +146,7 @@ public:
 private:
 	#pragma region Attributes
 	QXbool		_winPhysX{ QX_FALSE };
+	QXbool		_postProcess{ QX_FALSE };
 	#pragma endregion Attributes
 };
 

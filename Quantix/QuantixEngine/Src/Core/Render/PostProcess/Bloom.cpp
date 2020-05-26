@@ -9,6 +9,7 @@ namespace Quantix::Core::Render::PostProcess
 		PostProcessEffect(blurProgram, model),
 		_bloomProgram {bloomProgram}
 	{
+        name = "Bloom";
         Init(info);
 
         QXuint VBO;
@@ -111,6 +112,19 @@ namespace Quantix::Core::Render::PostProcess
         _bloomBuffer.FBO = FBO2;
         _bloomBuffer.texture = texture;
         _bloomBuffer.depthBuffer = depth_stencil_renderbuffer;
+
+        _program->Use();
+        glUniform1i(_program->GetLocation("image"), 0);
+        QXfloat weight[] = { 0.227027f, 0.1945946f, 0.1216216f, 0.054054f, 0.016216f };
+        for (int i = 0; i < 5; ++i)
+        {
+            glUniform1f(_program->GetLocation((std::string("weight[") + std::to_string(i) + "]").c_str()), weight[i]);
+        }
+
+        _bloomProgram->Use();
+        // Bind base scene texture and blured texture
+        glUniform1i(_bloomProgram->GetLocation("scene"), 0);
+        glUniform1i(_bloomProgram->GetLocation("bloomBlur"), 1);
 	}
 
     void Bloom::Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept
@@ -118,21 +132,13 @@ namespace Quantix::Core::Render::PostProcess
         glDisable(GL_DEPTH_TEST);
         QXbool horizontal = true, first_iteration = true;
 
-        QXfloat weight[] = { 0.227027f, 0.1945946f, 0.1216216f, 0.054054f, 0.016216f };
-
-
-        // Apply two-pass gaussian blur on Bright render FBO
         _program->Use();
-        glUniform1i(glGetUniformLocation(_program->GetID(), "image"), 0);
+        // Apply two-pass gaussian blur on Bright render FBO
         glActiveTexture(GL_TEXTURE0);
-        for (unsigned int i = 0; i < 50; i++)
+        for (QXuint i = 0; i < 25; i++)
         {
             glBindFramebuffer(GL_FRAMEBUFFER, _blurBuffer.FBO[horizontal]);
-            glUniform1i(glGetUniformLocation(_program->GetID(), "horizontal"), horizontal);
-            for (int i = 0; i < 5; ++i)
-            {
-                glUniform1f(glGetUniformLocation(_program->GetID(), (std::string("weight[") + std::to_string(i) + "]").c_str()), weight[i]);
-            }
+            glUniform1i(_program->GetLocation("horizontal"), horizontal);
             glBindTexture(GL_TEXTURE_2D, first_iteration ? otherTexture : _blurBuffer.texture[!horizontal]);  // bind texture of other framebuffer (or scene if first iteration)
             glBindVertexArray(_VAO);
 
@@ -144,7 +150,6 @@ namespace Quantix::Core::Render::PostProcess
             if (first_iteration)
                 first_iteration = false;
         }
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // Apply final bloom
         {
@@ -152,17 +157,15 @@ namespace Quantix::Core::Render::PostProcess
             glClear(GL_DEPTH_BUFFER_BIT);
 
             _bloomProgram->Use();
-            // Bind base scene texture and blured texture
-            glUniform1i(glGetUniformLocation(_bloomProgram->GetID(), "scene"), 0);
-            glUniform1i(glGetUniformLocation(_bloomProgram->GetID(), "bloomBlur"), 1);
+
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, sceneTexture);
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, _blurBuffer.texture[!horizontal]);
 
-            glUniform1i(glGetUniformLocation(_bloomProgram->GetID(), "bloom"), true);
-            glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "exposure"), 0.5f);
-            glUniform1f(glGetUniformLocation(_bloomProgram->GetID(), "gamma"), 1.7f);
+            glUniform1i(_bloomProgram->GetLocation("bloom"), true);
+            glUniform1f(_bloomProgram->GetLocation("exposure"), 0.5f);
+            glUniform1f(_bloomProgram->GetLocation("gamma"), 1.7f);
 
             glBindVertexArray(_VAO);
 

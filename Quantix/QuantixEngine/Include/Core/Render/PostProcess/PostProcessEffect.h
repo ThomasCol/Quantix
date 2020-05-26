@@ -96,6 +96,14 @@ namespace Quantix::Core::Render::PostProcess
 		virtual void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept = 0;
 
 		#pragma endregion
+
+		#pragma region Attributes
+
+		QXstring	name = "";
+
+		QXbool		enable = true;
+
+		#pragma endregion
 	};
 }
 

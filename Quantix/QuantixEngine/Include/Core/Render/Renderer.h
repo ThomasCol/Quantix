@@ -8,7 +8,6 @@
 #include "../../../QuantixEditor/include/Window.h"
 #include "Core/Components/Collider.h"
 #include "PostProcess/Bloom.h"
-#include "PostProcess/ToneMapping.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -31,9 +30,8 @@ namespace Quantix::Core::Render
 
 		Math::QXmat4 					_projLight;
 
-		PostProcess::PostProcessEffect*	_effects;
-		PostProcess::Bloom*				_bloom;
-		PostProcess::ToneMapping* 			_toneMapping;
+		PostProcess::PostProcessEffect*					_skybox;
+		std::vector<PostProcess::PostProcessEffect*>	_effects;
 
 		Resources::ShaderProgram* 		_wireFrameProgram;
 		Resources::ShaderProgram* 		_shadowProgram;
@@ -170,6 +168,12 @@ namespace Quantix::Core::Render
 		 */
 		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
 				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam, RenderFramebuffer& buffer, bool displayColliders) noexcept;
+
+		#pragma region Accessor
+
+		inline std::vector<PostProcess::PostProcessEffect*>& GetEffects() { return _effects; }
+
+		#pragma endregion
 
 		#pragma endregion
 	};

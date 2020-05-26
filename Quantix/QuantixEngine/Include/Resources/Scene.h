@@ -85,7 +85,8 @@ namespace Quantix::Resources
 			 * @brief method that update the world and its hierarchy
 			 *
 			 */
-			void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders, Core::Platform::AppInfo& info) noexcept;
+			void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders,
+				std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info) noexcept;
 
 			void	Start() noexcept;
 

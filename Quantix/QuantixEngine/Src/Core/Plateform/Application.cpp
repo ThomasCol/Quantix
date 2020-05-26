@@ -28,11 +28,12 @@ namespace Quantix::Core::Platform
 		delete scene;
 	}
 
-	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, bool isPlaying)
+	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
+		std::vector<Components::Light>& lights, bool isPlaying)
 	{
 		Threading::TaskSystem::GetInstance()->Update();
 		manager.UpdateResourcesState();
-		scene->Update(meshes, colliders, info);
+		scene->Update(meshes, colliders, lights, info);
 
 		// Updatye Physic
 		if (isPlaying)
