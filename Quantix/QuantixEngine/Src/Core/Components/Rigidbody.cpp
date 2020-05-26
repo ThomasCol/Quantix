@@ -24,6 +24,7 @@ RTTR_PLUGIN_REGISTRATION
 	.property("DisableGravity", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableGravity, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableGravity)
 			(rttr::metadata("Description", "Actor Flags"))
 	.property("DisableSimulation", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableSimulation, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableSimulation)
+	.property("Visualisation", &Quantix::Core::Components::Rigidbody::GetActorFlagVisualisation, &Quantix::Core::Components::Rigidbody::SetActorFlagVisualisation)
 			(rttr::metadata("Description", "End"))
 	.property("Kinematic", &Quantix::Core::Components::Rigidbody::GetRigidFlagKinematic, &Quantix::Core::Components::Rigidbody::SetRigidFlagKinematic)
 			(rttr::metadata("Description", "Rigid Flags"))

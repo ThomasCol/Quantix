@@ -80,8 +80,6 @@ namespace Quantix::Gameplay
 				{
 					cube->ChangeState(ECubeState::GRABBED);
 
-					//Change hierarchy of the object
-					_originOfGrabbedObject = ray.actorClosestBlock->GetTransform()->GetParent();
 					_grabbedObject = ray.actorClosestBlock;
 
 					_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKinematic(true);
@@ -106,7 +104,6 @@ namespace Quantix::Gameplay
 		_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKineForQueries(false);
 
 		_grabbedObject = nullptr;
-		_originOfGrabbedObject = nullptr;
 
 		_isGrabbingObject = QX_FALSE;
 	}
@@ -150,6 +147,8 @@ namespace Quantix::Gameplay
 
 	void	Arms::UnFreeze(Core::Components::Rigidbody* cube)
 	{
+		cube->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetUp());
+
 		//Re-Activate Kinematic
 		cube->SetRigidFlagKinematic(false);
 		cube->SetRigidFlagKineForQueries(false);
@@ -169,7 +168,6 @@ namespace Quantix::Gameplay
 				cube->AddForce(_gameobject->GetTransform()->GetForward() * 50, Physic::ForceMode::IMPULSE);
 
 			_grabbedObject = nullptr;
-			_originOfGrabbedObject = nullptr;
 
 			_isGrabbingObject = QX_FALSE;
 		}

@@ -463,19 +463,10 @@ namespace Quantix::Physic
 		}
 	}
 
-	/*struct temp : public PxHitBuffer<PxOverlapHit>
-	{
-		temp() = default;
-		PxAgain processTouches(const PxOverlapHit* buffer, PxU32 nbHits) { PX_UNUSED(buffer); PX_UNUSED(nbHits); return false; }
-	};*/
-
 	std::vector<Core::DataStructure::GameObject3D*> PhysicHandler::OverlapSphere(QXfloat radius, Physic::Transform3D* transform)
 	{
 		Math::QXvec3 p = transform->GetGlobalPosition();
 		Math::QXquaternion q = transform->GetGlobalRotation().ConjugateQuaternion();
-
-
-		std::cout << p << std::endl;
 
 		PxTransform shapePosition = PxTransform(p.x, p.y, p.z, PxQuat(q.v.x, q.v.y, q.v.z, q.w));
 
@@ -483,15 +474,6 @@ namespace Quantix::Physic
 
 		PxQueryFilterData fd;
 		fd.flags |= PxQueryFlag::eNO_BLOCK;
-
-		/*fd.data.word0 = Physic::FilterGroup::Enum::eMINE_HEAD; // word0 = own ID
-
-		physx::PxU32 mask = 0;
-			mask |= Physic::FilterGroup::Enum::eCRAB;
-			mask |= Physic::FilterGroup::Enum::PAWN;
-			mask |= Physic::FilterGroup::Enum::eMINE_HEAD;
-		fd.data.word1 = mask; */ // word1 = ID mask to filter pairs that trigger a
-								  // contact callback;
 
 		PxOverlapHit hitBuffer[256];
 		PxOverlapBuffer hit(hitBuffer, 256);
