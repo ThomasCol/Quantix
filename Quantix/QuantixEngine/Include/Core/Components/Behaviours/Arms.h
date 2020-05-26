@@ -14,9 +14,9 @@ namespace Quantix::Gameplay
 
 			#pragma region Attributes
 
-			QXbool								_isGrabbingObject;
-			Physic::Transform3D*				_originOfGrabbedObject;
-			Core::DataStructure::GameObject3D*	_grabbedObject;
+			QXbool								_isGrabbingObject = false;
+			Physic::Transform3D*				_originOfGrabbedObject = nullptr;
+			Core::DataStructure::GameObject3D*	_grabbedObject = nullptr;
 
 			Core::DataStructure::GameObject3D*	_gameobject = nullptr;
 			Core::Components::Rigidbody*		rigid = nullptr;

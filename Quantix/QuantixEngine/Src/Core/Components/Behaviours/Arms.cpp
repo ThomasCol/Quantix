@@ -51,8 +51,6 @@ namespace Quantix::Gameplay
 			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2);
 			_grabbedObject->SetGlobalPosition(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2);
 		}
-		//if (rigid)
-			//std::cout << rigid->GetRigidFlagKinematic() << std::endl;
 	}
 
 	void Arms::UseHands()

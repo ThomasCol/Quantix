@@ -52,7 +52,6 @@ namespace Quantix::Physic
 		}
 
 		// generate contacts for all that were not filtered above
-		std::cout << "Not Trigger" << std::endl;
 
 		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 		{
