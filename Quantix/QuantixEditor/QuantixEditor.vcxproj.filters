@@ -25,12 +25,6 @@
     <Filter Include="Fichiers d%27en-tête\Ext">
       <UniqueIdentifier>{83a0d0a0-81fe-4572-9f33-ffba8c84e25d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers d%27en-tête\Scripts">
-      <UniqueIdentifier>{ac397c18-f94f-48b2-b021-aa7322f5cd34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers sources\Scripts">
-      <UniqueIdentifier>{c9166913-a6ec-4216-9243-a560a090205b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

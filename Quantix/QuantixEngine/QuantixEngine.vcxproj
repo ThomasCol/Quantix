@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\Animator.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Grabbing.cpp" />
     <ClCompile Include="Src\Core\Components\DeformableMesh.cpp" />
     <ClCompile Include="Src\Physic\ControllerHitReport.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="Src\Core\Render\PostProcess\PostProcessEffect.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\Skybox.cpp" />
     <ClCompile Include="Src\Core\Render\Renderer.cpp" />
+    <ClCompile Include="Src\Resources\Animation.cpp" />
     <ClCompile Include="Src\Resources\Scene.cpp" />
     <ClCompile Include="Src\Core\LibImpl.cpp" />
     <ClCompile Include="Src\Core\Debugger\Assertion.cpp" />
@@ -255,6 +257,7 @@
     <ClCompile Include="Src\Resources\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Components\Animator.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Grabbing.h" />
     <ClInclude Include="Include\Core\Event\Event.h" />
     <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
@@ -292,6 +295,7 @@
     <ClInclude Include="Include\Core\Threading\TaskSystem.hpp" />
     <ClInclude Include="Include\Core\Tool\Serializer.h" />
     <ClInclude Include="Include\Core\UserEntry\InputManager.h" />
+    <ClInclude Include="Include\Resources\Animation.h" />
     <ClInclude Include="Include\Resources\Resource.h" />
     <ClInclude Include="Include\Physic\PhysicSetting.h" />
     <ClInclude Include="Include\Resources\Scene.h" />

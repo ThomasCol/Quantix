@@ -96,7 +96,7 @@ namespace Quantix::Resources
 
 		if (_HDRImage == nullptr)
 		{
-			LOG(ERROR, "failed to load texture :\n" + file);
+			LOG(ERROR, "failed to load texture:  " + file);
 			_status.store(EResourceStatus::FAILED);
 			return;
 		}
