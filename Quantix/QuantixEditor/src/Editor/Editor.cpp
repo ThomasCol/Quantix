@@ -86,7 +86,7 @@ Editor::~Editor()
 void Editor::InitEditorArtifact()
 {
 	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight());
-	_app->info.proj = { Math::QXmat4::CreateProjectionMatrix(_app->info.width, _app->info.height, 0.1f, 1000.f, 80.f) };
+	_app->info.proj = { Math::QXmat4::CreateProjectionMatrix(_app->info.width, _app->info.height, 0.1f, 1000.f, 60.f) };
 	_guizmo.Init(_app);
 	_console.Init(_app);
 }

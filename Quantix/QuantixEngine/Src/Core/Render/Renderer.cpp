@@ -58,8 +58,11 @@ namespace Quantix::Core::Render
 		glDeleteBuffers(1, &_viewProjMatrixUBO);
 		glDeleteBuffers(1, &_viewProjShadowMatrixUBO);
 		glDeleteBuffers(1, &_lightUBO);
-		delete _bloom;
-		delete _effects;
+
+		for (QXsizei i = 0; i < _effects.size(); ++i)
+		{
+			delete _effects[i];
+		}
 	}
 
 #pragma endregion
@@ -228,13 +231,16 @@ namespace Quantix::Core::Render
 	void Renderer::InitPostProcessEffects(DataStructure::ResourcesManager& manager, Platform::AppInfo& info) noexcept
 	{
 		// create Skybox effect
-		_effects = new PostProcess::Skybox(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/SkyboxShader.vert", "../QuantixEngine/Media/Shader/SkyboxShader.frag"),
+		_skybox = new PostProcess::Skybox(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/SkyboxShader.vert", "../QuantixEngine/Media/Shader/SkyboxShader.frag"),
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/CubemapShader.vert", "../QuantixEngine/Media/Shader/CubemapShader.frag"),
-			manager.CreateModel("media/Mesh/cube.obj"), manager.CreateHDRTexture("media/Textures/skybox.hdr"));
+			manager.CreateModel("media/Mesh/cube.obj"), manager.CreateHDRTexture("media/Textures/Newport_Loft_Ref.hdr"));
 
-		_bloom = new PostProcess::Bloom(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Blur.frag"),
+		PostProcess::Bloom* bloom = new PostProcess::Bloom(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Blur.frag"),
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Bloom.frag"),
 			manager.CreateModel("media/Mesh/quad.obj"), info);
+
+		_effects.push_back(_skybox);
+		_effects.push_back(bloom);
 	}
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
@@ -302,11 +308,11 @@ namespace Quantix::Core::Render
 			RenderColliders(colliders);
 		}
 
-		_effects->Render(info, 0, 0, 0);
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		_bloom->Render(info, buffer.texture[0], buffer.texture[1], buffer.FBO);
+		for (QXsizei i = 0; i < _effects.size(); ++i)
+		{
+			if (_effects[i]->enable)
+				_effects[i]->Render(info, buffer.texture[0], buffer.texture[1], buffer.FBO);
+		}
 
 		STOP_PROFILING("draw");
 
@@ -321,7 +327,7 @@ namespace Quantix::Core::Render
 		glBindFramebuffer(GL_FRAMEBUFFER, _uniShadowBuffer.FBO);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		glViewport(0, 0, 1024, 1024);
+		glViewport(0, 0, 4096, 4096);
 
 		QXbyte last_shader_id = -1;
 
@@ -411,7 +417,7 @@ namespace Quantix::Core::Render
 		{
 			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
 			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4),
-				Math::QXmat4::CreateLookAtMatrix(lights[0].position, lights[0].position + lights[0].direction, Math::QXvec3::up).array);
+				Math::QXmat4::CreateLookAtMatrix(-lights[0].direction * 10, -lights[0].direction * 10 + lights[0].direction, Math::QXvec3::up).array);
 			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), _projLight.array);
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
@@ -419,6 +425,12 @@ namespace Quantix::Core::Render
 			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
 			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 2, light_size * sizeof(Core::Components::Light), &lights[0]);
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		}
+		else
+		{
+			float val = 0.0f;
+			glClearNamedBufferData(_lightUBO, GL_R32F, GL_RED, GL_FLOAT, &val);
+			glClearNamedBufferData(_viewProjShadowMatrixUBO, GL_R32F, GL_RED, GL_FLOAT, &val);
 		}
 	}
 
