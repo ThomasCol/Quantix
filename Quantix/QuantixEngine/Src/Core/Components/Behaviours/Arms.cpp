@@ -3,6 +3,7 @@
 #include <Physic/Raycast.h>
 #include "Core/UserEntry/InputManager.h"
 #include "Core\Components\Behaviours\Cube.h"
+#include "Core\Components\Mesh.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -124,33 +125,46 @@ namespace Quantix::Gameplay
 					if (rigid->GetRigidFlagKinematic())
 					{
 						cube->ChangeState(ECubeState::DEFAULT);
-						UnFreeze(rigid);
+						UnFreeze(ray.actorClosestBlock);
 					}
 					else
 					{
 						cube->ChangeState(ECubeState::FROZEN);
-						Freeze(rigid);
+						Freeze(ray.actorClosestBlock);
 					}
 				}
 			}
 		}
 	}
 
-	void	Arms::Freeze(Core::Components::Rigidbody* cube)
+	void	Arms::Freeze(Core::DataStructure::GameObject3D* cube)
 	{
-		objectFrozenVelocity = cube->GetLinearVelocity();
+		objectFrozenVelocity = rigid->GetLinearVelocity();
 
-		cube->SetRigidFlagKinematic(true);
-		cube->SetRigidFlagKineForQueries(true);
+		Core::Components::Mesh* mesh = cube->GetComponent<Core::Components::Mesh>();
+		if (mesh)
+		{
+			objectFrozenDiffuse = mesh->GetMaterial()->diffuse;
+			mesh->GetMaterial()->diffuse = Math::QXvec3(30, 30, 180) / 255;
+		}
+			
+		rigid->SetRigidFlagKinematic(true);
+		rigid->SetRigidFlagKineForQueries(true);
 	}
 
-	void	Arms::UnFreeze(Core::Components::Rigidbody* cube)
+	void	Arms::UnFreeze(Core::DataStructure::GameObject3D* cube)
 	{
-		cube->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetUp());
+		rigid->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetUp());
 
-		cube->SetRigidFlagKinematic(false);
-		cube->SetRigidFlagKineForQueries(false);
-		cube->SetLinearVelocity(objectFrozenVelocity);
+		Core::Components::Mesh* mesh = cube->GetComponent<Core::Components::Mesh>();
+		if (mesh)
+		{
+			mesh->GetMaterial()->diffuse = objectFrozenDiffuse;
+		}
+
+		rigid->SetRigidFlagKinematic(false);
+		rigid->SetRigidFlagKineForQueries(false);
+		rigid->SetLinearVelocity(objectFrozenVelocity);
 	}
 
 	void	Arms::UsePunch()

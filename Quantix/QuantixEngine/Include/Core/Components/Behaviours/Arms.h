@@ -22,6 +22,8 @@ namespace Quantix::Gameplay
 			Core::Components::Rigidbody*		rigid = nullptr;
 
 			Math::QXvec3 objectFrozenVelocity;
+
+			Math::QXvec3 objectFrozenDiffuse;
 			#pragma endregion
 
 			#pragma region Methods
@@ -30,8 +32,8 @@ namespace Quantix::Gameplay
 			void	Grab();
 			void	Drop();
 			void	UseIce();
-			void	Freeze(Core::Components::Rigidbody* cube);
-			void	UnFreeze(Core::Components::Rigidbody* cube);
+			void	Freeze(Core::DataStructure::GameObject3D* cube);
+			void	UnFreeze(Core::DataStructure::GameObject3D* cube);
 			void	UsePunch();
 			void	UseMagnet(QXbool positiveField);
 
