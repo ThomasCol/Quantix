@@ -397,7 +397,6 @@ namespace Quantix::Physic
 				((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->SetPosition(Math::QXvec3((QXfloat)pos.x, (QXfloat)pos.y, (QXfloat)pos.z));
 			}
 		}
-		
 	}
 
 	void PhysicHandler::UpdateEditorActor()
@@ -408,8 +407,8 @@ namespace Quantix::Physic
 			{
 				// Set RigidBody Transform On GameOject Transform
 				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalPosition();
-				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalRotation();
-				//quat = quat.ConjugateQuaternion();
+				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetLocalRotation();
+				quat = quat.ConjugateQuaternion();
 				if (it->second->GetType() == ETypePhysic::DYNAMIC)
 				{
 					PxTransform transform = it->second->GetObjectDynamic()->GetRigid()->getGlobalPose();
