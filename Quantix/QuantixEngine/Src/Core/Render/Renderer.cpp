@@ -239,10 +239,12 @@ namespace Quantix::Core::Render
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Bloom.frag"),
 			manager.CreateModel("media/Mesh/quad.obj"), info);
 
-		bloom->enable = false;
+		PostProcess::ToneMapping* toneMapping = new PostProcess::ToneMapping(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/ToneMapping.vert", "../QuantixEngine/Media/Shader/ToneMapping.frag"),
+			manager.CreateModel("media/Mesh/quad.obj"), info);
 
 		_effects.push_back(skybox);
 		_effects.push_back(bloom);
+		_effects.push_back(toneMapping);
 	}
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,

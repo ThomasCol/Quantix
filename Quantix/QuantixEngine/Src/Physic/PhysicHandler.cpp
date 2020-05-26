@@ -52,7 +52,6 @@ namespace Quantix::Physic
 		}
 
 		// generate contacts for all that were not filtered above
-		std::cout << "Not Trigger" << std::endl;
 
 		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 		{
@@ -334,12 +333,11 @@ namespace Quantix::Physic
 
 		PhysicDynamic* type1 = GetObject(other, true)->GetObjectDynamic();
 
+
 		//PxRevoluteJointCreate
 		PxRevoluteJoint* newJoint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(-physx::PxVec3(vec.x, vec.y, vec.z)), type1->GetRigid(), PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
 
 		newJoint->setBreakForce(joint.breakForce, joint.breakTorque);
-
-		//joint->setConstraintFlag(physx::PxConstraintFlag::)
 		return newJoint;
 	}
 
@@ -398,7 +396,6 @@ namespace Quantix::Physic
 				((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->SetPosition(Math::QXvec3((QXfloat)pos.x, (QXfloat)pos.y, (QXfloat)pos.z));
 			}
 		}
-		
 	}
 
 	void PhysicHandler::UpdateEditorActor()
@@ -409,7 +406,7 @@ namespace Quantix::Physic
 			{
 				// Set RigidBody Transform On GameOject Transform
 				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalPosition();
-				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalRotation();
+				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetLocalRotation();
 				quat = quat.ConjugateQuaternion();
 				if (it->second->GetType() == ETypePhysic::DYNAMIC)
 				{
@@ -467,27 +464,22 @@ namespace Quantix::Physic
 	std::vector<Core::DataStructure::GameObject3D*> PhysicHandler::OverlapSphere(QXfloat radius, Physic::Transform3D* transform)
 	{
 		Math::QXvec3 p = transform->GetGlobalPosition();
-		Math::QXquaternion q = transform->GetGlobalRotation();
+		Math::QXquaternion q = transform->GetGlobalRotation().ConjugateQuaternion();
+
 		PxTransform shapePosition = PxTransform(p.x, p.y, p.z, PxQuat(q.v.x, q.v.y, q.v.z, q.w));
 
 		PxSphereGeometry overlapGeometrie = PxSphereGeometry(radius);
 
 		PxQueryFilterData fd;
-		fd.flags |= PxQueryFlag::eDYNAMIC; // note the OR with the default value
-		fd.flags |= PxQueryFlag::eANY_HIT;
+		fd.flags |= PxQueryFlag::eNO_BLOCK;
 
-		PxOverlapBuffer hit;
+		PxOverlapHit hitBuffer[256];
+		PxOverlapBuffer hit(hitBuffer, 256);
 
 		bool status = mScene->overlap(overlapGeometrie, shapePosition, hit, fd);
-
 		std::vector<Core::DataStructure::GameObject3D*> list;
-		if (status)
-		{
-			QXint nbTouch = hit.getNbTouches();
-			for (QXint i = 0; i < nbTouch; i++)
-				list.push_back((Core::DataStructure::GameObject3D*)(hit.getTouch(i).actor->userData));
-		}
-
+		for (QXint i = 0; i < hit.nbTouches; i++)
+				list.push_back((Core::DataStructure::GameObject3D*)(hit.touches[i].actor->userData));
 		return list;
 	}
 
@@ -504,6 +496,8 @@ namespace Quantix::Physic
 		mScene->getActors(PxActorTypeFlag::eRIGID_STATIC, actorsStat, numActorsStatic);
 
 		mScene->removeActors(actorsStat, numActorsStatic);
+
+		manager->purgeControllers();
 	}
 
 #pragma region FlagSetters

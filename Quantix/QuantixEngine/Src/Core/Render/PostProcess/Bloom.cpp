@@ -3,14 +3,6 @@
 #include <glad/glad.h>
 #include "Core/Debugger/Logger.h"
 
-#define OFFSETOF(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
-
-struct quad_vertex
-{
-    Math::QXvec2 Position;
-    Math::QXvec2 UV;
-};
-
 namespace Quantix::Core::Render::PostProcess
 {
 	Bloom::Bloom(Resources::ShaderProgram* blurProgram, Resources::ShaderProgram* bloomProgram, Resources::Model* model, Platform::AppInfo& info) :

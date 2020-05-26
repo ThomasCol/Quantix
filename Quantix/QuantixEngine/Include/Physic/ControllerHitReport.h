@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "Core/DataStructure/GameObject3D.h"
+#include "Core/Components/Behaviours/Bumper.h"
 
 namespace Quantix::Physic
 {
@@ -22,6 +23,11 @@ namespace Quantix::Physic
 			Core::DataStructure::GameObject3D* object = ((Core::DataStructure::GameObject3D*)hit.actor->userData);
 			if (object) 
 			{
+				Gameplay::Bumper* bumper = object->GetComponent<Gameplay::Bumper>();
+				if (bumper)
+				{
+					bumper->OnTrigger(object, ((Core::DataStructure::GameObject3D*)hit.controller->getUserData()));
+				}
 				if (object->GetLayer() == Quantix::Core::DataStructure::Layer::KILLZONE)
 				{
 					Core::DataStructure::GameObject3D* object = ((Core::DataStructure::GameObject3D*)hit.controller->getUserData());

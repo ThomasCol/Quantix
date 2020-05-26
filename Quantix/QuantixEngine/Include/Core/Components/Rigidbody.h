@@ -299,6 +299,15 @@ namespace Quantix::Core::Components
 		 */
 		bool GetActorFlagDisableGravity() { return actorFlag.disableGravity; }
 
+
+		void SetActorFlagVisualisation(bool b)
+		{
+			actorFlag.visualization = b;
+			actorPhysic->GetRigid()->setActorFlag(physx::PxActorFlag::eVISUALIZATION, b);
+		}
+
+		bool GetActorFlagVisualisation() { return actorFlag.visualization; }
+
 		/**
 		* @brief Get the Actor Flag Disable Simulation object
 		*

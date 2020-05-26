@@ -49,16 +49,21 @@ namespace Quantix::Gameplay
 		
 		for (QXuint i = 0; i < overlapedObjects.size(); i++)
 		{
-			Cube* cube = overlapedObjects[i]->GetComponent<Cube>();
-			
-			if (cube)
+			if (overlapedObjects[i] != _object)
 			{
-				if ((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()).Length() > 1.f)
-				{
-					Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+				Cube* cube = nullptr;
+				if (overlapedObjects[i])
+					cube = overlapedObjects[i]->GetComponent<Cube>(true);
 
-					if (rigid)
-						rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * (QXfloat)deltaTime * 50.f);
+				if (cube)
+				{
+					if ((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetGlobalPosition()).Length() > 1.f)
+					{
+						Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+
+						if (rigid)
+							rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * (QXfloat)deltaTime * 100.f);
+					}
 				}
 			}
 		}
@@ -72,14 +77,19 @@ namespace Quantix::Gameplay
 
 		for (QXuint i = 0; i < overlapedObjects.size(); i++)
 		{
-			Cube* cube = overlapedObjects[i]->GetComponent<Cube>();
-
-			if (cube)
+			if (overlapedObjects[i] != _object)
 			{
-				Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+				Cube* cube = nullptr;
+				if (overlapedObjects[i])
+					cube = overlapedObjects[i]->GetComponent<Cube>(true);
 
-				if (rigid)
-					rigid->AddForce( (overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * (QXfloat)deltaTime * 50.f);
+				if (cube)
+				{
+					Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+
+					if (rigid)
+						rigid->AddForce((overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * (QXfloat)deltaTime * 100.f);
+				}
 			}
 		}
 	}

@@ -8,6 +8,7 @@
 #include "../../../QuantixEditor/include/Window.h"
 #include "Core/Components/Collider.h"
 #include "PostProcess/Bloom.h"
+#include "PostProcess/ToneMapping.h"
 
 namespace Quantix::Core::DataStructure
 {

@@ -3,6 +3,7 @@
 #include <Physic/Raycast.h>
 #include "Core/UserEntry/InputManager.h"
 #include "Core\Components\Behaviours\Cube.h"
+#include "Core\Components\Mesh.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -51,8 +52,6 @@ namespace Quantix::Gameplay
 			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2);
 			_grabbedObject->SetGlobalPosition(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2);
 		}
-		//if (rigid)
-			//std::cout << rigid->GetRigidFlagKinematic() << std::endl;
 	}
 
 	void Arms::UseHands()
@@ -80,8 +79,6 @@ namespace Quantix::Gameplay
 				{
 					cube->ChangeState(ECubeState::GRABBED);
 
-					//Change hierarchy of the object
-					_originOfGrabbedObject = ray.actorClosestBlock->GetTransform()->GetParent();
 					_grabbedObject = ray.actorClosestBlock;
 
 					_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKinematic(true);
@@ -106,7 +103,6 @@ namespace Quantix::Gameplay
 		_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKineForQueries(false);
 
 		_grabbedObject = nullptr;
-		_originOfGrabbedObject = nullptr;
 
 		_isGrabbingObject = QX_FALSE;
 	}
@@ -129,30 +125,46 @@ namespace Quantix::Gameplay
 					if (rigid->GetRigidFlagKinematic())
 					{
 						cube->ChangeState(ECubeState::DEFAULT);
-						UnFreeze(rigid);
+						UnFreeze(ray.actorClosestBlock);
 					}
 					else
 					{
 						cube->ChangeState(ECubeState::FROZEN);
-						Freeze(rigid);
+						Freeze(ray.actorClosestBlock);
 					}
 				}
 			}
 		}
 	}
 
-	void	Arms::Freeze(Core::Components::Rigidbody* cube)
+	void	Arms::Freeze(Core::DataStructure::GameObject3D* cube)
 	{
-		//Stop Kinematic
-		cube->SetRigidFlagKinematic(true);
-		cube->SetRigidFlagKineForQueries(true);
+		objectFrozenVelocity = rigid->GetLinearVelocity();
+
+		Core::Components::Mesh* mesh = cube->GetComponent<Core::Components::Mesh>();
+		if (mesh)
+		{
+			objectFrozenDiffuse = mesh->GetMaterial()->diffuse;
+			mesh->GetMaterial()->diffuse = Math::QXvec3(30, 30, 180) / 255;
+		}
+			
+		rigid->SetRigidFlagKinematic(true);
+		rigid->SetRigidFlagKineForQueries(true);
 	}
 
-	void	Arms::UnFreeze(Core::Components::Rigidbody* cube)
+	void	Arms::UnFreeze(Core::DataStructure::GameObject3D* cube)
 	{
-		//Re-Activate Kinematic
-		cube->SetRigidFlagKinematic(false);
-		cube->SetRigidFlagKineForQueries(false);
+		rigid->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetUp());
+
+		Core::Components::Mesh* mesh = cube->GetComponent<Core::Components::Mesh>();
+		if (mesh)
+		{
+			mesh->GetMaterial()->diffuse = objectFrozenDiffuse;
+		}
+
+		rigid->SetRigidFlagKinematic(false);
+		rigid->SetRigidFlagKineForQueries(false);
+		rigid->SetLinearVelocity(objectFrozenVelocity);
 	}
 
 	void	Arms::UsePunch()
@@ -169,7 +181,6 @@ namespace Quantix::Gameplay
 				cube->AddForce(_gameobject->GetTransform()->GetForward() * 50, Physic::ForceMode::IMPULSE);
 
 			_grabbedObject = nullptr;
-			_originOfGrabbedObject = nullptr;
 
 			_isGrabbingObject = QX_FALSE;
 		}
