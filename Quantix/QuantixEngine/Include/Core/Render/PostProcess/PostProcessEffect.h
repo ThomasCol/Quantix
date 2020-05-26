@@ -6,6 +6,14 @@
 #include "Core/Platform/Appinfo.h"
 #include "Core/Render/Framebuffers.h"
 
+#define OFFSETOF(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
+
+struct quad_vertex
+{
+	Math::QXvec2 Position;
+	Math::QXvec2 UV;
+};
+
 namespace Quantix::Core::Render::PostProcess
 {
 	class PostProcessEffect

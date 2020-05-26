@@ -235,6 +235,9 @@ namespace Quantix::Core::Render
 		_bloom = new PostProcess::Bloom(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Blur.frag"),
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Bloom.frag"),
 			manager.CreateModel("media/Mesh/quad.obj"), info);
+
+		_toneMapping = new PostProcess::ToneMapping(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/ToneMapping.vert", "../QuantixEngine/Media/Shader/ToneMapping.frag"),
+			manager.CreateModel("media/Mesh/quad.obj"), info);
 	}
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,

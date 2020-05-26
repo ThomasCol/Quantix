@@ -8,6 +8,7 @@
 #include "../../../QuantixEditor/include/Window.h"
 #include "Core/Components/Collider.h"
 #include "PostProcess/Bloom.h"
+#include "PostProcess/ToneMapping.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -31,7 +32,8 @@ namespace Quantix::Core::Render
 		Math::QXmat4 					_projLight;
 
 		PostProcess::PostProcessEffect*	_effects;
-		PostProcess::Bloom* 			_bloom;
+		PostProcess::Bloom*				_bloom;
+		PostProcess::ToneMapping* 			_toneMapping;
 
 		Resources::ShaderProgram* 		_wireFrameProgram;
 		Resources::ShaderProgram* 		_shadowProgram;
