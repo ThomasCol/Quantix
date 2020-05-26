@@ -53,12 +53,16 @@ namespace Quantix::Resources
 	{
 		//_BlendedTRS[indexBone] = objectTransform * Math::QXmat4::CreateTRSMatrix(_dataAnim[indexBone]);
 	}
+
+	void Animation::UpdateTimer(QXdouble frameTime)
+	{
+		_info.Update((QXfloat)frameTime);
+	}
 	
-	void Animation::Update(Quantix::Physic::Transform3D& objectTransform)
+	void Animation::Update(QXdouble frameTime, Quantix::Physic::Transform3D& objectTransform)
 	{
 		for (QXuint i = 0; i < _nbBones; i++)
-		{
 			SetSkeletonOfMesh(i, objectTransform);
-		}
+		UpdateTimer(frameTime);
 	}
 }

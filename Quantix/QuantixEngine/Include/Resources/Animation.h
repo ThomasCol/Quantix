@@ -40,7 +40,7 @@ namespace Quantix::Resources
 			timeCap = tTimeCap;
 		}
 		
-		void	Update(float& frameTime)
+		void	Update(QXfloat frameTime)
 		{
 			currentTime += frameTime;
 			if (currentTime >= timeCap)
@@ -66,7 +66,8 @@ namespace Quantix::Resources
 		void SetTRS(const aiAnimation* paiAnim, const aiMesh* paiMesh);
 		void Init() override;
 		void SetSkeletonOfMesh(QXuint indexBone, Quantix::Physic::Transform3D& objectTransform);
-		void Update(Quantix::Physic::Transform3D& objectTransform);
+		void UpdateTimer(QXdouble frameTime);
+		void Update(QXdouble frameTime, Quantix::Physic::Transform3D& objectTransform);
 
 	private:
 		std::vector<Math::QXmat4>								_localTRS;
