@@ -203,6 +203,9 @@ namespace Quantix::Core::Components
 		 */
 		void SetShapeFlagSimulation(bool b)
 		{
+			if (b && GetShapeFlagTrigger())
+				return;
+
 			shapeFlag.simulation = b;
 			shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, b);
 		}
@@ -222,6 +225,9 @@ namespace Quantix::Core::Components
 		 */
 		void SetShapeFlagTrigger(bool b)
 		{
+			if (b && GetShapeFlagSimulation())
+				return;
+
 			shapeFlag.trigger = b;
 			shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, b);
 		}

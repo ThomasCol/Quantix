@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\Behaviours\Bumper.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Killzone.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Arms.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Cube.cpp" />
@@ -257,6 +258,7 @@
     <ClCompile Include="Src\Resources\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Components\Behaviours\Bumper.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Arms.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Cube.h" />
     <ClInclude Include="Include\Core\Event\Event.h" />

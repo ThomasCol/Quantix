@@ -114,7 +114,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial1.mat"
                                 }
                             },
                             {
@@ -177,7 +177,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial2.mat"
                                 }
                             },
                             {
@@ -240,7 +240,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial3.mat"
                                 }
                             },
                             {
@@ -303,7 +303,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial4.mat"
                                 }
                             },
                             {
@@ -366,7 +366,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial5.mat"
                                 }
                             },
                             {
@@ -429,7 +429,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial6.mat"
                                 }
                             },
                             {
@@ -492,7 +492,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial7.mat"
                                 }
                             },
                             {
@@ -555,7 +555,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
+                                    "Material": "media/Material/DefaultMaterial8.mat"
                                 }
                             },
                             {
@@ -645,6 +645,31 @@
                                 "Camera": {
                                     "Enable": true
                                 }
+                            },
+                            {
+                                "SphereCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "Radius": 1.0
+                                }
                             }
                         ],
                         "Childs": []
@@ -677,7 +702,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial9.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -707,6 +732,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -788,7 +814,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial10.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -823,6 +849,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -914,7 +941,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial11.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -944,6 +971,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1020,7 +1048,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial12.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1050,6 +1078,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1126,7 +1155,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial13.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1156,6 +1185,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1232,7 +1262,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial14.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1262,6 +1292,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1338,7 +1369,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial15.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1368,6 +1399,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1444,7 +1476,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial16.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1474,6 +1506,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1550,7 +1583,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial17.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1580,6 +1613,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1656,7 +1690,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial18.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1686,6 +1720,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1762,7 +1797,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial19.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1792,6 +1827,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1868,7 +1904,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial20.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -1898,6 +1934,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -1974,7 +2011,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial21.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2004,6 +2041,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2080,7 +2118,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial22.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2110,6 +2148,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2186,7 +2225,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial23.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2216,6 +2255,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2292,7 +2332,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial24.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2322,6 +2362,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2398,7 +2439,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial25.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2428,6 +2469,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2504,7 +2546,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial26.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2534,6 +2576,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2610,7 +2653,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial27.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2640,6 +2683,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2716,7 +2760,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial28.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2746,6 +2790,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2822,7 +2867,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial29.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2852,6 +2897,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -2928,7 +2974,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial30.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -2958,6 +3004,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -3034,7 +3081,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial31.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -3064,6 +3111,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -3140,7 +3188,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial32.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -3170,6 +3218,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -3246,7 +3295,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial33.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -3276,6 +3325,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
@@ -3352,7 +3402,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial34.mat"
+                                    "Material": ""
                                 }
                             },
                             {
@@ -3382,6 +3432,7 @@
                                     },
                                     "DisableGravity": false,
                                     "DisableSimulation": false,
+                                    "Visualisation": false,
                                     "Kinematic": false,
                                     "CCD": false,
                                     "CCDFriction": false,
