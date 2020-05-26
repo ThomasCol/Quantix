@@ -140,7 +140,8 @@ namespace Quantix::Gameplay
 
 	void	Arms::Freeze(Core::Components::Rigidbody* cube)
 	{
-		//Stop Kinematic
+		objectFrozenVelocity = cube->GetLinearVelocity();
+
 		cube->SetRigidFlagKinematic(true);
 		cube->SetRigidFlagKineForQueries(true);
 	}
@@ -149,9 +150,9 @@ namespace Quantix::Gameplay
 	{
 		cube->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetUp());
 
-		//Re-Activate Kinematic
 		cube->SetRigidFlagKinematic(false);
 		cube->SetRigidFlagKineForQueries(false);
+		cube->SetLinearVelocity(objectFrozenVelocity);
 	}
 
 	void	Arms::UsePunch()

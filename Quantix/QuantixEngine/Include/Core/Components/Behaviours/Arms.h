@@ -20,6 +20,8 @@ namespace Quantix::Gameplay
 
 			Core::DataStructure::GameObject3D*	_gameobject = nullptr;
 			Core::Components::Rigidbody*		rigid = nullptr;
+
+			Math::QXvec3 objectFrozenVelocity;
 			#pragma endregion
 
 			#pragma region Methods
