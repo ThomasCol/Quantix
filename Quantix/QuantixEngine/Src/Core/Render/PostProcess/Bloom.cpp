@@ -182,7 +182,6 @@ namespace Quantix::Core::Render::PostProcess
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);
             glActiveTexture(GL_TEXTURE0);
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
     }
 }

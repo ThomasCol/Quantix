@@ -59,10 +59,8 @@ void MenuBar::PostProcessSettings(Quantix::Core::Platform::Application* app)
 		std::vector<Quantix::Core::Render::PostProcess::PostProcessEffect*> effect = app->renderer.GetEffects();
 		for (QXsizei i = 0; i < effect.size(); i++)
 		{
-			ImGui::PushID(&effect[i]);
-			QXbool enable = effect[i]->enable;
-			ImGui::Text(effect[i]->name.c_str()); ImGui::SameLine(300.f); ImGui::Checkbox("", &enable);
-			effect[i]->enable = enable;
+			ImGui::PushID(i);
+			ImGui::Text(effect[i]->name.c_str()); ImGui::SameLine(300.f); ImGui::Checkbox("", &effect[i]->enable);
 			ImGui::PopID();
 		}
 		ImGui::End();

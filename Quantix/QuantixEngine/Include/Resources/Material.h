@@ -66,6 +66,8 @@ namespace Quantix::Resources
 		 */
 		void SendData(QXuint shadowTexture);
 
+		void SendTextures();
+
 		/**
 		 * @brief Set a float in a shader
 		 * 

@@ -231,15 +231,17 @@ namespace Quantix::Core::Render
 	void Renderer::InitPostProcessEffects(DataStructure::ResourcesManager& manager, Platform::AppInfo& info) noexcept
 	{
 		// create Skybox effect
-		_skybox = new PostProcess::Skybox(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/SkyboxShader.vert", "../QuantixEngine/Media/Shader/SkyboxShader.frag"),
+		PostProcess::PostProcessEffect* skybox = new PostProcess::Skybox(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/SkyboxShader.vert", "../QuantixEngine/Media/Shader/SkyboxShader.frag"),
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/CubemapShader.vert", "../QuantixEngine/Media/Shader/CubemapShader.frag"),
 			manager.CreateModel("media/Mesh/cube.obj"), manager.CreateHDRTexture("media/Textures/Newport_Loft_Ref.hdr"));
 
-		PostProcess::Bloom* bloom = new PostProcess::Bloom(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Blur.frag"),
+		PostProcess::PostProcessEffect* bloom = new PostProcess::Bloom(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Blur.frag"),
 			manager.CreateShaderProgram("../QuantixEngine/Media/Shader/bloomBlur.vert", "../QuantixEngine/Media/Shader/Bloom.frag"),
 			manager.CreateModel("media/Mesh/quad.obj"), info);
 
-		_effects.push_back(_skybox);
+		bloom->enable = false;
+
+		_effects.push_back(skybox);
 		_effects.push_back(bloom);
 	}
 
@@ -269,6 +271,7 @@ namespace Quantix::Core::Render
 		glEnable(GL_DEPTH_TEST);
 
 		Resources::Material* material;
+		Resources::Material* last_material = nullptr;
 		DataStructure::GameObject3D* obj;
 
 		for (QXuint i = 0; i < mesh.size(); i++)
@@ -288,8 +291,14 @@ namespace Quantix::Core::Render
 			// Compare Meshes key for binding each texture once per shader
 			if (mesh[i]->textureID != last_texture_id)
 			{
-				material->SendData(_uniShadowBuffer.texture);
+				material->SendTextures();
 				last_texture_id = mesh[i]->textureID;
+			}
+
+			if (material != last_material)
+			{
+				material->SendData(_uniShadowBuffer.texture);
+				last_material = material;
 			}
 
 			// Draw current mesh
@@ -312,7 +321,10 @@ namespace Quantix::Core::Render
 		{
 			if (_effects[i]->enable)
 				_effects[i]->Render(info, buffer.texture[0], buffer.texture[1], buffer.FBO);
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
+
 
 		STOP_PROFILING("draw");
 

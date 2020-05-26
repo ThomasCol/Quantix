@@ -30,7 +30,6 @@ namespace Quantix::Core::Render
 
 		Math::QXmat4 					_projLight;
 
-		PostProcess::PostProcessEffect*					_skybox;
 		std::vector<PostProcess::PostProcessEffect*>	_effects;
 
 		Resources::ShaderProgram* 		_wireFrameProgram;

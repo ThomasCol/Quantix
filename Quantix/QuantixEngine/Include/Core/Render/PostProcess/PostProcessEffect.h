@@ -93,7 +93,7 @@ namespace Quantix::Core::Render::PostProcess
 
 		QXstring	name = "";
 
-		QXbool		enable = true;
+		QXbool		enable = false;
 
 		#pragma endregion
 	};
