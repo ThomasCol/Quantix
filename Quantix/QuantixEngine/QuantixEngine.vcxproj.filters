@@ -58,6 +58,7 @@
     <ClCompile Include="Src\Core\Components\Behaviours\Killzone.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Bumper.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\ToneMapping.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\FilmGrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -124,5 +125,6 @@
     <ClInclude Include="Include\Physic\Joint.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Bumper.h" />
     <ClInclude Include="Include\Core\Render\PostProcess\ToneMapping.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\FilmGrain.h" />
   </ItemGroup>
 </Project>
