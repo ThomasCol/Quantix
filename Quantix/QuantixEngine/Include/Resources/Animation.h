@@ -65,16 +65,16 @@ namespace Quantix::Resources
 		void Load(const QXstring& pathFile) override;
 		void SetTRS(const aiAnimation* paiAnim, const aiMesh* paiMesh);
 		void Init() override;
-		void SetSkeletonOfMesh(QXuint indexBone, Quantix::Physic::Transform3D& objectTransform);
+		void SetSkeletonOfMesh(QXuint indexBone, Quantix::Physic::Transform3D* objectTransform);
 		void UpdateTimer(QXdouble frameTime);
-		void Update(QXdouble frameTime, Quantix::Physic::Transform3D& objectTransform);
+		void SendAnimationData(Quantix::Physic::Transform3D* objectTransform);
+		void Update(QXdouble frameTime, Quantix::Physic::Transform3D* objectTransform);
 
 	private:
 		std::vector<Math::QXmat4>								_localTRS;
 		std::vector<std::vector<Bone>>							_dataAnim;
 		std::vector<Math::QXmat4>								_BlendedTRS;
 		AnimationInfo											_info;
-		//QXfloat													_changeAnim = 0.f;
 		Math::QXvec4											_weight;
 		QXuint													_nbBones;
 	};

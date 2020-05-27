@@ -1,4 +1,5 @@
 #include "Core/Components/Animator.h"
+#include "Core/DataStructure/GameObject3D.h"
 
 namespace Quantix::Core::Components
 {
@@ -10,15 +11,10 @@ namespace Quantix::Core::Components
 	void Animator::Init(Core::DataStructure::GameComponent* object) noexcept
 	{
 		_object = object;
-		_animations.insert(std::make_pair(StateAnimation::IDLE, nullptr));
-		_animations.insert(std::make_pair(StateAnimation::RUN, nullptr));
-		_animations.insert(std::make_pair(StateAnimation::JUMPSTART, nullptr));
-		_animations.insert(std::make_pair(StateAnimation::JUMPLOOP, nullptr));
-		_animations.insert(std::make_pair(StateAnimation::JUMPEND, nullptr));
 	}
 
-	void Animator::Update(StateAnimation stateToPlay)
+	void Animator::Update(double frameTime)
 	{
-	//	_animations[stateToPlay]->Play(_object);
+		_animation->Update(frameTime, ((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform());
 	}
 }

@@ -7,19 +7,10 @@
 
 namespace Quantix::Core::Components
 {
-	enum class QUANTIX_API StateAnimation
-	{
-		IDLE = (1 << 0),
-		RUN = (1 << 1),
-		JUMPSTART = (1 << 2),
-		JUMPLOOP = (1 << 3),
-		JUMPEND = (1 << 4)
-	};
-
 	class QUANTIX_API Animator : public virtual Core::DataStructure::Component
 	{
 	private:
-		std::map<StateAnimation, Quantix::Resources::Animation*>	_animations;
+		Quantix::Resources::Animation*		_animation;
 	public:
 		
 		Animator() = default;
@@ -32,7 +23,7 @@ namespace Quantix::Core::Components
 		void			Init(Core::DataStructure::GameComponent* object) noexcept override;
 		void 			Destroy() noexcept override {};
 
-		void			Update(StateAnimation stateToPlay);
+		void			Update(double frameTime);
 	};
 }
 

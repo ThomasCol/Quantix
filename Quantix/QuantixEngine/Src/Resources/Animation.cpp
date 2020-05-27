@@ -13,7 +13,6 @@ namespace Quantix::Resources
 		_info.Init(paiAnim->mName.data, paiAnim->mChannels[0]->mNumPositionKeys, 1 / FRAME);
 		_weight = Math::QXvec4{ 0.f, 0.f, 0.f, 0.f };
 		SetTRS(paiAnim, paiMesh); 
-		
 	}
 
 	void Animation::SetTRS(const aiAnimation* paiAnim, const aiMesh* paiMesh)
@@ -47,22 +46,31 @@ namespace Quantix::Resources
 
 	void Animation::Init()
 	{
+
 	}
 
-	void Animation::SetSkeletonOfMesh(QXuint indexBone, Quantix::Physic::Transform3D& objectTransform)
+	void Animation::SetSkeletonOfMesh(QXuint indexBone, Quantix::Physic::Transform3D* objectTransform)
 	{
-		//_BlendedTRS[indexBone] = objectTransform * Math::QXmat4::CreateTRSMatrix(_dataAnim[indexBone]);
+		_BlendedTRS[indexBone] = objectTransform->GetTRS() * Math::QXmat4::CreateTRSMatrix(_dataAnim[indexBone][_info.animIndex].localPos, _dataAnim[indexBone][_info.animIndex].localRotation, _dataAnim[indexBone][_info.animIndex].localScale);
 	}
 
 	void Animation::UpdateTimer(QXdouble frameTime)
 	{
 		_info.Update((QXfloat)frameTime);
 	}
+
+	void Animation::SendAnimationData(Quantix::Physic::Transform3D* objectTransform)
+	{
+
+	}
 	
-	void Animation::Update(QXdouble frameTime, Quantix::Physic::Transform3D& objectTransform)
+	void Animation::Update(QXdouble frameTime, Quantix::Physic::Transform3D* objectTransform)
 	{
 		for (QXuint i = 0; i < _nbBones; i++)
 			SetSkeletonOfMesh(i, objectTransform);
+
+		SendAnimationData(objectTransform);
+
 		UpdateTimer(frameTime);
 	}
 }
