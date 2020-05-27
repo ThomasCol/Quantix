@@ -100,6 +100,8 @@ namespace Quantix::Physic
 
 		#pragma region Getters&Setters
 
+			inline Transform2D*							GetParent() const { return _parent; };
+
 			inline Core::DataStructure::GameObject2D*	GetObject() const { return _gameObject; };
 
 			inline std::list<Transform2D*>&				GetChilds() { return _childs; };
@@ -153,6 +155,8 @@ namespace Quantix::Physic
 			 */
 			void			SetScale(const Math::QXvec2& newSca);
 
+			void			SetParent(Transform2D* newParent);
+
 		#pragma endregion
 
 		#pragma region Functions
@@ -193,6 +197,8 @@ namespace Quantix::Physic
 			void			AddChild(Transform2D* child);
 
 			QXbool			FindTransform(Transform2D* toFind);
+
+			void			RemoveChild(Transform2D* toRemove);
 
 		#pragma endregion
 

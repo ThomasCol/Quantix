@@ -88,6 +88,16 @@ namespace Quantix::Physic
 			UpdateTRS();
 		}
 
+		void Transform2D::SetParent(Transform2D* newParent)
+		{
+			Transform2D* tmp = _parent;
+			_parent = newParent;
+
+			if (tmp)
+				tmp->RemoveChild(this);
+		}
+
+
 	#pragma endregion
 
 	#pragma region Functions
@@ -141,6 +151,12 @@ namespace Quantix::Physic
 					return QX_TRUE;
 			}
 			return QX_FALSE;
+		}
+
+		void	Transform2D::RemoveChild(Transform2D* toRemove)
+		{
+			_childs.remove(toRemove);
+			toRemove->SetParent(nullptr);
 		}
 
 	#pragma endregion

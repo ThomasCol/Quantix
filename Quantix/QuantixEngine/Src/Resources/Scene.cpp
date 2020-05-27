@@ -10,13 +10,15 @@ namespace Quantix::Resources
 
 	Scene::Scene()
 	{
-		_root = new Quantix::Core::DataStructure::GameObject3D("root3D");
+		_root3D = new Quantix::Core::DataStructure::GameObject3D("root3D");
+		_root3D->GetTransform()->SetParent(nullptr);
 		_root2D = new Quantix::Core::DataStructure::GameObject2D("root2D");
+		_root2D->GetTransform()->SetParent(nullptr);
 	}
 
 	Scene::Scene(const QXstring& name, Core::DataStructure::GameObject3D* root, const QXuint& id) noexcept :
 		_name{ name },
-		_root {root},
+		_root3D {root},
 		_id {id}
 	{
 		_root2D = new Quantix::Core::DataStructure::GameObject2D("root2D");
@@ -24,7 +26,7 @@ namespace Quantix::Resources
 
 	Scene::Scene(const Scene& copy) noexcept :
 		_name {copy._name}, 
-		_root {copy._root},
+		_root3D {copy._root3D},
 		_root2D{ copy._root2D },
 		_rootComponent{ copy._rootComponent },
 		_id {copy._id}
@@ -32,7 +34,7 @@ namespace Quantix::Resources
 
 	Scene::Scene(Scene&& copy) noexcept :
 		_name { std::move(copy._name) }, 
-		_root{ std::move(copy._root) },
+		_root3D{ std::move(copy._root3D) },
 		_root2D{ std::move(copy._root2D) },
 		_rootComponent{ std::move(copy._rootComponent) },
 		_id{ std::move(copy._id) }
@@ -47,7 +49,7 @@ namespace Quantix::Resources
 		for (auto it = _objectsComponent.begin(); it != _objectsComponent.end();)
 			it = _objectsComponent.erase(it);
 
-		delete _root;
+		delete _root3D;
 		delete _root2D;
 	}
 
@@ -63,7 +65,7 @@ namespace Quantix::Resources
 		QXbool is_set = false;
 
 		if (parent == nullptr)
-			_root->AddChild(object);
+			_root3D->AddChild(object);
 		else
 		{
 			for (auto it = _objects.begin(); it != _objects.end(); ++it)
@@ -77,7 +79,7 @@ namespace Quantix::Resources
 			}
 
 			if (!is_set)
-				_root->AddChild(object);
+				_root3D->AddChild(object);
 		}
 
 		_objects.push_back(object);
@@ -146,16 +148,16 @@ namespace Quantix::Resources
 		std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info) noexcept
 	{
 		// TODO pas complet update mesh et update gameobject
-		if (_root)
-			_root->Update(meshes, colliders, lights, info);
+		if (_root3D)
+			_root3D->Update(meshes, colliders, lights, info);
 		if (_root2D)
 			_root2D->Update();
 	}
 
 	void Scene::Start() noexcept
 	{
-		if (_root)
-			_root->Start();
+		if (_root3D)
+			_root3D->Start();
 		if (_root2D)
 			_root2D->Start();
 	}
@@ -212,7 +214,9 @@ namespace Quantix::Resources
 	Scene& Scene::operator=(const Scene& s) noexcept
 	{
 		_name = s._name;
-		_root = s._root;
+		_root3D = s._root3D;
+		_root2D = s._root2D;
+		_rootComponent = s._rootComponent;
 		_id = s._id;
 
 		return *this;
@@ -221,7 +225,9 @@ namespace Quantix::Resources
 	Scene& Scene::operator=(Scene&& s) noexcept
 	{
 		_name = std::move(s._name);
-		_root = std::move(s._root);
+		_root3D = std::move(s._root3D);
+		_root2D = std::move(s._root2D);
+		_rootComponent = std::move(s._rootComponent);
 		_id = std::move(s._id);
 
 		return *this;

@@ -27,7 +27,7 @@ namespace Quantix::Core::DataStructure
 
 		#pragma region Methods
 
-		inline void								AddChild(const GameObject3D* object) 
+		inline void								AddChild(const GameObject3D* object)
 		{ 
 			_transform->AddChild(object->GetTransform()); 
 		}

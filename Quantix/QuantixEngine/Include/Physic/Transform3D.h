@@ -156,9 +156,9 @@ namespace Quantix::Physic
 			 */
 			const Math::QXmat4&							GetTRS();
 
-			inline const Math::QXmat4&						GetLocalTRS() { return _trsLocal; };
+			inline const Math::QXmat4&					GetLocalTRS() { return _trsLocal; };
 
-			void											SetTRS(Math::QXmat4& trs);
+			void										SetTRS(Math::QXmat4& trs);
 
 			/**
 			 * @brief Set the parent of the current transform
@@ -202,8 +202,8 @@ namespace Quantix::Physic
 
 			inline std::list<Transform3D*>&				GetChilds() { return _childs; };
 
-			void											SetSpace(Space space);
-			inline Space									GetSpace() { return _space; };
+			void										SetSpace(Space space);
+			inline Space								GetSpace() { return _space; };
 
 		#pragma endregion
 

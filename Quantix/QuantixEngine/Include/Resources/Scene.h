@@ -22,7 +22,7 @@ namespace Quantix::Resources
 			QXstring											_name = "Default";
 			Core::DataStructure::GameComponent*					_rootComponent;
 			Core::DataStructure::GameObject2D*					_root2D;
-			Core::DataStructure::GameObject3D*					_root;
+			Core::DataStructure::GameObject3D*					_root3D;
 			QXuint												_id;
 
 			std::list<Core::DataStructure::GameComponent*>		_objectsComponent;
@@ -125,7 +125,7 @@ namespace Quantix::Resources
 			const QXuint&											GetID()const noexcept { return _id; }
 			QXuint&													GetID() noexcept { return _id; }
 
-			inline Core::DataStructure::GameObject3D*				GetRoot() { return _root; }
+			inline Core::DataStructure::GameObject3D*				GetRoot() { return _root3D; }
 			inline Core::DataStructure::GameObject2D*				GetRoot2D() { return _root2D; }
 			inline Core::DataStructure::GameComponent*				GetRootGameComponent() { return _rootComponent; }
 			inline std::vector<Core::DataStructure::GameObject3D*>	GetGameObjects3D() { return _objects; }
