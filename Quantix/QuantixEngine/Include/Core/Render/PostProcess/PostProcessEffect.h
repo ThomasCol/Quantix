@@ -6,6 +6,14 @@
 #include "Core/Platform/Appinfo.h"
 #include "Core/Render/Framebuffers.h"
 
+#define OFFSETOF(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
+
+struct quad_vertex
+{
+	Math::QXvec2 Position;
+	Math::QXvec2 UV;
+};
+
 namespace Quantix::Core::Render::PostProcess
 {
 	class PostProcessEffect
@@ -86,6 +94,14 @@ namespace Quantix::Core::Render::PostProcess
 		 * @param FBO FBO to use to render
 		 */
 		virtual void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept = 0;
+
+		#pragma endregion
+
+		#pragma region Attributes
+
+		QXstring	name = "";
+
+		QXbool		enable = false;
 
 		#pragma endregion
 	};

@@ -50,7 +50,10 @@ namespace Quantix::Resources
 		SetInt("material.shadowMap", 1);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, shadowTexture);
+	}
 
+	void Material::SendTextures()
+	{
 		if (_diffuse && _diffuse->IsReady())
 		{
 			SetInt("material.isTextured", 1);

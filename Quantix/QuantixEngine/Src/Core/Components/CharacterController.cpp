@@ -41,7 +41,7 @@ namespace Quantix::Core::Components
 	{
 		physx::PxControllerFilters filters;
 		
-		physx::PxControllerCollisionFlags tmp = controller->move(physx::PxVec3(vec.x, vec.y, vec.z), minDist, deltaTime, filters);
+		physx::PxControllerCollisionFlags tmp = controller->move(physx::PxVec3(vec.x, vec.y, vec.z), (physx::PxF32)minDist, deltaTime, filters);
 	}
 
 	void CharacterController::Jump(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime)
@@ -55,13 +55,13 @@ namespace Quantix::Core::Components
 
 	QXbool CharacterController::CheckIsFalling()
 	{
-		Physic::Raycast ray(GetFootPosition(), -GetUpDirection(), 0.01);
+		Physic::Raycast ray(GetFootPosition(), -GetUpDirection(), 0.01f);
 
 		if (ray.actorClosestBlock)
 		{
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	QXfloat CharacterController::GetRadius()
@@ -104,7 +104,7 @@ namespace Quantix::Core::Components
 	Math::QXvec3 CharacterController::GetPosition()
 	{
 		physx::PxExtendedVec3 v = controller->getPosition();
-		return Math::QXvec3(v.x, v.y, v.z);
+		return Math::QXvec3((QXfloat)v.x, (QXfloat)v.y, (QXfloat)v.z);
 	}
 
 	void CharacterController::SetPosition(Math::QXvec3 v)
@@ -115,7 +115,7 @@ namespace Quantix::Core::Components
 	Math::QXvec3 CharacterController::GetFootPosition()
 	{
 		physx::PxExtendedVec3 v = controller->getFootPosition();
-		return Math::QXvec3(v.x, v.y, v.z);
+		return Math::QXvec3((QXfloat)v.x, (QXfloat)v.y, (QXfloat)v.z);
 	}
 
 	void CharacterController::SetFootPosition(Math::QXvec3 v)

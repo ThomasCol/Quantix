@@ -27,28 +27,23 @@ namespace Quantix::Core::DataStructure
 
 		#pragma region Methods
 
-		inline void								AddChild(const GameObject3D* object) { _transform->AddChild(object->GetTransform()); }
+		inline void								AddChild(const GameObject3D* object) 
+		{ 
+			_transform->AddChild(object->GetTransform()); 
+		}
 
-		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, Platform::AppInfo& info) override;
+		void									Update(std::vector<Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
+													std::vector<Components::Light>& lights, Platform::AppInfo& info) override;
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-													const GameObject3D* parentObject, Platform::AppInfo& info);
+													std::vector<Components::Light>& lights, const GameObject3D* parentObject, Platform::AppInfo& info);
 
 		void									Start() override;
 		
 		void									Awake() override;
 
-		template<class Archive>
-		void save(Archive& archive) const
-		{
-			archive(_component);
-		}
+		void									Destroy() override;
 
-		template<class Archive>
-		void load(Archive& archive)
-		{
-			archive(_component);
-		}
 		void									CallOnTrigger(GameObject3D* other);
 		void									CallOnContact(GameObject3D* other, Math::QXvec3& position, Math::QXvec3& normal);
 

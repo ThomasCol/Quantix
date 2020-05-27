@@ -74,6 +74,9 @@ namespace Quantix::Core::Tool
 		QXstring	name = cur_val.FindMember("name")->value.GetString();
 		DataStructure::GameObject3D* object = scene->AddGameObject(name, parent);
 
+		DataStructure::Layer layer = (DataStructure::Layer)cur_val.FindMember("layer")->value.GetUint();
+		object->SetLayer(layer);
+
 		ReadTransform(object->GetTransform(), cur_val.FindMember("Transform")->value);
 
 		rapidjson::Value& components = cur_val.FindMember("Components")->value;
@@ -221,6 +224,8 @@ namespace Quantix::Core::Tool
 		writer.StartObject();
 		writer.String("name");
 		writer.String(transform->GetObject()->GetName());
+		writer.String("layer");
+		writer.Uint((QXuint)transform->GetObject()->GetLayer());
 		WriteTransform(transform, writer);
 
 		writer.String("Components");

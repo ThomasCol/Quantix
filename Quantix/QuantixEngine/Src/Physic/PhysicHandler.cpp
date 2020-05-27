@@ -46,15 +46,14 @@ namespace Quantix::Physic
 		// If it is a trigger
 		if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 		{
-			//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+			if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 				pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT;
 			return physx::PxFilterFlag::eDEFAULT;
 		}
 
 		// generate contacts for all that were not filtered above
-		std::cout << "Not Trigger" << std::endl;
 
-		//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 		{
 			pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 			pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
@@ -71,6 +70,12 @@ namespace Quantix::Physic
 			_instance = new PhysicHandler();
 		}
 		return _instance;
+	}
+
+	PhysicHandler::~PhysicHandler()
+	{
+		for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
+			delete it->second;
 	}
 
 	IPhysicType* PhysicHandler::GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody)
@@ -226,9 +231,6 @@ namespace Quantix::Physic
 			exit(1);
 		}
 
-		// Create a collection
-		collection = PxCreateCollection();            
-
 		InitScene();
 		manager = PxCreateControllerManager(*mScene);
 
@@ -253,13 +255,9 @@ namespace Quantix::Physic
 		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
 
 		sceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
-		sceneDesc.flags |= PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS;
-
-		//physx::PxCudaContextManagerDesc cudaContextManagerDesc;
-		//sceneDesc.cudaContextManager = PxCreateCudaContextManager(*pDefaultFundation, cudaContextManagerDesc);
+		
 		sceneDesc.filterShader = &contactReportFilterShader;
 		sceneDesc.simulationEventCallback = new SimulationCallback();
-		//sceneDesc.broadPhaseType = physx::PxBroadPhaseType::;
 
 		mCpuDispatcher = PxDefaultCpuDispatcherCreate(4);
 		if (!mCpuDispatcher)
@@ -275,9 +273,11 @@ namespace Quantix::Physic
 	{
 		manager->purgeControllers();
 		manager->release();
-		collection->release();
 		mCooking->release();
+
 		PxCloseExtensions();
+
+		mCpuDispatcher->release();
 		mSDK->release();
 
 		if (pPvd)
@@ -307,7 +307,7 @@ namespace Quantix::Physic
 		// Controller skin within which contacts generated
 		desc.contactOffset = 0.05f;
 		// Max Obstacle hieght the caracther can climb
-		desc.stepOffset = 0.01;
+		desc.stepOffset = 0.01f;
 
 		desc.slopeLimit = 0.5f; // max slope the character can walk
 		desc.radius = 0.5f; // radius of the capsule
@@ -327,19 +327,19 @@ namespace Quantix::Physic
 		return (PxCapsuleController*)c;
 	}
 
-	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec)
+	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec, Physic::Joint joint)
 	{
 		PhysicDynamic* type0 = GetObject(object, true)->GetObjectDynamic();
 
 		PhysicDynamic* type1 = GetObject(other, true)->GetObjectDynamic();
 
+
 		//PxRevoluteJointCreate
-		PxRevoluteJoint* joint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(-physx::PxVec3(vec.x, vec.y, vec.z)), type1->GetRigid(), PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
+		PxRevoluteJoint* newJoint = PxRevoluteJointCreate(*mSDK, type0->GetRigid(), PxTransform(-physx::PxVec3(vec.x, vec.y, vec.z)), type1->GetRigid(), PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
 
-		joint->setBreakForce(0.1, 0.1);
-		return joint;
+		newJoint->setBreakForce(joint.breakForce, joint.breakTorque);
+		return newJoint;
 	}
-
 
 	void PhysicHandler::UpdateSystem(double deltaTime)
 	{
@@ -393,10 +393,9 @@ namespace Quantix::Physic
 			if (controller)
 			{
 				PxExtendedVec3 pos = controller->getPosition();
-				((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->SetPosition(Math::QXvec3(pos.x, pos.y, pos.z));
+				((Core::DataStructure::GameObject3D*)controller->getUserData())->GetTransform()->SetPosition(Math::QXvec3((QXfloat)pos.x, (QXfloat)pos.y, (QXfloat)pos.z));
 			}
 		}
-		
 	}
 
 	void PhysicHandler::UpdateEditorActor()
@@ -407,7 +406,7 @@ namespace Quantix::Physic
 			{
 				// Set RigidBody Transform On GameOject Transform
 				Math::QXvec3 pos = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalPosition();
-				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetTransform()->GetGlobalRotation();
+				Math::QXquaternion quat = ((Core::DataStructure::GameObject3D*)it->first)->GetLocalRotation();
 				quat = quat.ConjugateQuaternion();
 				if (it->second->GetType() == ETypePhysic::DYNAMIC)
 				{
@@ -462,6 +461,28 @@ namespace Quantix::Physic
 		}
 	}
 
+	std::vector<Core::DataStructure::GameObject3D*> PhysicHandler::OverlapSphere(QXfloat radius, Physic::Transform3D* transform)
+	{
+		Math::QXvec3 p = transform->GetGlobalPosition();
+		Math::QXquaternion q = transform->GetGlobalRotation().ConjugateQuaternion();
+
+		PxTransform shapePosition = PxTransform(p.x, p.y, p.z, PxQuat(q.v.x, q.v.y, q.v.z, q.w));
+
+		PxSphereGeometry overlapGeometrie = PxSphereGeometry(radius);
+
+		PxQueryFilterData fd;
+		fd.flags |= PxQueryFlag::eNO_BLOCK;
+
+		PxOverlapHit hitBuffer[256];
+		PxOverlapBuffer hit(hitBuffer, 256);
+
+		bool status = mScene->overlap(overlapGeometrie, shapePosition, hit, fd);
+		std::vector<Core::DataStructure::GameObject3D*> list;
+		for (QXint i = 0; i < hit.nbTouches; i++)
+				list.push_back((Core::DataStructure::GameObject3D*)(hit.touches[i].actor->userData));
+		return list;
+	}
+
 	void PhysicHandler::CleanScene()
 	{
 		int numActorsDynamic = mScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
@@ -475,6 +496,8 @@ namespace Quantix::Physic
 		mScene->getActors(PxActorTypeFlag::eRIGID_STATIC, actorsStat, numActorsStatic);
 
 		mScene->removeActors(actorsStat, numActorsStatic);
+
+		manager->purgeControllers();
 	}
 
 #pragma region FlagSetters

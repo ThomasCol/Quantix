@@ -46,6 +46,9 @@ namespace Quantix::Resources
 			it = _objects2D.erase(it);
 		for (auto it = _objectsComponent.begin(); it != _objectsComponent.end();)
 			it = _objectsComponent.erase(it);
+
+		delete _root;
+		delete _root2D;
 	}
 
 	#pragma endregion
@@ -117,9 +120,7 @@ namespace Quantix::Resources
 
 	void	Scene::Init(Quantix::Core::DataStructure::ResourcesManager& manager) noexcept
 	{
-		AddGameObject("Mesh");
-
-		Quantix::Core::DataStructure::GameObject3D* gameObject = GetGameObject("Mesh");
+		Quantix::Core::DataStructure::GameObject3D* gameObject = AddGameObject("Mesh");
 
 		gameObject->AddComponent<Core::Components::Mesh>();
 
@@ -128,13 +129,25 @@ namespace Quantix::Resources
 		mesh = manager.CreateMesh(mesh, "media/Mesh/cube.obj");
 
 		gameObject->AddComponent<Core::Components::CubeCollider>()->Init(gameObject);
+
+		gameObject = AddGameObject("light");
+
+		Core::Components::Light* light = gameObject->AddComponent<Core::Components::Light>();
+		light->Init(gameObject);
+		light->type = Core::Components::ELightType::DIRECTIONAL;
+		light->ambient = { 0.3f, 0.3f, 0.3f };
+		light->diffuse = { 0.7f, 0.7f, 0.7f };
+		light->specular = { 0.7f, 0.7f, 0.7f };
+
+		gameObject->SetLocalPosition({ -2.f, 4.f, -1.f });
 	}
 
-	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders, Core::Platform::AppInfo& info) noexcept
+	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders,
+		std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info) noexcept
 	{
 		// TODO pas complet update mesh et update gameobject
 		if (_root)
-			_root->Update(meshes, colliders, info);
+			_root->Update(meshes, colliders, lights, info);
 		if (_root2D)
 			_root2D->Update();
 	}

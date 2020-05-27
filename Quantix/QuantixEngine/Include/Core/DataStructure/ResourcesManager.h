@@ -66,34 +66,6 @@ namespace Quantix::Core::DataStructure
 		Material*			LoadMaterial(const QXstring& filePath, const QXbool& isFbx = false) noexcept;
 
 		/**
-		 * @brief Load a model
-		 * 
-		 * @param filePath Path to the model
-		 * @param vertices Vertices array to fill
-		 * @param indices Indices array to fill
-		 */
-		void				LoadModel(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept;
-
-		/**
-		 * @brief Load a model from cache file
-		 * 
-		 * @param filePath PAth to the Model
-		 * @param vertices Vertices array to fill
-		 * @param indices Indices array to fill
-		 * @return QXbool True if cahce file exist and model is loaded, False if cache file doesn't exist
-		 */
-		QXbool				LoadModelFromCache(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept;
-
-		/**
-		 * @brief Load a model from model Loader lib
-		 * 
-		 * @param filePath Path to the model
-		 * @param vertices Vertices array to fill
-		 * @param indices Indices array to fill
-		 */
-		void				LoadModelFromFile(const QXstring& filePath, std::vector<Vertex>& vertices, std::vector<QXuint>& indices) noexcept;
-
-		/**
 		 * @brief Save a material to a cache file
 		 * 
 		 * @param filePath Path to the material

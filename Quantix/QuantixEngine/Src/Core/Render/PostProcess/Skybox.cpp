@@ -12,6 +12,8 @@ namespace Quantix::Core::Render::PostProcess
 		_cubemapProgram { cubemapShader },
 		_skyboxTexture {skyTexture}
 	{
+		enable = true;
+		name = "Skybox";
 		Init();
 	}
 

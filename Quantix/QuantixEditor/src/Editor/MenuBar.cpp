@@ -31,6 +31,7 @@ void MenuBar::FileButton(Quantix::Core::Platform::Application* app)
 
 void MenuBar::PhysXSettings()
 {
+	ImGui::GetStyle().WindowRounding = 8.f;
 	if (ImGui::Begin("PhysX Settings", &_winPhysX, ImGuiWindowFlags_NoCollapse))
 	{
 		rttr::instance inst(Quantix::Physic::PhysicHandler::GetInstance());
@@ -47,6 +48,26 @@ void MenuBar::PhysXSettings()
 	}
 	else
 		_winPhysX = QX_FALSE;
+	ImGui::GetStyle().WindowRounding = 0.f;
+}
+
+void MenuBar::PostProcessSettings(Quantix::Core::Platform::Application* app)
+{
+	ImGui::GetStyle().WindowRounding = 8.f;
+	if (ImGui::Begin("PostProcess Settings", &_postProcess, ImGuiWindowFlags_NoCollapse))
+	{
+		std::vector<Quantix::Core::Render::PostProcess::PostProcessEffect*> effect = app->renderer.GetEffects();
+		for (QXsizei i = 0; i < effect.size(); i++)
+		{
+			ImGui::PushID(i);
+			ImGui::Text(effect[i]->name.c_str()); ImGui::SameLine(300.f); ImGui::Checkbox("", &effect[i]->enable);
+			ImGui::PopID();
+		}
+		ImGui::End();
+	}
+	else
+		_postProcess = QX_FALSE;
+	ImGui::GetStyle().WindowRounding = 0.f;
 }
 
 void MenuBar::Settings(QXbool* selection)
@@ -56,6 +77,11 @@ void MenuBar::Settings(QXbool* selection)
 		_winPhysX = !_winPhysX;
 		selection[0] = QX_FALSE;
 	}
+	if (selection[1])
+	{
+		_postProcess = !_postProcess;
+		selection[1] = QX_FALSE;
+	}
 }
 
 void MenuBar::EditButton()
@@ -64,7 +90,7 @@ void MenuBar::EditButton()
 	{
 		static QXbool selection[2] = { QX_FALSE, QX_FALSE };
 		ImGui::Selectable("PhysX Settings", &selection[0]);
-		ImGui::Selectable("Preferences", &selection[1]);
+		ImGui::Selectable("PostProcess Settings", &selection[1]);
 		Settings(selection);
 		ImGui::EndMenu();
 	}
@@ -116,6 +142,8 @@ void MenuBar::Update(Quantix::Core::Platform::Application* app)
 	ImGui::PopStyleColor();
 	if (_winPhysX)
 		PhysXSettings();
+	if (_postProcess)
+		PostProcessSettings(app);
 }
 
 void MenuBar::CreateGameObject(QXstring name, QXbool& selection, Quantix::Core::Platform::Application* app)

@@ -70,6 +70,10 @@ public:
 	#pragma endregion Constructors&Destructor
 
 	#pragma region Methods
+	/**
+	 * @brief Init Editor Artifact
+	 * 
+	 */
 	void												InitEditorArtifact();
 
 	/**
@@ -84,8 +88,10 @@ public:
 	 */
 	void												Init();
 
-	void												InitScene();
-
+	/**
+	 * @brief Initialise Editor Dockspace
+	 * 
+	 */
 	void												InitEditor();
 
 	/**
@@ -94,20 +100,54 @@ public:
 	 */
 	void												InitImGui();
 
+	/**
+	 * @brief Debug mode for Profiling
+	 * 
+	 */
 	void												DebugMode();
 
+	/**
+	 * @brief Update Editor
+	 * 
+	 */
 	void												Update();
 
+	/**
+	 * @brief Update Mouse pos for vision of camera
+	 * 
+	 * @param camera 
+	 */
 	void												UpdateMouse(Quantix::Core::Components::Camera* camera);
 
+	/**
+	 * @brief Update Camera Editor in Scene
+	 * 
+	 */
 	void												CameraUpdateEditor();
 
+	/**
+	 * @brief Update Main Camera in Game
+	 * 
+	 */
 	void												CameraUpdate();
 
+	/**
+	 * @brief Retrieve Camera inside scene
+	 * 
+	 * @param object 
+	 */
 	void												CheckNewSceneCamera(Quantix::Core::DataStructure::GameObject3D* object);
 
+	/**
+	 * @brief Save & Load of Scene 
+	 * 
+	 */
 	void												SaveLoadScene();
 
+	/**
+	 * @brief Update Scene
+	 * 
+	 */
 	void												UpdateScene();
 
 	/**
@@ -204,6 +244,10 @@ public:
 	 */
 	void												DrawExplorer(const QXstring& name, ImGuiWindowFlags flags);
 
+	/**
+	 * @brief Retrieve Camera of Inspector if no camera set
+	 * 
+	 */
 	void												CheckCamera();
 
 	/**

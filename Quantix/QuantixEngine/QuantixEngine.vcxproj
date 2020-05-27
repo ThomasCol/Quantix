@@ -200,8 +200,11 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\Behaviours\Bumper.cpp" />
+    <ClCompile Include="Src\Core\Components\Behaviours\Killzone.cpp" />
+    <ClCompile Include="Src\Core\Components\Behaviours\Arms.cpp" />
+    <ClCompile Include="Src\Core\Components\Behaviours\Cube.cpp" />
     <ClCompile Include="Src\Core\Components\Animator.cpp" />
-    <ClCompile Include="Src\Core\Components\Behaviours\Grabbing.cpp" />
     <ClCompile Include="Src\Core\Components\DeformableMesh.cpp" />
     <ClCompile Include="Src\Physic\ControllerHitReport.cpp" />
     <ClCompile Include="Src\Physic\ControllerBehaviorCallback.cpp" />
@@ -255,10 +258,13 @@
     <ClCompile Include="Src\Resources\Sound.cpp" />
     <ClCompile Include="Src\Core\SoundCore.cpp" />
     <ClCompile Include="Src\Resources\Texture.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\ToneMapping.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Components\Behaviours\Bumper.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\Arms.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\Cube.h" />
     <ClInclude Include="Include\Core\Components\Animator.h" />
-    <ClInclude Include="Include\Core\Components\Behaviours\Grabbing.h" />
     <ClInclude Include="Include\Core\Event\Event.h" />
     <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
     <ClInclude Include="Include\Physic\ControllerHitReport.h" />
@@ -318,6 +324,9 @@
     <ClInclude Include="Include\Physic\PhysicHandler.h" />
     <ClInclude Include="Include\Physic\SimulationCallback.h" />
     <ClInclude Include="Include\Physic\Raycast.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\Killzone.h" />
+    <ClInclude Include="Include\Physic\Joint.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\ToneMapping.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

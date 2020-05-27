@@ -84,7 +84,6 @@ public:
 	 */
 	inline void												Set2D(QXbool type2D) { _is2D = type2D; };
 
-
 	/**
 	 * @brief Get the Object Type object
 	 *
@@ -113,13 +112,34 @@ public:
 	 */
 	inline Quantix::Physic::Transform2D*					GetTransform2D() { return ((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform(); };
 
+	/**
+	 * @brief Get the Game Component object
+	 * 
+	 * @return Quantix::Core::DataStructure::GameComponent* 
+	 */
 	inline Quantix::Core::DataStructure::GameComponent*		GetGameComponent() { return _object; };
 	#pragma endregion Getters&Setters
 
+	/**
+	 * @brief Show Transform 3D
+	 * 
+	 * @param app 
+	 */
 	void													ShowTransform3D(Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Show Transform 2D
+	 * 
+	 * @param app 
+	 */
 	void													ShowTransform2D(Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Show Layer Object
+	 * 
+	 * @param currentProp 
+	 * @param inst 
+	 */
 	void													LayerObject(rttr::property currentProp, rttr::instance inst);
 
 	/**
@@ -137,8 +157,16 @@ public:
 	 */
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 
+	/**
+	 * @brief Add Behaviour
+	 * 
+	 */
 	void													ShowBehaviour();
 
+	/**
+	 * @brief Add Component
+	 * 
+	 */
 	void													ShowAddComponent();
 
 	/**
@@ -208,12 +236,40 @@ public:
 	 */
 	void													SetSound(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief UI for generate deformable mesh
+	 * 
+	 * @param t 
+	 * @param inst 
+	 * @param app 
+	 */
 	void													GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Check Specific class
+	 * 
+	 * @param t 
+	 * @param inst 
+	 * @param app 
+	 */
 	void													CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Show XYZ for flags of Rigid Lock Position/Rotation
+	 * 
+	 * @param isOpen 
+	 * @param name 
+	 */
 	void													ShowXYZ(QXbool& isOpen, QXstring& name);
 
+	/**
+	 * @brief Show flag Rigid Lock for Specific appearance
+	 * 
+	 * @param inst 
+	 * @param currentProp 
+	 * @param name 
+	 * @return QXbool 
+	 */
 	QXbool													DrawRigidLock(rttr::instance inst, rttr::property currentProp, QXstring& name);
 
 	/**
@@ -244,6 +300,15 @@ public:
 	 */
 	void													LookType(rttr::instance inst, rttr::type type, rttr::property currentProp, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Check Primitive Type
+	 * 
+	 * @param inst 
+	 * @param currentProp 
+	 * @param type 
+	 * @param app 
+	 * @return QXbool 
+	 */
 	QXbool													CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app);
 
 	/**

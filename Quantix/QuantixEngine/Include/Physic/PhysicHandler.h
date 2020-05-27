@@ -10,6 +10,7 @@
 #include "rttrEnabled.h"
 #include "Physic/PhysicSetting.h"
 #include "Physic/Raycast.h"
+#include "Physic/Joint.h"
 
 #include "Core/DataStructure/GameComponent.h"
 
@@ -36,20 +37,17 @@ namespace Quantix::Physic
 
 #pragma region PhysX
 		bool recordMemoryAllocations = true;
-		PxPhysics* mSDK = NULL;
-		PxCooking* mCooking = NULL;
+		PxPhysics* mSDK = nullptr;
+		PxCooking* mCooking = nullptr;
 		PxDefaultErrorCallback pDefaultErrorCallback;
 		PxDefaultAllocator pDefaultAllocatorCallback;
-		PxFoundation* pDefaultFundation;
-		PxPvd* pPvd;
-		PxSimulationFilterShader pDefaultFilterShader = PxDefaultSimulationFilterShader;
-		PxDefaultCpuDispatcher* mCpuDispatcher;
+		PxFoundation* pDefaultFundation = nullptr;
+		PxPvd* pPvd = nullptr;
+		PxDefaultCpuDispatcher* mCpuDispatcher = nullptr;
 		PxScene* mScene = nullptr;
 		PxMaterial* mMaterial = nullptr;
 		PxControllerManager* manager = nullptr;
-		PxCollection* collection = nullptr;
-
-		// To Delete
+		
 		PxReal mAccumulator = 0.0f;
 		PxReal mStepSize = 1/240.f;
 #pragma endregion
@@ -71,7 +69,7 @@ namespace Quantix::Physic
 		 * @brief Destroy the Physic Handler object
 		 * 
 		 */
-		~PhysicHandler() = default;
+		~PhysicHandler();
 
 #pragma endregion
 
@@ -172,8 +170,24 @@ namespace Quantix::Physic
 		 */
 		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
 
+		/**
+		 * @brief Create a CharacterController object
+		 * 
+		 * @param object Gamecomponent who will be link to the future charactercontroller
+		 * @return PxCapsuleController* New Controller
+		 */
 		PxCapsuleController* CreateController(Core::DataStructure::GameComponent* object);
-		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec);
+
+		/**
+		 * @brief Create a Joint object between object and other
+		 * 
+		 * @param object 
+		 * @param other 
+		 * @param vec Position of Joint between the object
+		 * @param joint Struct who have some information for the future joint
+		 * @return PxJoint* new joint
+		 */
+		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec, Physic::Joint joint);
 
 		// Update
 		/**
@@ -202,8 +216,29 @@ namespace Quantix::Physic
 		 */
 		void UpdateEditorActor();
 
+		/**
+		 * @brief generate a raycast and return the information
+		 * 
+		 * @param origin Origin of the raycast
+		 * @param unitDir Direction of the raycast
+		 * @param distMax Distance Maximum of the raycast
+		 * @param ownRaycast Structure who will have the information of the raycast
+		 */
 		void Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Raycast& ownRaycast);
 
+		/**
+		 * @brief Generate an overlap of a sphere and return a list of the GameObject who intersect with it
+		 * 
+		 * @param radius Radius of the Overlap Sphere
+		 * @param transform Transform of the Sphere (Position and rotation)
+		 * @return std::vector<Core::DataStructure::GameObject3D*> List of GameObject3D who intersect
+		 */
+		std::vector<Core::DataStructure::GameObject3D*> OverlapSphere(QXfloat radius, Physic::Transform3D* transform);
+
+		/**
+		 * @brief Reboot the PxScene
+		 * 
+		 */
 		void CleanScene();
 
 #pragma region Operators
@@ -212,7 +247,6 @@ namespace Quantix::Physic
 		PhysicHandler& operator=(PhysicHandler&& other) = delete;
 
 #pragma endregion
-
 
 #pragma region Accessors
 

@@ -24,6 +24,7 @@ RTTR_PLUGIN_REGISTRATION
 	.property("DisableGravity", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableGravity, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableGravity)
 			(rttr::metadata("Description", "Actor Flags"))
 	.property("DisableSimulation", &Quantix::Core::Components::Rigidbody::GetActorFlagDisableSimulation, &Quantix::Core::Components::Rigidbody::SetActorFlagDisableSimulation)
+	.property("Visualisation", &Quantix::Core::Components::Rigidbody::GetActorFlagVisualisation, &Quantix::Core::Components::Rigidbody::SetActorFlagVisualisation)
 			(rttr::metadata("Description", "End"))
 	.property("Kinematic", &Quantix::Core::Components::Rigidbody::GetRigidFlagKinematic, &Quantix::Core::Components::Rigidbody::SetRigidFlagKinematic)
 			(rttr::metadata("Description", "Rigid Flags"))
@@ -117,6 +118,12 @@ namespace Quantix::Core::Components
 		for (QXuint i = 0; i < vector.size(); i++)
 			vector[i]->UpdateActorPhysic();
 	}
+
+	void Rigidbody::SetKinematicTarget(Math::QXvec3 vec)
+	{
+		actorPhysic->GetRigid()->setKinematicTarget(physx::PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
+	}
+
 
 	QXfloat Rigidbody::GetMass()
 	{

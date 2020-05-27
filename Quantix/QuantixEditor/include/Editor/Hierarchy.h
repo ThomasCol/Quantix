@@ -20,7 +20,7 @@ public:
 	 * @brief Destroy the Hierarchy object
 	 * 
 	 */
-	~Hierarchy() = default;
+	~Hierarchy();
 	#pragma endregion Constructors&Destructor
 
 	#pragma region Methods
@@ -43,10 +43,28 @@ public:
 	 */
 	void				DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Draw Game Component
+	 * 
+	 * @param app 
+	 */
 	void				DrawGameComponent(Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Draw Object 2D
+	 * 
+	 * @param nodeGlobal 
+	 * @param node 
+	 * @param app 
+	 */
 	void				DrawObject2D(std::list<Quantix::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Physic::Transform2D*>& node, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Desactive All nodes selected except the one just selected
+	 * 
+	 * @param ptr 
+	 * @param app 
+	 */
 	void				DesactiveAllNodes(void* ptr, Quantix::Core::Platform::Application* app);
 
 	/**
@@ -58,18 +76,54 @@ public:
 	 */
 	void				CreateChild(QXbool& select, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Remove Object 3D
+	 * 
+	 * @param select 
+	 * @param nodes 
+	 * @param app 
+	 */
 	void				RemoveObject(QXbool& select, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Remove Object 2D
+	 * 
+	 * @param select 
+	 * @param nodes 
+	 * @param app 
+	 */
 	void				RemoveObject2D(QXbool& select, std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Remove Game Component
+	 * 
+	 * @param select 
+	 * @param nodes 
+	 * @param app 
+	 */
 	void				RemoveGC(QXbool& select, std::list<Quantix::Core::DataStructure::GameComponent*>& nodes, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Rename Object
+	 * 
+	 * @param name 
+	 * @param size 
+	 * @return QXstring 
+	 */
 	QXstring			Rename(const QXchar* name, QXsizei size);
 
+	/**
+	 * @brief Popup Item Menu 2D
+	 * 
+	 * @param nodes 
+	 * @param node 
+	 * @param app 
+	 * @return QXbool 
+	 */
 	QXbool				PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Physic::Transform2D* node, Quantix::Core::Platform::Application* app);
 
 	/**
-	 * @brief Popup Item Menu
+	 * @brief Popup Item Menu 3D
 	 * 
 	 * @param nodes std::list<Quantix::Physic::Transform3D*>&
 	 * @param node Transform3D*
@@ -77,6 +131,13 @@ public:
 	 */
 	QXbool				PopUpMenuItem(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Popup Item Menu of Game Component
+	 * 
+	 * @param node 
+	 * @param app 
+	 * @return QXbool 
+	 */
 	QXbool				PopUpMenuItemGC(Quantix::Core::DataStructure::GameComponent* node, Quantix::Core::Platform::Application* app);
 
 

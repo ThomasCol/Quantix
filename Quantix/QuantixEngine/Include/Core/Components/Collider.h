@@ -36,17 +36,17 @@ namespace Quantix::Core::Components
 	struct QUANTIX_API ICollider : public virtual Core::DataStructure::Component
 	{
 #pragma region Attributes
-		ETypeShape typeShape = ETypeShape::DEFAULT;
 		physx::PxShape* shape{ nullptr };
-		EPhysXType physicType { EPhysXType::DEFAULT };
 		Physic::IPhysicType* actorPhysic{ nullptr };
+		
+		EPhysXType physicType { EPhysXType::DEFAULT };
+		ETypeShape typeShape { ETypeShape::DEFAULT };
 
 		Physic::ShapeFlag shapeFlag;
-		bool toRender{ true };
-		Math::QXvec3 scale{ 1.f, 1.f, 1.f };
-
 		Physic::CollideGroup collideFilter;
 
+		bool toRender{ true };
+		Math::QXvec3 scale{ 1.f, 1.f, 1.f };
 #pragma endregion
 
 #pragma region Constructors
@@ -163,14 +163,25 @@ namespace Quantix::Core::Components
 		 */
 		void SetRotation(Math::QXquaternion rot);
 
+		/**
+		 * @brief Set the My Filter Group object
+		 * 
+		 * @param newGroup 
+		 */
 		void SetMyFilterGroup(Physic::FilterGroup::Enum newGroup);
+
+		/**
+		 * @brief Get the My Filter Group object
+		 * 
+		 * @return Physic::FilterGroup::Enum 
+		 */
 		Physic::FilterGroup::Enum GetMyFilterGroup();
 
 		/**
- * @brief Set the Shape Flag Scene Query object
- *
- * @param b Value of the flag
- */
+ 		* @brief Set the Shape Flag Scene Query object
+ 		*	
+ 		* @param b Value of the flag
+ 		*/
 		void SetShapeFlagSceneQuery(bool b)
 		{
 			shapeFlag.sceneQuery = b;
@@ -192,6 +203,9 @@ namespace Quantix::Core::Components
 		 */
 		void SetShapeFlagSimulation(bool b)
 		{
+			if (b && GetShapeFlagTrigger())
+				return;
+
 			shapeFlag.simulation = b;
 			shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, b);
 		}
@@ -211,6 +225,9 @@ namespace Quantix::Core::Components
 		 */
 		void SetShapeFlagTrigger(bool b)
 		{
+			if (b && GetShapeFlagSimulation())
+				return;
+
 			shapeFlag.trigger = b;
 			shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, b);
 		}
@@ -241,9 +258,32 @@ namespace Quantix::Core::Components
 		 */
 		bool GetShapeFlagVisualization() { return shapeFlag.visualization; };
 
+		/**
+		 * @brief Get the Collide Filter Pawn object
+		 * 
+		 * @return true if this collide with pawn
+		 */
 		bool GetCollideFilterPawn() { return collideFilter.pawn; };
+
+		/**
+		 * @brief Get the Collide Filter Mine object
+		 * 
+		* @return true if this collide with Mine
+		 */
 		bool GetCollideFilterMine() { return collideFilter.mine; };
+
+		/**
+		 * @brief Get the Collide Filter Mine object
+		 * 
+		* @return true if this collide with Crab
+		 */
 		bool GetCollideFilterCrab() { return collideFilter.crab; };
+
+		/**
+		 * @brief Set the Collide Filter Pawn object
+		 * 
+		 * @param b 
+		 */
 		void SetCollideFilterPawn(bool b)
 		{
 			collideFilter.pawn = b;
@@ -251,7 +291,7 @@ namespace Quantix::Core::Components
 			physx::PxFilterData filterData;
 			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
 
-			physx::PxU32 mask;
+			physx::PxU32 mask = 0;
 			if (GetCollideFilterCrab())
 				mask |= Physic::FilterGroup::Enum::eCRAB;
 			if (GetCollideFilterPawn())
@@ -262,6 +302,12 @@ namespace Quantix::Core::Components
 									  // contact callback;
 			shape->setSimulationFilterData(filterData);
 		}
+
+		/**
+		 * @brief Set the Collide Filter Mine object
+		 * 
+		 * @param b 
+		 */
 		void SetCollideFilterMine(bool b)
 		{
 			collideFilter.mine = b;
@@ -269,7 +315,7 @@ namespace Quantix::Core::Components
 			physx::PxFilterData filterData;
 			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
 
-			physx::PxU32 mask;
+			physx::PxU32 mask = 0;
 			if (GetCollideFilterCrab())
 				mask |= Physic::FilterGroup::Enum::eCRAB;
 			if (GetCollideFilterPawn())
@@ -280,6 +326,12 @@ namespace Quantix::Core::Components
 									  // contact callback;
 			shape->setSimulationFilterData(filterData);
 		}
+		
+		/**
+		 * @brief Set the Collide Filter Crab object
+		 * 
+		 * @param b 
+		 */
 		void SetCollideFilterCrab(bool b)
 		{
 			collideFilter.crab = b;
@@ -287,7 +339,7 @@ namespace Quantix::Core::Components
 			physx::PxFilterData filterData;
 			filterData.word0 = shape->getSimulationFilterData().word0; // word0 = own ID
 
-			physx::PxU32 mask;
+			physx::PxU32 mask = 0;
 			if (GetCollideFilterCrab())
 				mask |= Physic::FilterGroup::Enum::eCRAB;
 			if (GetCollideFilterPawn())

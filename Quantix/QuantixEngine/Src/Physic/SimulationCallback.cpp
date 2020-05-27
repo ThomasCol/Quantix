@@ -7,23 +7,14 @@
 
 namespace Quantix::Physic
 {
-	void SimulationCallback::onConstraintBreak(PxConstraintInfo* constraints, PxU32 count)
-	{
-		(void*)constraints;
-		(void*)count;
-	}
+	void SimulationCallback::onConstraintBreak(PxConstraintInfo*, PxU32)
+	{}
 
-	void SimulationCallback::onWake(PxActor** actors, PxU32 count)
-	{
-		(void*)actors;
-		(void*)count;
-	};
+	void SimulationCallback::onWake(PxActor**, PxU32)
+	{}
 
-	void SimulationCallback::onSleep(PxActor** actors, PxU32 count)
-	{
-		(void*)actors;
-		(void*)count;
-	};
+	void SimulationCallback::onSleep(PxActor**, PxU32)
+	{}
 
 
 	void SimulationCallback::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
@@ -34,7 +25,7 @@ namespace Quantix::Physic
 
 			if (cp.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
 			{
-				if (pairHeader.actors[2] && pairHeader.actors[1])
+				if (pairHeader.actors[1] && pairHeader.actors[0])
 				{
 					PxContactPairPoint buffer[1];
 					pairs[i].extractContacts(buffer, 1);
@@ -42,8 +33,8 @@ namespace Quantix::Physic
 					Math::QXvec3 position = Math::QXvec3(buffer[0].position.x, buffer[0].position.y, buffer[0].position.z);
 
 					// Call OnContact Function of each GameObject
-					((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData, position, normal);
-					((Core::DataStructure::GameObject3D*)pairHeader.actors[2]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData, position, normal);
+					((Core::DataStructure::GameObject3D*)pairHeader.actors[0]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData, position, normal);
+					((Core::DataStructure::GameObject3D*)pairHeader.actors[1]->userData)->CallOnContact((Core::DataStructure::GameObject3D*)pairHeader.actors[0]->userData, position, normal);
 				}
 			}
 		}

@@ -73,15 +73,20 @@ Editor::~Editor()
 
 	delete _app;
 	delete _cameraEditor;
-	delete _defaultCamera;
-	delete _root;
+	if (_defaultCamera == _mainCamera)
+		delete _defaultCamera;
+	else
+	{
+		delete _mainCamera;
+		delete _defaultCamera;
+	}
 	delete _mouseInput;
 }
 
 void Editor::InitEditorArtifact()
 {
 	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight());
-	_app->info.proj = { Math::QXmat4::CreateProjectionMatrix(_app->info.width, _app->info.height, 0.1f, 1000.f, 80.f) };
+	_app->info.proj = { Math::QXmat4::CreateProjectionMatrix(_app->info.width, _app->info.height, 0.1f, 1000.f, 60.f) };
 	_guizmo.Init(_app);
 	_console.Init(_app);
 }
@@ -103,43 +108,8 @@ void Editor::Init()
 {
 	glfwSetWindowUserPointer(_win.GetWindow(), _mouseInput);
 
-	//Init Scene
-	InitScene();
-
 	//Init Editor
 	InitEditor();
-}
-
-void Editor::InitScene()
-{
-	Quantix::Core::Components::Light light;
-	light.ambient = { 0.3f, 0.3f, 0.3f };
-	light.diffuse = { 0.7f, 0.7f, 0.7f };
-	light.specular = { 0.7f, 0.7f, 0.7f };
-	light.position = { -2.0f, 4.0f, -1.0f };
-	light.direction = { 2.0f, -4.0f, 1.f };
-	light.constant = 0.5f;
-	light.linear = 0.09f;
-	light.quadratic = 0.032f;
-	light.cutOff = cos(0.70f);
-	light.outerCutOff = cos(0.76f);
-	light.type = Quantix::Core::Components::ELightType::DIRECTIONAL;
-
-	Quantix::Core::Components::Light light2;
-	light2.ambient = { 0.3f, 0.3f, 0.3f };
-	light2.diffuse = { 1.0f, 1.0f, 1.0f };
-	light2.specular = { 0.50f, 0.50f, 0.50f };
-	light2.position = { 0.0f, 2.f, 7.f };
-	light2.direction = { 0.0f, 0.f, -1.f };
-	light2.constant = 0.5f;
-	light2.linear = 0.09f;
-	light2.quadratic = 0.032f;
-	light2.cutOff = cos(0.70f);
-	light2.outerCutOff = cos(0.76f);
-	light2.type = Quantix::Core::Components::ELightType::SPOT;
-
-	_lights.push_back(light);
-	_lights.push_back(light2);
 }
 
 void Editor::InitEditor()
@@ -254,7 +224,7 @@ void	Editor::CameraUpdate()
 					_mainCamera->_controller->_velocity -= _mainCamera->GetDir().Cross(_mainCamera->GetUp());
 				if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
 					_mainCamera->_controller->_velocity += _mainCamera->GetDir().Cross(_mainCamera->GetUp());
-				if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED && _mainCamera->_controller->CheckIsFalling())
+				if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED && !_mainCamera->_controller->CheckIsFalling())
 					_mainCamera->_controller->_velocity += _mainCamera->_controller->GetUpDirection() * 30;
 				
 				_mainCamera->_controller->_velocity.y *= 0.95f;
@@ -356,13 +326,14 @@ void Editor::UpdateScene()
 
 	std::vector<Quantix::Core::Components::Mesh*>	meshes;
 	std::vector<Quantix::Core::Components::ICollider*>	colliders;
+	_lights.clear();
 
 	START_PROFILING("Application");
 	//Update Application
 	if (!_pause && _play)
-		_app->Update(meshes, colliders, true);
+		_app->Update(meshes, colliders, _lights, true);
 	else
-		_app->Update(meshes, colliders);
+		_app->Update(meshes, colliders, _lights);
 	STOP_PROFILING("Application");
 
 	START_PROFILING("Camera");
@@ -442,12 +413,6 @@ void Editor::Draw(const QXstring& name, ImGuiWindowFlags flags)
 
 void Editor::DrawMenuBar()
 {
-	static QXint i = 0;
-	if (i == 0)
-	{
-		Quantix::Core::Debugger::Logger::GetInstance()->SetWarning("Menu bar not fully implemented.");
-		i++;
-	}
 	_menuBar.Update(_app);
 }
 

@@ -93,6 +93,11 @@ public:
 	 */
 	void CreateLightObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app);
 
+	/**
+	 * @brief Load Scene
+	 * 
+	 * @param app 
+	 */
 	void LoadScene(Quantix::Core::Platform::Application* app);
 
 	/**
@@ -106,6 +111,13 @@ public:
 	 * 
 	 */
 	void PhysXSettings();
+
+	/**
+	* @brief Show Window with the Post Process Settings
+	* 
+	* @param app 
+	*/
+	void PostProcessSettings(Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Dispatch the Settings function
@@ -144,6 +156,7 @@ public:
 private:
 	#pragma region Attributes
 	QXbool		_winPhysX{ QX_FALSE };
+	QXbool		_postProcess{ QX_FALSE };
 	#pragma endregion Attributes
 };
 

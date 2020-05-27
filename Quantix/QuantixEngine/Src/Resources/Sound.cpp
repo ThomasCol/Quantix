@@ -160,7 +160,7 @@ namespace Quantix::Resources
 		if (this)
 			return (Core::SoundCore::GetInstance()->Try(_clip->setMode(mode)));
 		else
-			false;
+			return false;
 	}
 
 	#pragma endregion

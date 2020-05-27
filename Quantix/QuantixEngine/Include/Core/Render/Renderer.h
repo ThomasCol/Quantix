@@ -8,6 +8,7 @@
 #include "../../../QuantixEditor/include/Window.h"
 #include "Core/Components/Collider.h"
 #include "PostProcess/Bloom.h"
+#include "PostProcess/ToneMapping.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -21,12 +22,8 @@ namespace Quantix::Core::Render
 	private:
 		#pragma region Attributes
 
-		RenderFramebuffer				_mainBuffer;
-		RenderFramebuffer				_gameBuffer;
-
-		Framebuffer 					_shadowBuffer;
-		Framebuffer 					_finalGameBuffer;
-		Framebuffer 					_finalSceneBuffer;
+		Framebuffer 					_uniShadowBuffer;
+		Framebuffer 					_omniShadowBuffer;
 
 		QXuint							_viewProjMatrixUBO = 0;
 		QXuint							_viewProjShadowMatrixUBO = 0;
@@ -34,8 +31,7 @@ namespace Quantix::Core::Render
 
 		Math::QXmat4 					_projLight;
 
-		PostProcess::PostProcessEffect*	_effects;
-		PostProcess::Bloom* 			_bloom;
+		std::vector<PostProcess::PostProcessEffect*>	_effects;
 
 		Resources::ShaderProgram* 		_wireFrameProgram;
 		Resources::ShaderProgram* 		_shadowProgram;
@@ -58,11 +54,16 @@ namespace Quantix::Core::Render
 		void CreateFramebuffer(QXuint width, QXuint height, Framebuffer& fbo) noexcept;
 
 		/**
-		 * @brief Init the shadow buffer
+		 * @brief Init the shadow buffer for unidirectionnal light
 		 * 
 		 */
-		void InitShadowBuffer() noexcept;
+		void InitUnidirectionnalShadowBuffer() noexcept;
 
+		/**
+		 * @brief Init the shadow buffer for unidirectionnal light
+		 *
+		 */
+		void InitOmnidirectionnalShadowBuffer() noexcept;
 
 		/**
 		 * @brief Create post process effects
@@ -120,7 +121,7 @@ namespace Quantix::Core::Render
 		/**
 		 * @brief Destroy the Renderer object
 		 */
-		~Renderer() = default;
+		~Renderer();
 
 		#pragma endregion
 
@@ -167,6 +168,12 @@ namespace Quantix::Core::Render
 		 */
 		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
 				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam, RenderFramebuffer& buffer, bool displayColliders) noexcept;
+
+		#pragma region Accessor
+
+		inline std::vector<PostProcess::PostProcessEffect*>& GetEffects() { return _effects; }
+
+		#pragma endregion
 
 		#pragma endregion
 	};
