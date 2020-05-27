@@ -20,7 +20,10 @@ float random(vec2 pts)
 }
 
 void main()
-{
+{   
+	// Treat color like a homogeneous vector
+    fragColor = vec4(texture(scene, UV).rgb, 1.0);
+
     vec2 uvRandom = UV;
 	uvRandom.y *= random(vec2(uvRandom.y, uAmount));
 	// Apply Noises

@@ -46,6 +46,10 @@ namespace Quantix::Core::Render::PostProcess
 
         _program->Use();
 
+        counterFilmGrain += 0.01;
+        if (counterFilmGrain > 100.f)
+            counterFilmGrain = 0.f;
+
         glUniform1f(_program->GetLocation("uAmount"), counterFilmGrain);
         glUniform1f(_program->GetLocation("uCoef"), percentFilmGrain);
 
