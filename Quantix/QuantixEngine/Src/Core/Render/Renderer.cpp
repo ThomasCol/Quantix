@@ -9,6 +9,8 @@
 #include "Core/DataStructure/ResourcesManager.h"
 #include "Core/DataStructure/GameObject3D.h"
 #include "Core/UserEntry/InputManager.h"
+#include "Core/Render/PostProcess/FilmGrain.h"
+#include "Core/Render/PostProcess/Vignette.h"
 
 namespace Quantix::Core::Render
 {
@@ -242,9 +244,17 @@ namespace Quantix::Core::Render
 		PostProcess::ToneMapping* toneMapping = new PostProcess::ToneMapping(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/ToneMapping.vert", "../QuantixEngine/Media/Shader/ToneMapping.frag"),
 			manager.CreateModel("media/Mesh/quad.obj"), info);
 
+		PostProcess::FilmGrain* filmGrain = new PostProcess::FilmGrain(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/FilmGrain.vert", "../QuantixEngine/Media/Shader/FilmGrain.frag"),
+			manager.CreateModel("media/Mesh/quad.obj"), info);
+
+		PostProcess::Vignette* vignette = new PostProcess::Vignette(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Vignette.vert", "../QuantixEngine/Media/Shader/Vignette.frag"),
+			manager.CreateModel("media/Mesh/quad.obj"), info);
+
 		_effects.push_back(skybox);
 		_effects.push_back(bloom);
 		_effects.push_back(toneMapping);
+		_effects.push_back(filmGrain);
+		_effects.push_back(vignette);
 	}
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
