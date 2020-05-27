@@ -134,6 +134,7 @@ namespace Quantix::Core::Components
 	void DeformableMesh::CreateCube(Core::Platform::Application* app)
 	{
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
+		Core::DataStructure::GameObject3D* gameobject = (Core::DataStructure::GameObject3D*)_object;
 		for (QXuint i = 0; i < numCubeInWidth; i++)
 		{
 			for (QXuint j = 0; j < numCubeInHeight; j++)
@@ -151,7 +152,7 @@ namespace Quantix::Core::Components
 					}
 					else
 					{
-						gameobjects[i][j][k] = app->scene->AddGameObject(QXstring("Cube " + std::to_string(i) + std::to_string(j) + std::to_string(k)));
+						gameobjects[i][j][k] = app->scene->AddGameObject(QXstring("Cube " + std::to_string(i) + std::to_string(j) + std::to_string(k)), gameobject->GetTransform()->GetParent());
 						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * (cubeSize.x + 0.01), j * (cubeSize.y + 0.01), k * (cubeSize.z + 0.01)) + gameobjects[0][0][0]->GetGlobalPosition());
 						gameobjects[i][j][k]->SetLocalScale(cubeSize);
 						// Add Comp
