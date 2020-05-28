@@ -3,7 +3,6 @@
 #include "Core/Components/Mesh.h"
 #include "Core/Components/CubeCollider.h"
 #include "Core/Components/Rigidbody.h"
-#include "Core/DataStructure/ResourcesManager.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -12,7 +11,8 @@ RTTR_PLUGIN_REGISTRATION
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
 		.constructor<const Quantix::Gameplay::CubeGenerator&>()
 		.constructor<Quantix::Gameplay::CubeGenerator&&>()
-		.property("Number Of Cubes", &Quantix::Gameplay::CubeGenerator::GetNbOfCubes, &Quantix::Gameplay::CubeGenerator::SetNbOfCubes);
+		.property("Number Max of Cubes", &Quantix::Gameplay::CubeGenerator::GetNbMaxOfCubes, &Quantix::Gameplay::CubeGenerator::SetNbMaxOfCubes)
+		.property("Minimum distance between Cubes and Generator ", &Quantix::Gameplay::CubeGenerator::GetDistMinBtwCubesAndGenerator, &Quantix::Gameplay::CubeGenerator::SetDistMinBtwCubesAndGenerator);
 }
 
 namespace Quantix::Gameplay
@@ -33,36 +33,38 @@ namespace Quantix::Gameplay
 	}
 
 	void CubeGenerator::Start()
-	{
-		for (QXuint i = 0; i < _nbOfCubes; i++)
-			CreateCube();
-	}
+	{}
 
 	void CubeGenerator::Update(QXdouble deltaTime)
 	{
-		for (std::list<Core::DataStructure::GameObject3D*>::iterator it = _cubes.begin(); it != _cubes.end(); ++it)
-		{
-			if (!(*it))
-			{
-				_cubes.erase(it);
-				CreateCube();
-			}
-		}
+		for (auto it = _cubes.begin(); it != _cubes.end(); ++it)
+			if ((_gameobject->GetGlobalPosition() - (*it)->GetGlobalPosition()).Length() < _distMinBtwCubesAndGenerator)
+				return;
+
+		CreateCube();
 	}
 
 	void CubeGenerator::CreateCube()
 	{
-		Core::DataStructure::GameObject3D* cube = new Core::DataStructure::GameObject3D("Cube", _gameobject->GetGlobalPosition(), _gameobject->GetGlobalRotation(), _gameobject->GetGlobalScale());
+		//GAMEOBJECT
+		Core::DataStructure::GameObject3D* cube = _app->scene->AddGameObject("Generated Cube " + std::to_string(_cubes.size() + 1));
+		cube->SetTransformValue(_gameobject->GetGlobalPosition(), _gameobject->GetGlobalRotation(), _gameobject->GetGlobalScale());
+
+		cube->SetLayer(Core::DataStructure::Layer::SELECTABLE);
 
 		//MESH
 		Core::Components::Mesh* mesh = cube->AddComponent<Core::Components::Mesh>();
-		_rm->CreateMesh(mesh, "media/Mesh/cube.obj");
+		mesh->Init(cube);
+		_app->manager.CreateMesh(mesh, "media/Mesh/cube.obj");
 
 		//CUBE COLLIDER
-		cube->AddComponent<Core::Components::CubeCollider>();
+		Core::Components::CubeCollider* collider = cube->AddComponent<Core::Components::CubeCollider>();
+		collider->Init(cube);
 
 		//RIGIDBODY
-		cube->AddComponent<Core::Components::Rigidbody>();
+		Core::Components::Rigidbody* rigid = cube->AddComponent<Core::Components::Rigidbody>();
+		rigid->Init(cube);
+		rigid->SetTransformPosition(_gameobject->GetGlobalPosition());
 
 		//CUBE BEHAVIOUR
 		cube->AddComponent<Cube>();
