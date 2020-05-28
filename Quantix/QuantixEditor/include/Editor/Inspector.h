@@ -158,16 +158,10 @@ public:
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 
 	/**
-	 * @brief Add Behaviour
-	 * 
-	 */
-	void													ShowBehaviour(Quantix::Core::Platform::Application* app);
-
-	/**
 	 * @brief Add Component
 	 * 
 	 */
-	void													ShowAddComponent();
+	void													ShowAddComponent(Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Show Component

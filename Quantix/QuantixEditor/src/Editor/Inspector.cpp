@@ -155,43 +155,7 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 	}
 }
 
-void Inspector::ShowBehaviour(Quantix::Core::Platform::Application* app)
-{
-	rttr::array_range behavioursAvailable = rttr::type::get<Quantix::Core::Components::Behaviour>().get_derived_classes();
-
-	QXuint i = 0;
-	for (auto it : behavioursAvailable)
-	{
-		QXbool enable = QX_FALSE;
-		ImGui::PushID(i);
-
-		ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
-		if (enable)
-		{
-			QXbool activate = QX_TRUE;
-			if (it.get_name().to_string() != "Behaviour")
-			{
-				if (!_object->Get3D())
-				{
-					activate = QX_FALSE;
-					QXstring message = "Cannot create " + it.get_name().to_string() + " with a non GameObject3D";
-					LOG(WARNING, message);
-				}
-			}
-			if (activate)
-			{
-				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-				_object->GetComponents().back()->Init(_object);
-				if (it == rttr::type::get<Quantix::Gameplay::CubeGenerator>())
-					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetResourceManager(&app->manager);
-			}
-		}
-
-		ImGui::PopID();
-	}
-}
-
-void Inspector::ShowAddComponent()
+void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 {
 	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
 
@@ -218,6 +182,8 @@ void Inspector::ShowAddComponent()
 			{
 				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
 				_object->GetComponents().back()->Init(_object);
+				if (it.get_name().to_string() == "Cube Generator")
+					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetResourceManager(&app->manager);
 			}
 		}
 
@@ -230,8 +196,7 @@ void Inspector::ShowComponent(Quantix::Core::Platform::Application* app)
 {
 	if (ImGui::BeginPopup("Item Component"))
 	{
-		ShowAddComponent();
-		ShowBehaviour(app);
+		ShowAddComponent(app);
 		ImGui::EndPopup();
 	}
 
