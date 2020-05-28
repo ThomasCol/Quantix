@@ -12,8 +12,7 @@ namespace Quantix::Gameplay
 	{
 		FREEZE,
 		MAGNET_NEG,
-		MAGNET_POS,
-		PUNCH
+		MAGNET_POS
 	};
 
 	class QUANTIX_API Arms : public Quantix::Core::Components::Behaviour

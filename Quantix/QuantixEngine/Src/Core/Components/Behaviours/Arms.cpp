@@ -42,7 +42,10 @@ namespace Quantix::Gameplay
 			std::list<Physic::Transform3D*> list = _gameobject->GetTransform()->GetChilds();
 
 			if ((*list.begin())->GetObject()->GetComponent<Core::Components::Mesh>())
+			{
 				_mesh = (*list.begin())->GetObject()->GetComponent<Core::Components::Mesh>();
+				UpdateMaterial();
+			}
 		}
 
 		if (GetKey(QX_KEY_TAB) == Core::UserEntry::EKeyState::PRESSED)
@@ -50,8 +53,10 @@ namespace Quantix::Gameplay
 		
 		if (GetKey(QX_KEY_E) == Core::UserEntry::EKeyState::PRESSED)
 			UseHands();
+		if (GetKey(QX_MOUSE_BUTTON_LEFT) == Core::UserEntry::EKeyState::PRESSED)
+			UsePunch();
 
-		if (GetKey(QX_KEY_F) == Core::UserEntry::EKeyState::PRESSED)
+		if (GetKey(QX_MOUSE_BUTTON_RIGHT) == Core::UserEntry::EKeyState::PRESSED)
 			UsePower();
 
 		if (_isGrabbingObject)
@@ -65,9 +70,6 @@ namespace Quantix::Gameplay
 	{
 		switch (_state)
 		{
-		case EArmState::PUNCH:
-			_state = EArmState::FREEZE;
-			break;
 		case EArmState::FREEZE:
 			_state = EArmState::MAGNET_NEG;
 			break;
@@ -75,7 +77,7 @@ namespace Quantix::Gameplay
 			_state = EArmState::MAGNET_POS;
 			break;
 		case EArmState::MAGNET_POS:
-			_state = EArmState::PUNCH;
+			_state = EArmState::FREEZE;
 			break;
 		default:
 			break;
@@ -88,9 +90,6 @@ namespace Quantix::Gameplay
 	{
 		switch (_state)
 		{
-		case EArmState::PUNCH:
-			UsePunch();
-			break;
 		case EArmState::FREEZE:
 			UseIce();
 			break;
@@ -264,11 +263,6 @@ namespace Quantix::Gameplay
 	{
 		switch (_state)
 		{
-		case EArmState::PUNCH:
-			_mesh->GetMaterial()->ambient = Math::QXvec3(51, 51, 51) / 255;
-			_mesh->GetMaterial()->diffuse = Math::QXvec3(128, 128, 128) / 255;
-			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
-			break;
 		case EArmState::FREEZE:
 			_mesh->GetMaterial()->ambient = Math::QXvec3(119, 248, 253) / 255;
 			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 248, 253) / 255;
