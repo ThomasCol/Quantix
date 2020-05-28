@@ -7,7 +7,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Core::Components::SphereCollider>("SphereCollider")
+	rttr::registration::class_<Quantix::Core::Components::SphereCollider>("Sphere Collider")
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
 		.constructor<const Quantix::Core::Components::SphereCollider&>()

@@ -51,7 +51,7 @@ namespace Quantix::Core::Platform
 		 * @brief Run Application
 		 */
 		void Update(std::vector<Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-			std::vector<Components::Light>& lights, bool isPlaying = false);
+			std::vector<Components::Light>& lights, QXbool isPlaying = false);
 
 #pragma endregion
 	};

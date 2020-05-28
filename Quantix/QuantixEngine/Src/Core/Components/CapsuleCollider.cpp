@@ -5,7 +5,7 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Core::Components::CapsuleCollider>("CapsuleCollider")
+	rttr::registration::class_<Quantix::Core::Components::CapsuleCollider>("Capsule Collider")
 	.constructor<>()
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const Quantix::Core::Components::CapsuleCollider&>()

@@ -29,24 +29,16 @@ namespace Quantix::Core::Platform
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-		std::vector<Components::Light>& lights, bool isPlaying)
+		std::vector<Components::Light>& lights, QXbool isPlaying)
 	{
-		static QXbool firstPlay = true;
-		if (firstPlay && isPlaying)
-		{
-			scene->Start();
-			firstPlay = false;
-		}
 		Threading::TaskSystem::GetInstance()->Update();
 		manager.UpdateResourcesState();
 
-		scene->Update(meshes, colliders, lights, info);
+		scene->Update(meshes, colliders, lights, info, isPlaying);
 
 		// Updatye Physic
 		if (isPlaying)
 			Physic::PhysicHandler::GetInstance()->UpdateSystem(info.deltaTime);
-		else
-			firstPlay = true;
 		Physic::PhysicHandler::GetInstance()->UpdatePhysicActor(isPlaying);
 	}
 }

@@ -2,7 +2,7 @@
 
 Folder::Folder(Quantix::Core::DataStructure::ResourcesManager& cache, const fs::path& p) noexcept
 {
-	_sizeFolder = 1;
+	_sizeFolder = 25;
 	_sizeFile = { 70, 70 };
 
 	_folderGLu = cache.CreateTexture("Other/ImgFolder/Folder.png");
