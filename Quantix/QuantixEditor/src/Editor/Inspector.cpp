@@ -191,7 +191,7 @@ void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
 				_object->GetComponents().back()->Init(_object);
 				if (it.get_name().to_string() == "Cube Generator")
-					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetResourceManager(&app->manager);
+					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetApplication(app);
 			}
 		}
 		/*ImGui::Selectable((*it).c_str(), &enable);

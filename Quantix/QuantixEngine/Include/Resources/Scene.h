@@ -86,7 +86,7 @@ namespace Quantix::Resources
 			 *
 			 */
 			void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders,
-				std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info) noexcept;
+				std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, const QXbool& isPlaying) noexcept;
 
 			void	Start() noexcept;
 

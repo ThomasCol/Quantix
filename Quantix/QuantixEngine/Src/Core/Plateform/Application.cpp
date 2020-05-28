@@ -40,7 +40,7 @@ namespace Quantix::Core::Platform
 		Threading::TaskSystem::GetInstance()->Update();
 		manager.UpdateResourcesState();
 
-		scene->Update(meshes, colliders, lights, info);
+		scene->Update(meshes, colliders, lights, info, isPlaying);
 
 		// Updatye Physic
 		if (isPlaying)
