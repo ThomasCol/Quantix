@@ -29,6 +29,8 @@ namespace Quantix::Gameplay
 	void Arms::Awake()
 	{
 		_gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
+
+		_mesh = _object->GetComponent<Core::Components::Mesh>();
 	}
 
 	void Arms::Start()
@@ -207,6 +209,36 @@ namespace Quantix::Gameplay
 				}
 			}
 		}
+	}
+
+	void Arms::UpdateMaterial()
+	{
+		switch (_state)
+		{
+		case EArmState::PUNCH:
+			_mesh->GetMaterial()->ambient = Math::QXvec3(51, 51, 51) / 255;
+			_mesh->GetMaterial()->diffuse = Math::QXvec3(128, 128, 128) / 255;
+			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+			break;
+		case EArmState::FREEZE:
+			_mesh->GetMaterial()->ambient = Math::QXvec3(119, 248, 253) / 255;
+			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 248, 253) / 255;
+			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+			break;
+		case EArmState::MAGNET_NEG:
+			_mesh->GetMaterial()->ambient = Math::QXvec3(200, 60, 40) / 255;
+			_mesh->GetMaterial()->diffuse = Math::QXvec3(253, 130, 130) / 255;
+			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+			break;
+		case EArmState::MAGNET_POS:
+			_mesh->GetMaterial()->ambient = Math::QXvec3(40, 60, 200) / 255;
+			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 130, 253) / 255;
+			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	//Questions to ask my teammates

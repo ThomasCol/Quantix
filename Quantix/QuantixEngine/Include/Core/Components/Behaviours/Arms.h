@@ -8,6 +8,14 @@
 
 namespace Quantix::Gameplay
 {
+	enum class QUANTIX_API EArmState
+	{
+		FREEZE,
+		MAGNET_NEG,
+		MAGNET_POS,
+		PUNCH
+	};
+
 	class QUANTIX_API Arms : public Quantix::Core::Components::Behaviour
 	{
 		private:
@@ -20,6 +28,9 @@ namespace Quantix::Gameplay
 
 			Core::DataStructure::GameObject3D*	_gameobject = nullptr;
 			Core::Components::Rigidbody*		rigid = nullptr;
+			Core::Components::Mesh* _mesh = nullptr;
+
+			EArmState _state = EArmState::FREEZE;
 
 			Math::QXvec3 objectFrozenVelocity;
 
@@ -56,7 +67,7 @@ namespace Quantix::Gameplay
 			void	Awake() override;
 			void	Start() override;
 			void	Update(QXdouble deltaTime) override;
-
+			void	UpdateMaterial();
 			
 			#pragma endregion
 			CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::Behaviour);
