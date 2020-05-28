@@ -28,8 +28,8 @@ namespace Quantix::Gameplay
 
 			#pragma region Methods
 
-			void	Attract(QXdouble deltaTime);
-			void	Reject(QXdouble deltaTime);
+			void						Attract(QXdouble deltaTime);
+			void						Reject(QXdouble deltaTime);
 
 			#pragma endregion
 		

@@ -120,21 +120,21 @@ namespace Quantix::Gameplay
 
 			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
-				rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
+				_rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
 				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
 
 				if (cube && cube->GetState() != ECubeState::GRABBED)
 				{
 					//Detect if is already frozen or not
-					if (rigid->GetRigidFlagKinematic())
+					if (_rigid->GetRigidFlagKinematic())
 					{
 						cube->ChangeState(ECubeState::DEFAULT);
-						UnFreeze(rigid);
+						UnFreeze(_rigid);
 					}
 					else
 					{
 						cube->ChangeState(ECubeState::FROZEN);
-						Freeze(rigid);
+						Freeze(_rigid);
 					}
 				}
 			}
@@ -184,7 +184,7 @@ namespace Quantix::Gameplay
 
 			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
-				rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
+				_rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
 				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
 
 				if (cube && cube->GetState() == ECubeState::DEFAULT)
@@ -199,14 +199,4 @@ namespace Quantix::Gameplay
 			}
 		}
 	}
-
-	//Questions to ask my teammates
-	/*
-	* Comment j'accède à la liste des layers pour comparer le layer actuel à ceux existants ?
-	*/ 
-
-	//TODO:
-	/* 
-	* 
-	*/
 }

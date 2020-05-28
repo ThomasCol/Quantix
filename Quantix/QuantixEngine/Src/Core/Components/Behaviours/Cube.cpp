@@ -53,7 +53,7 @@ namespace Quantix::Gameplay
 			
 			if (cube)
 			{
-				if ((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()).Length() > 1.f)
+				if ((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetGlobalPosition()).Length() > 1.f)
 				{
 					Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
 

@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\Behaviours\CubeGenerator.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Killzone.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Arms.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Cube.cpp" />
@@ -259,6 +260,7 @@
   <ItemGroup>
     <ClInclude Include="Include\Core\Components\Behaviours\Arms.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Cube.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\CubeGenerator.h" />
     <ClInclude Include="Include\Core\Event\Event.h" />
     <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
     <ClInclude Include="Include\Physic\ControllerHitReport.h" />

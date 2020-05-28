@@ -19,7 +19,7 @@ namespace Quantix::Gameplay
 			Core::DataStructure::GameObject3D*	_grabbedObject;
 
 			Core::DataStructure::GameObject3D*	_gameobject = nullptr;
-			Core::Components::Rigidbody*		rigid = nullptr;
+			Core::Components::Rigidbody*		_rigid = nullptr;
 			#pragma endregion
 
 			#pragma region Methods
