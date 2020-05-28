@@ -106,7 +106,6 @@ namespace Quantix::Resources
 		const aiScene* pScene = Importer.ReadFile(file.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
 
 		const aiMesh* paiMesh = pScene->mMeshes[0];
-		const aiAnimation* paiAnim = pScene->mAnimations[0];
 
 		const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
