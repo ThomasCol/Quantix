@@ -155,6 +155,37 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 	}
 }
 
+void Inspector::SelectComponent(const QXstring name, rttr::type type, QXbool& enable, Quantix::Core::Platform::Application* app, QXbool behaviour)
+{
+	ImGui::Selectable(name.c_str(), &enable);
+	if (enable)
+	{
+		QXbool activate = QX_TRUE;
+		if (behaviour)
+		{
+			if (type.is_derived_from(rttr::type::get<Quantix::Core::Components::Behaviour>()))
+			{
+				if (!_object->Get3D())
+				{
+					activate = QX_FALSE;
+					QXstring message = "Cannot create " + name + " with a non GameObject3D";
+					LOG(WARNING, message);
+				}
+			}
+		}
+		if (enable && activate)
+		{
+			_object->AddComponent(type.invoke("Copy", type.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+			_object->GetComponents().back()->Init(_object);
+			if (behaviour)
+			{
+				if (name == "Cube Generator")
+					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetApplication(app);
+			}
+		}
+	}
+}
+
 void Inspector::ShowBehaviour(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app)
 {
 	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
@@ -171,29 +202,7 @@ void Inspector::ShowBehaviour(std::list<QXstring> componentsName, Quantix::Core:
 				if (itCompo.get_name().to_string() == (*it))
 				{
 					if (itCompo.is_derived_from(rttr::type::get<Quantix::Core::Components::Behaviour>()) && (*it) != "Behaviour")
-					{
-						ImGui::Selectable((*it).c_str(), &enable);
-						if (enable)
-						{
-							QXbool activate = QX_TRUE;
-							if (itCompo.is_derived_from(rttr::type::get<Quantix::Core::Components::Behaviour>()))
-							{
-								if (!_object->Get3D())
-								{
-									activate = QX_FALSE;
-									QXstring message = "Cannot create " + (*it) + " with a non GameObject3D";
-									LOG(WARNING, message);
-								}
-							}
-							if (activate)
-							{
-								_object->AddComponent(itCompo.invoke("Copy", itCompo.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-								_object->GetComponents().back()->Init(_object);
-								if ((*it) == "Cube Generator")
-									_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetApplication(app); 
-							}
-						}
-					}
+						SelectComponent((*it), itCompo, enable, app, QX_TRUE);
 					else
 						break;
 				}
@@ -221,14 +230,7 @@ void Inspector::ShowSoundComponents(std::list<QXstring> componentsName, Quantix:
 				if ((*it).find("Sound") != QXstring::npos)
 				{
 					if (itCompo.get_name().to_string() == (*it))
-					{
-						ImGui::Selectable((*it).c_str(), &enable);
-						if (enable)
-						{
-							_object->AddComponent(itCompo.invoke("Copy", itCompo.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-							_object->GetComponents().back()->Init(_object);
-						}
-					}
+						SelectComponent((*it), itCompo, enable, app);
 				}
 			}
 			ImGui::PopID();
@@ -255,14 +257,7 @@ void Inspector::ShowPhysicsComponents(std::list<QXstring> componentsName, Quanti
 					|| (*it).find("Controller") != QXstring::npos || (*it).find("Rigidbody") != QXstring::npos)
 				{
 					if (itCompo.get_name().to_string() == (*it))
-					{
-						ImGui::Selectable((*it).c_str(), &enable);
-						if (enable)
-						{
-							_object->AddComponent(itCompo.invoke("Copy", itCompo.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-							_object->GetComponents().back()->Init(_object);
-						}
-					}
+						SelectComponent((*it), itCompo, enable, app);
 				}
 			}
 			ImGui::PopID();
@@ -279,9 +274,7 @@ void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 
 	QXuint i = 0;
 	for (auto it : componentsAvailable)
-	{
 		componentsName.push_back(it.get_name().to_string());
-	}
 	componentsName.sort();
 
 	for (auto it = componentsName.begin(); it != componentsName.end(); ++it)
@@ -296,15 +289,7 @@ void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 				if (itCompo.get_name().to_string() == (*it))
 				{
 					if (!itCompo.is_derived_from(rttr::type::get<Quantix::Core::Components::Behaviour>()))
-					{
-						ImGui::Selectable((*it).c_str(), &enable);
-						if (enable)
-						{
-							QXbool activate = QX_TRUE;
-							_object->AddComponent(itCompo.invoke("Copy", itCompo.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-							_object->GetComponents().back()->Init(_object);
-						}
-					}
+						SelectComponent((*it), itCompo,enable, app);
 				}
 			}
 			ImGui::PopID();
@@ -315,9 +300,6 @@ void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 	ShowPhysicsComponents(componentsName, app);
 	ShowSoundComponents(componentsName, app);
 	ShowBehaviour(componentsName, app);
-
-	
-
 }
 
 void Inspector::ShowComponent(Quantix::Core::Platform::Application* app)
@@ -363,7 +345,8 @@ void Inspector::DrawMaterialPath(rttr::instance inst, rttr::property currentProp
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("path", ImGuiDragDropFlags_SourceAllowNullID))
 		{
 			QXstring pathTmp = (const QXchar*)payload->Data;
-			if (pathTmp.find(".mat") != QXstring::npos || pathTmp.find(".FBX") != QXstring::npos || pathTmp.find(".fbx") != QXstring::npos)
+			if (pathTmp.find(".mat") != QXstring::npos || pathTmp.find(".FBX") != QXstring::npos || pathTmp.find(".fbx") != QXstring::npos
+				|| pathTmp.find(".max") != QXstring::npos)
 				path = pathTmp;
 			Quantix::Resources::Material* material = app->manager.CreateMaterial(path);
 			currentProp.set_value(inst, material);
@@ -395,7 +378,8 @@ void Inspector::DrawModelPath(rttr::instance inst, rttr::property currentProp, Q
 		{
 			QXstring pathTmp = (const QXchar*)payload->Data;
 			if ((pathTmp.find(".obj") != QXstring::npos && pathTmp.find(".quantix") == QXstring::npos)
-				|| (pathTmp.find(".FBX") != QXstring::npos || pathTmp.find(".fbx") != QXstring::npos))
+				|| (pathTmp.find(".FBX") != QXstring::npos || pathTmp.find(".fbx") != QXstring::npos)
+				|| pathTmp.find(".max") != QXstring::npos)
 				path = pathTmp;
 			Quantix::Resources::Model* model = app->manager.CreateModel(path);
 			currentProp.set_value(inst, model);
@@ -498,7 +482,8 @@ void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property curre
 
 void Inspector::GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app)
 {
-	ImGui::Indent(ImGui::GetWindowSize().x / 3);
+	QXfloat posY = ImGui::GetCursorPosY();
+	ImGui::SetCursorPos(ImVec2(ImGui::GetWindowSize().x / 3, posY));
 	if (ImGui::Button("Generate", ImVec2(100.f, 25.f)))
 	{
 		auto tmpInst = inst.get_derived_type();

@@ -134,8 +134,6 @@ namespace Quantix::Core::Components
 		 */
 		Math::QXvec3					GetPos();
 
-		void SetPhysicPos(Math::QXvec3 pos);
-
 		/**
 		 * @brief Set the Dir object
 		 * 

@@ -133,12 +133,4 @@ namespace Quantix::Core::Components
 		
 		return _pos;
 	}
-
-	void Camera::SetPhysicPos(Math::QXvec3 pos)
-	{
-		/*Rigidbody* rigid = _object->GetComponent<Rigidbody>();
-
-		if (rigid)
-			rigid->SetTransformPosition(pos);*/
-	}
 }

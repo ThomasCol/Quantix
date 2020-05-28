@@ -7,6 +7,18 @@
 #include "Core\Platform\Application.h"
 #include "rttrEnabled.h"
 
+//Color Top Plate
+#define COLORTAMBIENT Math::QXvec3(106, 184, 255)/255
+#define COLORTDIFFUSE Math::QXvec3(123, 183, 255)/255
+
+//Color Bottom Plates
+#define COLORB Math::QXvec3(255, 255, 255)/255
+
+//Color Pole
+#define COLORPAMBIENT Math::QXvec3(72, 23, 18)/255
+#define COLORPDIFFUSE Math::QXvec3(35, 8, 3)/255
+#define COLORPSPECULAR Math::QXvec3(10, 10, 10)/255
+
 namespace Quantix::Gameplay
 {
 	class QUANTIX_API CubeGenerator : public Quantix::Core::Components::Behaviour
@@ -49,6 +61,9 @@ namespace Quantix::Gameplay
 		void					Awake() override;
 		void					Start() override;
 		void					Update(QXdouble deltaTime) override;
+		void					Destroy() override;
+		void					GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, Math::QXvec3 ambient, Math::QXvec3 diffuse, Math::QXvec3 specular);
+		void					CreateGenerator();
 
 		#pragma region Accessors
 
@@ -58,7 +73,7 @@ namespace Quantix::Gameplay
 		inline void				SetNbMaxOfCubes(const QXuint& newNbMaxOfCubes) { _nbMaxOfCubes = newNbMaxOfCubes; };
 		inline const QXuint&	GetNbMaxOfCubes() { return _nbMaxOfCubes; };
 
-		inline void				SetApplication(Core::Platform::Application* app) { _app = app; };
+		inline void				SetApplication(Core::Platform::Application* app) { _app = app; CreateGenerator(); };
 
 		#pragma endregion
 
