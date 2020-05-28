@@ -49,6 +49,8 @@ namespace Quantix::Gameplay
 			void	UnFreeze(Core::DataStructure::GameObject3D* cube);
 			void	UsePunch();
 			void	UseMagnet(QXbool positiveField);
+			void	SwitchPower();
+			void	UsePower();
 
 			#pragma endregion
 		

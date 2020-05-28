@@ -4,6 +4,7 @@
 #include "Core/UserEntry/InputManager.h"
 #include "Core\Components\Behaviours\Cube.h"
 #include "Core\Components\Mesh.h"
+#include "Physic/Transform3D.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -29,8 +30,6 @@ namespace Quantix::Gameplay
 	void Arms::Awake()
 	{
 		_gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
-
-		_mesh = _object->GetComponent<Core::Components::Mesh>();
 	}
 
 	void Arms::Start()
@@ -38,21 +37,71 @@ namespace Quantix::Gameplay
 
 	void Arms::Update(QXdouble deltaTime)
 	{
+		if (!_mesh)
+		{
+			std::list<Physic::Transform3D*> list = _gameobject->GetTransform()->GetChilds();
+
+			if ((*list.begin())->GetObject()->GetComponent<Core::Components::Mesh>())
+				_mesh = (*list.begin())->GetObject()->GetComponent<Core::Components::Mesh>();
+		}
+
+		if (GetKey(QX_KEY_TAB) == Core::UserEntry::EKeyState::PRESSED)
+			SwitchPower();
+		
 		if (GetKey(QX_KEY_E) == Core::UserEntry::EKeyState::PRESSED)
 			UseHands();
+
 		if (GetKey(QX_KEY_F) == Core::UserEntry::EKeyState::PRESSED)
-			UseIce();
-		if (GetKey(QX_KEY_Q) == Core::UserEntry::EKeyState::PRESSED)
-			UsePunch();
-		if (GetKey(QX_KEY_R) == Core::UserEntry::EKeyState::PRESSED)
-			UseMagnet(QX_TRUE);
-		if (GetKey(QX_KEY_T) == Core::UserEntry::EKeyState::PRESSED)
-			UseMagnet(QX_FALSE);
+			UsePower();
 
 		if (_isGrabbingObject)
 		{
 			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2);
 			_grabbedObject->SetGlobalPosition(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2);
+		}
+	}
+
+	void Arms::SwitchPower()
+	{
+		switch (_state)
+		{
+		case EArmState::PUNCH:
+			_state = EArmState::FREEZE;
+			break;
+		case EArmState::FREEZE:
+			_state = EArmState::MAGNET_NEG;
+			break;
+		case EArmState::MAGNET_NEG:
+			_state = EArmState::MAGNET_POS;
+			break;
+		case EArmState::MAGNET_POS:
+			_state = EArmState::PUNCH;
+			break;
+		default:
+			break;
+		}
+
+		UpdateMaterial();
+	}
+
+	void Arms::UsePower()
+	{
+		switch (_state)
+		{
+		case EArmState::PUNCH:
+			UsePunch();
+			break;
+		case EArmState::FREEZE:
+			UseIce();
+			break;
+		case EArmState::MAGNET_NEG:
+			UseMagnet(QX_FALSE);
+			break;
+		case EArmState::MAGNET_POS:
+			UseMagnet(QX_TRUE);
+			break;
+		default:
+			break;
 		}
 	}
 
