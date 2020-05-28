@@ -26,7 +26,10 @@ namespace Quantix::Gameplay
 	}
 
 	void Cube::Awake()
-	{}
+	{
+		if (_object->GetComponent<Core::Components::Mesh>())
+			_mesh = _object->GetComponent<Core::Components::Mesh>();
+	}
 
 	void Cube::Start()
 	{}
@@ -92,6 +95,36 @@ namespace Quantix::Gameplay
 				}
 			}
 		}
+	}
+
+	void Cube::UpdateMaterial()
+	{
+		switch (_state)
+		{
+		case ECubeState::DEFAULT:
+			_mesh->GetMaterial()->ambient = Math::QXvec3(51, 51, 51) / 255;
+			_mesh->GetMaterial()->diffuse = Math::QXvec3(128, 128, 128) / 255;
+			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+			break;
+		case ECubeState::FROZEN :
+			_mesh->GetMaterial()->ambient = Math::QXvec3(119, 248, 253) / 255;
+			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 248, 253) / 255;
+			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+			break;
+		case ECubeState::MAGNET_NEG:
+			_mesh->GetMaterial()->ambient = Math::QXvec3(200, 60, 40) / 255;
+			_mesh->GetMaterial()->diffuse = Math::QXvec3(253, 130, 130) / 255;
+			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+			break;
+		case ECubeState::MAGNET_POS:
+			_mesh->GetMaterial()->ambient = Math::QXvec3(40, 60, 200) / 255;
+			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 130, 253) / 255;
+			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	//Questions to ask my teammates

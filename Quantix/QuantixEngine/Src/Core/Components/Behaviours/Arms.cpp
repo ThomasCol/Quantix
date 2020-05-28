@@ -126,11 +126,13 @@ namespace Quantix::Gameplay
 					{
 						cube->ChangeState(ECubeState::DEFAULT);
 						UnFreeze(ray.actorClosestBlock);
+						cube->UpdateMaterial();
 					}
 					else
 					{
 						cube->ChangeState(ECubeState::FROZEN);
 						Freeze(ray.actorClosestBlock);
+						cube->UpdateMaterial();
 					}
 				}
 			}
@@ -140,13 +142,6 @@ namespace Quantix::Gameplay
 	void	Arms::Freeze(Core::DataStructure::GameObject3D* cube)
 	{
 		objectFrozenVelocity = rigid->GetLinearVelocity();
-
-		Core::Components::Mesh* mesh = cube->GetComponent<Core::Components::Mesh>();
-		if (mesh)
-		{
-			objectFrozenDiffuse = mesh->GetMaterial()->diffuse;
-			mesh->GetMaterial()->diffuse = Math::QXvec3(30, 30, 180) / 255;
-		}
 			
 		rigid->SetRigidFlagKinematic(true);
 		rigid->SetRigidFlagKineForQueries(true);
@@ -155,12 +150,6 @@ namespace Quantix::Gameplay
 	void	Arms::UnFreeze(Core::DataStructure::GameObject3D* cube)
 	{
 		rigid->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetUp());
-
-		Core::Components::Mesh* mesh = cube->GetComponent<Core::Components::Mesh>();
-		if (mesh)
-		{
-			mesh->GetMaterial()->diffuse = objectFrozenDiffuse;
-		}
 
 		rigid->SetRigidFlagKinematic(false);
 		rigid->SetRigidFlagKineForQueries(false);
@@ -201,12 +190,21 @@ namespace Quantix::Gameplay
 				if (cube && cube->GetState() == ECubeState::DEFAULT)
 				{
 					if (positiveField)
+					{
 						cube->ChangeState(ECubeState::MAGNET_POS);
+						cube->UpdateMaterial();
+					}
 					else
+					{
 						cube->ChangeState(ECubeState::MAGNET_NEG);
+						cube->UpdateMaterial();
+					}
 				}
 				else
+				{
 					cube->ChangeState(ECubeState::DEFAULT);
+					cube->UpdateMaterial();
+				}
 			}
 		}
 	}

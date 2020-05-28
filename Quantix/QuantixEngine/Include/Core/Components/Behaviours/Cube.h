@@ -3,6 +3,7 @@
 
 #include "Core\Components\Behaviour.h"
 #include "rttrEnabled.h"
+#include "Core/Components//Mesh.h"
 
 namespace Quantix::Gameplay
 {
@@ -23,6 +24,8 @@ namespace Quantix::Gameplay
 
 			ECubeState	_state			{ ECubeState::DEFAULT };
 			QXfloat		_rangeOfMagnet	{ 3.f };
+
+			Core::Components::Mesh* _mesh = nullptr;
 
 			#pragma endregion
 
@@ -47,6 +50,8 @@ namespace Quantix::Gameplay
 			void						Awake() override;
 			void						Start() override;
 			void						Update(QXdouble deltaTime) override;
+
+			void UpdateMaterial();
 
 			#pragma region Accessors
 

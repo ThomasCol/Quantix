@@ -114,7 +114,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial1.mat"
+                                    "Material": "media/Material/DefaultMaterial36.mat"
                                 }
                             },
                             {
@@ -177,7 +177,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial2.mat"
+                                    "Material": "media/Material/DefaultMaterial37.mat"
                                 }
                             },
                             {
@@ -240,7 +240,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial3.mat"
+                                    "Material": "media/Material/DefaultMaterial38.mat"
                                 }
                             },
                             {
@@ -303,7 +303,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial4.mat"
+                                    "Material": "media/Material/DefaultMaterial39.mat"
                                 }
                             },
                             {
@@ -366,7 +366,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial5.mat"
+                                    "Material": "media/Material/DefaultMaterial40.mat"
                                 }
                             },
                             {
@@ -429,7 +429,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial6.mat"
+                                    "Material": "media/Material/DefaultMaterial41.mat"
                                 }
                             },
                             {
@@ -492,7 +492,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial7.mat"
+                                    "Material": "media/Material/DefaultMaterial42.mat"
                                 }
                             },
                             {
@@ -555,7 +555,7 @@
                                 "Mesh": {
                                     "Enable": true,
                                     "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial8.mat"
+                                    "Material": "media/Material/DefaultMaterial43.mat"
                                 }
                             },
                             {
@@ -3545,19 +3545,19 @@
                                     "Enable": true,
                                     "type": 0,
                                     "ambient": {
-                                        "x": 0.10000000149011612,
-                                        "y": 0.10000000149011612,
-                                        "z": 0.10000000149011612
+                                        "x": 0.20000000298023225,
+                                        "y": 0.20000000298023225,
+                                        "z": 0.20000000298023225
                                     },
                                     "diffuse": {
-                                        "x": 0.30000001192092898,
-                                        "y": 0.30000001192092898,
-                                        "z": 0.30000001192092898
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
                                     },
                                     "specular": {
-                                        "x": 0.800000011920929,
-                                        "y": 0.800000011920929,
-                                        "z": 0.800000011920929
+                                        "x": 0.8999999761581421,
+                                        "y": 0.8999999761581421,
+                                        "z": 0.8999999761581421
                                     },
                                     "direction": {
                                         "x": 0.05400879681110382,

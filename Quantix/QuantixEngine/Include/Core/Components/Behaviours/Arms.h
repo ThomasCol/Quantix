@@ -23,7 +23,9 @@ namespace Quantix::Gameplay
 
 			Math::QXvec3 objectFrozenVelocity;
 
+			Math::QXvec3 objectFrozenAmbiant;
 			Math::QXvec3 objectFrozenDiffuse;
+			Math::QXvec3 objectFrozenSpecular;
 			#pragma endregion
 
 			#pragma region Methods
