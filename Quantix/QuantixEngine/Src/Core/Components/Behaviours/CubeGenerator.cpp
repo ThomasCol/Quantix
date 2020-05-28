@@ -3,7 +3,7 @@
 #include "Core/Components/Mesh.h"
 #include "Core/Components/CubeCollider.h"
 #include "Core/Components/Rigidbody.h"
-#include "Resources/Model.h"
+#include "Core/DataStructure/ResourcesManager.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -11,7 +11,8 @@ RTTR_PLUGIN_REGISTRATION
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
 		.constructor<const Quantix::Gameplay::CubeGenerator&>()
-		.constructor<Quantix::Gameplay::CubeGenerator&&>();
+		.constructor<Quantix::Gameplay::CubeGenerator&&>()
+		.property("Number Of Cubes", &Quantix::Gameplay::CubeGenerator::GetNbOfCubes, &Quantix::Gameplay::CubeGenerator::SetNbOfCubes);
 }
 
 namespace Quantix::Gameplay
@@ -32,7 +33,10 @@ namespace Quantix::Gameplay
 	}
 
 	void CubeGenerator::Start()
-	{}
+	{
+		for (QXuint i = 0; i < _nbOfCubes; i++)
+			CreateCube();
+	}
 
 	void CubeGenerator::Update(QXdouble deltaTime)
 	{
@@ -52,7 +56,7 @@ namespace Quantix::Gameplay
 
 		//MESH
 		Core::Components::Mesh* mesh = cube->AddComponent<Core::Components::Mesh>();
-		//mesh = 
+		_rm->CreateMesh(mesh, "media/Mesh/cube.obj");
 
 		//CUBE COLLIDER
 		cube->AddComponent<Core::Components::CubeCollider>();
@@ -69,7 +73,7 @@ namespace Quantix::Gameplay
 
 //Questions to ask my teammates
 /*
-* Comment on créer un Mesh avec ensuite un model ? ResourcesManager ? 
+*
 */
 
 //TODO:
