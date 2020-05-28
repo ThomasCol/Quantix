@@ -31,7 +31,7 @@ Explorer::Explorer() :
 int Explorer::InitFormatFolder()
 {
 	static QXint folderSize = _folder.GetSizeFolder();
-	ImGui::SliderInt("Size", &folderSize, 1, 100);
+	ImGui::SliderInt("Size", &folderSize, 25, 100);
 	_folder.SetSizeFolder(folderSize);
 
 	ImVec2 size = _folder.GetSizeFile();

@@ -157,6 +157,12 @@ public:
 	 */
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 
+	void													ShowBehaviour(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app);
+
+	void													ShowSoundComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app);
+
+	void													ShowPhysicsComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app);
+
 	/**
 	 * @brief Add Component
 	 * 

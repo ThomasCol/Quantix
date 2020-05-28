@@ -155,70 +155,168 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 	}
 }
 
+void Inspector::ShowBehaviour(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app)
+{
+	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
+	QXuint i = 0;
+	if (ImGui::TreeNode("Behaviour"))
+	{
+		for (auto it = componentsName.begin(); it != componentsName.end(); ++it)
+		{
+			QXbool enable = QX_FALSE;
+			ImGui::PushID(i);
+
+			for (auto itCompo : componentsAvailable)
+			{
+				if (itCompo.get_name().to_string() == (*it))
+				{
+					if (itCompo.is_derived_from(rttr::type::get<Quantix::Core::Components::Behaviour>()) && (*it) != "Behaviour")
+					{
+						ImGui::Selectable((*it).c_str(), &enable);
+						if (enable)
+						{
+							QXbool activate = QX_TRUE;
+							if (itCompo.is_derived_from(rttr::type::get<Quantix::Core::Components::Behaviour>()))
+							{
+								if (!_object->Get3D())
+								{
+									activate = QX_FALSE;
+									QXstring message = "Cannot create " + (*it) + " with a non GameObject3D";
+									LOG(WARNING, message);
+								}
+							}
+							if (activate)
+							{
+								_object->AddComponent(itCompo.invoke("Copy", itCompo.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+								_object->GetComponents().back()->Init(_object);
+								if ((*it) == "Cube Generator")
+									_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetApplication(app); 
+							}
+						}
+					}
+					else
+						break;
+				}
+			}
+			ImGui::PopID();
+			i++;
+		}
+		ImGui::TreePop();
+	}
+}
+
+void Inspector::ShowSoundComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app)
+{
+	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
+	QXuint i = 0;
+	if (ImGui::TreeNode("Sound"))
+	{
+		for (auto it = componentsName.begin(); it != componentsName.end(); ++it)
+		{
+			QXbool enable = QX_FALSE;
+			ImGui::PushID(i);
+
+			for (auto itCompo : componentsAvailable)
+			{
+				if ((*it).find("Sound") != QXstring::npos)
+				{
+					if (itCompo.get_name().to_string() == (*it))
+					{
+						ImGui::Selectable((*it).c_str(), &enable);
+						if (enable)
+						{
+							_object->AddComponent(itCompo.invoke("Copy", itCompo.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+							_object->GetComponents().back()->Init(_object);
+						}
+					}
+				}
+			}
+			ImGui::PopID();
+			i++;
+		}
+		ImGui::TreePop();
+	}
+}
+
+void Inspector::ShowPhysicsComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app)
+{
+	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
+	QXuint i = 0;
+	if (ImGui::TreeNode("Physics"))
+	{
+		for (auto it = componentsName.begin(); it != componentsName.end(); ++it)
+		{
+			QXbool enable = QX_FALSE;
+			ImGui::PushID(i);
+
+			for (auto itCompo : componentsAvailable)
+			{
+				if (((*it).find("Collider") != QXstring::npos && (*it) != "Collider") || (*it).find("Deformable") != QXstring::npos
+					|| (*it).find("Controller") != QXstring::npos || (*it).find("Rigidbody") != QXstring::npos)
+				{
+					if (itCompo.get_name().to_string() == (*it))
+					{
+						ImGui::Selectable((*it).c_str(), &enable);
+						if (enable)
+						{
+							_object->AddComponent(itCompo.invoke("Copy", itCompo.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+							_object->GetComponents().back()->Init(_object);
+						}
+					}
+				}
+			}
+			ImGui::PopID();
+			i++;
+		}
+		ImGui::TreePop();
+	}
+}
+
 void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 {
 	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
-	std::unordered_map<QXstring, rttr::type> components;
 	std::list<QXstring> componentsName;
 
 	QXuint i = 0;
 	for (auto it : componentsAvailable)
 	{
-		/*componentsName.push_back(it.get_name().to_string());
-		components.insert(std::make_pair(it.get_name().to_string(), it));
+		componentsName.push_back(it.get_name().to_string());
 	}
 	componentsName.sort();
+
 	for (auto it = componentsName.begin(); it != componentsName.end(); ++it)
-	{*/
+	{
 		QXbool enable = QX_FALSE;
-		ImGui::PushID(i);
-
-		ImGui::Selectable(it.get_name().to_string().c_str(), &enable);
-		if (enable)
+		if ((*it).find("Collider") == QXstring::npos && (*it).find("Sound") == QXstring::npos && (*it).find("Deformable") == QXstring::npos
+			&& (*it).find("Controller") == QXstring::npos && (*it).find("Rigidbody") == QXstring::npos)
 		{
-			QXbool activate = QX_TRUE;
-			if (it.get_name().to_string() != "Behaviour")
+			ImGui::PushID(i);
+			for (auto itCompo : componentsAvailable)
 			{
-				if (!_object->Get3D())
+				if (itCompo.get_name().to_string() == (*it))
 				{
-					activate = QX_FALSE;
-					QXstring message = "Cannot create " + it.get_name().to_string() + " with a non GameObject3D";
-					LOG(WARNING, message);
+					if (!itCompo.is_derived_from(rttr::type::get<Quantix::Core::Components::Behaviour>()))
+					{
+						ImGui::Selectable((*it).c_str(), &enable);
+						if (enable)
+						{
+							QXbool activate = QX_TRUE;
+							_object->AddComponent(itCompo.invoke("Copy", itCompo.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+							_object->GetComponents().back()->Init(_object);
+						}
+					}
 				}
 			}
-			if (activate)
-			{
-				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-				_object->GetComponents().back()->Init(_object);
-				if (it.get_name().to_string() == "Cube Generator")
-					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetApplication(app);
-			}
+			ImGui::PopID();
+			i++;
 		}
-		/*ImGui::Selectable((*it).c_str(), &enable);
-		if (enable)
-		{
-			QXbool activate = QX_TRUE;
-			if ((*it) != "Behaviour")
-			{
-				if (!_object->Get3D())
-				{
-					activate = QX_FALSE;
-					QXstring message = "Cannot create " + (*it) + " with a non GameObject3D";
-					LOG(WARNING, message);
-				}
-			}
-			if (activate)
-			{
-				_object->AddComponent(components[(*it)].invoke("Copy", components[(*it)].create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
-				_object->GetComponents().back()->Init(_object);
-				if ((*it) == "Cube Generator")
-					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetResourceManager(&app->manager);
-			}
-		}*/
-
-		ImGui::PopID();
-		i++;
 	}
+
+	ShowPhysicsComponents(componentsName, app);
+	ShowSoundComponents(componentsName, app);
+	ShowBehaviour(componentsName, app);
+
+	
 
 }
 

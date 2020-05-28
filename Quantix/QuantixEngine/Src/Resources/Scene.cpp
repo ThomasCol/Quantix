@@ -145,7 +145,7 @@ namespace Quantix::Resources
 	}
 
 	void	Scene::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Core::Components::ICollider*>& colliders,
-		std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, const QXbool& isPlaying) noexcept
+		std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, QXbool isPlaying) noexcept
 	{
 		// TODO pas complet update mesh et update gameobject
 		if (_root3D)

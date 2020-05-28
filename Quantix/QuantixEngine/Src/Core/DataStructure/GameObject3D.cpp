@@ -46,7 +46,7 @@ namespace Quantix::Core::DataStructure
 	}
 
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-		std::vector<Components::Light>& lights, Platform::AppInfo& info, const QXbool& isPlaying)
+		std::vector<Components::Light>& lights, Platform::AppInfo& info, QXbool isPlaying)
 	{
 		if (_toRender)
 		{
@@ -61,7 +61,7 @@ namespace Quantix::Core::DataStructure
 	}
 
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-		std::vector<Components::Light>& lights, const GameObject3D* parentObject, Platform::AppInfo& info, const QXbool& isPlaying)
+		std::vector<Components::Light>& lights, const GameObject3D* parentObject, Platform::AppInfo& info, QXbool isPlaying)
 	{
 		if (_toRender)
 		{
@@ -85,11 +85,14 @@ namespace Quantix::Core::DataStructure
 			lights.push_back(*light);
 		}
 
-		if (_toUpdate && isPlaying)
+		if (isPlaying)
 		{
-			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>(true);
-			for (QXsizei i = 0; i < behaviors.size(); ++i)
-				behaviors[i]->Update(info.deltaTime);
+			if (_toUpdate)
+			{
+				std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>(true);
+				for (QXsizei i = 0; i < behaviors.size(); ++i)
+					behaviors[i]->Update(info.deltaTime);
+			}
 		}
 
 		_transform->Update(parentObject->GetTransform());
