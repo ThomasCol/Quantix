@@ -75,6 +75,12 @@ namespace Quantix::Core::DataStructure
 		Math::QXquaternion						GetGlobalRotation() const { return _transform->GetGlobalRotation(); };
 
 		/**
+		* @brief Get the Global Scale object
+		*
+		*/
+		Math::QXvec3							GetGlobalScale() const { return _transform->GetGlobalScale(); };
+
+		/**
 		* @brief Set the Local Position object
 		*
 		* @param pos QXvec3

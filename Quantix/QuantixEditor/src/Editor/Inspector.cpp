@@ -6,6 +6,7 @@
 #include <Core/Components/DeformableMesh.h>
 #include <Core/DataStructure/Component.h>
 #include <Core/Components/Behaviour.h>
+#include <Core/Components/Behaviours/CubeGenerator.h>
 
 #include "Inspector.h"
 #include <Core/UserEntry/InputManager.h>
@@ -136,7 +137,7 @@ void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Plat
 			ImGui::PopID(); 
 		}
 
-		AddComponent();
+		AddComponent(app);
 	}
 }
 
@@ -154,7 +155,7 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 	}
 }
 
-void Inspector::ShowBehaviour()
+void Inspector::ShowBehaviour(Quantix::Core::Platform::Application* app)
 {
 	rttr::array_range behavioursAvailable = rttr::type::get<Quantix::Core::Components::Behaviour>().get_derived_classes();
 
@@ -181,6 +182,8 @@ void Inspector::ShowBehaviour()
 			{
 				_object->AddComponent(it.invoke("Copy", it.create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
 				_object->GetComponents().back()->Init(_object);
+				if (it == rttr::type::get<Quantix::Gameplay::CubeGenerator>())
+					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetResourceManager(&app->manager);
 			}
 		}
 
@@ -220,22 +223,21 @@ void Inspector::ShowAddComponent()
 
 		ImGui::PopID();
 	}
-	ShowBehaviour();
 
 }
 
-void Inspector::ShowComponent()
+void Inspector::ShowComponent(Quantix::Core::Platform::Application* app)
 {
 	if (ImGui::BeginPopup("Item Component"))
 	{
-
 		ShowAddComponent();
+		ShowBehaviour(app);
 		ImGui::EndPopup();
 	}
 
 }
 
-void Inspector::AddComponent()
+void Inspector::AddComponent(Quantix::Core::Platform::Application* app)
 {
 	ImVec2 ButtonSize = ImVec2(150, 0);
 	float size = ImGui::GetWindowContentRegionWidth() / 2;
@@ -244,7 +246,7 @@ void Inspector::AddComponent()
 	{
 		ImGui::OpenPopup("Item Component");
 	}
-	ShowComponent();
+	ShowComponent(app);
 }
 
 void Inspector::DrawMaterialPath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app)

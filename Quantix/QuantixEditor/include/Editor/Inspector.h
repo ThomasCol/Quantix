@@ -161,7 +161,7 @@ public:
 	 * @brief Add Behaviour
 	 * 
 	 */
-	void													ShowBehaviour();
+	void													ShowBehaviour(Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Add Component
@@ -173,13 +173,13 @@ public:
 	 * @brief Show Component
 	 * 
 	 */
-	void													ShowComponent();
+	void													ShowComponent(Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Add Component
 	 * 
 	 */
-	void													AddComponent();
+	void													AddComponent(Quantix::Core::Platform::Application* app);
 
 	/**
 	 * @brief Show Material Path

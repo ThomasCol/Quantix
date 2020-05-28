@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Components\Behaviours\CubeGenerator.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\FilmGrain.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Bumper.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Killzone.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="Include\Core\Components\Behaviours\Bumper.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Arms.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Cube.h" />
+    <ClInclude Include="Include\Core\Components\Behaviours\CubeGenerator.h" />
     <ClInclude Include="Include\Core\Components\Animator.h" />
     <ClInclude Include="Include\Core\Event\Event.h" />
     <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
