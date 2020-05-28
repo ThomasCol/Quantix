@@ -421,17 +421,35 @@ void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
 	_hierarchy.Update(name, flags, _root->GetTransform(), _app);
 }
 
+QXstring Editor::GetNameOfShader(QXstring shaderPath)
+{
+	QXuint pos = shaderPath.find_last_of("/");
+	QXstring fileName = shaderPath.substr(pos + 1);
+	QXstring name = fileName.substr(0, fileName.size() - 5);
+	if (name == "fragmentShader")
+		name = "Default";
+	return name;
+}
+
 void Editor::DrawShader(const QXstring& name, ImGuiWindowFlags flags)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
 		if (_app->manager.GetShaders().size() > 0)
 		{
+			std::unordered_map<QXstring, QXuint>	ShaderID;
+			std::list<QXstring>						ShaderName;
 			for (auto it = _app->manager.GetShaders().begin(); it != _app->manager.GetShaders().end(); ++it)
 			{
-				if (ImGui::TreeNode(it->first.c_str()))
+				ShaderID.insert(std::make_pair(GetNameOfShader(it->first), it->second->GetID()));
+				ShaderName.push_back(GetNameOfShader(it->first));
+			}
+			ShaderName.sort();
+			for (auto it = ShaderName.begin(); it != ShaderName.end(); ++it)
+			{
+				if (ImGui::TreeNode((*it).c_str()))
 				{
-					InspectProgram(it->second->GetID());
+					InspectProgram(ShaderID[(*it)]);
 					ImGui::TreePop();
 				}
 			}

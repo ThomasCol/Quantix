@@ -180,6 +180,8 @@ public:
 	 */
 	void												DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags);
 
+	QXstring											GetNameOfShader(QXstring shaderPath);
+
 	/**
 	 * @brief Draw Shader Frame for PosProcess
 	 * 

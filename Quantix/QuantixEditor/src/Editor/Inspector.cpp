@@ -158,10 +158,18 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 {
 	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
+	std::unordered_map<QXstring, rttr::type> components;
+	std::list<QXstring> componentsName;
 
 	QXuint i = 0;
 	for (auto it : componentsAvailable)
 	{
+		/*componentsName.push_back(it.get_name().to_string());
+		components.insert(std::make_pair(it.get_name().to_string(), it));
+	}
+	componentsName.sort();
+	for (auto it = componentsName.begin(); it != componentsName.end(); ++it)
+	{*/
 		QXbool enable = QX_FALSE;
 		ImGui::PushID(i);
 
@@ -186,8 +194,30 @@ void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetResourceManager(&app->manager);
 			}
 		}
+		/*ImGui::Selectable((*it).c_str(), &enable);
+		if (enable)
+		{
+			QXbool activate = QX_TRUE;
+			if ((*it) != "Behaviour")
+			{
+				if (!_object->Get3D())
+				{
+					activate = QX_FALSE;
+					QXstring message = "Cannot create " + (*it) + " with a non GameObject3D";
+					LOG(WARNING, message);
+				}
+			}
+			if (activate)
+			{
+				_object->AddComponent(components[(*it)].invoke("Copy", components[(*it)].create(), {}).get_value<Quantix::Core::DataStructure::Component*>());
+				_object->GetComponents().back()->Init(_object);
+				if ((*it) == "Cube Generator")
+					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetResourceManager(&app->manager);
+			}
+		}*/
 
 		ImGui::PopID();
+		i++;
 	}
 
 }
