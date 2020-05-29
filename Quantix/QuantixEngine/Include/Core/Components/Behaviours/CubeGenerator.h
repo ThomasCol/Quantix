@@ -16,9 +16,9 @@ namespace Quantix::Gameplay
 		#pragma region Attributes
 
 		std::list<Core::DataStructure::GameObject3D*>	_cubes;
-		QXfloat											_distMinBtwCubesAndGenerator	{ 5.f };
-		QXuint											_nbMaxOfCubes					{ 1 };
-		Core::DataStructure::GameObject3D*				_gameobject = nullptr;
+		QXfloat											_distForGeneration	{ 5.f };
+		QXuint											_nbMaxOfCubes		{ 1 };
+		Core::DataStructure::GameObject3D*				_gameobject			{ nullptr };
 
 		Core::Platform::Application*					_app;
 
@@ -27,6 +27,7 @@ namespace Quantix::Gameplay
 		#pragma region Methods
 
 		void					CreateCube();
+		void					ReUseCube(Core::DataStructure::GameObject3D* cube);
 
 		#pragma endregion
 
@@ -52,8 +53,8 @@ namespace Quantix::Gameplay
 
 		#pragma region Accessors
 
-		inline void				SetDistMinBtwCubesAndGenerator(const QXfloat& newDistMinBtwCubesAndGenerator) { _distMinBtwCubesAndGenerator = newDistMinBtwCubesAndGenerator; };
-		inline const QXfloat&	GetDistMinBtwCubesAndGenerator() { return _distMinBtwCubesAndGenerator; };
+		inline void				SetDistForGeneration(const QXfloat& newDistforGeneration) { _distForGeneration = newDistforGeneration; };
+		inline const QXfloat&	GetDistForGeneration() { return _distForGeneration; };
 
 		inline void				SetNbMaxOfCubes(const QXuint& newNbMaxOfCubes) { _nbMaxOfCubes = newNbMaxOfCubes; };
 		inline const QXuint&	GetNbMaxOfCubes() { return _nbMaxOfCubes; };
