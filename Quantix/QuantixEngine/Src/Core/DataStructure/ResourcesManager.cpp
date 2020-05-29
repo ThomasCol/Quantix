@@ -44,6 +44,18 @@ namespace Quantix::Core::DataStructure
 			delete it->second;
 			it = _textures.erase(it);
 		}
+
+		for (auto it = _meshes.begin(); it != _meshes.end();)
+		{
+			delete it->second;
+			it = _meshes.erase(it);
+		}
+
+		for (auto it = _sounds.begin(); it != _sounds.end();)
+		{
+			delete it->second;
+			it = _sounds.erase(it);
+		}
 	}
 
 #pragma endregion
