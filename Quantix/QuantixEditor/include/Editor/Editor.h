@@ -212,11 +212,15 @@ public:
 	 */
 	void												DrawSimulation();
 
+	void												PrintPower();
+
 	/**
 	 * @brief Set the scene focus
 	 * 
 	 */
 	void												FocusScene();
+
+	void												MaximizeOnPlay();
 
 	/**
 	 * @brief Draw Game
@@ -351,11 +355,13 @@ private:
 	std::map<QXstring, Quantix::Resources::Texture*>					_simImg;
 	std::map<QXstring, QXbool>											_simState;
 	std::map<QXbool, Quantix::Core::DataStructure::GameObject3D*>		_hasCamera;
+	std::map<QXstring, Quantix::Resources::Texture*>					_command;
 
 	QXbool																_play;
 	QXbool																_pause;
 	QXbool																_sceneFocus;
 	QXbool																_gameFocus;
+	QXbool																_maximize;
 
 	ImGuiWindowFlags													_flagsEditor;
 	#pragma endregion Attributes

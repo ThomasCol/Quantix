@@ -143,9 +143,9 @@ namespace Quantix::Core::Tool
 		{
 			currentProp.set_value(inst, value.GetString());
 		}
-		else if (type == rttr::type::get<Components::ELightType>())
+		else if (currentProp.is_enumeration())
 		{
-			//currentProp.set_value(inst, value.GetInt());
+		//	currentProp.set_value(inst, currentProp.get_enumeration().name_to_value(value.GetString()));
 		}
 		else if (type == rttr::type::get<Math::QXvec3>())
 		{
@@ -320,10 +320,10 @@ namespace Quantix::Core::Tool
 			writer.String(currentProp.get_name().to_string());
 			writer.String(currentProp.get_value(inst).to_string());
 		}
-		else if (type == rttr::type::get<Components::ELightType>())
+		else if (currentProp.is_enumeration())
 		{
 			writer.String(currentProp.get_name().to_string());
-			writer.Int(currentProp.get_value(inst).to_int());
+			writer.String(currentProp.get_enumeration().value_to_name(currentProp.get_value(inst)).to_string());
 		}
 		else if (type == rttr::type::get<Math::QXvec3>())
 		{

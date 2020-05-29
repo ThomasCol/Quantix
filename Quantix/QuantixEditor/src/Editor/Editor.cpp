@@ -10,6 +10,7 @@
 #include <Core/SoundCore.h>
 #include <Physic/PhysicHandler.h>
 #include <Core/Profiler/Profiler.h>
+#include <Core/Components/Behaviours/Arms.h>
 #include "stb_image.h"
 #include "opengl_helper.h"
 
@@ -24,6 +25,7 @@ Editor::Editor(QXuint width, QXuint height) :
 	_pause{ QX_FALSE },
 	_sceneFocus{ QX_FALSE },
 	_gameFocus{ QX_FALSE },
+	_maximize{ QX_FALSE },
 	_flagsEditor{}
 {
 	_cameraEditor = new Quantix::Core::Components::Camera({ 0, 7, -10 }, { 0, -1, 1 }, Math::QXvec3::up);
@@ -102,6 +104,10 @@ void Editor::InitImg()
 	_simImg.insert(std::make_pair("Pause", _app->manager.CreateTexture("Other/IconEditor/Simulation/Pause.png")));
 	_simState.insert(std::make_pair("Play", QX_FALSE));
 	_simState.insert(std::make_pair("Pause", QX_FALSE));
+	_command.insert(std::make_pair("Grab", _app->manager.CreateTexture("Other/IconEditor/Simulation/E.png")));
+	_command.insert(std::make_pair("Change Power", _app->manager.CreateTexture("Other/IconEditor/Simulation/Tab.png")));
+	_command.insert(std::make_pair("Launch Object", _app->manager.CreateTexture("Other/IconEditor/Simulation/LeftMouseClick.png")));
+	_command.insert(std::make_pair("Use Power", _app->manager.CreateTexture("Other/IconEditor/Simulation/RightMouseClick.png")));
 }
 
 void Editor::Init()
@@ -521,20 +527,79 @@ void Editor::FocusScene()
 	}
 }
 
+void Editor::MaximizeOnPlay()
+{
+	QXfloat posX = ImGui::GetWindowSize().x / 2 + 70;
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 1));
+	if (_maximize)
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(44 / 255, 62 / 255, 80 / 255, 1));
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(128 / 255.f, 128 / 255.f, 128 / 255.f, 1));
+	ImGui::SetCursorPos(ImVec2(posX, 0));
+	if (ImGui::Button("Maximize", ImVec2(80, 30)))
+		_maximize = !_maximize;
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
+}
+
 void Editor::DrawSimulation()
 {
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
 	ImGui::BeginChild(ImGui::GetID("Editor"), ImVec2(0, 35), QX_FALSE, flags);
 	_guizmo.GuizmoUI();
 	Simulation();
+	MaximizeOnPlay();
 	ChangeStateSimulation();
 	ImGui::EndChild();
 }
 
+void Editor::PrintPower()
+{
+	ImGui::SetCursorPos(ImVec2(20, ImGui::GetWindowSize().y - 45));
+	switch (_mainCamera->GetObject()->GetComponent<Quantix::Gameplay::Arms>()->GetPower())
+	{
+		case Quantix::Gameplay::EArmState::FREEZE:
+			ImGui::Text("Freeze");
+			break;
+		case Quantix::Gameplay::EArmState::MAGNET_NEG:
+			ImGui::Text("Repulsion");
+			break;
+		case Quantix::Gameplay::EArmState::MAGNET_POS:
+			ImGui::Text("Attraction");
+			break;
+		default:
+			break;
+	}
+	QXfloat posY = ImGui::GetWindowSize().y - 150.f;
+	for (auto it = _command.begin(); it != _command.end(); ++it)
+	{
+		ImGui::SetCursorPos(ImVec2(ImGui::GetWindowSize().x - 250.f, posY));
+		QXstring text = it->first + ": ";
+		ImGui::Text(text.c_str()); ImGui::SameLine(ImGui::GetWindowSize().x - 70.f);
+		if (it->first == "Grab")
+			ImGui::Image((ImTextureID)it->second->GetId(), ImVec2(30, 30), ImVec2(0, 1), ImVec2(1, 0));
+		else if (it->first == "Change Power")
+			ImGui::Image((ImTextureID)it->second->GetId(), ImVec2(40, 30), ImVec2(0, 1), ImVec2(1, 0));
+		else
+			ImGui::Image((ImTextureID)it->second->GetId(), ImVec2(20, 30), ImVec2(0, 1), ImVec2(1, 0));
+		posY += 35.f;
+	}
+}
+
 void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 {
-	ImGui::Begin(name.c_str(), NULL, flags);
+	if (_maximize && _play)
 	{
+		ImGui::SetNextWindowPos(ImVec2(0, 75));
+		ImVec2 size = ImGui::GetWindowSize();
+		size.y -= 75;
+		ImGui::SetNextWindowSize(size);
+		ImGui::Begin("MyGame", NULL, flags);
+	}
+	else
+		ImGui::Begin(name.c_str(), NULL, flags);
+	{
+		ImGui::SetWindowFontScale(1.5f);
 		if (_play && !_pause)
 		{
 			FocusScene();
@@ -544,6 +609,11 @@ void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 		ImVec2 size = ImGui::GetWindowSize();
 		size.y -= 50;
 		ImGui::Image((ImTextureID)(size_t)_gameBuffer.texture[0], size, { 0.f, 1.f }, { 1.f, 0.f });
+		if (_mainCamera->GetObject())
+		{
+			if (_mainCamera->GetObject()->GetComponent<Quantix::Gameplay::Arms>(true))
+				PrintPower();
+		}
 	}
 	ImGui::End();
 }
