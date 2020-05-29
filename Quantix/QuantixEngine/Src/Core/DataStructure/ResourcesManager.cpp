@@ -30,8 +30,6 @@ namespace Quantix::Core::DataStructure
 		_programs.erase(_programs.begin(), _programs.end());
 
 		_textures.erase(_textures.begin(), _textures.end());
-
-		_textures.erase(_textures.begin(), _textures.end());
 	}
 
 #pragma endregion

@@ -189,6 +189,8 @@ namespace Quantix::Core::Components
 		collider->Init(object);
 		collider->SetHalfExtents(cubeSize/2);
 		object->AddComponent(collider);
+
+		object->SetLayer(Core::DataStructure::Layer::DESTRUCTIBLEMESH);
 	}
 
 	void DeformableMesh::Destroy()

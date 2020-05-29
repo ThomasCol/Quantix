@@ -42,6 +42,16 @@ namespace Quantix::Core::DataStructure
 
 	GameObject3D::~GameObject3D()
 	{
+		// Destroy Component
+		std::vector<Core::DataStructure::Component*> components = GetComponents<Core::DataStructure::Component>();
+		for (QXsizei i = 0; i < components.size(); ++i)
+		{
+			components[i]->Destroy();
+			delete components[i];
+		}
+
+		GetTransform()->GetParent()->RemoveChild(GetTransform());
+
 		delete _transform;
 	}
 
