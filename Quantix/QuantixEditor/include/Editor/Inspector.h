@@ -157,6 +157,8 @@ public:
 	 */
 	void													PopUpMenuItem(Quantix::Core::DataStructure::Component* component);
 
+	void													SelectComponent(const QXstring name, rttr::type type, QXbool& enable, Quantix::Core::Platform::Application* app, QXbool behaviour = QX_FALSE);
+
 	void													ShowBehaviour(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app);
 
 	void													ShowSoundComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app);

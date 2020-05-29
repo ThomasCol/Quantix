@@ -11,8 +11,8 @@ RTTR_PLUGIN_REGISTRATION
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
 		.constructor<const Quantix::Gameplay::CubeGenerator&>()
 		.constructor<Quantix::Gameplay::CubeGenerator&&>()
-		.property("Number Max of Cubes", &Quantix::Gameplay::CubeGenerator::GetNbMaxOfCubes, &Quantix::Gameplay::CubeGenerator::SetNbMaxOfCubes)
-		.property("Minimum distance between Cubes and Generator ", &Quantix::Gameplay::CubeGenerator::GetDistMinBtwCubesAndGenerator, &Quantix::Gameplay::CubeGenerator::SetDistMinBtwCubesAndGenerator);
+		.property("Max Cubes", &Quantix::Gameplay::CubeGenerator::GetNbMaxOfCubes, &Quantix::Gameplay::CubeGenerator::SetNbMaxOfCubes)
+		.property("Length For Generation", &Quantix::Gameplay::CubeGenerator::GetDistMinBtwCubesAndGenerator, &Quantix::Gameplay::CubeGenerator::SetDistMinBtwCubesAndGenerator);
 }
 
 namespace Quantix::Gameplay
@@ -42,6 +42,42 @@ namespace Quantix::Gameplay
 				return;
 
 		CreateCube();
+	}
+
+	void CubeGenerator::Destroy()
+	{
+		for (auto it = _gameobject->GetTransform()->GetChilds().begin(); it != _gameobject->GetTransform()->GetChilds().end();)
+		{
+			for (QXuint i = 0; i < (*it)->GetObject()->GetComponents().size(); i++)
+				(*it)->GetObject()->RemoveComponent((*it)->GetObject()->GetComponents()[i]);
+			it = _gameobject->GetTransform()->GetChilds().erase(it);
+		}
+	}
+
+	void CubeGenerator::GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, Math::QXvec3 ambient, Math::QXvec3 diffuse, Math::QXvec3 specular)
+	{
+		Core::DataStructure::GameObject3D* go = _app->scene->AddGameObject(name, _gameobject);
+		go->SetTransformValue(pos, Math::QXquaternion(1.f, 0.f, 0.f, 0.f), scale);
+		//MESH
+		Core::Components::Mesh* mesh = go->AddComponent<Core::Components::Mesh>();
+		mesh->Init(go);
+		_app->manager.CreateMesh(mesh, "media/Mesh/cube.obj");
+		mesh->GetMaterial()->ambient = ambient;
+		mesh->GetMaterial()->diffuse = diffuse;
+		mesh->GetMaterial()->specular = specular;
+	}
+
+	void CubeGenerator::CreateGenerator()
+	{
+		GenerateMesh("TopCube", Math::QXvec3(0.f, 0.72f, 0.f), Math::QXvec3(3.f, 0.1f, 3.f), COLORTAMBIENT, COLORTDIFFUSE, COLORB);
+		GenerateMesh("BottomCube1", Math::QXvec3(0.f, -0.72f, -1.163f), Math::QXvec3(3.f, 0.1f, 0.7f), COLORB, COLORB, COLORB);
+		GenerateMesh("BottomCube2", Math::QXvec3(0.f, -0.72f, 1.163f), Math::QXvec3(3.f, 0.1f, 0.7f), COLORB, COLORB, COLORB);
+		GenerateMesh("BottomCube3", Math::QXvec3(-1.163f, -0.72f, 0.f), Math::QXvec3(0.7f, 0.1f, 3.f), COLORB, COLORB, COLORB);
+		GenerateMesh("BottomCube4", Math::QXvec3(1.163f, -0.72f, 0.f), Math::QXvec3(0.7f, 0.1f, 3.f), COLORB, COLORB, COLORB);
+		GenerateMesh("Plot1", Math::QXvec3(-1.38f, 0.f, 0.f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
+		GenerateMesh("Plot2", Math::QXvec3(1.38f, 0.f, 0.f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
+		GenerateMesh("Plot3", Math::QXvec3(0.f, 0.f, -1.38f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
+		GenerateMesh("Plot4", Math::QXvec3(0.f, 0.f, 1.38f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
 	}
 
 	void CubeGenerator::CreateCube()

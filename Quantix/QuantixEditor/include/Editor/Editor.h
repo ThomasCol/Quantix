@@ -125,6 +125,10 @@ public:
 	 */
 	void												CameraUpdateEditor();
 
+	void												MovePlayerController();
+
+	void												MoveFreeCam();
+
 	/**
 	 * @brief Update Main Camera in Game
 	 * 
