@@ -11,31 +11,27 @@ namespace Quantix::Core::DataStructure
 
 	ResourcesManager::~ResourcesManager()
 	{
-		for (auto it = _materials.begin(); it != _materials.end(); ++it)
+		for (auto it = _materials.begin(); it != _materials.end();)
 		{
 			if (it->first.find(".fbx") == QXstring::npos && it->first.find(".FBX") == QXstring::npos)
 				SaveMaterialToCache(it->first, it->second);
-			delete it->second;
+			it = _materials.erase(it);
 		}
 
-		for (auto it = _models.begin(); it != _models.end(); ++it)
+		for (auto it = _models.begin(); it != _models.end();)
 		{
 			if (it->first.find(".fbx") == QXstring::npos && it->first.find(".FBX") == QXstring::npos)
 				SaveModelToCache(it->first, it->second);
-			delete it->second;
+			it = _models.erase(it);
 		}
 
-		for (auto it = _shaders.begin(); it != _shaders.end(); ++it)
-			delete it->second;
+		_shaders.erase(_shaders.begin(), _shaders.end());
 
-		for (auto it = _programs.begin(); it != _programs.end(); ++it)
-			delete it->second;
+		_programs.erase(_programs.begin(), _programs.end());
 
-		for (auto it = _textures.begin(); it != _textures.end(); ++it)
-			delete it->second;
+		_textures.erase(_textures.begin(), _textures.end());
 
-		for (auto it = _sounds.begin(); it != _sounds.end(); ++it)
-			delete it->second;
+		_textures.erase(_textures.begin(), _textures.end());
 	}
 
 #pragma endregion
@@ -320,7 +316,12 @@ namespace Quantix::Core::DataStructure
 	{
 		if (isFbx)
 			return LoadMaterialFromFbx(filePath);
-		return LoadMaterialFromFile(filePath);
+		Material* mat = LoadMaterialFromFile(filePath);
+
+		if (mat)
+			return mat;
+		else
+			return CreateDefaultMaterial();
 	}
 
 	void ResourcesManager::SaveMaterialToCache(const QXstring& filePath, const Material* material) noexcept
