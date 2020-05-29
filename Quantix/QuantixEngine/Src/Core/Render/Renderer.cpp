@@ -269,6 +269,19 @@ namespace Quantix::Core::Render
 		QXbyte last_shader_id = -1;
 		QXbyte last_texture_id = -1;
 
+		switch (lights[0].type)
+		{
+		case Components::ELightType::DIRECTIONAL:
+			_projLight = Math::QXmat4::CreateOrthographicProjectionMatrix(20, 20, 1.0f, 7.5f);
+			break;
+		case Components::ELightType::SPOT:
+			break;
+		case Components::ELightType::POINT:
+			break;
+		default:
+			break;
+		}
+
 		// Bind uniform buffer
 		SendUniformBuffer(lights, info, cam);
 

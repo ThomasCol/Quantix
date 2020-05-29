@@ -174,21 +174,19 @@ namespace Quantix::Core::Components
 	void DeformableMesh::AddComponent(DataStructure::GameObject3D* object, Core::Platform::Application* app)
 	{
 		// Add Mesh
-		Core::Components::Mesh* mesh = new Mesh();
+		Core::Components::Mesh* mesh = object->AddComponent<Mesh>();
 		mesh->Init(object);
 		app->manager.CreateMesh(mesh, "media/Mesh/cube.obj");
-		object->AddComponent(mesh);
 
 		// Add Rigid
-		Core::Components::Rigidbody* rigid = new Rigidbody();
-		rigid->Init(object);
-		object->AddComponent(rigid);
+		object->AddComponent<Rigidbody>()->Init(object);
 
 		// Add Cubecollider
-		Core::Components::CubeCollider* collider = new CubeCollider();
+		Core::Components::CubeCollider* collider = object->AddComponent<CubeCollider>();
 		collider->Init(object);
 		collider->SetHalfExtents(cubeSize/2);
-		object->AddComponent(collider);
+
+		object->SetLayer(Core::DataStructure::Layer::DESTRUCTIBLEMESH);
 	}
 
 	void DeformableMesh::Destroy()

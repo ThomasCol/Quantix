@@ -2,6 +2,8 @@
 
 #include "Core/Components/CubeCollider.h"
 
+#include "vld.h"
+
 RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::DataStructure::GameObject3D>("GameObject3D")
@@ -42,6 +44,18 @@ namespace Quantix::Core::DataStructure
 
 	GameObject3D::~GameObject3D()
 	{
+		// Destroy Component
+		std::vector<Core::DataStructure::Component*> components = GetComponents<Core::DataStructure::Component>();
+		for (QXsizei i = 0; i < components.size(); ++i)
+		{
+			components[i]->Destroy();
+			delete components[i];
+		}
+
+		Physic::Transform3D* parent = _transform->GetParent();
+		if (parent)
+			parent->RemoveChild(GetTransform());
+
 		delete _transform;
 	}
 

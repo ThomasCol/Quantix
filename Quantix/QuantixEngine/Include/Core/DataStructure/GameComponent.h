@@ -21,7 +21,8 @@ namespace Quantix::Core::DataStructure
 		DEFAULT = (1 << 0),
 		PLAYER = (1 << 1),
 		SELECTABLE = (1 << 2),
-		KILLZONE = (1 << 3)
+		KILLZONE = (1 << 3),
+		DESTRUCTIBLEMESH = (1 << 4)
 	};
 
 	class QUANTIX_API GameComponent
