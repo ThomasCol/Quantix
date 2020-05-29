@@ -2,7 +2,7 @@
 
 #include "Core/Components/CubeCollider.h"
 
-#include <vld.h>
+//#include <vld.h>
 
 RTTR_PLUGIN_REGISTRATION
 {
