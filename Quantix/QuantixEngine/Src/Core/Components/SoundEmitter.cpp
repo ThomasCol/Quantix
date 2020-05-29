@@ -63,6 +63,8 @@ namespace Quantix::Core::Components
 
 	SoundEmitter::~SoundEmitter()
 	{
+		_channel->stop();
+		_channel->release();
 	}
 
 	#pragma endregion

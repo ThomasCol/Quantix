@@ -51,6 +51,7 @@ namespace Quantix::Core
 			inline static SoundCore*	GetInstance()	{ _instance == nullptr ? _instance = new SoundCore : _instance; return _instance; }
 			inline FMOD::System*		GetSystem()		{ return _system; }
 			void						Update();
+			inline void					Destroy()		{ delete _instance; };
 
 			/**
 			 * @brief Try the FMOD method and manage FMOD errors
