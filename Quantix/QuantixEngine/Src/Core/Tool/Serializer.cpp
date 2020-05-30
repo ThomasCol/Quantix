@@ -145,7 +145,7 @@ namespace Quantix::Core::Tool
 		}
 		else if (currentProp.is_enumeration())
 		{
-		//	currentProp.set_value(inst, currentProp.get_enumeration().name_to_value(value.GetString()));
+			currentProp.set_value(inst, currentProp.get_enumeration().name_to_value(value.GetString()));
 		}
 		else if (type == rttr::type::get<Math::QXvec3>())
 		{

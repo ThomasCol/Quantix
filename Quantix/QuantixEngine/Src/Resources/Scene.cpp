@@ -51,6 +51,7 @@ namespace Quantix::Resources
 
 		delete _root3D;
 		delete _root2D;
+		delete _rootComponent;
 	}
 
 	#pragma endregion
