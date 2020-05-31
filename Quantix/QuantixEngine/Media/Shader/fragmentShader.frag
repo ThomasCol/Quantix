@@ -35,6 +35,7 @@ struct Material
 	bool	hasEmissive;
 
 	sampler2D	shadowMap;
+	samplerCube	pointShadowMap;
 	sampler2D	diffuseTexture;
 	sampler2D	emissiveTexture;
 };
@@ -53,10 +54,12 @@ in vec2				UV;
 in vec3				outNormal;
 in vec3				fragPos;
 in vec4				fragPosLightSpace;
+in vec3				lightPos;
 
 uniform vec3 		minBright = vec3(0.2126, 0.7152, 0.0722);
 
 uniform vec3		viewPos;
+uniform float		farPlane;
 
 /* calculate light react */
 vec3	calculateDiffuse(vec3 lightDir, vec3 norm, vec3 diffuse);
@@ -68,6 +71,7 @@ vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm, float shadow);
 vec3	calculatePointLight(Light light, vec3 lightDir, vec3 norm);
 vec3	calculateSpotLight(Light light, vec3 lightDir, vec3 norm, float shadow);
 float	ComputeShadow(vec4 fragPosLightSpace, vec3 lightDir, vec3 normal);
+float 	ComputePointShadow(vec3 fragPos);
 
 void main()
 {
@@ -80,7 +84,12 @@ void main()
 	else
 		brightColor = vec4(0.0);
 
-	float shadow = ComputeShadow(fragPosLightSpace, normalize(light[0].position - fragPos), norm);
+	float shadow;
+
+	if (count > 1)
+		shadow = ComputePointShadow(fragPos);
+	else
+		shadow = ComputeShadow(fragPosLightSpace, normalize(light[0].position - fragPos), norm);
 
 	output += calculateDirectional(light[0], lightDir, norm, shadow);
 
@@ -137,6 +146,21 @@ float	ComputeShadow(vec4 fragPosLightSpace, vec3 lightDir, vec3 normal)
 		shadow = 0.0;
 
     return shadow;
+}
+
+float ComputePointShadow(vec3 fragPos)
+{
+	// get vector between fragment position and light position
+    vec3 fragToLight = fragPos - lightPos;
+    // use the light to fragment vector to sample from the depth map    
+    float closestDepth = texture(material.pointShadowMap, fragToLight).r;
+    // it is currently in linear range between [0,1]. Re-transform back to original value
+    closestDepth *= farPlane;
+    // now get current linear depth as the length between the fragment and light position
+    float currentDepth = length(fragToLight);
+    // now test for shadows
+    float bias = 0.05; 
+    return currentDepth -  bias > closestDepth ? 1.0 : 0.0;
 }
 
 vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm, float shadow)

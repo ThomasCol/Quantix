@@ -20,15 +20,15 @@ namespace Quantix::Resources
 		_type {std::move(shader._type)}
 	{}
 
-	Shader::Shader(const QXstring& file, EShaderType type) noexcept :
+	Shader::Shader(QXstring file, EShaderType type) noexcept :
 		_id {(QXuint)-1},
 		_type {type}
 	{
 		switch (_type)
 		{
-			case EShaderType::VERTEX: CreateVertexShader(file.c_str());	break;
-			case EShaderType::FRAGMENT: CreateFragmentShader(file.c_str()); break;
-		
+			case EShaderType::VERTEX: CreateVertexShader(file);	break;
+			case EShaderType::GEOMETRY: CreateGeometryShader(file); break;
+			case EShaderType::FRAGMENT: CreateFragmentShader(file); break;
 			default: break;
 		}
 	}
@@ -40,15 +40,7 @@ namespace Quantix::Resources
 
 #pragma region Functions
 
-	std::vector<QXuint>	Shader::Compile(const QXchar* file, EShaderType shaderKind) noexcept
-	{
-		QXstring code { ReadFile(file) };
-
-		std::vector<QXuint> vec;
-		return vec;
-	}
-
-	void Shader::CreateFragmentShader(const QXchar* file) noexcept
+	void Shader::CreateFragmentShader(QXstring file) noexcept
 	{
 		QXstring code = ReadFile(file);
 
@@ -67,7 +59,7 @@ namespace Quantix::Resources
 		}
 	}
 
-	void Shader::CreateVertexShader(const QXchar* file) noexcept
+	void Shader::CreateVertexShader(QXstring file) noexcept
 	{
 		QXstring code = ReadFile(file);
 		_id = glCreateShader(GL_VERTEX_SHADER);
@@ -85,7 +77,25 @@ namespace Quantix::Resources
 		}
 	}
 
-	QXstring Shader::ReadFile(const QXchar* file) noexcept
+	void Shader::CreateGeometryShader(QXstring file) noexcept
+	{
+		QXstring code = ReadFile(file);
+		_id = glCreateShader(GL_GEOMETRY_SHADER);
+		const char* str = code.c_str();
+		glShaderSource(_id, 1, &str, nullptr);
+		glCompileShader(_id);
+
+		int  success;
+		char info_log[512];
+		glGetShaderiv(_id, GL_COMPILE_STATUS, &success);
+		if (!success)
+		{
+			glGetShaderInfoLog(_id, 512, NULL, info_log);
+			LOG(ERROR, QXstring("ERROR::SHADER::GEOMETRY::COMPILATION_FAILED\n") + info_log);
+		}
+	}
+
+	QXstring Shader::ReadFile(QXstring file) noexcept
 	{
 		std::ifstream shader(file, std::ios::ate);
 		if (!shader.is_open())

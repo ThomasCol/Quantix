@@ -15,6 +15,7 @@ namespace Quantix::Core::DataStructure
 		{
 			if (it->first.find(".fbx") == QXstring::npos && it->first.find(".FBX") == QXstring::npos)
 				SaveMaterialToCache(it->first, it->second);
+			delete it->second;
 			it = _materials.erase(it);
 		}
 
@@ -22,14 +23,39 @@ namespace Quantix::Core::DataStructure
 		{
 			if (it->first.find(".fbx") == QXstring::npos && it->first.find(".FBX") == QXstring::npos)
 				SaveModelToCache(it->first, it->second);
+			delete it->second;
 			it = _models.erase(it);
 		}
 
-		_shaders.erase(_shaders.begin(), _shaders.end());
+		for (auto it = _shaders.begin(); it != _shaders.end();)
+		{
+			delete it->second;
+			it = _shaders.erase(it);
+		}
 
-		_programs.erase(_programs.begin(), _programs.end());
+		for (auto it = _meshes.begin(); it != _meshes.end();)
+		{
+			delete it->second;
+			it = _meshes.erase(it);
+		}
 
-		_textures.erase(_textures.begin(), _textures.end());
+		for (auto it = _programs.begin(); it != _programs.end();)
+		{
+			delete it->second;
+			it = _programs.erase(it);
+		}
+
+		for (auto it = _textures.begin(); it != _textures.end();)
+		{
+			delete it->second;
+			it = _textures.erase(it);
+		}
+
+		for (auto it = _sounds.begin(); it != _sounds.end();)
+		{
+			delete it->second;
+			it = _sounds.erase(it);
+		}
 	}
 
 #pragma endregion
@@ -172,18 +198,26 @@ namespace Quantix::Core::DataStructure
 		return LoadScene(filepath);
 	}
 
-	ShaderProgram* ResourcesManager::CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath) noexcept
+	ShaderProgram* ResourcesManager::CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath, const QXstring& geometryPath) noexcept
 	{
-		auto it = _programs.find(vertexPath + fragmentPath);
+		auto it = _programs.find(vertexPath + fragmentPath + geometryPath);
 		if (it != _programs.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
 
-		ShaderProgram* program = new ShaderProgram(CreateShader(vertexPath, EShaderType::VERTEX), CreateShader(fragmentPath, EShaderType::FRAGMENT));
+		ShaderProgram* program = new ShaderProgram(	CreateShader(vertexPath, EShaderType::VERTEX),
+													CreateShader(fragmentPath, EShaderType::FRAGMENT),
+													CreateShader(geometryPath, EShaderType::GEOMETRY));
 		program->AddShaderPath(vertexPath);
 		program->AddShaderPath(fragmentPath);
-		_programs[vertexPath + fragmentPath] = program;
+		if (geometryPath != "")
+		{
+			program->AddShaderPath(geometryPath);
+			_programs[vertexPath + fragmentPath + geometryPath] = program;
+		}
+		else
+			_programs[vertexPath + fragmentPath] = program;
 		return program;
 	}
 
@@ -195,7 +229,13 @@ namespace Quantix::Core::DataStructure
 			return it->second;
 		}
 
-		Shader* shader = new Shader(filePath, type);
+		Shader* shader;
+
+		if (filePath != "")
+			shader = new Shader(filePath, type);
+		else
+			return nullptr;
+
 		_shaders[filePath] = shader;
 		return shader;
 	}

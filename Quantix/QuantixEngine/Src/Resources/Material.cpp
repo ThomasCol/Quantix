@@ -40,16 +40,26 @@ namespace Quantix::Resources
 		return _diffuse->IsReady();
 	}
 	
-	void Material::SendData(QXuint shadowTexture)
+	void Material::SendData(QXuint shadowTexture, QXbool isPointLight)
 	{
 		SetFloat3("material.ambient", ambient.e);
 		SetFloat3("material.diffuse", diffuse.e);
 		SetFloat3("material.specular", specular.e);
 		SetFloat("material.shininess", shininess);
 
-		SetInt("material.shadowMap", 1);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, shadowTexture);
+		if (isPointLight)
+		{
+			SetInt("material.pointShadowMap", 2);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, shadowTexture);
+			SetFloat("farPlane", 50.f);
+		}
+		else
+		{
+			SetInt("material.shadowMap", 1);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, shadowTexture);
+		}
 	}
 
 	void Material::SendTextures()
