@@ -252,7 +252,7 @@ namespace Quantix::Physic
 	void PhysicHandler::InitScene()
 	{
 		PxSceneDesc sceneDesc(mSDK->getTolerancesScale());
-		sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+		sceneDesc.gravity = PxVec3(0.0f, -15.f, 0.0f);
 
 		sceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
 		

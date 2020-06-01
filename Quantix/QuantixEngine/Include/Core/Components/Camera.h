@@ -8,8 +8,9 @@
 #include "rttrEnabled.h"
 #include "Core/DataStructure/Component.h"
 
-#define SPEED (1000.f)
+#define SPEED (3.f)
 #define SPEEDFREECAM (10.f)
+#define SPEEDJUMP (25.F)
 
 namespace Quantix::Core::Components
 {

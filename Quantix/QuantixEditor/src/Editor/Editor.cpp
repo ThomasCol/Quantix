@@ -220,15 +220,15 @@ void	Editor::MovePlayerController()
 	dir.y = 0.f;
 	dir = dir.Normalize();
 	if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
-		_mainCamera->_controller->_velocity += dir;
+		_mainCamera->_controller->_velocity += dir * SPEED;
 	if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
-		_mainCamera->_controller->_velocity -= dir;
+		_mainCamera->_controller->_velocity -= dir * SPEED;
 	if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
-		_mainCamera->_controller->_velocity -= dir.Cross(_mainCamera->GetUp());
+		_mainCamera->_controller->_velocity -= dir.Cross(_mainCamera->GetUp()) * SPEED;
 	if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
-		_mainCamera->_controller->_velocity += dir.Cross(_mainCamera->GetUp());
+		_mainCamera->_controller->_velocity += dir.Cross(_mainCamera->GetUp()) * SPEED;
 	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED && !_mainCamera->_controller->CheckIsFalling())
-		_mainCamera->_controller->_velocity += _mainCamera->_controller->GetUpDirection() * 30;
+		_mainCamera->_controller->_velocity += _mainCamera->_controller->GetUpDirection() * SPEEDJUMP;
 
 	_mainCamera->_controller->_velocity.y *= 0.95f;
 
