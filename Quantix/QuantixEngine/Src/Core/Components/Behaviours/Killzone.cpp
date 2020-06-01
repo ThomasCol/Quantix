@@ -22,14 +22,19 @@ namespace Quantix::Gameplay
 		return new Killzone(*this);
 	}
 
+	void Killzone::Awake()
+	{
+
+	}
+
 	void    Killzone::OnTrigger(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other)
 	{
 		if (other->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE || other->GetLayer() == Quantix::Core::DataStructure::Layer::DESTRUCTIBLEMESH)
-			delete other;
+			other->toDestroy = true;
 	}
 	void   Killzone::OnCollision(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other, Math::QXvec3& position, Math::QXvec3& normal)
 	{
 		if (other->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE || other->GetLayer() == Quantix::Core::DataStructure::Layer::DESTRUCTIBLEMESH)
-			delete other;
+			other->toDestroy = true;
 	}
 }

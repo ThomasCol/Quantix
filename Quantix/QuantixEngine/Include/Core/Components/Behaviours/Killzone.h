@@ -48,6 +48,8 @@ namespace Quantix::Gameplay
 		 */
 		Killzone* Copy() const override;
 
+		void	Awake() override;
+
 		/**
 		 * @brief Called when Physic raise an OnTriggerEvent for this behaviour
 		 * 

@@ -42,5 +42,7 @@ namespace Quantix::Core::Platform
 		if (isPlaying)
 			Physic::PhysicHandler::GetInstance()->UpdateSystem(info.deltaTime);
 		Physic::PhysicHandler::GetInstance()->UpdatePhysicActor(isPlaying);
+
+		scene->CheckDestroy(info);
 	}
 }
