@@ -37,24 +37,22 @@ namespace Quantix::Gameplay
 
 	void CubeGenerator::Update(QXdouble deltaTime)
 	{
+		/*if (_savedNbOfCubes != _cubes.size)
+			CreateCube();*/
+		
+		//Check the distances between the generator and the generated cubes
 		for (auto it = _cubes.begin(); it != _cubes.end(); ++it)
-		{
-			if (!(*it)->GetIsActive())
-			{
-				ReUseCube((*it));
-				return;
-			}
-
 			if ((_gameobject->GetGlobalPosition() - (*it)->GetGlobalPosition()).Length() < _distForGeneration)
 				return;
-		}
 
+		//As all cubes are far enough from the generator, check if the generator can create one more cube
 		if ((QXuint)_cubes.size() < _nbMaxOfCubes)
 			CreateCube();
 	}
 
 	void CubeGenerator::Destroy()
 	{
+		//Detroy every component of every child of gameobject
 		for (auto it = _gameobject->GetTransform()->GetChilds().begin(); it != _gameobject->GetTransform()->GetChilds().end();)
 		{
 			for (QXuint i = 0; i < (*it)->GetObject()->GetComponents().size(); i++)
@@ -67,10 +65,12 @@ namespace Quantix::Gameplay
 	{
 		Core::DataStructure::GameObject3D* go = _app->scene->AddGameObject(name, _gameobject);
 		go->SetTransformValue(pos, Math::QXquaternion(1.f, 0.f, 0.f, 0.f), scale);
+
 		//MESH
 		Core::Components::Mesh* mesh = go->AddComponent<Core::Components::Mesh>();
 		mesh->Init(go);
 		_app->manager.CreateMesh(mesh, "media/Mesh/cube.obj");
+
 		mesh->GetMaterial()->ambient = ambient;
 		mesh->GetMaterial()->diffuse = diffuse;
 		mesh->GetMaterial()->specular = specular;
@@ -115,23 +115,7 @@ namespace Quantix::Gameplay
 		cube->AddComponent<Cube>();
 
 		_cubes.push_back(cube);
-	}
 
-	void CubeGenerator::ReUseCube(Core::DataStructure::GameObject3D* cube)
-	{
-		cube->SetTransformValue(_gameobject->GetGlobalPosition(), _gameobject->GetGlobalRotation(), _gameobject->GetGlobalScale());
-		cube->GetComponent<Core::Components::Rigidbody>()->SetTransformPosition(_gameobject->GetGlobalPosition());
-
-		cube->SetIsActive(QX_TRUE);
+		//_savedNbOfCubes = _cubes.size();
 	}
 }
-
-//Questions to ask my teammates
-/*
-*
-*/
-
-//TODO:
-/*
-* Faire la cr�ation de cube apr�s le passage d'une killzone
-*/

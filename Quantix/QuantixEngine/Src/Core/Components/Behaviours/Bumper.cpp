@@ -8,7 +8,7 @@ RTTR_PLUGIN_REGISTRATION
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
 		.constructor<const Quantix::Gameplay::Bumper&>()
 		.constructor<Quantix::Gameplay::Bumper&&>()
-		.property("Force", &Quantix::Gameplay::Bumper::force);
+		.property("Force", &Quantix::Gameplay::Bumper::GetForce, &Quantix::Gameplay::Bumper::SetForce);
 }
 
 namespace Quantix::Gameplay
@@ -26,8 +26,8 @@ namespace Quantix::Gameplay
 	void    Bumper::OnTrigger(Core::DataStructure::GameObject3D* me, Core::DataStructure::GameObject3D* other)
 	{
 		if (other->GetComponent<Core::Components::Rigidbody>())
-			other->GetComponent<Core::Components::Rigidbody>()->AddForce(force, Physic::ForceMode::IMPULSE);
+			other->GetComponent<Core::Components::Rigidbody>()->AddForce(_force, Physic::ForceMode::IMPULSE);
 		else if (other->GetComponent<Core::Components::CharacterController>())
-			other->GetComponent<Core::Components::CharacterController>()->_velocity += force;
+			other->GetComponent<Core::Components::CharacterController>()->_velocity += _force;
 	}
 }

@@ -27,6 +27,8 @@ namespace Quantix::Gameplay
 
 	void Cube::Awake()
 	{
+		_gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
+
 		if (_object->GetComponent<Core::Components::Mesh>())
 			_mesh = _object->GetComponent<Core::Components::Mesh>();
 	}
@@ -46,26 +48,30 @@ namespace Quantix::Gameplay
 
 	void Cube::Attract(QXdouble deltaTime)
 	{
-		Core::DataStructure::GameObject3D* gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
-
-		std::vector<Core::DataStructure::GameObject3D*> overlapedObjects = Physic::PhysicHandler::GetInstance()->OverlapSphere(_rangeOfMagnet, gameobject->GetTransform());
-		
-		for (QXuint i = 0; i < overlapedObjects.size(); i++)
+		if (_gameobject)
 		{
-			if (overlapedObjects[i] != _object)
+			//Get every object that is in the magnet range
+			std::vector<Core::DataStructure::GameObject3D*> overlapedObjects = Physic::PhysicHandler::GetInstance()->OverlapSphere(_rangeOfMagnet, _gameobject->GetTransform());
+
+			for (QXuint i = 0; i < overlapedObjects.size(); i++)
 			{
-				Cube* cube = nullptr;
-				if (overlapedObjects[i])
-					cube = overlapedObjects[i]->GetComponent<Cube>(true);
-
-				if (cube)
+				if (overlapedObjects[i] != _object)
 				{
-					if ((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetGlobalPosition()).Length() > 1.f)
-					{
-						Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+					Cube* cube{ nullptr };
+					if (overlapedObjects[i])
+						cube = overlapedObjects[i]->GetComponent<Cube>(true);
 
-						if (rigid)
-							rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * (QXfloat)deltaTime * 100.f);
+					//Check if the overlaped object is indeed a Cube object
+					if (cube)
+					{
+						//If the cube object is not too close from the magnet cube
+						if ((_gameobject->GetGlobalPosition() - overlapedObjects[i]->GetGlobalPosition()).Length() > 1.f)
+						{
+							Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+
+							if (rigid) //Attract the cube
+								rigid->AddForce((_gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * (QXfloat)deltaTime * 100.f);
+						}
 					}
 				}
 			}
@@ -74,24 +80,27 @@ namespace Quantix::Gameplay
 
 	void Cube::Reject(QXdouble deltaTime)
 	{
-		Core::DataStructure::GameObject3D* gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
-
-		std::vector<Core::DataStructure::GameObject3D*> overlapedObjects = Physic::PhysicHandler::GetInstance()->OverlapSphere(_rangeOfMagnet, gameobject->GetTransform());
-
-		for (QXuint i = 0; i < overlapedObjects.size(); i++)
+		if (_gameobject)
 		{
-			if (overlapedObjects[i] != _object)
+			//Get every object that is in the magnet range
+			std::vector<Core::DataStructure::GameObject3D*> overlapedObjects = Physic::PhysicHandler::GetInstance()->OverlapSphere(_rangeOfMagnet, _gameobject->GetTransform());
+
+			for (QXuint i = 0; i < overlapedObjects.size(); i++)
 			{
-				Cube* cube = nullptr;
-				if (overlapedObjects[i])
-					cube = overlapedObjects[i]->GetComponent<Cube>(true);
-
-				if (cube)
+				if (overlapedObjects[i] != _object)
 				{
-					Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+					Cube* cube{ nullptr };
+					if (overlapedObjects[i])
+						cube = overlapedObjects[i]->GetComponent<Cube>(true);
 
-					if (rigid)
-						rigid->AddForce((overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * (QXfloat)deltaTime * 100.f);
+					//Check if the overlaped object is indeed a Cube object
+					if (cube)
+					{
+						Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
+
+						if (rigid) //Reject the cube
+							rigid->AddForce((overlapedObjects[i]->GetLocalPosition() - _gameobject->GetGlobalPosition()) * (QXfloat)deltaTime * 100.f);
+					}
 				}
 			}
 		}
@@ -101,22 +110,22 @@ namespace Quantix::Gameplay
 	{
 		switch (_state)
 		{
-		case ECubeState::DEFAULT:
+		case ECubeState::DEFAULT: //Grey Color
 			_mesh->GetMaterial()->ambient = Math::QXvec3(51, 51, 51) / 255;
 			_mesh->GetMaterial()->diffuse = Math::QXvec3(128, 128, 128) / 255;
 			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
 			break;
-		case ECubeState::FROZEN :
+		case ECubeState::FROZEN : //Light Blue Color
 			_mesh->GetMaterial()->ambient = Math::QXvec3(119, 248, 253) / 255;
 			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 248, 253) / 255;
 			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
 			break;
-		case ECubeState::MAGNET_NEG:
+		case ECubeState::MAGNET_NEG: //Dark Red Color
 			_mesh->GetMaterial()->ambient = Math::QXvec3(200, 60, 40) / 255;
 			_mesh->GetMaterial()->diffuse = Math::QXvec3(253, 130, 130) / 255;
 			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
 			break;
-		case ECubeState::MAGNET_POS:
+		case ECubeState::MAGNET_POS: //Dark Blue Color
 			_mesh->GetMaterial()->ambient = Math::QXvec3(40, 60, 200) / 255;
 			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 130, 253) / 255;
 			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
@@ -124,16 +133,5 @@ namespace Quantix::Gameplay
 		default:
 			break;
 		}
-
 	}
-
-	//Questions to ask my teammates
-	/*
-	* Comment accéder à tout les cubes de la scène, ou à la limite tout ceux d'une certaine zone ?
-	*/
-
-	//TODO:
-	/*
-	* 
-	*/
 }
