@@ -1315,7 +1315,7 @@
                             {
                                 "GameObject18": {
                                     "name": "Cube2",
-                                    "layer": 0,
+                                    "layer": 4,
                                     "Transform": {
                                         "position": {
                                             "x": 17.174419403076173,
@@ -1507,32 +1507,6 @@
                                         {
                                             "Camera": {
                                                 "Enable": true
-                                            }
-                                        },
-                                        {
-                                            "SphereCollider": {
-                                                "Enable": true,
-                                                "ToRender": true,
-                                                "Local Position": {
-                                                    "x": 0.0,
-                                                    "y": 0.0,
-                                                    "z": 0.0
-                                                },
-                                                "Local Rotation": {
-                                                    "x": 0.0,
-                                                    "y": 0.0,
-                                                    "z": 0.0,
-                                                    "w": 1.0
-                                                },
-                                                "MyGroup": "Crab",
-                                                "PawnGroup": true,
-                                                "MineGroup": true,
-                                                "CrabGroup": true,
-                                                "Query Shape": true,
-                                                "Simulation Shape": true,
-                                                "Trigger Shape": false,
-                                                "Visualization Shape": false,
-                                                "Radius": 1.0
                                             }
                                         }
                                     ],

@@ -7,6 +7,7 @@
 #include <MathDefines.h>
 #include <Core/UserEntry/InputManager.h>
 #include <Core/Components/CharacterController.h>
+#include <Core/DataStructure/GameObject3D.h>
 #include <Core/SoundCore.h>
 #include <Physic/PhysicHandler.h>
 #include <Core/Profiler/Profiler.h>
@@ -256,10 +257,15 @@ void	Editor::CameraUpdate()
 		{
 			UpdateMouse(_mainCamera);
 			if (_mainCamera->_controller)
+			{
 				MovePlayerController();
+				_mainCamera->UpdateLookAt(_mainCamera->GetPos());
+			}
 			else
+			{
 				MoveFreeCam();
-			_mainCamera->UpdateLookAt(_mainCamera->GetPos());
+				_mainCamera->UpdateLookAt(_mainCamera->_pos);
+			}
 		}
 	}
 }

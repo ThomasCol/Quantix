@@ -60,7 +60,7 @@ namespace Quantix::Core::Components
 		 * @brief Destroy Function
 		 * 
 		 */
-		void	Destroy() noexcept override {};
+		void	Destroy() noexcept override;
 
 		/**
 		 * @brief Move the character controller to the position

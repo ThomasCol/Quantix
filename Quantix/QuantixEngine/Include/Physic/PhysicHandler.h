@@ -241,6 +241,8 @@ namespace Quantix::Physic
 		 */
 		void CleanScene();
 
+		void CleanController(PxCapsuleController* controller);
+
 #pragma region Operators
 
 		PhysicHandler& operator=(const PhysicHandler& other) = delete;

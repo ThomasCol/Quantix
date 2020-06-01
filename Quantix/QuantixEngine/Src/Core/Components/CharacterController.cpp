@@ -2,6 +2,8 @@
 #include "Physic/PhysicSetting.h"
 #include "Physic/Raycast.h"
 
+#include "Core/Components/Camera.h"
+
 RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::Components::CharacterController>("CharacterController")
@@ -28,6 +30,10 @@ namespace Quantix::Core::Components
 {
 	void CharacterController::Init(Core::DataStructure::GameComponent* object) noexcept
 	{
+		_object = object;
+		_isDestroyed = false;
+		_isEnable = true;
+
 		controller = Physic::PhysicHandler::GetInstance()->CreateController(object);
 		_velocity = Math::QXvec3(0, 0, 0);
 	}
@@ -35,6 +41,16 @@ namespace Quantix::Core::Components
 	CharacterController* CharacterController::Copy() const noexcept
 	{
 		return new CharacterController(*this);
+	}
+
+	void CharacterController::Destroy() noexcept
+	{
+		if (_object->GetComponent<Core::Components::Camera>())
+		{
+			_object->GetComponent<Core::Components::Camera>()->_controller = nullptr;
+		}
+
+		Physic::PhysicHandler::GetInstance()->CleanController(controller);
 	}
 
 	void CharacterController::Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime)

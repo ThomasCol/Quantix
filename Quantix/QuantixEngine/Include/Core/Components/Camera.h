@@ -20,7 +20,6 @@ namespace Quantix::Core::Components
 	private:
 		#pragma region Attributes
 		Math::QXvec3	_up;
-		Math::QXvec3	_pos;
 		Math::QXvec3	_dir;
 		Math::QXvec3	_angle;
 
@@ -29,6 +28,7 @@ namespace Quantix::Core::Components
 		#pragma endregion Attributes
 	public:
 		CharacterController* _controller = nullptr;
+		Math::QXvec3	_pos;
 
 #pragma region Constructors/Destructor
 		/**

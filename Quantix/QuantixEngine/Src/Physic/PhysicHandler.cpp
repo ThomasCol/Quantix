@@ -500,6 +500,11 @@ namespace Quantix::Physic
 		manager->purgeControllers();
 	}
 
+	void PhysicHandler::CleanController(PxCapsuleController* controller)
+	{
+		manager->purgeControllers();
+	}
+
 #pragma region FlagSetters
 	void PhysicHandler::SetFlagAdaptiveForce(bool b)
 	{
