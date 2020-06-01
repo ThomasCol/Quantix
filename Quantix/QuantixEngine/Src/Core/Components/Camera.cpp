@@ -108,10 +108,10 @@ namespace Quantix::Core::Components
 	{
 		_angle += rotate;
 
-		if (_angle.x > Q_PI / 3.f)
-			_angle.x = Q_PI / 3.f;
-		if (_angle.x < -Q_PI / 3.f)
-			_angle.x = -Q_PI / 3.f;
+		if (_angle.x > Q_PI / 2.f - 0.01f)
+			_angle.x = Q_PI / 2.f - 0.01f;
+		if (_angle.x < (-Q_PI / 2.f) + 0.01f)
+			_angle.x = -Q_PI / 2.f + 0.01f;
 
 		_dir.z = cos(_angle.x) * cos(_angle.y);
 		_dir.y = sin(-_angle.x);

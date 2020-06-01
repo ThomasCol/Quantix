@@ -33,12 +33,6 @@ namespace Quantix::Core::DataStructure
 			it = _shaders.erase(it);
 		}
 
-		for (auto it = _meshes.begin(); it != _meshes.end();)
-		{
-			delete it->second;
-			it = _meshes.erase(it);
-		}
-
 		for (auto it = _programs.begin(); it != _programs.end();)
 		{
 			delete it->second;
@@ -49,6 +43,12 @@ namespace Quantix::Core::DataStructure
 		{
 			delete it->second;
 			it = _textures.erase(it);
+		}
+
+		for (auto it = _meshes.begin(); it != _meshes.end();)
+		{
+			delete it->second;
+			it = _meshes.erase(it);
 		}
 
 		for (auto it = _sounds.begin(); it != _sounds.end();)

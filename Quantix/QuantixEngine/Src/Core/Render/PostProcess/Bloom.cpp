@@ -8,9 +8,11 @@ RTTR_PLUGIN_REGISTRATION
     rttr::registration::class_<Quantix::Core::Render::PostProcess::Bloom>("Bloom")
     .property("HDROnly", &Quantix::Core::Render::PostProcess::Bloom::_hdrOnly)
     .property("Exposure", &Quantix::Core::Render::PostProcess::Bloom::_exposure)
+        (rttr::metadata("Description", "NoLimit"))
     .property("Gamma", &Quantix::Core::Render::PostProcess::Bloom::_gamma)
-    .property("BlurAmount", &Quantix::Core::Render::PostProcess::Bloom::_amout)
-    .property("BlurWeight", &Quantix::Core::Render::PostProcess::Bloom::_weight);
+        (rttr::metadata("Description", "NoLimit"))
+    .property("Blur Amount", &Quantix::Core::Render::PostProcess::Bloom::_amout)
+    .property("Blur Weight", &Quantix::Core::Render::PostProcess::Bloom::_weight);
 }
 
 namespace Quantix::Core::Render::PostProcess

@@ -1,13 +1,19 @@
 #include "Core/Render/PostProcess/ToneMapping.h"
 #include <glad/glad.h>
 
+RTTR_PLUGIN_REGISTRATION
+{
+    rttr::registration::class_<Quantix::Core::Render::PostProcess::ToneMapping>("Tone Mapping")
+    .property("Gamma Correction", &Quantix::Core::Render::PostProcess::ToneMapping::_correctionMatrix);
+}
+
 namespace Quantix::Core::Render::PostProcess
 {
 
 	ToneMapping::ToneMapping(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) :
 		PostProcessEffect(toneMappingProg, model)
 	{
-        name = "ToneMapping";
+        name = "Tone Mapping";
 		Init(info);
 
         QXuint VBO;

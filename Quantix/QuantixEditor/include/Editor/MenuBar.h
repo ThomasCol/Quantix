@@ -112,6 +112,12 @@ public:
 	 */
 	void PhysXSettings();
 
+	Math::QXvec4 GetMatrixLineColorCorrection(QXint i, Math::QXmat4 mat);
+
+	void SetMatrixLineColorCorrection(QXint i, Math::QXmat4& mat, Math::QXvec4 rgba);
+
+	void CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application * app);
+
 	/**
 	* @brief Show Window with the Post Process Settings
 	* 

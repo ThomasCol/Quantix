@@ -4,8 +4,7 @@
 RTTR_PLUGIN_REGISTRATION
 {
     rttr::registration::class_<Quantix::Core::Render::PostProcess::FilmGrain>("FilmGrain")
-    .property("CounterFilmGrain", &Quantix::Core::Render::PostProcess::FilmGrain::_counterFilmGrain)
-    .property("PercentFilmGrain", &Quantix::Core::Render::PostProcess::FilmGrain::_percentFilmGrain);
+    .property("Percent", &Quantix::Core::Render::PostProcess::FilmGrain::_percentFilmGrain);
 }
 
 namespace Quantix::Core::Render::PostProcess

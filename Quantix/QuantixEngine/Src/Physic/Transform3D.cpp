@@ -1,5 +1,7 @@
 #include "Physic/Transform3D.h"
 #include "Core/DataStructure/GameObject3D.h"
+#include "Core/Components/CharacterController.h"
+#include "Core/Components/Camera.h"
 
 namespace Quantix::Physic
 {
@@ -219,7 +221,7 @@ namespace Quantix::Physic
 	{
 		_trs = Math::QXmat4::CreateTRSMatrix(_globalPosition, _globalRotation, _globalScale);
 		_globalHasChanged = QX_FALSE;
-		_trsLocal = parentTransform->_trs.Inverse() * _trs ;
+		_trsLocal = parentTransform->_trs.Inverse() * _trs;
 		_position.x = _trsLocal[0][3];
 		_position.y = _trsLocal[1][3];
 		_position.z = _trsLocal[2][3];
@@ -255,7 +257,15 @@ namespace Quantix::Physic
 		_forward = _rotation * Math::QXvec3::forward;
 		_up = _rotation * Math::QXvec3::up;
 
-		_trs = _trsLocal * parentTransform->_trs;
+		if (parentTransform->GetObject()->GetComponent<Quantix::Core::Components::CharacterController>() != nullptr)
+		{
+			Math::QXvec3 pos = _parent->GetPosition();
+			Math::QXvec3 rot = _parent->GetObject()->GetComponent<Quantix::Core::Components::Camera>()->GetDir();
+			Math::QXvec3 sca = _parent->GetScale();
+			_trs = _trsLocal * Math::QXmat4::CreateTRSMatrix(pos, Math::QXquaternion::EulerToQuaternion(rot), sca);
+		}
+		else
+			_trs = _trsLocal * parentTransform->_trs;
 		UpdateGlobalTransform();
 	}
 

@@ -12,7 +12,7 @@ RTTR_PLUGIN_REGISTRATION
 		.constructor<const Quantix::Gameplay::CubeGenerator&>()
 		.constructor<Quantix::Gameplay::CubeGenerator&&>()
 		.property("Max Cubes", &Quantix::Gameplay::CubeGenerator::GetNbMaxOfCubes, &Quantix::Gameplay::CubeGenerator::SetNbMaxOfCubes)
-		.property("Length For Generation", &Quantix::Gameplay::CubeGenerator::GetDistMinBtwCubesAndGenerator, &Quantix::Gameplay::CubeGenerator::SetDistMinBtwCubesAndGenerator);
+		.property("Distance for Generation", &Quantix::Gameplay::CubeGenerator::GetDistForGeneration, &Quantix::Gameplay::CubeGenerator::SetDistForGeneration);
 }
 
 namespace Quantix::Gameplay
@@ -38,10 +38,19 @@ namespace Quantix::Gameplay
 	void CubeGenerator::Update(QXdouble deltaTime)
 	{
 		for (auto it = _cubes.begin(); it != _cubes.end(); ++it)
-			if ((_gameobject->GetGlobalPosition() - (*it)->GetGlobalPosition()).Length() < _distMinBtwCubesAndGenerator)
+		{
+			if (!(*it)->GetIsActive())
+			{
+				ReUseCube((*it));
 				return;
+			}
 
-		CreateCube();
+			if ((_gameobject->GetGlobalPosition() - (*it)->GetGlobalPosition()).Length() < _distForGeneration)
+				return;
+		}
+
+		if ((QXuint)_cubes.size() < _nbMaxOfCubes)
+			CreateCube();
 	}
 
 	void CubeGenerator::Destroy()
@@ -103,9 +112,17 @@ namespace Quantix::Gameplay
 		rigid->SetTransformPosition(_gameobject->GetGlobalPosition());
 
 		//CUBE BEHAVIOUR
-		cube->AddComponent<Cube>();
+		cube->AddComponent<Cube>()->Init(cube);
 
 		_cubes.push_back(cube);
+	}
+
+	void CubeGenerator::ReUseCube(Core::DataStructure::GameObject3D* cube)
+	{
+		cube->SetTransformValue(_gameobject->GetGlobalPosition(), _gameobject->GetGlobalRotation(), _gameobject->GetGlobalScale());
+		cube->GetComponent<Core::Components::Rigidbody>()->SetTransformPosition(_gameobject->GetGlobalPosition());
+
+		cube->SetIsActive(QX_TRUE);
 	}
 }
 
@@ -116,5 +133,5 @@ namespace Quantix::Gameplay
 
 //TODO:
 /*
-*
+* Faire la cr�ation de cube apr�s le passage d'une killzone
 */

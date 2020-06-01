@@ -2,8 +2,6 @@
 
 #include "Core/Components/CubeCollider.h"
 
-//#include <vld.h>
-
 RTTR_PLUGIN_REGISTRATION
 {
 	rttr::registration::class_<Quantix::Core::DataStructure::GameObject3D>("GameObject3D")

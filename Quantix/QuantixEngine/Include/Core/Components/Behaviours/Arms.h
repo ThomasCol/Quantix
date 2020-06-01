@@ -27,7 +27,7 @@ namespace Quantix::Gameplay
 
 			Core::DataStructure::GameObject3D*	_gameobject = nullptr;
 			Core::Components::Rigidbody*		rigid = nullptr;
-			Core::Components::Mesh* _mesh = nullptr;
+			Core::Components::Mesh*				_mesh = nullptr;
 
 			EArmState _state = EArmState::FREEZE;
 
@@ -61,14 +61,15 @@ namespace Quantix::Gameplay
 			Arms(Arms&&) = default;
 			~Arms() = default;
 
-			Arms* Copy() const override;
+			Arms*						Copy() const override;
 
 			#pragma region Methods
 
-			void	Awake() override;
-			void	Start() override;
-			void	Update(QXdouble deltaTime) override;
-			void	UpdateMaterial();
+			void						Awake() override;
+			void						Start() override;
+			void						Update(QXdouble deltaTime) override;
+			void						UpdateMaterial();
+			inline EArmState			GetPower() { return _state;  };
 			
 			#pragma endregion
 			CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::Behaviour);
