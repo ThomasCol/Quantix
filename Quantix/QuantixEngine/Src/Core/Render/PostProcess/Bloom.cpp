@@ -3,6 +3,16 @@
 #include <glad/glad.h>
 #include "Core/Debugger/Logger.h"
 
+RTTR_PLUGIN_REGISTRATION
+{
+    rttr::registration::class_<Quantix::Core::Render::PostProcess::Bloom>("Bloom")
+    .property("HDROnly", &Quantix::Core::Render::PostProcess::Bloom::_hdrOnly)
+    .property("Exposure", &Quantix::Core::Render::PostProcess::Bloom::_exposure)
+    .property("Gamma", &Quantix::Core::Render::PostProcess::Bloom::_gamma)
+    .property("BlurAmount", &Quantix::Core::Render::PostProcess::Bloom::_amout)
+    .property("BlurWeight", &Quantix::Core::Render::PostProcess::Bloom::_weight);
+}
+
 namespace Quantix::Core::Render::PostProcess
 {
 	Bloom::Bloom(Resources::ShaderProgram* blurProgram, Resources::ShaderProgram* bloomProgram, Resources::Model* model, Platform::AppInfo& info) :
@@ -81,13 +91,13 @@ namespace Quantix::Core::Render::PostProcess
         // Create texture that will be used as color attachment
         QXuint texture;
         glGenTextures(1, &texture);
-            glBindTexture(GL_TEXTURE_2D, texture);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, info.width, info.height, 0, GL_RGBA, GL_FLOAT, nullptr);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, info.width, info.height, 0, GL_RGBA, GL_FLOAT, nullptr);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
         GLuint depth_stencil_renderbuffer;
         glGenRenderbuffers(1, &depth_stencil_renderbuffer);
@@ -115,11 +125,6 @@ namespace Quantix::Core::Render::PostProcess
 
         _program->Use();
         glUniform1i(_program->GetLocation("image"), 0);
-        QXfloat weight[] = { 0.227027f, 0.1945946f, 0.1216216f, 0.054054f, 0.016216f };
-        for (int i = 0; i < 5; ++i)
-        {
-            glUniform1f(_program->GetLocation((std::string("weight[") + std::to_string(i) + "]").c_str()), weight[i]);
-        }
 
         _bloomProgram->Use();
         // Bind base scene texture and blured texture
@@ -135,11 +140,17 @@ namespace Quantix::Core::Render::PostProcess
         _program->Use();
         // Apply two-pass gaussian blur on Bright render FBO
         glActiveTexture(GL_TEXTURE0);
-        for (QXuint i = 0; i < 25; i++)
+        for (QXuint i = 0; i < _amout; i++)
         {
             glBindFramebuffer(GL_FRAMEBUFFER, _blurBuffer.FBO[horizontal]);
             glUniform1i(_program->GetLocation("horizontal"), horizontal);
             glBindTexture(GL_TEXTURE_2D, first_iteration ? otherTexture : _blurBuffer.texture[!horizontal]);  // bind texture of other framebuffer (or scene if first iteration)
+
+            for (int i = 0; i < 5; ++i)
+            {
+                glUniform1f(_program->GetLocation((std::string("weight[") + std::to_string(i) + "]").c_str()), _weight[i]);
+            }
+
             glBindVertexArray(_VAO);
 
             glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -163,9 +174,9 @@ namespace Quantix::Core::Render::PostProcess
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, _blurBuffer.texture[!horizontal]);
 
-            glUniform1i(_bloomProgram->GetLocation("bloom"), true);
-            glUniform1f(_bloomProgram->GetLocation("exposure"), 0.5f);
-            glUniform1f(_bloomProgram->GetLocation("gamma"), 1.7f);
+            glUniform1i(_bloomProgram->GetLocation("hdrOnly"), _hdrOnly);
+            glUniform1f(_bloomProgram->GetLocation("exposure"), _exposure);
+            glUniform1f(_bloomProgram->GetLocation("gamma"), _gamma);
 
             glBindVertexArray(_VAO);
 

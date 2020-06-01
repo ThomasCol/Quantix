@@ -1,6 +1,13 @@
 #include "Core/Render/PostProcess/FilmGrain.h"
 #include <glad/glad.h>
 
+RTTR_PLUGIN_REGISTRATION
+{
+    rttr::registration::class_<Quantix::Core::Render::PostProcess::FilmGrain>("FilmGrain")
+    .property("CounterFilmGrain", &Quantix::Core::Render::PostProcess::FilmGrain::_counterFilmGrain)
+    .property("PercentFilmGrain", &Quantix::Core::Render::PostProcess::FilmGrain::_percentFilmGrain);
+}
+
 namespace Quantix::Core::Render::PostProcess
 {
 	FilmGrain::FilmGrain(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) :
@@ -46,12 +53,12 @@ namespace Quantix::Core::Render::PostProcess
 
         _program->Use();
 
-        counterFilmGrain += 0.01;
-        if (counterFilmGrain > 100.f)
-            counterFilmGrain = 0.f;
+        _counterFilmGrain += 0.01;
+        if (_counterFilmGrain > 100.f)
+            _counterFilmGrain = 0.f;
 
-        glUniform1f(_program->GetLocation("uAmount"), counterFilmGrain);
-        glUniform1f(_program->GetLocation("uCoef"), percentFilmGrain);
+        glUniform1f(_program->GetLocation("uAmount"), _counterFilmGrain);
+        glUniform1f(_program->GetLocation("uCoef"), _percentFilmGrain);
 
         glBindTexture(GL_TEXTURE_2D, sceneTexture);
         glBindVertexArray(_VAO);

@@ -325,7 +325,7 @@ namespace Quantix::Core::Render
 
 			if (material != last_material)
 			{
-				if (lights.size() > 1)
+				if (lights.size() >= 2)
 				{
 					material->SendData(_omniShadowBuffer.texture, true);
 					material->SetFloat3("lightPos", lights[1].position.e);
@@ -369,7 +369,10 @@ namespace Quantix::Core::Render
 		std::vector<Core::Components::Light>& lights)
 	{
 		if (lights.size() >= 2)
+		{
 			RenderPointLightsShadows(meshes, info, lights);
+			return;
+		}
 		_uniShadowProgram->Use();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _uniShadowBuffer.FBO);

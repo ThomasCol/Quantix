@@ -35,7 +35,7 @@ struct Material
 	bool	hasEmissive;
 
 	sampler2D	shadowMap;
-	samplerCube	pointShadowMap;
+	//samplerCube	pointShadowMap;
 	sampler2D	diffuseTexture;
 	sampler2D	emissiveTexture;
 };
@@ -150,17 +150,18 @@ float	ComputeShadow(vec4 fragPosLightSpace, vec3 lightDir, vec3 normal)
 
 float ComputePointShadow(vec3 fragPos)
 {
-	// get vector between fragment position and light position
+	/*// get vector between fragment position and light position
     vec3 fragToLight = fragPos - lightPos;
     // use the light to fragment vector to sample from the depth map    
-    float closestDepth = texture(material.pointShadowMap, fragToLight).r;
+    //float closestDepth = texture(material.pointShadowMap, fragToLight).r;
     // it is currently in linear range between [0,1]. Re-transform back to original value
     closestDepth *= farPlane;
     // now get current linear depth as the length between the fragment and light position
     float currentDepth = length(fragToLight);
     // now test for shadows
     float bias = 0.05; 
-    return currentDepth -  bias > closestDepth ? 1.0 : 0.0;
+    return currentDepth -  bias > closestDepth ? 1.0 : 0.0;*/
+	return 0.0;
 }
 
 vec3	calculateDirectional(Light light, vec3 lightDir, vec3 norm, float shadow)

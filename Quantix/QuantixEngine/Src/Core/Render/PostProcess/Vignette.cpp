@@ -1,6 +1,13 @@
 #include "Core/Render/PostProcess/Vignette.h"
 #include <glad/glad.h>
 
+RTTR_PLUGIN_REGISTRATION
+{
+    rttr::registration::class_<Quantix::Core::Render::PostProcess::Vignette>("Vignette")
+    .property("OuterRadius", &Quantix::Core::Render::PostProcess::Vignette::_outerRadius)
+    .property("InnerRadius", &Quantix::Core::Render::PostProcess::Vignette::_innerRadius);
+}
+
 namespace Quantix::Core::Render::PostProcess
 {
 
@@ -49,8 +56,8 @@ namespace Quantix::Core::Render::PostProcess
 
         glUniform2f(_program->GetLocation("uResolution"), info.width, info.height);
 
-        glUniform1f(_program->GetLocation("uOuterRadius"), OuterRadius);
-        glUniform1f(_program->GetLocation("uInnerRadius"), InnerRadius);
+        glUniform1f(_program->GetLocation("uOuterRadius"), _outerRadius);
+        glUniform1f(_program->GetLocation("uInnerRadius"), _innerRadius);
         
         glBindTexture(GL_TEXTURE_2D, sceneTexture);
         glBindVertexArray(_VAO);
