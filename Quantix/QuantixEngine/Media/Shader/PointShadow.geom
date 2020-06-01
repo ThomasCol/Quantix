@@ -16,7 +16,7 @@ void main()
         for (int i = 0; i < 3; ++i)
         {
             fragPos = gl_in[i].gl_Position;
-            gl_Position = projection * viewShadows[face] * fragPos;
+            gl_Position = (projection * viewShadows[face]) * fragPos;
             EmitVertex();
         }
         EndPrimitive();

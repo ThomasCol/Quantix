@@ -211,14 +211,12 @@ namespace Quantix::Core::Render
 		for (QXuint i = 0; i < 6; ++i)
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-		QXfloat borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 		// attach depth texture as FBO's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthMap, 0);
@@ -329,6 +327,7 @@ namespace Quantix::Core::Render
 				{
 					material->SendData(_omniShadowBuffer.texture, true);
 					material->SetFloat3("lightPos", lights[1].position.e);
+					material->SendData(_uniShadowBuffer.texture);
 				}
 				else
 					material->SendData(_uniShadowBuffer.texture);
@@ -371,7 +370,6 @@ namespace Quantix::Core::Render
 		if (lights.size() >= 2)
 		{
 			RenderPointLightsShadows(meshes, info, lights);
-			return;
 		}
 		_uniShadowProgram->Use();
 
@@ -412,26 +410,26 @@ namespace Quantix::Core::Render
 		std::vector<Core::Components::Light>& lights)
 	{
 		Math::QXmat4 views[] = {
-			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{1, 0, 0}, {0, -1, 0}), //BACK
+			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{1, 0, 0}, {0, -1, 0}),
 			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{-1, 0, 0}, {0, -1, 0}),
-			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 1, 0}, {0, 0, 1}),//TOP
-			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, -1, 0}, {0, 0, -1}),//BOTTOM
+			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 1, 0}, {0, 0, 1}),
+			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, -1, 0}, {0, 0, -1}),
 			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 0, 1}, {0, -1, 0}),
-			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 0, -1}, {0, -1, 0}), //FRONT
+			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 0, -1}, {0, -1, 0}),
 		};
 		_omniShadowProgram->Use();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _omniShadowBuffer.FBO);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		glViewport(0, 0, 4096, 4096);
+		glViewport(0, 0, 1024, 1024);
 
-		glUniformMatrix4fv(_omniShadowProgram->GetLocation("projection"), 1, GL_FALSE, Math::QXmat4::CreateProjectionMatrix(20, 20, 1.0f, 25.0f, 90.0f).array);
+		glUniformMatrix4fv(_omniShadowProgram->GetLocation("projection"), 1, GL_FALSE, Math::QXmat4::CreateProjectionMatrix(20, 20, 0.01f, 100.f, 90.f).array);
 
 		for (QXuint i = 0; i < 6; ++i)
 			glUniformMatrix4fv(_omniShadowProgram->GetLocation(QXstring("viewShadows[") + std::to_string(i) + "]"), 1, GL_FALSE, views[i].array);
 
-		glUniform1f(_omniShadowProgram->GetLocation("farPlane"), 50.f);
+		glUniform1f(_omniShadowProgram->GetLocation("farPlane"), 100.f);
 		glUniform3fv(_omniShadowProgram->GetLocation("lightPos"), 1, lights[1].position.e);
 
 		QXbyte last_shader_id = -1;
