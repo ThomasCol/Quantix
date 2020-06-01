@@ -5,6 +5,9 @@
 #include "rttrEnabled.h"
 #include "Core/Components//Mesh.h"
 
+#define ATTRACTFORCE 1000.f
+#define REJECTFORCE 1000.f
+
 namespace Quantix::Gameplay
 {
 	enum class QUANTIX_API ECubeState
