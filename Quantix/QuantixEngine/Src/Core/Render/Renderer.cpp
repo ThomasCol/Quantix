@@ -11,6 +11,7 @@
 #include "Core/UserEntry/InputManager.h"
 #include "Core/Render/PostProcess/FilmGrain.h"
 #include "Core/Render/PostProcess/Vignette.h"
+#include "Core/Render/PostProcess/Crosshair.h"
 
 namespace Quantix::Core::Render
 {
@@ -249,11 +250,15 @@ namespace Quantix::Core::Render
 		PostProcess::PostProcessEffect* vignette = new PostProcess::Vignette(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Vignette.vert", "../QuantixEngine/Media/Shader/Vignette.frag"),
 			manager.CreateModel("media/Mesh/quad.obj"), info);
 
+		PostProcess::PostProcessEffect* crosshair = new PostProcess::Crosshair(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Crosshair.vert", "../QuantixEngine/Media/Shader/Crosshair.frag"),
+			info, manager.CreateTexture("media/Textures/Crosshair.png"));
+
 		_effects.push_back(skybox);
 		_effects.push_back(bloom);
 		_effects.push_back(toneMapping);
 		_effects.push_back(filmGrain);
 		_effects.push_back(vignette);
+		_effects.push_back(crosshair);
 	}
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,

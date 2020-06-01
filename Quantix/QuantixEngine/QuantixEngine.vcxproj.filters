@@ -63,6 +63,7 @@
     <ClCompile Include="Src\Core\Render\PostProcess\Vignette.cpp" />
     <ClCompile Include="Src\Core\Components\Animator.cpp" />
     <ClCompile Include="Src\Resources\Animation.cpp" />
+    <ClCompile Include="Src\Core\Render\PostProcess\Crosshair.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Platform\AppInfo.h" />
@@ -134,5 +135,6 @@
     <ClInclude Include="Include\Core\Render\PostProcess\Vignette.h" />
     <ClInclude Include="Include\Core\Components\Animator.h" />
     <ClInclude Include="Include\Resources\Animation.h" />
+    <ClInclude Include="Include\Core\Render\PostProcess\Crosshair.h" />
   </ItemGroup>
 </Project>
