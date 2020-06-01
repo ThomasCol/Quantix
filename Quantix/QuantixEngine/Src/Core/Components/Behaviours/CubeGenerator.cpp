@@ -112,7 +112,7 @@ namespace Quantix::Gameplay
 		rigid->SetTransformPosition(_gameobject->GetGlobalPosition());
 
 		//CUBE BEHAVIOUR
-		cube->AddComponent<Cube>();
+		cube->AddComponent<Cube>()->Init(cube);
 
 		_cubes.push_back(cube);
 	}

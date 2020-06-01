@@ -219,7 +219,7 @@ namespace Quantix::Physic
 	{
 		_trs = Math::QXmat4::CreateTRSMatrix(_globalPosition, _globalRotation, _globalScale);
 		_globalHasChanged = QX_FALSE;
-		_trsLocal = parentTransform->_trs.Inverse() * _trs ;
+		_trsLocal = parentTransform->_trs.Inverse() * _trs;
 		_position.x = _trsLocal[0][3];
 		_position.y = _trsLocal[1][3];
 		_position.z = _trsLocal[2][3];

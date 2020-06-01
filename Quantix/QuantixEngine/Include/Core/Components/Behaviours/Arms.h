@@ -27,7 +27,7 @@ namespace Quantix::Gameplay
 
 			Core::DataStructure::GameObject3D*	_gameobject = nullptr;
 			Core::Components::Rigidbody*		rigid = nullptr;
-			Core::Components::Mesh* _mesh = nullptr;
+			Core::Components::Mesh*				_mesh = nullptr;
 
 			EArmState _state = EArmState::FREEZE;
 

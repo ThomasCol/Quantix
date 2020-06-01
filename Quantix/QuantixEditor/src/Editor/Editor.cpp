@@ -232,7 +232,6 @@ void	Editor::MovePlayerController()
 	_mainCamera->_controller->_velocity.y *= 0.95f;
 
 	_mainCamera->_controller->Move((GRAVITY + _mainCamera->_controller->_velocity) * (QXfloat)_app->info.deltaTime, 0, (QXfloat)_app->info.deltaTime);
-
 	_mainCamera->_controller->_velocity.x = 0.f;
 	_mainCamera->_controller->_velocity.z = 0.f;
 }
