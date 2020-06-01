@@ -198,18 +198,26 @@ namespace Quantix::Core::DataStructure
 		return LoadScene(filepath);
 	}
 
-	ShaderProgram* ResourcesManager::CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath) noexcept
+	ShaderProgram* ResourcesManager::CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath, const QXstring& geometryPath) noexcept
 	{
-		auto it = _programs.find(vertexPath + fragmentPath);
+		auto it = _programs.find(vertexPath + fragmentPath + geometryPath);
 		if (it != _programs.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
 
-		ShaderProgram* program = new ShaderProgram(CreateShader(vertexPath, EShaderType::VERTEX), CreateShader(fragmentPath, EShaderType::FRAGMENT));
+		ShaderProgram* program = new ShaderProgram(	CreateShader(vertexPath, EShaderType::VERTEX),
+													CreateShader(fragmentPath, EShaderType::FRAGMENT),
+													CreateShader(geometryPath, EShaderType::GEOMETRY));
 		program->AddShaderPath(vertexPath);
 		program->AddShaderPath(fragmentPath);
-		_programs[vertexPath + fragmentPath] = program;
+		if (geometryPath != "")
+		{
+			program->AddShaderPath(geometryPath);
+			_programs[vertexPath + fragmentPath + geometryPath] = program;
+		}
+		else
+			_programs[vertexPath + fragmentPath] = program;
 		return program;
 	}
 
@@ -221,7 +229,13 @@ namespace Quantix::Core::DataStructure
 			return it->second;
 		}
 
-		Shader* shader = new Shader(filePath, type);
+		Shader* shader;
+
+		if (filePath != "")
+			shader = new Shader(filePath, type);
+		else
+			return nullptr;
+
 		_shaders[filePath] = shader;
 		return shader;
 	}

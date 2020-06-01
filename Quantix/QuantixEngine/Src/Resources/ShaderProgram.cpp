@@ -18,12 +18,14 @@ namespace Quantix::Resources
 		_id {std::move(program._id)}
 	{}
 
-	ShaderProgram::ShaderProgram(Shader* vertexShader, Shader* fragmentShader) noexcept :
+	ShaderProgram::ShaderProgram(Shader* vertexShader, Shader* fragmentShader, Shader* geometryShader) noexcept :
 		_id { (QXuint)-1}
 	{
 		_id = glCreateProgram();
 
 		glAttachShader(_id, vertexShader->GetId());
+		if (geometryShader)
+			glAttachShader(_id, geometryShader->GetId());
 		glAttachShader(_id, fragmentShader->GetId());
 
 		glLinkProgram(_id);
@@ -36,10 +38,6 @@ namespace Quantix::Resources
 			glGetProgramInfoLog(_id, 512, NULL, info_log);
 			LOG(ERROR, QXstring("ERROR::SHADER::PROGRAM::LINK_FAILED") + info_log);
 		}
-
-		/*glGenBuffers(1, &_lightUniformBuffer);
-		glBindBuffer(GL_UNIFORM_BUFFER, _lightUniformBuffer);
-		glBufferData(GL_UNIFORM_BUFFER, 10 * sizeof(), &Lights[0], GL_DYNAMIC_DRAW);*/
 	}
 
 	ShaderProgram::~ShaderProgram() noexcept

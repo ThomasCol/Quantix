@@ -56,7 +56,7 @@ namespace Quantix::Resources
 		 * @param vertexShader Path to the vertex shader
 		 * @param fragmentShader Path to the Fragment shader
 		 */
-		ShaderProgram(Shader* vertexShader, Shader* fragmentShader) noexcept;
+		ShaderProgram(Shader* vertexShader, Shader* fragmentShader, Shader* geometryShader = nullptr) noexcept;
 
 		/**
 		 * @brief Destroy the Shader Program object

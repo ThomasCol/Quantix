@@ -87,6 +87,8 @@ namespace Quantix::Core::Render::PostProcess
 		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
 
 		#pragma endregion
+
+		CLASS_REGISTRATION(Quantix::Core::Render::PostProcess::PostProcessEffect)
 	};
 }
 

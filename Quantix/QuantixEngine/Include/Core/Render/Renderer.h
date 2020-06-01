@@ -34,7 +34,8 @@ namespace Quantix::Core::Render
 		std::vector<PostProcess::PostProcessEffect*>	_effects;
 
 		Resources::ShaderProgram* 		_wireFrameProgram;
-		Resources::ShaderProgram* 		_shadowProgram;
+		Resources::ShaderProgram* 		_uniShadowProgram;
+		Resources::ShaderProgram* 		_omniShadowProgram;
 
 		Resources::Model* 				_cube;
 		Resources::Model* 				_sphere;
@@ -81,6 +82,9 @@ namespace Quantix::Core::Render
 		 */
 		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
 			std::vector<Core::Components::Light> & lights);
+
+		void RenderPointLightsShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,
+			std::vector<Core::Components::Light>& lights);
 
 		void RenderColliders(std::vector<Components::ICollider*>& colliders);
 

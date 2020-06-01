@@ -6,6 +6,8 @@
 #include "Core/Platform/Appinfo.h"
 #include "Core/Render/Framebuffers.h"
 
+#include <rttrEnabled.h>
+
 #define OFFSETOF(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
 
 struct quad_vertex
@@ -104,6 +106,8 @@ namespace Quantix::Core::Render::PostProcess
 		QXbool		enable = false;
 
 		#pragma endregion
+
+		CLASS_REGISTRATION();
 	};
 }
 
