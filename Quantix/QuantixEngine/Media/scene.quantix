@@ -254,7 +254,7 @@
                             {
                                 "Light": {
                                     "Enable": true,
-                                    "type": 0,
+                                    "type": "Directional",
                                     "ambient": {
                                         "x": 0.0,
                                         "y": 0.0,
@@ -317,7 +317,7 @@
                             {
                                 "Light": {
                                     "Enable": true,
-                                    "type": 2,
+                                    "type": "Point",
                                     "ambient": {
                                         "x": 0.30000001192092898,
                                         "y": 0.30000001192092898,
