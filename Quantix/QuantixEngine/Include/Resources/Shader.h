@@ -34,27 +34,25 @@ namespace Quantix::Resources
 #pragma region Functions
 
 		/**
-		 * @brief Compile shader
-		 * 
-		 * @param file File to the shader
-		 * @param shaderKind Type for the shader, can be Vertex, Fragment, Geometry
-		 * @return std::vector<QXuint> Shader compiled code
-		 */
-		std::vector<QXuint>	Compile(const QXchar* file, EShaderType shaderKind) noexcept;
-
-		/**
 		 * @brief Create a Fragment Shader object
 		 * 
 		 * @param file Path to the shader
 		 */
-		void 				CreateFragmentShader(const QXchar* file) noexcept;
+		void 				CreateFragmentShader(QXstring file) noexcept;
 
 		/**
 		 * @brief Create a Vertex Shader object
 		 * 
 		 * @param file Path to the shader
 		 */
-		void 				CreateVertexShader(const QXchar* file) noexcept;
+		void 				CreateVertexShader(QXstring file) noexcept;
+
+		/**
+		 * @brief Create a Vertex Shader object
+		 *
+		 * @param file Path to the shader
+		 */
+		void 				CreateGeometryShader(QXstring file) noexcept;
 
 		/**
 		 * @brief Read shader file and put it into a string
@@ -62,7 +60,7 @@ namespace Quantix::Resources
 		 * @param file Path to the shader
 		 * @return QXstring Shader data
 		 */
-		QXstring			ReadFile(const QXchar* file) noexcept;
+		QXstring			ReadFile(QXstring file) noexcept;
 		
 #pragma endregion
 
@@ -94,7 +92,7 @@ namespace Quantix::Resources
 		 * @param file Path to the shader
 		 * @param type Type for the shader, can be Vertex, Fragment, Geometry
 		 */
-		Shader(const QXstring& file, EShaderType type) noexcept;
+		Shader(QXstring file, EShaderType type) noexcept;
 
 		/**
 		 * @brief Destroy the Shader object

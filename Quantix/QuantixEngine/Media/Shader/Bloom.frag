@@ -6,7 +6,7 @@ in vec2 UV;
 
 uniform sampler2D scene;
 uniform sampler2D bloomBlur;
-uniform bool bloom;
+uniform bool hdrOnly;
 uniform float exposure;
 uniform float gamma;
 
@@ -14,7 +14,7 @@ void main()
 {             
     vec3 hdrColor = texture(scene, UV).rgb;      
     vec3 bloomColor = texture(bloomBlur, UV).rgb;
-    if(bloom)
+    if(!hdrOnly)
         hdrColor += bloomColor; // additive blending
     // tone mapping
     vec3 result = vec3(1.0) - exp(-hdrColor * exposure);

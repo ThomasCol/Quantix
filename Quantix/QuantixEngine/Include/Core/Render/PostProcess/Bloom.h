@@ -17,6 +17,15 @@ namespace Quantix::Core::Render::PostProcess
 
 		QXuint						_VAO;
 
+		QXuint						_amout { 25 };
+
+		QXfloat						_weight[5] { 0.227027f, 0.1945946f, 0.1216216f, 0.054054f, 0.016216f };
+
+		QXbool						_hdrOnly { false };
+
+		QXfloat						_exposure { 0.5f };
+		QXfloat						_gamma { 1.7f };
+
 		#pragma endregion
 
 		#pragma region Functions
@@ -57,6 +66,8 @@ namespace Quantix::Core::Render::PostProcess
 		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
 
 		#pragma endregion
+
+		CLASS_REGISTRATION(Quantix::Core::Render::PostProcess::PostProcessEffect)
 	};
 }
 

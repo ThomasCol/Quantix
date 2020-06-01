@@ -12,12 +12,14 @@ namespace Quantix::Core::Render::PostProcess
 		void Init(Platform::AppInfo& info) noexcept;
 
 		QXuint						_VAO;
-		Math::QXmat4				correctionMatrix;
+		Math::QXmat4				_correctionMatrix;
 	public:
 		ToneMapping(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info);
 		~ToneMapping() = default;
 
 		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
+
+		CLASS_REGISTRATION(Quantix::Core::Render::PostProcess::PostProcessEffect)
 	};
 }
 

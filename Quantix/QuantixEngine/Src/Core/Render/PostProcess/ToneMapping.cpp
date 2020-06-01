@@ -1,13 +1,19 @@
 #include "Core/Render/PostProcess/ToneMapping.h"
 #include <glad/glad.h>
 
+RTTR_PLUGIN_REGISTRATION
+{
+    rttr::registration::class_<Quantix::Core::Render::PostProcess::ToneMapping>("Tone Mapping")
+    .property("Gamma Correction", &Quantix::Core::Render::PostProcess::ToneMapping::_correctionMatrix);
+}
+
 namespace Quantix::Core::Render::PostProcess
 {
 
 	ToneMapping::ToneMapping(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) :
 		PostProcessEffect(toneMappingProg, model)
 	{
-        name = "ToneMapping";
+        name = "Tone Mapping";
 		Init(info);
 
         QXuint VBO;
@@ -44,10 +50,10 @@ namespace Quantix::Core::Render::PostProcess
 
     void ToneMapping::Init(Platform::AppInfo& info) noexcept
     {
-        correctionMatrix.array[1] = 1.0f;
-        correctionMatrix.array[5] = 1.0f;
-        correctionMatrix.array[9] = 1.0f;
-        correctionMatrix.array[15] = 1.0f;
+        _correctionMatrix.array[1] = 1.0f;
+        _correctionMatrix.array[5] = 1.0f;
+        _correctionMatrix.array[9] = 1.0f;
+        _correctionMatrix.array[15] = 1.0f;
     }
 
     void ToneMapping::Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept
@@ -55,7 +61,7 @@ namespace Quantix::Core::Render::PostProcess
         glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
         _program->Use();
-        glUniformMatrix4fv(_program->GetLocation("uColorTransform"), 1, GL_FALSE, correctionMatrix.array);
+        glUniformMatrix4fv(_program->GetLocation("uColorTransform"), 1, GL_FALSE, _correctionMatrix.array);
         
         glBindTexture(GL_TEXTURE_2D, sceneTexture);
         glBindVertexArray(_VAO);

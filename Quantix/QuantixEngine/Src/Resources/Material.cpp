@@ -24,7 +24,13 @@ namespace Quantix::Resources
 	Material::Material(ShaderProgram* program) :
 		_program {program},
 		_diffuse {nullptr}
-	{}
+	{
+		program->Use();
+		SetInt("material.shadowMap", 0);
+		SetInt("material.pointShadowMap", 1);
+		SetInt("material.diffuseTexture", 2);
+		SetInt("material.emissiveTexture", 3);
+	}
 
 	Material::~Material()
 	{}
@@ -40,16 +46,25 @@ namespace Quantix::Resources
 		return _diffuse->IsReady();
 	}
 	
-	void Material::SendData(QXuint shadowTexture)
+	void Material::SendData(QXuint shadowTexture, QXbool isPointLight)
 	{
 		SetFloat3("material.ambient", ambient.e);
 		SetFloat3("material.diffuse", diffuse.e);
 		SetFloat3("material.specular", specular.e);
 		SetFloat("material.shininess", shininess);
 
-		SetInt("material.shadowMap", 1);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, shadowTexture);
+		if (isPointLight)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, shadowTexture);
+			SetFloat("farPlane", 100.f);
+		}
+		else
+		{
+			SetInt("material.shadowMap", 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, shadowTexture);
+		}
 	}
 
 	void Material::SendTextures()
@@ -58,14 +73,12 @@ namespace Quantix::Resources
 		{
 			SetInt("material.isTextured", 1);
 
-			SetInt("material.diffuseTexture", 0);
-			glActiveTexture(GL_TEXTURE0);
+			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, _diffuse->GetId());
 			if (_emissive && _emissive->IsReady())
 			{
 				SetInt("material.hasEmissive", 1);
-				SetInt("material.emissiveTexture", 2);
-				glActiveTexture(GL_TEXTURE2);
+				glActiveTexture(GL_TEXTURE3);
 				glBindTexture(GL_TEXTURE_2D, _emissive->GetId());
 			}
 			else

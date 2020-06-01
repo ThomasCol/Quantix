@@ -51,17 +51,129 @@ void MenuBar::PhysXSettings()
 	ImGui::GetStyle().WindowRounding = 0.f;
 }
 
+Math::QXvec4 MenuBar::GetMatrixLineColorCorrection(QXint i, Math::QXmat4 mat)
+{
+	Math::QXvec4 rgba;
+	for (QXint j = 0; j < 4; j++)
+		rgba[j] = mat.array[i * 4 + j];
+	return rgba;
+}
+
+void MenuBar::SetMatrixLineColorCorrection(QXint i, Math::QXmat4& mat, Math::QXvec4 rgba)
+{
+	for (QXint j = 0; j < 4; j++)
+		mat.array[i * 4 + j] = rgba[j];
+}
+
+void MenuBar::CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
+{
+	if (type == rttr::type::get<QXbool>())
+	{
+		QXbool enable = currentProp.get_value(inst).to_bool();
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::Checkbox("", &enable);
+		currentProp.set_value(inst, enable);
+	}
+	else if (type == rttr::type::get<QXfloat>())
+	{
+		rttr::variant data = currentProp.get_metadata("Description");
+		QXfloat value = currentProp.get_value(inst).to_float();
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f);
+		if (data.is_valid())
+			ImGui::DragFloat("", &value, 0.02f, 0.f);
+		else
+			ImGui::DragFloat("", &value, 0.02f, 0.f, 1.f);
+		currentProp.set_value(inst, value);
+	}
+	else if (type == rttr::type::get<QXuint>())
+	{
+		QXint value = currentProp.get_value(inst).to_uint32();
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::InputInt("", &value);
+		currentProp.set_value(inst, (QXuint)value);
+	}
+	else if (type.is_array())
+	{
+		if (ImGui::TreeNode(currentProp.get_name().to_string().c_str()))
+		{
+			QXfloat value[5];
+			for (QXuint i = 0; i < 5; i++)
+			{
+				ImGui::PushID(&value[i]);
+				value[i] = currentProp.get_value(inst).create_sequential_view().get_value(i).to_float();
+				QXstring name = "Weight" + std::to_string(i);
+				ImGui::Text(name.c_str()); ImGui::SameLine(165.f); ImGui::DragFloat("", &value[i], 0.02f, 0.f, 1.f);
+				ImGui::PopID();
+			}
+			currentProp.set_value(inst, value);
+			ImGui::TreePop();
+		}
+	}
+	else if (type == rttr::type::get<Math::QXmat4>())
+	{
+		Math::QXmat4 value = currentProp.get_value(inst).get_value<Math::QXmat4>();
+		if (ImGui::TreeNode(currentProp.get_name().to_string().c_str()))
+		{
+			for (QXint i = 0; i < 3; i++)
+			{
+				ImGui::PushID(i);
+				Math::QXvec4 correction = GetMatrixLineColorCorrection(i, value);
+
+				QXstring name = "Correction " + std::to_string(i);
+				ImGui::Text(name.c_str()); ImGui::SameLine(165.f); ImGui::ColorEdit4("", correction.e);
+
+				SetMatrixLineColorCorrection(i, value, correction);
+				ImGui::PopID();
+			}
+			currentProp.set_value(inst, value);
+
+			ImGui::TreePop();
+		}
+	}
+}
+
 void MenuBar::PostProcessSettings(Quantix::Core::Platform::Application* app)
 {
 	ImGui::GetStyle().WindowRounding = 8.f;
 	if (ImGui::Begin("PostProcess Settings", &_postProcess, ImGuiWindowFlags_NoCollapse))
 	{
+		rttr::array_range postProcess = rttr::type::get<Quantix::Core::Render::PostProcess::PostProcessEffect>().get_derived_classes();
+		std::list<QXstring> postProcessName;
 		std::vector<Quantix::Core::Render::PostProcess::PostProcessEffect*> effect = app->renderer.GetEffects();
-		for (QXsizei i = 0; i < effect.size(); i++)
+
+		QXuint i = 0;
+		for (auto it : postProcess)
+			postProcessName.push_back(it.get_name().to_string());
+		postProcessName.sort();
+
+		for (auto it = postProcessName.begin(); it != postProcessName.end(); ++it)
 		{
-			ImGui::PushID(i);
-			ImGui::Text(effect[i]->name.c_str()); ImGui::SameLine(300.f); ImGui::Checkbox("", &effect[i]->enable);
-			ImGui::PopID();
+			for (auto itPostProcess = postProcess.begin(); itPostProcess != postProcess.end(); ++itPostProcess)
+			{
+				if (itPostProcess->get_name().to_string() == (*it))
+				{
+					for (QXsizei i = 0; i < effect.size(); i++)
+					{
+						if (effect[i]->name == itPostProcess->get_name().to_string())
+						{
+							ImGui::PushID(i);
+							if (ImGui::TreeNode(effect[i]->name.c_str()))
+							{
+								for (auto itProp = itPostProcess->get_properties().begin(); itProp != itPostProcess->get_properties().end(); ++itProp)
+								{
+									ImGui::PushID(itProp->get_name().to_string().c_str());
+									rttr::property currentProp = *(itProp);
+									rttr::type type = currentProp.get_type();
+									CheckPrimitiveType(effect[i], currentProp, type, app);
+									ImGui::PopID();
+								}
+								ImGui::TreePop();
+							}
+							ImGui::PopID();
+							break;
+						}
+					}
+					break;
+				}
+			}
 		}
 		ImGui::End();
 	}

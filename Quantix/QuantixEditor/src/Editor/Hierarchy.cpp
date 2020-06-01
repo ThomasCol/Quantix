@@ -23,6 +23,8 @@ void Hierarchy::DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal,
 			if (ImGui::Selectable((*it)->GetObject()->GetName().c_str(), (*it)->GetObject()->GetIsActive()))
 			{
 				(*it)->GetObject()->SetIsActive(QX_TRUE);
+				if (_inspector)
+					delete _inspector;
 				_inspector = new Inspector((*it)->GetObject());
 				_inspector->Set3D(QX_TRUE);
 				DesactiveAllNodes((*it), app);
@@ -34,6 +36,8 @@ void Hierarchy::DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal,
 			if (ImGui::IsItemClicked(0))
 			{
 				(*it)->GetObject()->SetIsActive(QX_TRUE);
+				if (_inspector)
+					delete _inspector;
 				_inspector = new Inspector((*it)->GetObject());
 				_inspector->Set3D(QX_TRUE);
 				DesactiveAllNodes((*it), app);
@@ -64,6 +68,8 @@ void Hierarchy::DrawObject2D(std::list<Quantix::Physic::Transform2D*>& nodeGloba
 			if (ImGui::Selectable((*it)->GetObject()->GetName().c_str(), (*it)->GetObject()->GetIsActive()))
 			{
 				(*it)->GetObject()->SetIsActive(QX_TRUE);
+				if (_inspector)
+					delete _inspector;
 				_inspector = new Inspector((*it)->GetObject());
 				_inspector->Set2D(QX_TRUE);
 				DesactiveAllNodes((*it), app);
@@ -75,6 +81,8 @@ void Hierarchy::DrawObject2D(std::list<Quantix::Physic::Transform2D*>& nodeGloba
 			if (ImGui::IsItemClicked(0))
 			{
 				(*it)->GetObject()->SetIsActive(QX_TRUE);
+				if (_inspector)
+					delete _inspector;
 				_inspector = new Inspector((*it)->GetObject());
 				_inspector->Set2D(QX_TRUE);
 				DesactiveAllNodes((*it), app);
@@ -123,6 +131,8 @@ void Hierarchy::DrawGameComponent(Quantix::Core::Platform::Application* app)
 		if (ImGui::Selectable((*it)->GetName().c_str(), (*it)->GetIsActive()))
 		{
 			(*it)->SetIsActive(QX_TRUE);
+			if (_inspector)
+				delete _inspector;
 			_inspector = new Inspector((*it));
 			DesactiveAllNodes((*it), app);
 		}

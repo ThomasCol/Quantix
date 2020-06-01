@@ -64,7 +64,7 @@ namespace Quantix::Resources
 		/**
 		 * @brief Send Material data to the shader
 		 */
-		void SendData(QXuint shadowTexture);
+		void SendData(QXuint shadowTexture, QXbool isPointLight = false);
 
 		void SendTextures();
 

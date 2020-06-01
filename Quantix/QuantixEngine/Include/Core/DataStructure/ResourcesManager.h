@@ -192,7 +192,7 @@ namespace Quantix::Core::DataStructure
 		 * @param fragmentPath Path to the fragment shader to load
 		 * @return ShaderProgram* If the shader program already exist return it or return a new one
 		 */
-		ShaderProgram*		CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath) noexcept;
+		ShaderProgram*		CreateShaderProgram(const QXstring& vertexPath, const QXstring& fragmentPath, const QXstring& geometryPath = "") noexcept;
 
 		/**
 		 * @brief Create a Texture object
