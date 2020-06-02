@@ -177,6 +177,7 @@ namespace Quantix::Core::Components
 		Core::Components::Mesh* mesh = object->AddComponent<Mesh>();
 		mesh->Init(object);
 		manager->CreateMesh(mesh, "media/Mesh/cube.obj");
+		mesh->SetMaterial(manager->CreateMaterial(PATHMATERIAL));
 
 		// Add Rigid
 		object->AddComponent<Rigidbody>()->Init(object);
