@@ -32,7 +32,7 @@
                             "position": {
                                 "x": 0.0,
                                 "y": 0.0,
-                                "z": 4.35780143737793
+                                "z": 0.0
                             },
                             "rotation": {
                                 "x": 0.0,
@@ -41,8 +41,8 @@
                                 "w": 1.0
                             },
                             "scale": {
-                                "x": 11.0,
-                                "y": 5.0,
+                                "x": 1.0,
+                                "y": 1.0,
                                 "z": 1.0
                             }
                         },
@@ -50,8 +50,8 @@
                             {
                                 "Mesh": {
                                     "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/DefaultMaterial0.mat"
+                                    "Model": "./media/Mesh/fantasy_game_inn.obj",
+                                    "Material": "./media/Material/FantasyMaterial.mat"
                                 }
                             }
                         ],
@@ -60,189 +60,19 @@
                 },
                 {
                     "GameObject1": {
-                        "name": "Cube",
+                        "name": "light",
                         "layer": 0,
                         "Transform": {
                             "position": {
-                                "x": -10.520805358886719,
-                                "y": -0.056478023529052737,
-                                "z": -1.6008977890014649
+                                "x": -2.0,
+                                "y": 4.0,
+                                "z": -1.0
                             },
                             "rotation": {
                                 "x": 0.0,
                                 "y": 0.0,
                                 "z": 0.0,
                                 "w": 1.0
-                            },
-                            "scale": {
-                                "x": 1.0,
-                                "y": 5.0,
-                                "z": 9.5
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject2": {
-                        "name": "Cube1",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": 0.0,
-                                "y": -5.014169692993164,
-                                "z": -1.7049635648727418
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 14.0,
-                                "y": 1.0,
-                                "z": 9.5
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject3": {
-                        "name": "Cube2",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": 11.518400192260743,
-                                "y": 0.0,
-                                "z": -2.9632627964019777
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 1.0,
-                                "y": 5.0,
-                                "z": 9.5
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject4": {
-                        "name": "Cube3",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": 0.054999589920043948,
-                                "y": 0.0,
-                                "z": -11.44740104675293
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 11.0,
-                                "y": 5.0,
-                                "z": 1.0
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject5": {
-                        "name": "Cube4",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": 0.0,
-                                "y": 3.822822093963623,
-                                "z": -3.3019938468933107
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 11.0,
-                                "y": 1.0,
-                                "z": 9.5
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject6": {
-                        "name": "Directional Light",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": 0.0,
-                                "y": 5.194051742553711,
-                                "z": -16.85413360595703
-                            },
-                            "rotation": {
-                                "x": 3.818422555923462e-8,
-                                "y": -1.8533319234848023e-7,
-                                "z": -0.3546949326992035,
-                                "w": 0.9349895715713501
                             },
                             "scale": {
                                 "x": 1.0,
@@ -271,14 +101,14 @@
                                         "z": 0.0
                                     },
                                     "direction": {
-                                        "x": -3.7365671801126157e-7,
-                                        "y": 6.00697802610739e-8,
+                                        "x": 0.0,
+                                        "y": 0.0,
                                         "z": 1.0
                                     },
                                     "position": {
-                                        "x": 0.0,
-                                        "y": 5.194051742553711,
-                                        "z": -16.85413360595703
+                                        "x": -2.0,
+                                        "y": 4.0,
+                                        "z": -1.0
                                     },
                                     "constant": 0.0,
                                     "linear": 0.0,
@@ -292,14 +122,14 @@
                     }
                 },
                 {
-                    "GameObject7": {
-                        "name": "Point Light1",
+                    "GameObject2": {
+                        "name": "Point Light",
                         "layer": 0,
                         "Transform": {
                             "position": {
-                                "x": 0.8796534538269043,
-                                "y": -0.10876411199569702,
-                                "z": -3.0620033740997316
+                                "x": -2.7083702087402345,
+                                "y": 5.7943115234375,
+                                "z": 2.860809326171875
                             },
                             "rotation": {
                                 "x": 0.0,
@@ -319,9 +149,9 @@
                                     "Enable": true,
                                     "type": "Point",
                                     "ambient": {
-                                        "x": 0.30000001192092898,
-                                        "y": 0.30000001192092898,
-                                        "z": 0.30000001192092898
+                                        "x": 0.009999999776482582,
+                                        "y": 0.009999999776482582,
+                                        "z": 0.009999999776482582
                                     },
                                     "diffuse": {
                                         "x": 0.699999988079071,
@@ -339,151 +169,15 @@
                                         "z": 1.0
                                     },
                                     "position": {
-                                        "x": 0.8796534538269043,
-                                        "y": -0.10876411199569702,
-                                        "z": -3.0620033740997316
+                                        "x": -2.7083702087402345,
+                                        "y": 5.7943115234375,
+                                        "z": 2.860809326171875
                                     },
-                                    "constant": 0.699999988079071,
-                                    "linear": 0.09000000357627869,
-                                    "quadratic": 0.03200000151991844,
+                                    "constant": 0.10000000149011612,
+                                    "linear": 0.30000001192092898,
+                                    "quadratic": 0.10000000149011612,
                                     "cutOff": 0.0,
                                     "outerCutOff": 0.0
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject8": {
-                        "name": "Cube5",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": -6.991881370544434,
-                                "y": 1.60614812374115,
-                                "z": 1.2923601865768433
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 0.5,
-                                "y": 0.5,
-                                "z": 0.5
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject9": {
-                        "name": "Cube7",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": 0.22433191537857057,
-                                "y": -0.19977465271949769,
-                                "z": 1.655730962753296
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 0.75,
-                                "y": 0.5,
-                                "z": 0.25
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject10": {
-                        "name": "Cube8",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": 6.106564521789551,
-                                "y": 1.1643667221069337,
-                                "z": 0.0
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 1.0,
-                                "y": 1.0,
-                                "z": 1.0
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject11": {
-                        "name": "Cube9",
-                        "layer": 0,
-                        "Transform": {
-                            "position": {
-                                "x": 0.0,
-                                "y": -2.2379567623138429,
-                                "z": -7.894559860229492
-                            },
-                            "rotation": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 0.20000000298023225,
-                                "y": 0.20000000298023225,
-                                "z": 0.20000000298023225
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": ""
                                 }
                             }
                         ],

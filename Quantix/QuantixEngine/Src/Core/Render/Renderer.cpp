@@ -276,7 +276,7 @@ namespace Quantix::Core::Render
 		switch (lights[0].type)
 		{
 		case Components::ELightType::DIRECTIONAL:
-			_projLight = Math::QXmat4::CreateOrthographicProjectionMatrix(20, 20, 1.0f, 7.5f);
+			_projLight = Math::QXmat4::CreateOrthographicProjectionMatrix(20, 20, 1.0f, 100.f);
 			break;
 		case Components::ELightType::SPOT:
 			_projLight = Math::QXmat4::CreateProjectionMatrix(20, 20, 1.0f, 25.0f, 90.0f);
@@ -376,6 +376,13 @@ namespace Quantix::Core::Render
 		{
 			RenderPointLightsShadows(meshes, info, lights);
 		}
+
+		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4),
+			Math::QXmat4::CreateLookAtMatrix(-lights[0].direction, -lights[0].direction * 10 + lights[0].direction, Math::QXvec3::up).array);
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), _projLight.array);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
 		_uniShadowProgram->Use();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _uniShadowBuffer.FBO);
@@ -523,12 +530,6 @@ namespace Quantix::Core::Render
 
 		if (light_size)
 		{
-			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
-			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4),
-				Math::QXmat4::CreateLookAtMatrix(-lights[0].direction * 10, -lights[0].direction * 10 + lights[0].direction, Math::QXvec3::up).array);
-			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), _projLight.array);
-			glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
 			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
 			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
 			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 2, light_size * sizeof(Core::Components::Light), &lights[0]);

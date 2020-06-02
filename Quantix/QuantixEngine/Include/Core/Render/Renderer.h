@@ -1,8 +1,8 @@
 #ifndef __RENDERER_H__
 #define __RENDERER_H__
 
-
 #include <Type.h>
+
 #include "Core/Components/Mesh.h"
 #include "Core/Components/Light.h"
 #include "../../../QuantixEditor/include/Window.h"
@@ -40,6 +40,8 @@ namespace Quantix::Core::Render
 		Resources::Model* 				_cube;
 		Resources::Model* 				_sphere;
 		Resources::Model* 				_caps;
+
+		QXfloat							_farPlane;
 
 		#pragma endregion
 

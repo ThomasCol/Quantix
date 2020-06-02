@@ -17,14 +17,14 @@ namespace Quantix::Core::Render::PostProcess
 
 		QXuint						_VAO;
 
-		QXuint						_amout { 25 };
+		QXuint						_amout { 11 };
 
-		QXfloat						_weight[5] { 0.227027f, 0.1945946f, 0.1216216f, 0.054054f, 0.016216f };
+		QXfloat						_weight[5] { 0.260f, 0.195f, 0.122f, 0.074f, 0.20f };
 
 		QXbool						_hdrOnly { false };
 
-		QXfloat						_exposure { 0.5f };
-		QXfloat						_gamma { 1.7f };
+		QXfloat						_exposure { 1.340f };
+		QXfloat						_gamma { 0.320f };
 
 		#pragma endregion
 

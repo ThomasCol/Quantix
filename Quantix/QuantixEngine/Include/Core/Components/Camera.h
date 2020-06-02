@@ -9,7 +9,7 @@
 #include "Core/DataStructure/Component.h"
 
 #define SPEED (1000.f)
-#define SPEEDFREECAM (10.f)
+#define SPEEDFREECAM (5.f)
 
 namespace Quantix::Core::Components
 {
