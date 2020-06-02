@@ -231,9 +231,12 @@ namespace Quantix::Core::Components::Behaviours
 		{
 			//Cast a ray to check if a cube can be frozen
 			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 50 };
-
-			rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
-			Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
+			Cube* cube = nullptr;
+			if (ray.actorClosestBlock)
+			{
+				rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
+				cube = ray.actorClosestBlock->GetComponent<Cube>();
+			}
 
 			if (cube && cube->GetStatePhysic() != ECubePhysicState::GRABBED)
 			{

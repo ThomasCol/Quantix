@@ -464,7 +464,7 @@ namespace Quantix::Core::Physic
 
 		QXbool status = mScene->overlap(overlapGeometrie, shapePosition, hit, fd);
 		std::vector<Core::DataStructure::GameObject3D*> list;
-		for (QXint i = 0; i < hit.nbTouches; i++)
+		for (QXuint i = 0; i < hit.nbTouches; i++)
 				list.push_back((Core::DataStructure::GameObject3D*)(hit.touches[i].actor->userData));
 		return list;
 	}
