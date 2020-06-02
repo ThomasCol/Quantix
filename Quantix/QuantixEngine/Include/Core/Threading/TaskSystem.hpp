@@ -12,19 +12,58 @@ namespace Quantix::Core::Threading
 	class TaskSystem
 	{
 	private:
+		#pragma region Attributes
+
 		std::queue<std::function<void()>>	_tasks;
 
 		size_t								_threadNumber;
 
 		Task*								_threadPool;
 		
+		#pragma endregion
 
-		TaskSystem();
+		#pragma region Constructors
+
+		/**
+		 * @brief Construct a new Task System object
+		 * 
+		 */
+		TaskSystem() noexcept;
+
+		#pragma endergion
+
 	public:
-		TaskSystem(const TaskSystem& system) = delete;
-		TaskSystem(TaskSystem&& system) = delete;
-		~TaskSystem();
+		#pragma region Constructors
 
+		/**
+		 * @brief Construct a new Task System object (DELETED)
+		 * 
+		 * @param system system to copy
+		 */
+		TaskSystem(const TaskSystem& system) = delete;
+
+		/**
+		 * @brief Construct a new Task System object (DELETED)
+		 * 
+		 * @param system system to move
+		 */
+		TaskSystem(TaskSystem&& system) = delete;
+
+		/**
+		 * @brief Destroy the Task System object
+		 * 
+		 */
+		~TaskSystem() noexcept;
+
+		#pragma endregion
+
+		#pragma region Accessors
+
+		/**
+		 * @brief Get the Instance object
+		 * 
+		 * @return TaskSystem* Instance of task system
+		 */
 		static TaskSystem* GetInstance() noexcept
 		{
 			static TaskSystem ts;
@@ -32,15 +71,47 @@ namespace Quantix::Core::Threading
 			return &ts;
 		}
 
+		#pragma endregion
+
+		#pragma region Functions
+
+		/**
+		 * @brief Destroy system
+		 * 
+		 */
 		static void Destroy();
+
+		/**
+		 * @brief Update task system
+		 * 
+		 */
 		static void Update();
 
 
+		/**
+		 * @brief Add a task to the pool and allow return
+		 * 
+		 * @tparam FuncType Function type
+		 * @tparam Args arguments of the function
+		 * @param func Function to add
+		 * @param vars variables of the functions
+		 * @return std::future<typename std::result_of<FuncType(Args...)>::type> std::future of your function return
+		 */
 		template<typename FuncType, typename ... Args>
 		inline std::future<typename std::result_of<FuncType(Args...)>::type> AddTaskReturn(FuncType&& func, Args&& ... vars);
 
+		/**
+		 * @brief Add a task to the pool
+		 * 
+		 * @tparam FuncType Function type
+		 * @tparam Args arguments of the function
+		 * @param func Function to add
+		 * @param vars variables of the functions
+		 */
 		template<typename FuncType, typename ... Args>
 		inline void AddTask(FuncType&& func, Args&& ... vars);
+
+		#pragma endregion
 	};
 
 	template<typename FuncType, typename ... Args>

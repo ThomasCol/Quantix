@@ -53,9 +53,21 @@ namespace Quantix::Core::DataStructure
 		 */
 		Scene*				CreateDefaultScene() noexcept;
 
-		Material*			LoadMaterialFromFbx(const QXstring& filePath);
+		/**
+		 * @brief Load a material from FBX file
+		 * 
+		 * @param filePath Path to the FBX
+		 * @return Material* New material
+		 */
+		Material*			LoadMaterialFromFbx(const QXstring& filePath) noexcept;
 
-		Material*			LoadMaterialFromFile(const QXstring& filePath);
+		/**
+		 * @brief Load a material from a Quantix file
+		 * 
+		 * @param filePath path to the Quantix file
+		 * @return Material* New material
+		 */
+		Material*			LoadMaterialFromFile(const QXstring& filePath) noexcept;
 
 		/**
 		 * @brief Load a material
@@ -109,7 +121,7 @@ namespace Quantix::Core::DataStructure
 		/**
 		 * @brief Destroy the Resources Manager object
 		 */
-		~ResourcesManager();
+		~ResourcesManager() noexcept;
 
 		#pragma endregion
 
@@ -174,7 +186,7 @@ namespace Quantix::Core::DataStructure
 		 * @param filePath Path to the scene
 		 * @return Scene* new scene
 		 */
-		Scene*				CreateScene(const QXstring& filePath);
+		Scene*				CreateScene(const QXstring& filePath) noexcept;
 
 		/**
 		 * @brief Create a Shader object
@@ -230,20 +242,20 @@ namespace Quantix::Core::DataStructure
 		 * @param path path to the scene
 		 * @return Scene* new scene
 		 */
-		Scene*				LoadScene(const QXstring& path);
+		Scene*				LoadScene(const QXstring& path) noexcept;
 
 		/**
 		 * @brief Save scene to a file
 		 * 
 		 * @param scene Scene to save
 		 */
-		void				SaveScene(Scene* scene);
+		void				SaveScene(Scene* scene) noexcept;
 
 		/**
 		 * @brief Update resources to bind
 		 * 
 		 */
-		void				UpdateResourcesState();
+		void				UpdateResourcesState() noexcept;
 
 		#pragma region Accessor
 
@@ -252,35 +264,35 @@ namespace Quantix::Core::DataStructure
 		 * 
 		 * @return std::unordered_map<QXstring, ShaderProgram*>&  shader map
 		 */
-		inline std::unordered_map<QXstring, ShaderProgram*>&			GetShaders() { return _programs; }
+		inline std::unordered_map<QXstring, ShaderProgram*>&			GetShaders() noexcept { return _programs; }
 
 		/**
 		 * @brief Get the Models object
 		 * 
 		 * @return std::unordered_map<QXstring, Model*>& model map
 		 */
-		inline std::unordered_map<QXstring, Model*>&					GetModels() { return _models; }
+		inline std::unordered_map<QXstring, Model*>&					GetModels() noexcept { return _models; }
 
 		/**
 		 * @brief Get the Materials object
 		 * 
 		 * @return std::unordered_map<QXstring, Material*>& material map
 		 */
-		inline std::unordered_map<QXstring, Material*>&					GetMaterials() { return _materials; }
+		inline std::unordered_map<QXstring, Material*>&					GetMaterials() noexcept { return _materials; }
 
 		/**
 		 * @brief Get the Textures object
 		 * 
 		 * @return std::unordered_map<QXstring, Texture*>&  texture map
 		 */
-		inline std::unordered_map<QXstring, Texture*>&					GetTextures() { return _textures; }
+		inline std::unordered_map<QXstring, Texture*>&					GetTextures() noexcept { return _textures; }
 
 		/**
 		 * @brief Get the Sounds object
 		 * 
 		 * @return std::unordered_map<QXstring, Sound*>& sound map
 		 */
-		inline std::unordered_map<QXstring, Sound*>&					GetSounds() { return _sounds; }
+		inline std::unordered_map<QXstring, Sound*>&					GetSounds() noexcept { return _sounds; }
 
 		#pragma endregion
 

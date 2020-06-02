@@ -50,7 +50,7 @@ namespace Quantix::Core::Render::PostProcess
 		 * @param model model to use
 		 * @param info app info
 		 */
-		Bloom(Resources::ShaderProgram* blurProgram, Resources::ShaderProgram* bloomProgram, Resources::Model* model, Platform::AppInfo& info);
+		Bloom(Resources::ShaderProgram* blurProgram, Resources::ShaderProgram* bloomProgram, Resources::Model* model, Platform::AppInfo& info) noexcept;
 
 		/**
 		 * @brief Destroy the Bloom object
@@ -62,7 +62,14 @@ namespace Quantix::Core::Render::PostProcess
 
 		#pragma region Functions
 
-		
+		/**
+		 * @brief Render effect on screen
+		 * 
+		 * @param info App info
+		 * @param sceneTexture Texture for the scene
+		 * @param otherTexture Bright only texture
+		 * @param FBO FBO tu use
+		 */
 		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
 
 		#pragma endregion

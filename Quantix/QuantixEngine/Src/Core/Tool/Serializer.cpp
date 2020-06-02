@@ -6,6 +6,7 @@
 #include "Core/Components/CubeCollider.h"
 #include "Core/Components/SphereCollider.h"
 #include "Core/Components/Behaviours/CubeGenerator.h"
+#include "Core/Components/DeformableMesh.h"
 
 namespace Quantix::Core::Tool
 {
@@ -103,6 +104,10 @@ namespace Quantix::Core::Tool
 				if (type == rttr::type::get<Gameplay::CubeGenerator>() || type.get_raw_type() == rttr::type::get<Gameplay::CubeGenerator>())
 				{
 					type.invoke("SetSceneAndResourcesManager", comp, { _currScene, manager });
+				}
+				else if (type == rttr::type::get<Core::Components::DeformableMesh>() || type.get_raw_type() == rttr::type::get<Core::Components::DeformableMesh>())
+				{
+					type.invoke("Generate", comp, {_currScene, manager});
 				}
 				for (QXsizei i = 0; i < val2.MemberCount(); ++i)
 				{
@@ -237,12 +242,16 @@ namespace Quantix::Core::Tool
 		writer.Uint((QXuint)transform->GetObject()->GetLayer());
 		WriteTransform(transform, writer);
 
+		QXbool is_deformable = false;
+
 		writer.String("Components");
 		writer.StartArray();
 		for (QXsizei i = 0; i < transform->GetObject()->GetComponents().size(); ++i)
 		{
 			writer.StartObject();
 			auto comp = transform->GetObject()->GetComponents()[i];
+			if (comp->get_type().get_name() == "DeformableMesh")
+				is_deformable = true;
 			if (transform->GetObject()->GetComponents()[i] != nullptr)
 			{
 				rttr::type t = transform->GetObject()->GetComponents()[i]->get_type();
@@ -251,6 +260,9 @@ namespace Quantix::Core::Tool
 			writer.EndObject();
 		}
 		writer.EndArray();
+
+		if (is_deformable)
+			return;
 
 		writer.String("Childs");
 		writer.StartArray();
