@@ -143,13 +143,3 @@ namespace Quantix::Gameplay
 		cube->SetIsActive(QX_TRUE);
 	}
 }
-
-//Questions to ask my teammates
-/*
-*
-*/
-
-//TODO:
-/*
-* Faire la cr�ation de cube apr�s le passage d'une killzone
-*/

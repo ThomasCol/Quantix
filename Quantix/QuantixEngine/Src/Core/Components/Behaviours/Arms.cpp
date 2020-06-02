@@ -282,14 +282,4 @@ namespace Quantix::Gameplay
 		}
 
 	}
-
-	//Questions to ask my teammates
-	/*
-	* Comment j'accède à la liste des layers pour comparer le layer actuel à ceux existants ?
-	*/ 
-
-	//TODO:
-	/* 
-	* 
-	*/
 }
