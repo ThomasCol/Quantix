@@ -111,7 +111,7 @@ namespace Quantix::Core::Components
 					}
 					else
 					{
-						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * (cubeSize.x + 0.01f), j * (cubeSize.y + 0.01f), k * (cubeSize.z + 0.01f)) + gameobjects[0][0][0]->GetGlobalPosition());
+						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * (cubeSize.x + 0.01f), j * (cubeSize.y + 0.01f), k * (cubeSize.z + 0.01f)) + gameobjects[0][0][0]->GetLocalPosition());
 
 						gameobjects[i][j][k]->SetLocalScale(cubeSize);
 						// Add Comp
@@ -153,7 +153,7 @@ namespace Quantix::Core::Components
 					else
 					{
 						gameobjects[i][j][k] = scene->AddGameObject(QXstring("Cube " + std::to_string(i) + std::to_string(j) + std::to_string(k)), gameobject->GetTransform()->GetParent()->GetObject());
-						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * (cubeSize.x + 0.01f), j * (cubeSize.y + 0.01f), k * (cubeSize.z + 0.01f)) + gameobjects[0][0][0]->GetGlobalPosition());
+						gameobjects[i][j][k]->SetLocalPosition(Math::QXvec3(i * (cubeSize.x + 0.01f), j * (cubeSize.y + 0.01f), k * (cubeSize.z + 0.01f)) + gameobjects[0][0][0]->GetLocalPosition());
 						gameobjects[i][j][k]->SetLocalScale(cubeSize);
 						// Add Comp
 						AddComponent(gameobjects[i][j][k], manager);

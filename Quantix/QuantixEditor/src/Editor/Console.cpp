@@ -1,7 +1,7 @@
 #include "Console.h"
 #include <Core/Profiler/Profiler.h>
 
-Console::Console() :
+Console::Console()  noexcept:
 	_sizeLog{ 0 }
 {
 	_showTypeLog.push_back(QX_TRUE);
@@ -9,18 +9,18 @@ Console::Console() :
 	_showTypeLog.push_back(QX_TRUE);
 }
 
-Console::~Console()
+Console::~Console() noexcept
 {
 }
 
-void Console::Init(Quantix::Core::Platform::Application* app)
+void Console::Init(Quantix::Core::Platform::Application* app) noexcept
 {
 	_imgTypeLog.push_back(app->manager.CreateTexture("Other/IconEditor/Simulation/info.png"));
 	_imgTypeLog.push_back(app->manager.CreateTexture("Other/IconEditor/Simulation/warning.png"));
 	_imgTypeLog.push_back(app->manager.CreateTexture("Other/IconEditor/Simulation/error.png"));
 }
 
-void Console::PrintLog()
+void Console::PrintLog() noexcept
 {
 	ImGuiStyle& style = ImGui::GetStyle();
 	for (QXuint i = 0; i < Quantix::Core::Debugger::Logger::GetInstance()->GetData().size(); i++)
@@ -41,7 +41,7 @@ void Console::PrintLog()
 	}
 }
 
-void Console::ConsoleUI()
+void Console::ConsoleUI() noexcept
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(192 / 255.f, 57 / 255.f, 43 / 255.f, 1.f));
 	if (ImGui::Button("Clear", ImVec2(75, 0)))
@@ -61,7 +61,7 @@ void Console::ConsoleUI()
 	}
 }
 
-void Console::Update(const QXstring& name, ImGuiWindowFlags flags)
+void Console::Update(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{

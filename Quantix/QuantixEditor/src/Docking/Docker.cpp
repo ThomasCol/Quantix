@@ -1,11 +1,11 @@
 #include "Docker.h"
 
-Docker::Docker() :
+Docker::Docker()  noexcept :
 	_winEditor{}
 {
 }
 
-void Docker::Init()
+void Docker::Init() noexcept
 {
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
@@ -37,7 +37,7 @@ void Docker::Init()
 	ImGui::DockBuilderFinish(_idDocker);
 }
 
-std::string Docker::CreateWindowEditorDock(QXstring name, ImGuiID& id)
+std::string Docker::CreateWindowEditorDock(QXstring name, ImGuiID& id) noexcept
 {
 	ImGui::DockBuilderDockWindow(name.c_str(), id);
 	return name;

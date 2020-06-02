@@ -13,286 +13,379 @@ namespace Quantix::Core::DataStructure
 
 namespace Quantix::Core::Physic
 {
+	/**
+	 * @brief Space enum
+	 *
+	 */
 	enum class QUANTIX_API Space
 	{
 		WORLD,
 		LOCAL
 	};
 
+	/**
+	 * @brief class Transform3D
+	 *
+	 */
 	class QUANTIX_API Transform3D
 	{
-		private:
+	private:
 
-		#pragma region Attributes
-			
-			Transform3D*								_parent;
-			Math::QXvec3								_globalPosition;
-			Math::QXquaternion							_globalRotation;
-			Math::QXvec3								_globalScale;
-			Math::QXvec3								_position;
-			Math::QXquaternion							_rotation;
-			Math::QXvec3								_scale;
-			Math::QXvec3								_forward;
-			Math::QXvec3								_up;
+#pragma region Attributes
 
-			Math::QXmat4								_trs;
-			Math::QXmat4								_trsLocal;
+		Transform3D* _parent;
+		Math::QXvec3								_globalPosition;
+		Math::QXquaternion							_globalRotation;
+		Math::QXvec3								_globalScale;
+		Math::QXvec3								_position;
+		Math::QXquaternion							_rotation;
+		Math::QXvec3								_scale;
+		Math::QXvec3								_forward;
+		Math::QXvec3								_up;
 
-			std::list<Transform3D*>						_childs;
+		Math::QXmat4								_trs;
+		Math::QXmat4								_trsLocal;
 
-			Quantix::Core::DataStructure::GameObject3D* _gameObject;
+		std::list<Transform3D*>						_childs;
 
-			Space										_space;
-			QXbool										_globalHasChanged;
+		Quantix::Core::DataStructure::GameObject3D* _gameObject;
 
-		#pragma endregion
-			
-		#pragma region Functions
-			
-			/**
-			 * @brief Update the TRS of the Transform
-			 */
-			void	UpdateTRS();
+		Space										_space;
+		QXbool										_globalHasChanged;
 
-			void	UpdateTRSLocal(const Transform3D* parentTransform);
+#pragma endregion
 
-			void	UpdateGlobalTransform();
+#pragma region Functions
 
-		#pragma endregion
+		/**
+		 * @brief Update the TRS of the Transform
+		 */
+		void	UpdateTRS() noexcept;
 
-		public:
-		#pragma region Constructors&Destructor
+		/**
+		 * @brief Update the Local TRS of the Transform
+		 *
+		 * @param parentTransform
+		 */
+		void	UpdateTRSLocal(const Transform3D* parentTransform) noexcept;
 
-			/**
-			 * @brief Construct a new 3D Transform object
-			 */
-			Transform3D();
+		/**
+		 * @brief Update the Global Transform of the Transform
+		 *
+		 */
+		void	UpdateGlobalTransform() noexcept;
 
-			/**
-			 * @brief Construct a copy of the 3D Transform object
-			 *
-			 * @param copy Copy of the transform
-			 */
-			Transform3D(const Transform3D& copy) noexcept;
+#pragma endregion
 
-			/**
-			 * @brief Construct a copy by rvalue of the 3D Transform object
-			 *
-			 * @param copy Copy by rvalue of the transform
-			 */
-			Transform3D(Transform3D&& copy) noexcept;
+	public:
+#pragma region Constructors&Destructor
 
-			/**
-			 * @brief Construct a new 3D Transform object
-			 *
-			 * @param pos The Position of the transform
-			 * @param rot The Rotation of the transform
-			 * @param sca The Scale angle of the transform
-			 */
-			Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca, Quantix::Core::DataStructure::GameObject3D* object);
+		/**
+		 * @brief Construct a new 3D Transform object
+		 */
+		Transform3D() noexcept;
 
-			/**
-			 * @brief Construct a new 3D Transform object by rvalues
-			 *
-			 * @param pos The Position of the transform
-			 * @param rot The Rotation of the transform
-			 * @param sca The Scale angle of the transform
-			 */
-			Transform3D(Math::QXvec3&& pos, Math::QXquaternion&& rot, Math::QXvec3&& sca);
+		/**
+		 * @brief Construct a copy of the 3D Transform object
+		 *
+		 * @param copy Copy of the transform
+		 */
+		Transform3D(const Transform3D& copy) noexcept;
 
-			/**
-			 * @brief Destroy the 3D Transform object
-			 */
-			~Transform3D();
+		/**
+		 * @brief Construct a copy by rvalue of the 3D Transform object
+		 *
+		 * @param copy Copy by rvalue of the transform
+		 */
+		Transform3D(Transform3D&& copy) noexcept;
 
-		#pragma endregion
+		/**
+		 * @brief Construct a new 3D Transform object
+		 *
+		 * @param pos The Position of the transform
+		 * @param rot The Rotation of the transform
+		 * @param sca The Scale angle of the transform
+		 */
+		Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca, Quantix::Core::DataStructure::GameObject3D* object) noexcept;
 
-		#pragma region Methods
+		/**
+		 * @brief Construct a new 3D Transform object by rvalues
+		 *
+		 * @param pos The Position of the transform
+		 * @param rot The Rotation of the transform
+		 * @param sca The Scale angle of the transform
+		 */
+		Transform3D(Math::QXvec3&& pos, Math::QXquaternion&& rot, Math::QXvec3&& sca) noexcept;
 
-		#pragma region Getters&Setters
+		/**
+		 * @brief Destroy the 3D Transform object
+		 */
+		~Transform3D() noexcept;
 
-			/**
-			 * @brief Get the parent of the current transform
-			 *
-			 * @return const Transform3D* Current Parent
-			 */
-			Transform3D*								GetParent() const;
-			
-			/**
-			 * @brief Get the position of the current transform
-			 *
-			 * @return const Math::QXvec3& Current Position
-			 */
-			const Math::QXvec3&							GetPosition();
+#pragma endregion
 
-			const Math::QXvec3&							GetGlobalPosition();
+#pragma region Methods
 
-			/**
-			 * @brief Get the rotation of the current transform
-			 *
-			 * @return const Math::QXvec3& Current Rotation
-			 */
-			Math::QXquaternion&							GetRotation();
+#pragma region Getters&Setters
 
-			Math::QXquaternion&							GetGlobalRotation();
+		/**
+		 * @brief Get the parent of the current transform
+		 *
+		 * @return const Transform3D* Current Parent
+		 */
+		Transform3D* GetParent() const noexcept;
 
-			/**
-			 * @brief Get the scale of the current transform
-			 *
-			 * @return const Math::QXvec3& Current Scale
-			 */
-			const Math::QXvec3&							GetScale();
+		/**
+		 * @brief Get the position of the current transform
+		 *
+		 * @return const Math::QXvec3& Current Position
+		 */
+		const Math::QXvec3& GetPosition() noexcept;
 
-			const Math::QXvec3&							GetGlobalScale();
+		/**
+		 * @brief Get the Global Position object
+		 *
+		 * @return const Math::QXvec3&
+		 */
+		const Math::QXvec3& GetGlobalPosition() noexcept;
 
-			const Math::QXvec3&							GetForward();
+		/**
+		 * @brief Get the rotation of the current transform
+		 *
+		 * @return const Math::QXvec3& Current Rotation
+		 */
+		Math::QXquaternion& GetRotation() noexcept;
 
-			const Math::QXvec3&							GetUp();
+		/**
+		 * @brief Get the Global Rotation object
+		 *
+		 * @return Math::QXquaternion&
+		 */
+		Math::QXquaternion& GetGlobalRotation() noexcept;
 
-			/**
-			 * @brief Get the trs of the current transform
-			 *
-			 * @return const Math::QXmat4& Current TRS
-			 */
-			const Math::QXmat4&							GetTRS();
+		/**
+		 * @brief Get the scale of the current transform
+		 *
+		 * @return const Math::QXvec3& Current Scale
+		 */
+		const Math::QXvec3& GetScale() noexcept;
 
-			inline const Math::QXmat4&					GetLocalTRS() { return _trsLocal; };
+		/**
+		 * @brief Get the Global Scale object
+		 *
+		 * @return const Math::QXvec3&
+		 */
+		const Math::QXvec3& GetGlobalScale() noexcept;
 
-			void										SetTRS(Math::QXmat4& trs);
+		/**
+		 * @brief Get the Forward object
+		 *
+		 * @return const Math::QXvec3&
+		 */
+		const Math::QXvec3& GetForward() noexcept;
 
-			/**
-			 * @brief Set the parent of the current transform
-			 *
-			 * @param newParent the new parent of the current transform
-			 */
-			void										SetParent(Transform3D* newParent);
+		/**
+		 * @brief Get the Up object
+		 *
+		 * @return const Math::QXvec3&
+		 */
+		const Math::QXvec3& GetUp() noexcept;
 
-			/**
-			 * @brief Set the position of the current transform
-			 *
-			 * @param newPos the new position of the current transform
-			 */
-			void										SetPosition(const Math::QXvec3& newPos);
+		/**
+		 * @brief Get the trs of the current transform
+		 *
+		 * @return const Math::QXmat4& Current TRS
+		 */
+		const Math::QXmat4& GetTRS() noexcept;
 
-			void										SetGlobalPosition(const Math::QXvec3& newPos);
+		/**
+		 * @brief Get the Local TRS object
+		 *
+		 * @return const Math::QXmat4&
+		 */
+		inline const Math::QXmat4& GetLocalTRS()  noexcept { return _trsLocal; };
 
-			/**
-			 * @brief Set the rotation of the current transform
-			 *
-			 * @param newPos the new rotation of the current transform
-			 */
-			void										SetRotation(const Math::QXquaternion& newRot);
+		/**
+		 * @brief Set TRS
+		 *
+		 * @param trs
+		 */
+		void										SetTRS(Math::QXmat4& trs) noexcept;
 
-			void										SetGlobalRotation(const Math::QXquaternion& newRot);
+		/**
+		 * @brief Set the parent of the current transform
+		 *
+		 * @param newParent the new parent of the current transform
+		 */
+		void										SetParent(Transform3D* newParent) noexcept;
 
-			/**
-			 * @brief Set the scale of the current transform
-			 *
-			 * @param newPos the new scale of the current transform
-			 */
-			void										SetScale(const Math::QXvec3& newSca);
+		/**
+		 * @brief Set the position of the current transform
+		 *
+		 * @param newPos the new position of the current transform
+		 */
+		void										SetPosition(const Math::QXvec3& newPos) noexcept;
 
-			void										SetGlobalScale(const Math::QXvec3& newSca);
+		/**
+		 * @brief Set the Global Position object
+		 *
+		 * @param newPos
+		 */
+		void										SetGlobalPosition(const Math::QXvec3& newPos) noexcept;
 
-			void										SetForward(const Math::QXvec3& newFor);
+		/**
+		 * @brief Set the rotation of the current transform
+		 *
+		 * @param newPos the new rotation of the current transform
+		 */
+		void										SetRotation(const Math::QXquaternion& newRot) noexcept;
 
-			void										SetUp(const Math::QXvec3& newUp);
+		/**
+		 * @brief Set the Global Rotation object
+		 *
+		 * @param newRot
+		 */
+		void										SetGlobalRotation(const Math::QXquaternion& newRot) noexcept;
 
-			inline Core::DataStructure::GameObject3D*	GetObject() const { return _gameObject; };
+		/**
+		 * @brief Set the scale of the current transform
+		 *
+		 * @param newPos the new scale of the current transform
+		 */
+		void										SetScale(const Math::QXvec3& newSca) noexcept;
 
-			inline std::list<Transform3D*>&				GetChilds() { return _childs; };
+		/**
+		 * @brief Set the Global Scale object
+		 *
+		 * @param newSca
+		 */
+		void										SetGlobalScale(const Math::QXvec3& newSca) noexcept;
 
-			void										SetSpace(Space space);
-			inline Space								GetSpace() { return _space; };
+		/**
+		 * @brief Set the Forward object
+		 *
+		 * @param newFor
+		 */
+		void										SetForward(const Math::QXvec3& newFor) noexcept;
 
-		#pragma endregion
+		/**
+		 * @brief Set the Up object
+		 *
+		 * @param newUp
+		 */
+		void										SetUp(const Math::QXvec3& newUp) noexcept;
 
-		#pragma region Functions
+		/**
+		 * @brief Get the Object object
+		 *
+		 * @return Core::DataStructure::GameObject3D*
+		 */
+		inline Core::DataStructure::GameObject3D* GetObject() const  noexcept { return _gameObject; };
 
-			/**
-			 * @brief Take the parent TRS to convert itself in global then make its children to the same
-			 *
-			 * @param trsParent The parent TRS to convert its own trs in global
-			 */
-			void										Update(Transform3D* parentTransform);
+		/**
+		 * @brief Get the Childs object
+		 *
+		 * @return std::list<Transform3D*>&
+		 */
+		inline std::list<Transform3D*>& GetChilds()  noexcept { return _childs; };
 
-			/**
-			 * @brief Translate the current transform
-			 *
-			 * @param pos The position that it will go further
-			 */
-			void										Translate(const Math::QXvec3& pos);
+		/**
+		 * @brief Set the Space object
+		 *
+		 * @param space
+		 */
+		void										SetSpace(Space space) noexcept;
 
-			/**
-			 * @brief Rotate the current transform
-			 *
-			 * @param rot The rotation that it will turn further
-			 */
-			void										Rotate(const Math::QXquaternion& rot);
+		/**
+		 * @brief Get the Space object
+		 *
+		 * @return Space
+		 */
+		inline Space								GetSpace()  noexcept { return _space; };
 
-			/**
-			 * @brief Scale the current transform
-			 *
-			 * @param sca The scale that it will be further
-			 */
-			void										Scale(const Math::QXvec3& sca);
+#pragma endregion
 
-			/**
-			 * @brief Add a child to the current transform
-			 *
-			 * @param child The 3D transform child to add to the current transform
-			 */
-			void										AddChild(Transform3D* child);
+#pragma region Functions
 
-			/**
-			 * @brief Remove a child to the current transform
-			 *
-			 * @param child The 3D transform child to remove from the current transform
-			 */
-			void										RemoveChild(Transform3D* toRemove);
+		/**
+		 * @brief Take the parent TRS to convert itself in global then make its children to the same
+		 *
+		 * @param trsParent The parent TRS to convert its own trs in global
+		 */
+		void										Update(Transform3D* parentTransform) noexcept;
 
-			/**
-			 * @brief Detach the current transform from any parent
-			 *
-			 */
-			void										Detach();
+		/**
+		 * @brief Translate the current transform
+		 *
+		 * @param pos The position that it will go further
+		 */
+		void										Translate(const Math::QXvec3& pos) noexcept;
 
-			QXbool										FindTransform(Transform3D* toFind);
-			template<class Archive>
-			void save(Archive& archive) const
-			{
-				archive(_position, _rotation, _scale, _gameObject, _childs);
-			}
+		/**
+		 * @brief Rotate the current transform
+		 *
+		 * @param rot The rotation that it will turn further
+		 */
+		void										Rotate(const Math::QXquaternion& rot) noexcept;
 
-			template<class Archive>
-			void load(Archive& archive)
-			{
-				archive(_position, _rotation, _scale, _gameObject, _childs);
-			}
+		/**
+		 * @brief Scale the current transform
+		 *
+		 * @param sca The scale that it will be further
+		 */
+		void										Scale(const Math::QXvec3& sca) noexcept;
 
-		#pragma endregion
+		/**
+		 * @brief Add a child to the current transform
+		 *
+		 * @param child The 3D transform child to add to the current transform
+		 */
+		void										AddChild(Transform3D* child) noexcept;
 
-		#pragma region Operators
+		/**
+		 * @brief Remove a child to the current transform
+		 *
+		 * @param child The 3D transform child to remove from the current transform
+		 */
+		void										RemoveChild(Transform3D* toRemove) noexcept;
 
-			/**
-			 * @brief Operator = for 3D transforms
-			 *
-			 * @param t Transform to copy
-			 * @return Transform3D& Reference to the current transform
-			 */
-			Transform3D&	operator=(const Transform3D& t) noexcept;
+		/**
+		 * @brief Detach the current transform from any parent
+		 *
+		 */
+		void										Detach() noexcept;
 
-			/**
-			 * @brief Operator = for 3D transforms
-			 *
-			 * @param t Transform to copy
-			 * @return Transform3D& Reference to the current transform
-			 */
-			Transform3D&	operator=(Transform3D&& t) noexcept;
+		/**
+		 * @brief Find a transform in the hierarchy
+		 *
+		 * @param toFind
+		 * @return QXbool
+		 */
+		QXbool										FindTransform(Transform3D* toFind) noexcept;
 
-		#pragma endregion
+#pragma endregion
 
-		#pragma endregion
+#pragma region Operators
+
+		/**
+		* @brief Operator = for 3D transforms
+		*
+		* @param t Transform to copy
+		* @return Transform3D& Reference to the current transform
+		*/
+		Transform3D& operator=(const Transform3D& t) noexcept;
+
+		/**
+		* @brief Operator = for 3D transforms
+		*
+		* @param t Transform to copy
+		* @return Transform3D& Reference to the current transform
+		*/
+		Transform3D& operator=(Transform3D&& t) noexcept;
+
+#pragma endregion
+
+#pragma endregion
 
 	};
 }

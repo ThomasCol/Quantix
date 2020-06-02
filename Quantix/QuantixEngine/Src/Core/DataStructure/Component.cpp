@@ -10,13 +10,13 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::DataStructure
 {
-	Component::Component() :
+	Component::Component()  noexcept :
 		_object{ nullptr },
 		_isDestroyed{ false },
 		_isEnable(true)
 	{}
 
-	Component::Component(const Component& comp) :
+	Component::Component(const Component& comp)  noexcept :
 		_object{ comp._object },
 		_isDestroyed{ false },
 		_isEnable(true)
@@ -28,23 +28,23 @@ namespace Quantix::Core::DataStructure
 		_isEnable{ std::move(comp._isEnable) }
 	{}
 
-	Component::Component(GameComponent* obj) :
+	Component::Component(GameComponent* obj)  noexcept :
 		_object{ obj },
 		_isDestroyed{ false },
 		_isEnable{ true }
 	{}
 
-	GameComponent* Component::GetObject()
+	GameComponent* Component::GetObject() noexcept
 	{
 		return _object;
 	}
 
-	void		Component::EraseEndOfFrame()
+	void		Component::EraseEndOfFrame() noexcept
 	{
 		_isDestroyed = true;
 	}
 
-	QXbool		Component::IsDestroyed() const
+	QXbool		Component::IsDestroyed() const noexcept
 	{
 		return _isDestroyed;
 	}

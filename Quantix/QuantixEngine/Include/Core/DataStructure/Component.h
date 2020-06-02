@@ -31,94 +31,93 @@ namespace Quantix::Core::DataStructure
 		 * @brief Construct a new Component object
 		 * 
 		 */
-		Component();
+		Component() noexcept;
 
 		/**
 		 * @brief Construct a new Component object by copy
-		 * 
+		 *
 		 * @param comp Component
 		 */
-		Component(const Component& comp);
+		Component(const Component& comp) noexcept;
 
 		/**
 		 * @brief Construct a new Component object by move
-		 * 
+		 *
 		 * @param comp Component
 		 */
 		Component(Component&& comp) noexcept;
 
 		/**
 		 * @brief Construct a new Component object
-		 * 
+		 *
 		 * @param obj GameObject
 		 */
-		Component(GameComponent* obj);
+		Component(GameComponent* obj) noexcept;
 
 		/**
 		 * @brief Destroy the Component object
-		 * 
+		 *
 		 */
 		virtual ~Component() = default;
-		#pragma endregion Constructors/Destructor
+#pragma endregion Constructors/Destructor
 
-		#pragma region Methods
+#pragma region Methods
 		/**
 		 * @brief virtual method that copy the component
-		 * 
-		 * @return Component* 
+		 *
+		 * @return Component*
 		 */
 		virtual Component*					Copy() const = 0;
 
-		virtual void						Init(GameComponent* object) = 0;
+		/**
+		 * @brief virtual method that Init Component
+		 *
+		 * @param object
+		 */
+		virtual void						Init(GameComponent * object) = 0;
 
 		/**
-		 * @brief 
-		 * 
+		 * @brief
+		 *
 		 */
-		void								EraseEndOfFrame();
-		#pragma region Accessors
-		/**
-		 * @brief Get the Type object
-		 * 
-		 * @return const std::type_info& 
-		 */
-	//	virtual const std::type_info&		GetType() const = 0;
+		void								EraseEndOfFrame() noexcept;
+#pragma region Accessors
 
 		/**
 		 * @brief Get the Object object
-		 * 
-		 * @return GameObject* 
+		 *
+		 * @return GameObject*
 		 */
-		GameComponent*						GetObject();
+		GameComponent*						GetObject() noexcept;
 
 		/**
 		 * @brief Get if the Object is Alive
-		 * 
-		 * @return true 
-		 * @return false 
+		 *
+		 * @return true
+		 * @return false
 		 */
-		QXbool								IsDestroyed() const;
+		QXbool								IsDestroyed() const noexcept;
 
 		/**
 		 * @brief Get if the Object is Enable
-		 * 
-		 * @return true 
-		 * @return false 
+		 *
+		 * @return true
+		 * @return false
 		 */
 		inline virtual QXbool				IsEnable() { return _isEnable; };
 
 		/**
 		 * @brief Set the Active object
-		 * 
+		 *
 		 * @param enable Value to set _isEnable
 		 */
 		inline virtual void					SetActive(bool enable) { _isEnable = enable; };
-		#pragma endregion Accessors
-		
-		#pragma region Inline
+#pragma endregion Accessors
+
+#pragma region Inline
 		/**
 		 * @brief virtual Method for Destroy the Component
-		 * 
+		 *
 		 */
 		inline virtual void					Destroy() {};
 		#pragma endregion Inline

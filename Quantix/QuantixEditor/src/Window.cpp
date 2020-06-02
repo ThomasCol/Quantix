@@ -11,7 +11,7 @@ extern "C"
 namespace Quantix::Core::Platform
 {
 
-	void OpenGLErrorCallback(GLenum Source, GLenum Type, GLuint Id, GLenum Severity, GLsizei Length, const GLchar* Message, const void* UserParam)
+	void OpenGLErrorCallback(GLenum Source, GLenum Type, GLuint Id, GLenum Severity, GLsizei Length, const GLchar* Message, const void* UserParam) noexcept
 	{
 		fprintf(stderr, "OpenGL log (0x%x): %s\n", Id, Message);
 	}
@@ -82,7 +82,7 @@ namespace Quantix::Core::Platform
 
 	}
 
-	Window::~Window()
+	Window::~Window() noexcept
 	{
 		glfwDestroyWindow(_window);
 		glfwTerminate();
@@ -92,18 +92,18 @@ namespace Quantix::Core::Platform
 
 #pragma region Functions
 
-	void Window::Resize(GLFWwindow* window, QXint width, QXint height)
+	void Window::Resize(GLFWwindow* window, QXint width, QXint height) noexcept
 	{
-		void * pointer = glfwGetWindowUserPointer(window);
+		void* pointer = glfwGetWindowUserPointer(window);
 		Window* my_window = (Window*)glfwGetWindowUserPointer(window);
-		
+
 		my_window->_width = width;
 		my_window->_height = height;
 
 		glViewport(0, 0, width, height);
 	}
 
-	void Window::Refresh(AppInfo& info)
+	void Window::Refresh(AppInfo& info) noexcept
 	{
 		glfwPollEvents();
 		glfwSwapBuffers(_window);

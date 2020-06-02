@@ -7,12 +7,12 @@
 #include "Hierarchy.h"
 #include <Core/Debugger/Logger.h>
 
-Hierarchy::~Hierarchy()
+Hierarchy::~Hierarchy() noexcept
 {
 	delete _inspector;
 }
 
-void Hierarchy::DrawObject(std::list<Quantix::Core::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Core::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app)
+void Hierarchy::DrawObject(std::list<Quantix::Core::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Core::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app) noexcept
 {
 	for (auto it = node.begin(); it != node.end(); ++it)
 	{
@@ -57,7 +57,7 @@ void Hierarchy::DrawObject(std::list<Quantix::Core::Physic::Transform3D*>& nodeG
 	}
 }
 
-void Hierarchy::DrawObject2D(std::list<Quantix::Core::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Core::Physic::Transform2D*>& node, Quantix::Core::Platform::Application* app)
+void Hierarchy::DrawObject2D(std::list<Quantix::Core::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Core::Physic::Transform2D*>& node, Quantix::Core::Platform::Application* app) noexcept
 {
 	for (auto it = node.begin(); it != node.end(); ++it)
 	{
@@ -103,7 +103,7 @@ void Hierarchy::DrawObject2D(std::list<Quantix::Core::Physic::Transform2D*>& nod
 	}
 }
 
-void Hierarchy::DesactiveAllNodes(void* ptr, Quantix::Core::Platform::Application* app)
+void Hierarchy::DesactiveAllNodes(void* ptr, Quantix::Core::Platform::Application* app) noexcept
 {
 	for (auto it = app->scene->GetGameComponents().begin(); it != app->scene->GetGameComponents().end(); ++it)
 	{
@@ -122,7 +122,7 @@ void Hierarchy::DesactiveAllNodes(void* ptr, Quantix::Core::Platform::Applicatio
 	}
 }
 
-void Hierarchy::DrawGameComponent(Quantix::Core::Platform::Application* app)
+void Hierarchy::DrawGameComponent(Quantix::Core::Platform::Application* app) noexcept
 {
 	for (auto it = app->scene->GetGameComponents().begin(); it != app->scene->GetGameComponents().end(); ++it)
 	{
@@ -145,7 +145,7 @@ void Hierarchy::DrawGameComponent(Quantix::Core::Platform::Application* app)
 	}
 }
 
-void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Core::Physic::Transform3D* node, Quantix::Core::Platform::Application* app)
+void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Core::Physic::Transform3D* node, Quantix::Core::Platform::Application* app) noexcept
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
@@ -164,7 +164,7 @@ void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Core::Phy
 	ImGui::End();
 }
 
-void Hierarchy::CreateChild(QXbool& select, std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app)
+void Hierarchy::CreateChild(QXbool& select, std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app) noexcept
 {
 	for (auto it = nodes.begin(); it != nodes.end(); ++it)
 	{
@@ -190,7 +190,7 @@ void Hierarchy::CreateChild(QXbool& select, std::list<Quantix::Core::Physic::Tra
 	}
 }
 
-void Hierarchy::RemoveObject(QXbool& select, std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app)
+void Hierarchy::RemoveObject(QXbool& select, std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app) noexcept
 {
 	for (auto it = nodes.begin(); it != nodes.end();)
 	{
@@ -211,7 +211,7 @@ void Hierarchy::RemoveObject(QXbool& select, std::list<Quantix::Core::Physic::Tr
 	}
 }
 
-void Hierarchy::RemoveObject2D(QXbool& select, std::list<Quantix::Core::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app)
+void Hierarchy::RemoveObject2D(QXbool& select, std::list<Quantix::Core::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app) noexcept
 {
 	for (auto it = nodes.begin(); it != nodes.end();)
 	{
@@ -232,7 +232,7 @@ void Hierarchy::RemoveObject2D(QXbool& select, std::list<Quantix::Core::Physic::
 	}
 }
 
-void Hierarchy::RemoveGC(QXbool& select, std::list<Quantix::Core::DataStructure::GameComponent*>& nodes, Quantix::Core::Platform::Application* app)
+void Hierarchy::RemoveGC(QXbool& select, std::list<Quantix::Core::DataStructure::GameComponent*>& nodes, Quantix::Core::Platform::Application* app) noexcept
 {
 	for (auto it = nodes.begin(); it != nodes.end();)
 	{
@@ -250,7 +250,7 @@ void Hierarchy::RemoveGC(QXbool& select, std::list<Quantix::Core::DataStructure:
 	}
 }
 
-QXstring Hierarchy::Rename(const QXchar* name, QXsizei size)
+QXstring Hierarchy::Rename(const QXchar* name, QXsizei size) noexcept
 {
 	QXchar currName[64];
 
@@ -260,7 +260,7 @@ QXstring Hierarchy::Rename(const QXchar* name, QXsizei size)
 	return "";
 }
 
-QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Core::Physic::Transform2D*>& nodes, Quantix::Core::Physic::Transform2D* node, Quantix::Core::Platform::Application* app)
+QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Core::Physic::Transform2D*>& nodes, Quantix::Core::Physic::Transform2D* node, Quantix::Core::Platform::Application* app) noexcept
 {
 	QXbool isRemoved = QX_FALSE;
 	if (ImGui::BeginPopupContextItem("Context Item 2D"))
@@ -283,7 +283,7 @@ QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Core::Physic::Transform2D*>
 	return isRemoved;
 }
 
-QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Physic::Transform3D* node, Quantix::Core::Platform::Application* app)
+QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Physic::Transform3D* node, Quantix::Core::Platform::Application* app) noexcept
 {
 	QXbool isRemoved = QX_FALSE;
 	if (ImGui::BeginPopupContextItem("Context Item 3D"))
@@ -318,7 +318,7 @@ QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Core::Physic::Transform3D*>& 
 	return isRemoved;
 }
 
-QXbool Hierarchy::PopUpMenuItemGC(Quantix::Core::DataStructure::GameComponent* node, Quantix::Core::Platform::Application* app)
+QXbool Hierarchy::PopUpMenuItemGC(Quantix::Core::DataStructure::GameComponent* node, Quantix::Core::Platform::Application* app) noexcept
 {
 	QXbool isRemoved = QX_FALSE;
 	if (ImGui::BeginPopupContextItem("Context Item GC"))
@@ -339,7 +339,7 @@ QXbool Hierarchy::PopUpMenuItemGC(Quantix::Core::DataStructure::GameComponent* n
 	return isRemoved;
 }
 
-void Hierarchy::CreateGameComponent(QXbool& selection, Quantix::Core::Platform::Application* app)
+void Hierarchy::CreateGameComponent(QXbool& selection, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (selection)
 	{
@@ -357,7 +357,7 @@ void Hierarchy::CreateGameComponent(QXbool& selection, Quantix::Core::Platform::
 	}
 }
 
-void Hierarchy::CreateEmptyObject3D(QXbool& selection, Quantix::Core::Platform::Application* app)
+void Hierarchy::CreateEmptyObject3D(QXbool& selection, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (selection)
 	{
@@ -380,7 +380,7 @@ void Hierarchy::CreateEmptyObject3D(QXbool& selection, Quantix::Core::Platform::
 	}
 }
 
-void Hierarchy::CreateCube(QXbool& selection, Quantix::Core::Platform::Application* app)
+void Hierarchy::CreateCube(QXbool& selection, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (selection)
 	{
@@ -409,7 +409,7 @@ void Hierarchy::CreateCube(QXbool& selection, Quantix::Core::Platform::Applicati
 	}
 }
 
-void Hierarchy::CreateSphere(QXbool& selection, Quantix::Core::Platform::Application* app)
+void Hierarchy::CreateSphere(QXbool& selection, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (selection)
 	{
@@ -438,7 +438,7 @@ void Hierarchy::CreateSphere(QXbool& selection, Quantix::Core::Platform::Applica
 	}
 }
 
-void Hierarchy::CreateCapsule(QXbool& selection, Quantix::Core::Platform::Application* app)
+void Hierarchy::CreateCapsule(QXbool& selection, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (selection)
 	{
@@ -467,7 +467,7 @@ void Hierarchy::CreateCapsule(QXbool& selection, Quantix::Core::Platform::Applic
 	}
 }
 
-void Hierarchy::CreateEmptyObject2D(QXbool& selection, Quantix::Core::Platform::Application* app)
+void Hierarchy::CreateEmptyObject2D(QXbool& selection, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (selection)
 	{
@@ -490,7 +490,7 @@ void Hierarchy::CreateEmptyObject2D(QXbool& selection, Quantix::Core::Platform::
 	}
 }
 
-void Hierarchy::PopUpMenu(Quantix::Core::Platform::Application* app)
+void Hierarchy::PopUpMenu(Quantix::Core::Platform::Application* app) noexcept
 {
 	if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
 	{

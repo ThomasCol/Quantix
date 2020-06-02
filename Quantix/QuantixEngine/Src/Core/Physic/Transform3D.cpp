@@ -5,23 +5,23 @@
 
 namespace Quantix::Core::Physic
 {
-	#pragma region Constructors&Destructor
+#pragma region Constructors&Destructor
 
-	Transform3D::Transform3D() :
-		_parent {nullptr},
-		_position {0.f, 0.f, 0.f},
-		_rotation {1.0f, 0.f, 0.f, 0.f},
-		_scale {1.f, 1.f, 1.f},
-		_forward{0.f, 0.f, 1.f},
-		_up{0.f, 1.f, 0.f},
-		_trs {},
-		_childs {},
+	Transform3D::Transform3D()  noexcept :
+		_parent{ nullptr },
+		_position{ 0.f, 0.f, 0.f },
+		_rotation{ 1.0f, 0.f, 0.f, 0.f },
+		_scale{ 1.f, 1.f, 1.f },
+		_forward{ 0.f, 0.f, 1.f },
+		_up{ 0.f, 1.f, 0.f },
+		_trs{},
+		_childs{},
 		_gameObject{ nullptr },
-		_space {Space::LOCAL},
+		_space{ Space::LOCAL },
 		_globalHasChanged{ QX_FALSE }
 	{}
 
-	Transform3D::Transform3D(const Transform3D& t) noexcept:
+	Transform3D::Transform3D(const Transform3D& t) noexcept :
 		_parent{ t._parent },
 		_position{ t._position },
 		_rotation{ t._rotation },
@@ -30,7 +30,7 @@ namespace Quantix::Core::Physic
 		_up{ t._up },
 		_trs{ t._trs },
 		_space{ t._space },
-		_globalHasChanged { t._globalHasChanged }
+		_globalHasChanged{ t._globalHasChanged }
 	{
 		for (auto it = t._childs.begin(); it != t._childs.end(); ++it)
 		{
@@ -39,7 +39,7 @@ namespace Quantix::Core::Physic
 		}
 	}
 
-	Transform3D::Transform3D(Transform3D&& t) noexcept:
+	Transform3D::Transform3D(Transform3D&& t) noexcept :
 		_parent{ std::move(t._parent) },
 		_position{ std::move(t._position) },
 		_rotation{ std::move(t._rotation) },
@@ -48,21 +48,21 @@ namespace Quantix::Core::Physic
 		_up{ std::move(t._up) },
 		_trs{ std::move(t._trs) },
 		_childs{ std::move(t._childs) },
-		_gameObject {std::move(t._gameObject)},
+		_gameObject{ std::move(t._gameObject) },
 		_space{ std::move(t._space) },
 		_globalHasChanged{ std::move(t._globalHasChanged) }
 	{}
 
-	Transform3D::Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca, Quantix::Core::DataStructure::GameObject3D* object) :
-		_position{ pos }, _rotation{ rot }, _scale{ sca }, _trs{ Math::QXmat4::CreateTRSMatrix(pos, rot, sca)}, _childs{}, _gameObject{ object },
+	Transform3D::Transform3D(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& sca, Quantix::Core::DataStructure::GameObject3D* object)  noexcept :
+		_position{ pos }, _rotation{ rot }, _scale{ sca }, _trs{ Math::QXmat4::CreateTRSMatrix(pos, rot, sca) }, _childs{}, _gameObject{ object },
 		_space{ Space::LOCAL }, _globalHasChanged{ QX_FALSE }
 	{
 		_forward = _rotation * Math::QXvec3::forward;
 		_up = _rotation * Math::QXvec3::up;
 	}
 
-	Transform3D::Transform3D(Math::QXvec3&& pos, Math::QXquaternion&& rot, Math::QXvec3&& sca) :
-		_position{ std::move(pos) }, _rotation{ std::move(rot) }, _scale{ std::move(sca) }, 
+	Transform3D::Transform3D(Math::QXvec3&& pos, Math::QXquaternion&& rot, Math::QXvec3&& sca)  noexcept :
+		_position{ std::move(pos) }, _rotation{ std::move(rot) }, _scale{ std::move(sca) },
 		_trs{ Math::QXmat4::CreateTRSMatrix(std::move(pos), std::move(rot), std::move(sca)) }, _childs{}, _space{ Space::LOCAL }, _globalHasChanged{ QX_FALSE }
 	{
 		_trsLocal = Math::QXmat4::CreateTRSMatrix(pos, rot, sca);
@@ -70,26 +70,26 @@ namespace Quantix::Core::Physic
 		_up = _rotation * Math::QXvec3::up;
 	}
 
-	Transform3D::~Transform3D()
+	Transform3D::~Transform3D() noexcept
 	{}
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Methods
+#pragma region Methods
 
-	#pragma region Getters&Setters
+#pragma region Getters&Setters
 
-	Transform3D* Transform3D::GetParent() const
+	Transform3D* Transform3D::GetParent() const noexcept
 	{
 		return _parent;
 	}
 
-	const Math::QXvec3& Transform3D::GetPosition()
+	const Math::QXvec3& Transform3D::GetPosition() noexcept
 	{
 		return _position;
 	}
 
-	const Math::QXvec3& Transform3D::GetGlobalPosition()
+	const Math::QXvec3& Transform3D::GetGlobalPosition() noexcept
 	{
 		_globalPosition.x = _trs[3][0];
 		_globalPosition.y = _trs[3][1];
@@ -97,12 +97,12 @@ namespace Quantix::Core::Physic
 		return _globalPosition;
 	}
 
-	Math::QXquaternion& Transform3D::GetRotation()
+	Math::QXquaternion& Transform3D::GetRotation() noexcept
 	{
 		return _rotation;
 	}
 
-	Math::QXquaternion& Transform3D::GetGlobalRotation()
+	Math::QXquaternion& Transform3D::GetGlobalRotation() noexcept
 	{
 		Math::QXvec3 rot;
 
@@ -115,12 +115,12 @@ namespace Quantix::Core::Physic
 		return _globalRotation;
 	}
 
-	const Math::QXvec3& Transform3D::GetScale()
+	const Math::QXvec3& Transform3D::GetScale() noexcept
 	{
 		return _scale;
 	}
 
-	const Math::QXvec3& Transform3D::GetGlobalScale()
+	const Math::QXvec3& Transform3D::GetGlobalScale() noexcept
 	{
 		_globalScale.x = _trs[0][0];
 		_globalScale.y = _trs[1][1];
@@ -129,27 +129,27 @@ namespace Quantix::Core::Physic
 		return _globalScale;
 	}
 
-	const Math::QXvec3& Transform3D::GetForward()
+	const Math::QXvec3& Transform3D::GetForward() noexcept
 	{
 		return _forward;
 	}
 
-	const Math::QXvec3& Transform3D::GetUp()
+	const Math::QXvec3& Transform3D::GetUp() noexcept
 	{
 		return _up;
 	}
 
-	const Math::QXmat4& Transform3D::GetTRS()
+	const Math::QXmat4& Transform3D::GetTRS() noexcept
 	{
 		return _trs;
 	}
 
-	void Transform3D::SetTRS(Math::QXmat4& trs)
+	void Transform3D::SetTRS(Math::QXmat4& trs) noexcept
 	{
 		_trs = trs;
 	}
 
-	void Transform3D::SetParent(Transform3D* newParent)
+	void Transform3D::SetParent(Transform3D* newParent) noexcept
 	{
 		Transform3D* tmp = _parent;
 		_parent = newParent;
@@ -158,66 +158,66 @@ namespace Quantix::Core::Physic
 			tmp->RemoveChild(this);
 	}
 
-	void	Transform3D::SetPosition(const Math::QXvec3& newPos)
+	void	Transform3D::SetPosition(const Math::QXvec3& newPos) noexcept
 	{
 		_position = newPos;
 	}
 
-	void Transform3D::SetGlobalPosition(const Math::QXvec3& newPos)
+	void Transform3D::SetGlobalPosition(const Math::QXvec3& newPos) noexcept
 	{
 		_globalHasChanged = QX_TRUE;
 		_globalPosition = newPos;
 	}
 
-	void	Transform3D::SetRotation(const Math::QXquaternion& newRot)
+	void	Transform3D::SetRotation(const Math::QXquaternion& newRot) noexcept
 	{
 		_rotation = newRot;
 	}
 
-	void Transform3D::SetGlobalRotation(const Math::QXquaternion& newRot)
+	void Transform3D::SetGlobalRotation(const Math::QXquaternion& newRot) noexcept
 	{
 		_globalHasChanged = QX_TRUE;
 		_globalRotation = newRot;
 	}
 
-	void	Transform3D::SetScale(const Math::QXvec3& newSca)
+	void	Transform3D::SetScale(const Math::QXvec3& newSca) noexcept
 	{
 		_scale = newSca;
 	}
 
-	void Transform3D::SetGlobalScale(const Math::QXvec3& newSca)
+	void Transform3D::SetGlobalScale(const Math::QXvec3& newSca) noexcept
 	{
 		_globalHasChanged = QX_TRUE;
 		_globalScale = newSca;
 	}
 
-	void	Transform3D::SetForward(const Math::QXvec3& newFor)
+	void	Transform3D::SetForward(const Math::QXvec3& newFor) noexcept
 	{
 		_forward = newFor;
 	}
 
-	void Transform3D::SetUp(const Math::QXvec3& newUp)
+	void Transform3D::SetUp(const Math::QXvec3& newUp) noexcept
 	{
 		_up = newUp;
 	}
 
-	void Transform3D::SetSpace(Space space)
-	{ 
+	void Transform3D::SetSpace(Space space) noexcept
+	{
 		_space = space;
 		if (_space == Space::WORLD)
- 			UpdateGlobalTransform();
+			UpdateGlobalTransform();
 	}
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Functions
+#pragma region Functions
 
-	void	Transform3D::UpdateTRS()
+	void	Transform3D::UpdateTRS() noexcept
 	{
 		_trsLocal = Math::QXmat4::CreateTRSMatrix(_position, _rotation, _scale);
 	}
 
-	void	Transform3D::UpdateTRSLocal(const Transform3D* parentTransform)
+	void	Transform3D::UpdateTRSLocal(const Transform3D* parentTransform) noexcept
 	{
 		_trs = Math::QXmat4::CreateTRSMatrix(_globalPosition, _globalRotation, _globalScale);
 		_globalHasChanged = QX_FALSE;
@@ -239,14 +239,14 @@ namespace Quantix::Core::Physic
 		_scale.z = _trsLocal[2][2];
 	}
 
-	void	Transform3D::UpdateGlobalTransform()
+	void	Transform3D::UpdateGlobalTransform() noexcept
 	{
 		GetGlobalPosition();
 		GetGlobalRotation();
 		GetGlobalScale();
 	}
 
-	void	Transform3D::Update(Transform3D* parentTransform)
+	void	Transform3D::Update(Transform3D* parentTransform) noexcept
 	{
 		if (_globalHasChanged)
 			UpdateTRSLocal(parentTransform);
@@ -261,7 +261,7 @@ namespace Quantix::Core::Physic
 		UpdateGlobalTransform();
 	}
 
-	void	Transform3D::Translate(const Math::QXvec3& pos)
+	void	Transform3D::Translate(const Math::QXvec3& pos) noexcept
 	{
 		if (_space == Space::LOCAL)
 			_position += pos;
@@ -272,7 +272,7 @@ namespace Quantix::Core::Physic
 		}
 	}
 
-	void	Transform3D::Rotate(const Math::QXquaternion& rot)
+	void	Transform3D::Rotate(const Math::QXquaternion& rot) noexcept
 	{
 		if (_space == Space::LOCAL)
 			_rotation = _rotation * rot;
@@ -283,7 +283,7 @@ namespace Quantix::Core::Physic
 		}
 	}
 
-	void	Transform3D::Scale(const Math::QXvec3& sca)
+	void	Transform3D::Scale(const Math::QXvec3& sca) noexcept
 	{
 		if (_space == Space::LOCAL)
 			_scale += sca;
@@ -294,21 +294,21 @@ namespace Quantix::Core::Physic
 		}
 	}
 
-	void	Transform3D::AddChild(Transform3D* child)
+	void	Transform3D::AddChild(Transform3D* child) noexcept
 	{
 		child->SetParent(this);
 		_childs.push_back(child);
 	}
 
-	void	Transform3D::RemoveChild(Transform3D* toRemove)
+	void	Transform3D::RemoveChild(Transform3D* toRemove) noexcept
 	{
 		_childs.remove(toRemove);
 		toRemove->SetParent(nullptr);
 	}
 
-	void	Transform3D::Detach()
+	void	Transform3D::Detach() noexcept
 	{
-		Transform3D* world	{ this };
+		Transform3D* world{ this };
 
 		while (world->GetParent() != nullptr)
 			world = world->GetParent();
@@ -316,7 +316,7 @@ namespace Quantix::Core::Physic
 		_parent->SetParent(world);
 	}
 
-	QXbool	Transform3D::FindTransform(Transform3D* toFind)
+	QXbool	Transform3D::FindTransform(Transform3D* toFind) noexcept
 	{
 		for (auto it = _childs.begin(); it != _childs.end(); ++it)
 		{
@@ -330,9 +330,9 @@ namespace Quantix::Core::Physic
 		return QX_FALSE;
 	}
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Operators
+#pragma region Operators
 
 	Transform3D& Transform3D::operator=(const Transform3D& t) noexcept
 	{
@@ -356,7 +356,7 @@ namespace Quantix::Core::Physic
 		return *this;
 	}
 
-	#pragma endregion
-	
-	#pragma endregion
+#pragma endregion
+
+#pragma endregion
 }

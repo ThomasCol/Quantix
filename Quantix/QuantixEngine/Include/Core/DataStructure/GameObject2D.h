@@ -18,93 +18,117 @@ namespace Quantix::Core::DataStructure
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
+		/**
+		 * @brief Construct a new GameObject2D object
+		 * 
+		 */
 		GameObject2D() noexcept;
+
+		/**
+		 * @brief Construct a new GameObject2D object
+		 * 
+		 * @param name 
+		 */
 		GameObject2D(const QXstring& name) noexcept;
+
+		/**
+		 * @brief Construct a new GameObject2D object by copy
+		 * 
+		 * @param g2d 
+		 */
 		GameObject2D(const GameObject2D& g2d) noexcept;
+
+		/**
+		 * @brief Construct a new GameObject2D object by move
+		 * 
+		 * @param g2d 
+		 */
 		GameObject2D(GameObject2D&& g2d) noexcept;
-		~GameObject2D();
-		#pragma endregion Constructors/Destructor
 
-		#pragma region Methods
+		/**
+		 * @brief Destroy the GameObject2D object
+		 * 
+		 */
+		~GameObject2D() noexcept;
+#pragma endregion Constructors/Destructor
 
+#pragma region Methods
+
+		/**
+		 * @brief Start of the GameObject2D
+		 *
+		 */
 		void										Start() override;
-		
+
+		/**
+		 * @brief Awake of the GameObject2D
+		 *
+		 */
 		void										Awake() override;
 
-		void										Update();
+		/**
+		 * @brief Update of the GameObject2D
+		 *
+		 */
+		void										Update() noexcept;
 
-		void										Update(const GameObject2D* parentObject);
+		/**
+		 * @brief Update of child of GameObject2D
+		 *
+		 * @param parentObject
+		 */
+		void										Update(const GameObject2D* parentObject) noexcept;
 
-		template<class Archive>
-		void save(Archive& archive) const
-		{
-			archive(_component);
-		}
+		/**
+		 * @brief Add child in GameObject2D
+		 *
+		 * @param object
+		 */
+		inline void									AddChild(const GameObject2D* object)  noexcept { _transform->AddChild(object->GetTransform()); }
 
-		template<class Archive>
-		void load(Archive& archive)
-		{
-			archive(_component);
-		}
-
-		inline void									AddChild(const GameObject2D* object) { _transform->AddChild(object->GetTransform()); }
-
-		#pragma region Accessors
+#pragma region Accessors
 		/**
 		 * @brief Set the Global Position object
-		 * 
+		 *
 		 * @param pos Math::QXvec2 pos
 		 */
-		void										SetGlobalPosition(Math::QXvec2 pos);
+		void										SetGlobalPosition(Math::QXvec2 pos) noexcept;
 
 		/**
 		 * @brief Set the Global Rotation object
-		 * 
+		 *
 		 * @param rot QXfloat angle
 		 */
-		void										SetGlobalRotation(QXfloat rot);
-
-		/**
-		 * @brief Get the Global Position object
-		 * 
-		 * @return Math::QXvec2 position
-		 */
-	//	Math::QXvec2								GetGlobalPosition() const { return _transform.GetGlobalPosition(); };
-
-		/**
-		 * @brief Get the Global Rotation object
-		 * 
-		 * @return QXfloat rotation
-		 */
-	//	QXfloat										GetGlobalRotation() const { return _transform.GetGlobalRotation(); };
+		void										SetGlobalRotation(QXfloat rot) noexcept;
 
 		/**
 		 * @brief Set the Local Position object
-		 * 
+		 *
 		 * @param pos Math::QXvec2 position
 		 */
-		void										SetLocalPosition(Math::QXvec2 pos);
+		void										SetLocalPosition(Math::QXvec2 pos) noexcept;
 
 		/**
 		 * @brief Set the Local Rotation object
-		 * 
+		 *
 		 * @param rot QXfloat rotation
 		 */
-		void										SetLocalRotation(QXfloat rot);
+		void										SetLocalRotation(QXfloat rot) noexcept;
 
 		/**
 		 * @brief Set the Local Scale object
 		 *
 		 * @param scale QXvec2
 		 */
-		void										SetLocalScale(Math::QXvec2 scale);
+		void										SetLocalScale(Math::QXvec2 scale) noexcept;
 
 		/**
 		 * @brief Get the Local Position object
-		 * 
+		 *
 		 * @return Math::QXvec2 position
 		 */
-		const Math::QXvec2&							GetLocalPosition() const { return _transform->GetPosition();
+		const Math::QXvec2&							GetLocalPosition() const  noexcept {
+			return _transform->GetPosition();
 		};
 
 		/**
@@ -112,14 +136,14 @@ namespace Quantix::Core::DataStructure
 		 *
 		 * @return QXfloat rotation
 		 */
-		const QXfloat&								GetLocalRotation() const { return _transform->GetRotationAngle(); };
+		const QXfloat&								GetLocalRotation() const  noexcept { return _transform->GetRotationAngle(); };
 
 		/**
 		 * @brief Get the Local Scale object
 		 *
 		 * @return Math::QXvec2 scale
 		 */
-		const Math::QXvec2&							GetLocalScale() const { return _transform->GetScale(); };
+		const Math::QXvec2&							GetLocalScale() const  noexcept { return _transform->GetScale(); };
 
 		/**
 		 * @brief Set the Transform object
@@ -128,14 +152,14 @@ namespace Quantix::Core::DataStructure
 		 * @param rot QXfloat rotation
 		 * @param scale QXvec2 scale
 		 */
-		void										SetTransform(const Math::QXvec2& pos, const QXfloat rot, const Math::QXvec2& scale);
+		void										SetTransform(const Math::QXvec2& pos, const QXfloat rot, const Math::QXvec2& scale) noexcept;
 
 		/**
 		 * @brief Get the Transform object
-		 * 
+		 *
 		 * @return Transform2D transform
 		 */
-		Quantix::Core::Physic::Transform2D*				GetTransform() const { return _transform; };
+		Quantix::Core::Physic::Transform2D*			GetTransform() const noexcept{ return _transform; };
 		#pragma endregion Accessors
 		#pragma endregion Methods
 

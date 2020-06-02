@@ -46,7 +46,7 @@ public:
 	 * @param width QXuint
 	 * @param height QXuint
 	 */
-	Editor(QXuint width, QXuint height);
+	Editor(QXuint width, QXuint height) noexcept;
 	
 	/**
 	 * @brief Construct a new Editor object by copy
@@ -66,7 +66,7 @@ public:
 	 * @brief Destroy the Editor object
 	 * 
 	 */
-	~Editor();
+	~Editor() noexcept;
 	#pragma endregion Constructors&Destructor
 
 	#pragma region Methods
@@ -74,258 +74,284 @@ public:
 	 * @brief Init Editor Artifact
 	 * 
 	 */
-	void												InitEditorArtifact();
+	void												InitEditorArtifact() noexcept;
 
 	/**
 	 * @brief Init image
 	 * 
 	 */
-	void												InitImg();
+	void												InitImg() noexcept;
 
 	/**
 	 * @brief Init Editor
 	 * 
 	 */
-	void												Init();
+	void												Init() noexcept;
 
 	/**
 	 * @brief Initialise Editor Dockspace
 	 * 
 	 */
-	void												InitEditor();
+	void												InitEditor() noexcept;
 
 	/**
 	 * @brief Init ImGui
-	 * 
+	 *
 	 */
-	void												InitImGui();
+	void												InitImGui() noexcept;
 
 	/**
 	 * @brief Debug mode for Profiling
-	 * 
+	 *
 	 */
-	void												DebugMode();
+	void												DebugMode() noexcept;
 
 	/**
 	 * @brief Update Editor
-	 * 
+	 *
 	 */
-	void												Update();
+	void												Update() noexcept;
 
 	/**
 	 * @brief Update Mouse pos for vision of camera
-	 * 
-	 * @param camera 
+	 *
+	 * @param camera
 	 */
-	void												UpdateMouse(Quantix::Core::Components::Camera* camera);
+	void												UpdateMouse(Quantix::Core::Components::Camera* camera) noexcept;
 
 	/**
 	 * @brief Update Camera Editor in Scene
-	 * 
+	 *
 	 */
-	void												CameraUpdateEditor();
+	void												CameraUpdateEditor() noexcept;
 
-	void												MovePlayerController();
+	/**
+	 * @brief Move Player Controller
+	 *
+	 */
+	void												MovePlayerController() noexcept;
 
-	void												MoveFreeCam();
+	/**
+	 * @brief Move free camera
+	 *
+	 */
+	void												MoveFreeCam() noexcept;
 
 	/**
 	 * @brief Update Main Camera in Game
-	 * 
+	 *
 	 */
-	void												CameraUpdate();
+	void												CameraUpdate() noexcept;
 
 	/**
 	 * @brief Retrieve Camera inside scene
-	 * 
-	 * @param object 
+	 *
+	 * @param object
 	 */
-	void												CheckNewSceneCamera(Quantix::Core::DataStructure::GameObject3D* object);
+	void												CheckNewSceneCamera(Quantix::Core::DataStructure::GameObject3D* object) noexcept;
 
 	/**
-	 * @brief Save & Load of Scene 
-	 * 
+	 * @brief Save & Load of Scene
+	 *
 	 */
-	void												SaveLoadScene();
+	void												SaveLoadScene() noexcept;
 
 	/**
 	 * @brief Update Scene
-	 * 
+	 *
 	 */
-	void												UpdateScene();
+	void												UpdateScene() noexcept;
 
 	/**
 	 * @brief Update Editor
-	 * 
-	 * @param FBOGame 
-	 * @param FBOScene 
+	 *
+	 * @param FBOGame
+	 * @param FBOScene
 	 */
-	void												UpdateEditor();
+	void												UpdateEditor() noexcept;
 
 	/**
 	 * @brief Draw All Frame
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void												Draw(const QXstring& name, ImGuiWindowFlags flags);
+	void												Draw(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 
 	/**
 	 * @brief Draw Menu Bar Frame
-	 * 
+	 *
 	 */
-	void												DrawMenuBar();
-	
+	void												DrawMenuBar() noexcept;
+
 	/**
 	 * @brief Draw Hierarchy Frame
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void												DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags);
+	void												DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 
-	QXstring											GetNameOfShader(QXstring shaderPath);
+	/**
+	 * @brief Get the Name Of Shader object
+	 *
+	 * @param shaderPath
+	 * @return QXstring
+	 */
+	QXstring											GetNameOfShader(QXstring shaderPath) noexcept;
 
 	/**
 	 * @brief Draw Shader Frame for PosProcess
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void												DrawShader(const QXstring& name, ImGuiWindowFlags flags);
+	void												DrawShader(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 
 	/**
 	 * @brief Simulation Button
-	 * 
+	 *
 	 */
-	void												Simulation();
+	void												Simulation() noexcept;
 
 	/**
 	 * @brief Change State Simulation
-	 * 
+	 *
 	 */
-	void												ChangeStateSimulation();
+	void												ChangeStateSimulation() noexcept;
 
 	/**
 	 * @brief Show Simulation Window
-	 * 
+	 *
 	 */
-	void												DrawSimulation();
+	void												DrawSimulation() noexcept;
 
-	void												PrintPower();
+	/**
+	 * @brief UI of Power
+	 *
+	 */
+	void												PrintPower() noexcept;
 
 	/**
 	 * @brief Set the scene focus
-	 * 
+	 *
 	 */
-	void												FocusScene();
+	void												FocusScene() noexcept;
 
-	void												MaximizeOnPlay();
+	/**
+	 * @brief Maximize window game on play
+	 *
+	 */
+	void												MaximizeOnPlay() noexcept;
 
-	void												ShowCollider();
+	/**
+	 * @brief Change boolean to show collider
+	 *
+	 */
+	void												ShowCollider() noexcept;
 
 	/**
 	 * @brief Draw Game
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void												DrawGame(const QXstring& name, ImGuiWindowFlags flags);
+	void												DrawGame(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 
 	/**
 	 * @brief Draw Scene
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void												DrawScene(const QXstring& name, ImGuiWindowFlags flags);
+	void												DrawScene(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 
 	/**
 	 * @brief Draw Window Console
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void												DrawConsole(const QXstring& name, ImGuiWindowFlags flags);
+	void												DrawConsole(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 
 	/**
 	 * @brief Draw Explorer Console
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void												DrawExplorer(const QXstring& name, ImGuiWindowFlags flags);
+	void												DrawExplorer(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 
 	/**
 	 * @brief Retrieve Camera of Inspector if no camera set
-	 * 
+	 *
 	 */
-	void												CheckCamera();
+	void												CheckCamera() noexcept;
 
 	/**
 	 * @brief Draw Inspector Console
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void												DrawInspector(const QXstring& name, ImGuiWindowFlags flags);
+	void												DrawInspector(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 
-	#pragma region Getters&Setters
+#pragma region Getters&Setters
 	/**
 	 * @brief Get the Win object
-	 * 
-	 * @return Window& 
+	 *
+	 * @return Window&
 	 */
-	inline Quantix::Core::Platform::Window&				GetWin() { return _win; };
+	inline Quantix::Core::Platform::Window&				GetWin() noexcept { return _win; };
 
 	/**
 	 * @brief Get the App object
-	 * 
-	 * @return Application* 
+	 *
+	 * @return Application*
 	 */
-	inline Quantix::Core::Platform::Application*		GetApp() const { return _app; };
+	inline Quantix::Core::Platform::Application*		GetApp() const noexcept { return _app; };
 
 	/**
 	 * @brief Set the Root object
-	 * 
-	 * @param object 
+	 *
+	 * @param object
 	 */
-	inline void											SetRoot(Quantix::Core::DataStructure::GameObject3D* object) { _root = object; };
-	
+	inline void											SetRoot(Quantix::Core::DataStructure::GameObject3D* object) noexcept { _root = object; };
+
 	/**
 	 * @brief Set the Main Camera object
-	 * 
-	 * @param camera 
+	 *
+	 * @param camera
 	 */
-	inline void											SetMainCamera(Quantix::Core::Components::Camera* camera) { _mainCamera = camera; };
+	inline void											SetMainCamera(Quantix::Core::Components::Camera* camera) noexcept { _mainCamera = camera; };
 
 	/**
 	 * @brief Get the Main Camera object
-	 * 
-	 * @return Camera* 
+	 *
+	 * @return Camera*
 	 */
-	inline Quantix::Core::Components::Camera*			GetMainCamera() { return _mainCamera; };
+	inline Quantix::Core::Components::Camera*			GetMainCamera() noexcept { return _mainCamera; };
 
 	/**
 	 * @brief Get the Editor Camera object
-	 * 
-	 * @return Camera* 
+	 *
+	 * @return Camera*
 	 */
-	inline Quantix::Core::Components::Camera*			GetEditorCamera() { return _cameraEditor; };
+	inline Quantix::Core::Components::Camera*			GetEditorCamera() noexcept { return _cameraEditor; };
 
 	/**
 	 * @brief Get the Play object
-	 * 
-	 * @return QXbool 
+	 *
+	 * @return QXbool
 	 */
-	inline QXbool										GetPlay() const { return _play; };
+	inline QXbool										GetPlay() const noexcept { return _play; };
 
 	/**
 	 * @brief Get the Pause object
-	 * 
-	 * @return QXbool 
+	 *
+	 * @return QXbool
 	 */
-	inline QXbool										GetPause() const { return _pause; };
+	inline QXbool										GetPause()const noexcept { return _pause; };
 	#pragma endregion Getters&Setters
 	#pragma endregion Methods
 

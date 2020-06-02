@@ -37,132 +37,142 @@ namespace Quantix::Core::Components
 		 * @brief Construct a new Camera object
 		 * 
 		 */
-		Camera();
+		Camera() noexcept;
 
 		/**
 		 * @brief Construct a new Camera object
-		 * 
+		 *
 		 * @param pos Vector
 		 * @param dir Vector
 		 * @param up Vector
 		 */
-		Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up);
+		Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up) noexcept;
 
 		/**
-		 * @brief Construct a new Camera object by copy 
-		 * 
+		 * @brief Construct a new Camera object by copy
+		 *
 		 * @param camera Camera
 		 */
-		Camera(const Camera& camera);
+		Camera(const Camera& camera) noexcept;
 
 		/**
 		 * @brief Construct a new Camera object by move
-		 * 
+		 *
 		 * @param camera Camera
 		 */
 		Camera(Camera&& camera) noexcept;
 
 		/**
 		 * @brief Destroy the Camera object
-		 * 
+		 *
 		 */
 		~Camera() = default;
-		#pragma endregion Constructors/Destructor
+#pragma endregion Constructors/Destructor
 
-		#pragma region Methods
+#pragma region Methods
 		/**
-		 * @brief Copy 
-		 * 
-		 * @return Camera* 
+		 * @brief Copy
+		 *
+		 * @return Camera*
 		 */
 		Camera* Copy() const override;
 
-		void	Init(Core::DataStructure::GameComponent* object) override;
+		/**
+		 * @brief Init Component Camera
+		 *
+		 * @param object
+		 */
+		void	Init(Core::DataStructure::GameComponent * object) override;
 
-		void	ActualizeRigid(CharacterController* rig);
+		/**
+		 * @brief Actualize Character Controller
+		 *
+		 * @param rig
+		 */
+		void	ActualizeRigid(CharacterController * rig) noexcept;
 
 		/**
 		 * @brief Update the LookAtMatrix of the Camera
-		 * 
+		 *
 		 * @param pos Vector
 		 * @return Math::QXmat4 LookAtMatrix of the Camera
 		 */
-		void							UpdateLookAt(Math::QXvec3 pos);
+		void							UpdateLookAt(Math::QXvec3 pos) noexcept;
 
 		/**
 		 * @brief Change the view of the Camera
-		 * 
+		 *
 		 * @param posX int Value
 		 * @param posY int Value
 		 * @param width int Value
 		 * @param height int Value
 		 * @param frameTime double Value
 		 */
-		void							ChangeView(QXfloat posX, QXfloat posY, QXint width, QXint height, QXdouble frameTime);
+		void							ChangeView(QXfloat posX, QXfloat posY, QXint width, QXint height, QXdouble frameTime) noexcept;
 
 		/**
 		 * @brief Rotate The dir of the Camera
-		 * 
+		 *
 		 * @param rotate Math::QxVec3
 		 */
-		void							Rotate(Math::QXvec3 rotate);
+		void							Rotate(Math::QXvec3 rotate) noexcept;
 
 		/**
 		 * @brief Destroy Component
-		 * 
+		 *
 		 */
-		void Destroy() override {};
+		void							Destroy() override {};
 
-		#pragma	region Accessor
+#pragma	region Accessor
 
 		/**
 		 * @brief Get the Look At object
-		 * 
-		 * @return Math::QXmat4& 
+		 *
+		 * @return Math::QXmat4&
 		 */
-		inline Math::QXmat4&			GetLookAt() { return _lookAt; }
+		inline Math::QXmat4&			GetLookAt()  noexcept { return _lookAt; }
 
 		/**
 		 * @brief Set the Pos object
-		 * 
-		 * @param pos 
+		 *
+		 * @param pos
 		 */
-		void							SetPos(Math::QXvec3 pos);
+		void							SetPos(Math::QXvec3 pos) noexcept;
 
 		/**
 		 * @brief Get the Pos object
-		 * 
-		 * @return Math::QXvec3 
+		 *
+		 * @return Math::QXvec3
 		 */
-		Math::QXvec3					GetPos();
+		Math::QXvec3					GetPos() noexcept;
 
 		/**
 		 * @brief Set the Dir object
-		 * 
-		 * @param dir 
+		 *
+		 * @param dir
 		 */
-		inline void						SetDir(Math::QXvec3 dir) { _dir = dir; }
+		inline void						SetDir(Math::QXvec3 dir)  noexcept { _dir = dir; }
 
 		/**
 		 * @brief Get the Dir object
-		 * 
-		 * @return Math::QXvec3 
+		 *
+		 * @return Math::QXvec3
 		 */
-		inline Math::QXvec3				GetDir() { return _dir; }
+		inline Math::QXvec3				GetDir()  noexcept { return _dir; }
 
 		/**
 		 * @brief Set the Up object
-		 * 
-		 * @param up 
+		 *
+		 * @param up
 		 */
-		inline void						SetUp(Math::QXvec3 up) { _up = up; }
+		inline void						SetUp(Math::QXvec3 up)  noexcept { _up = up; }
 
 		/**
 		 * @brief Get the Up object
-		 * 
-		 * @return Math::QXvec3 
+		 *
+		 * @return Math::QXvec3
 		 */
-		inline Math::QXvec3				GetUp() { return _up; }
+		inline Math::QXvec3				GetUp()  noexcept { return _up; }
 		
 		#pragma	endregion
 		#pragma endregion Methods
