@@ -30,7 +30,7 @@ namespace Quantix::Core::Threading
 		 */
 		TaskSystem() noexcept;
 
-		#pragma endergion
+		#pragma endregion
 
 	public:
 		#pragma region Constructors
@@ -79,13 +79,13 @@ namespace Quantix::Core::Threading
 		 * @brief Destroy system
 		 * 
 		 */
-		static void Destroy();
+		static void Destroy() noexcept;
 
 		/**
 		 * @brief Update task system
 		 * 
 		 */
-		static void Update();
+		static void Update() noexcept;
 
 
 		/**
@@ -98,7 +98,7 @@ namespace Quantix::Core::Threading
 		 * @return std::future<typename std::result_of<FuncType(Args...)>::type> std::future of your function return
 		 */
 		template<typename FuncType, typename ... Args>
-		inline std::future<typename std::result_of<FuncType(Args...)>::type> AddTaskReturn(FuncType&& func, Args&& ... vars);
+		inline std::future<typename std::result_of<FuncType(Args...)>::type> AddTaskReturn(FuncType&& func, Args&& ... vars) noexcept;
 
 		/**
 		 * @brief Add a task to the pool
@@ -109,13 +109,13 @@ namespace Quantix::Core::Threading
 		 * @param vars variables of the functions
 		 */
 		template<typename FuncType, typename ... Args>
-		inline void AddTask(FuncType&& func, Args&& ... vars);
+		inline void AddTask(FuncType&& func, Args&& ... vars) noexcept;
 
 		#pragma endregion
 	};
 
 	template<typename FuncType, typename ... Args>
-	inline std::future<typename std::result_of<FuncType(Args...)>::type> TaskSystem::AddTaskReturn(FuncType&& func, Args&& ... vars)
+	inline std::future<typename std::result_of<FuncType(Args...)>::type> TaskSystem::AddTaskReturn(FuncType&& func, Args&& ... vars) noexcept
 	{
 		using return_type = typename std::result_of<FuncType(Args...)>::type;
 
@@ -131,7 +131,7 @@ namespace Quantix::Core::Threading
 	}
 
 	template<typename FuncType, typename ... Args>
-	inline void TaskSystem::AddTask(FuncType&& func, Args&& ... vars)
+	inline void TaskSystem::AddTask(FuncType&& func, Args&& ... vars) noexcept
 	{
 		_tasks.emplace(std::bind(std::forward<FuncType>(func), std::forward<Args>(vars)...));
 	}

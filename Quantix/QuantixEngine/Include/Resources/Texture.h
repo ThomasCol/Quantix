@@ -51,7 +51,7 @@ namespace Quantix::Resources
 		/**
 		 * @brief Destroy the Texture object
 		 */
-		~Texture();
+		~Texture() noexcept;
 
 #pragma endregion
 
@@ -64,6 +64,10 @@ namespace Quantix::Resources
 	 */
 	void Load(const QXstring& file) noexcept override;
 
+	/**
+	 * @brief Init the texture
+	 * 
+	 */
 	void Init() noexcept override;
 
 	/**

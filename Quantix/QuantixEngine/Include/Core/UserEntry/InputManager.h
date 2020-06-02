@@ -287,31 +287,72 @@ namespace Quantix::Core::UserEntry
 
 		#pragma region Constructors
 
+		/**
+		 * @brief Construct a new Input Manager object
+		 * 
+		 */
 		InputManager() = default;
 
 		#pragma endregion
 	public:
 		#pragma region Constructors
 
+		/**
+		 * @brief Construct a new Input Manager object
+		 * 
+		 * @param manager Manager to copy
+		 */
 		InputManager(const InputManager& manager) = delete;
+
+		/**
+		 * @brief Construct a new Input Manager object
+		 * 
+		 * @param manager Manager to move
+		 */
 		InputManager(InputManager&& manager) = delete;
+
+		/**
+		 * @brief Destroy the Input Manager object
+		 * 
+		 */
 		~InputManager() = default;
 
 		#pragma endregion
 
 		#pragma region Functions
 
-		inline static InputManager* GetInstance()
+		/**
+		 * @brief Get the Instance object
+		 * 
+		 * @return InputManager* Instance of object
+		 */
+		inline static InputManager* GetInstance() noexcept
 		{
 			static InputManager instance;
 			return &instance;
 		}
 
-		void Update(GLFWwindow* window);
+		/**
+		 * @brief Update Manager
+		 * 
+		 * @param window Widow for update
+		 */
+		void Update(GLFWwindow* window) noexcept;
 
-		EKeyState GetKeyState(EKey key);
+		/**
+		 * @brief Get the Key State
+		 * 
+		 * @param key Key to get the state
+		 * @return EKeyState State of the key
+		 */
+		EKeyState GetKeyState(EKey key) noexcept;
 
-		inline Math::QXvec2 GetCursorPos() { return _cursorPos; }
+		/**
+		 * @brief Get the Cursor Pos object
+		 * 
+		 * @return Math::QXvec2 Pos of the cursor
+		 */
+		inline Math::QXvec2 GetCursorPos() noexcept { return _cursorPos; }
 
 		#pragma endregion
 	};

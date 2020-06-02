@@ -19,19 +19,41 @@ namespace Quantix::Resources
 {
 	struct QUANTIX_API Vertex
 	{
+		#pragma region Attributes
+
 		Math::QXvec3 position;
 		Math::QXvec2 uv;
 		Math::QXvec3 normal;
 
-		bool operator<(const Vertex& other) const
+		#pragma endregion
+
+		#pragma region Operators
+
+		/**
+		 * @brief Operator < to compoare vertex
+		 * 
+		 * @param other vertex to compare
+		 * @return true vertex is smaller
+		 * @return false vertex is bigger
+		 */
+		bool operator<(const Vertex& other) const noexcept
 		{
 			return position < other.position && normal < other.normal && uv < other.uv;
 		}
 
-		bool operator==(const Vertex& other) const
+		/**
+		 * @brief Operator == to compoare vertex
+		 * 
+		 * @param other vertex to compare
+		 * @return true vertex is equal
+		 * @return false vertex is not equal
+		 */
+		bool operator==(const Vertex& other) const noexcept
 		{
 			return position == other.position && normal == other.normal && uv == other.uv;
 		}
+
+		#pragma endregion
 	};
 
 	class QUANTIX_API Model : public Resource
@@ -49,8 +71,20 @@ namespace Quantix::Resources
 
 #pragma region Functions
 
-		QXbool LoadFromCache(const QXstring& file);
-		void LoadWithLib(const QXstring& file);
+		/**
+		 * @brief Load model from quantix file
+		 * 
+		 * @param file file to load
+		 * @return QXbool load successfully
+		 */
+		QXbool LoadFromCache(const QXstring& file) noexcept;
+
+		/**
+		 * @brief Load model from .fbx or .obj files
+		 * 
+		 * @param file path to the file
+		 */
+		void LoadWithLib(const QXstring& file) noexcept;
 
 #pragma endregion
 		
@@ -82,7 +116,7 @@ namespace Quantix::Resources
 		 * @param attrib Model attributes
 		 * @param shapes Shapes for the model
 		 */
-		Model(const std::vector<Vertex>& vertices, const std::vector<QXuint>& indices);
+		Model(const std::vector<Vertex>& vertices, const std::vector<QXuint>& indices) noexcept;
 
 		/**
 		 * @brief Destroy the Model object
@@ -93,8 +127,18 @@ namespace Quantix::Resources
 
 #pragma region Functions
 
-		void Load(const QXstring& file) override;
-		void Init() override;
+		/**
+		 * @brief Load a Model
+		 * 
+		 * @param file path to the file to load
+		 */
+		void Load(const QXstring& file) noexcept override;
+
+		/**
+		 * @brief Init Model for rendering
+		 * 
+		 */
+		void Init() noexcept override;
 
 #pragma region Operators
 
@@ -115,25 +159,35 @@ namespace Quantix::Resources
 		 * 
 		 * @return QXuint VAO value
 		 */
-		inline QXuint GetVAO() { return _VAO; }
+		inline QXuint GetVAO() noexcept { return _VAO; }
 
 		/**
 		 * @brief Get the Indices array
 		 * 
 		 * @return const std::vector<QXuint>& Indices array reference
 		 */
-		inline std::vector<QXuint>& GetIndices() { return _indices; }
+		inline std::vector<QXuint>& GetIndices() noexcept { return _indices; }
 
 		/**
 		 * @brief Get the Indices array
 		 *
 		 * @return const std::vector<QXuint>& Indices array reference
 		 */
-		inline std::vector<Vertex>& GetVertices() { return _vertices; }
+		inline std::vector<Vertex>& GetVertices() noexcept { return _vertices; }
 
-		inline QXstring					GetPath() { return _path; }
+		/**
+		 * @brief Get the Path object
+		 * 
+		 * @return QXstring Path
+		 */
+		inline QXstring					GetPath() noexcept { return _path; }
 
-		inline void						SetPath(QXstring path) { _path = path; }
+		/**
+		 * @brief Set the Path object
+		 * 
+		 * @param path Path to set
+		 */
+		inline void						SetPath(QXstring path) noexcept { _path = path; }
 
 #pragma endregion
 
@@ -148,7 +202,7 @@ namespace std
 	template<>
 	struct hash<Quantix::Resources::Vertex>
 	{
-		size_t operator()(const Quantix::Resources::Vertex& vertex) const
+		size_t operator()(const Quantix::Resources::Vertex& vertex) const noexcept
 		{
 			return ((hash<Math::QXvec3>()(vertex.position) ^
 					(hash<Math::QXvec3>()(vertex.normal) << 1)) >> 1) ^

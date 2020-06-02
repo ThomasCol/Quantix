@@ -8,7 +8,7 @@ namespace Quantix::Resources
 {
 	#pragma region Constructors&Destructor
 
-	Scene::Scene()
+	Scene::Scene() noexcept
 	{
 		_root3D = new Quantix::Core::DataStructure::GameObject3D("root3D");
 		_root3D->GetTransform()->SetParent(nullptr);
@@ -40,7 +40,7 @@ namespace Quantix::Resources
 		_id{ std::move(copy._id) }
 	{}
 
-	Scene::~Scene()
+	Scene::~Scene() noexcept
 	{
 		for (auto it = _objects.begin(); it != _objects.end();)
 			it = _objects.erase(it);
@@ -60,7 +60,7 @@ namespace Quantix::Resources
 
 	#pragma region Functions
 
-	Core::DataStructure::GameObject3D* Scene::AddGameObject(const QXstring& name, void* parent)
+	Core::DataStructure::GameObject3D* Scene::AddGameObject(const QXstring& name, void* parent) noexcept
 	{
 		Core::DataStructure::GameObject3D* object = new Core::DataStructure::GameObject3D(name);
 		QXbool is_set = false;
@@ -87,7 +87,7 @@ namespace Quantix::Resources
 		return object;
 	}
 
-	Core::DataStructure::GameObject2D* Scene::AddGameObject2D(const QXstring& name, void* parent)
+	Core::DataStructure::GameObject2D* Scene::AddGameObject2D(const QXstring& name, void* parent) noexcept
 	{
 		Core::DataStructure::GameObject2D* object = new Core::DataStructure::GameObject2D(name);
 		QXbool is_set = false;
@@ -114,7 +114,7 @@ namespace Quantix::Resources
 		return object;
 	}
 
-	Core::DataStructure::GameComponent* Scene::AddGameComponent(const QXstring& name, void* parent)
+	Core::DataStructure::GameComponent* Scene::AddGameComponent(const QXstring& name, void* parent) noexcept
 	{
 		Core::DataStructure::GameComponent* object = new Core::DataStructure::GameComponent(name);
 		_objectsComponent.push_back(object);
@@ -155,7 +155,7 @@ namespace Quantix::Resources
 			_root2D->Update();
 	}
 
-	void Scene::CheckDestroy(Core::Platform::AppInfo& info)
+	void Scene::CheckDestroy(Core::Platform::AppInfo& info) noexcept
 	{
 		if (_root3D)
 			_root3D->CheckDestroy(info);

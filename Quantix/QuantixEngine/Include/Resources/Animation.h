@@ -33,14 +33,14 @@ namespace Quantix::Resources
 		QXfloat													currentTime = 0.f;
 		QXint													animIndex = 0;
 
-		void	Init(const QXstring tName, QXsizei tMaxFrame, QXfloat tTimeCap)
+		void	Init(const QXstring tName, QXsizei tMaxFrame, QXfloat tTimeCap) noexcept
 		{
 			name = tName;
 			maxFrame = tMaxFrame;
 			timeCap = tTimeCap;
 		}
 		
-		void	Update(QXfloat frameTime)
+		void	Update(QXfloat frameTime) noexcept
 		{
 			currentTime += frameTime;
 			if (currentTime >= timeCap)
@@ -62,13 +62,13 @@ namespace Quantix::Resources
 		Animation(Animation&& anim) = default;
 		~Animation() = default;
 
-		void Load(const QXstring& pathFile) override;
-		void SetTRS(const aiAnimation* paiAnim, const aiMesh* paiMesh);
-		void Init() override;
-		void SetSkeletonOfMesh(QXuint indexBone, Quantix::Core::Physic::Transform3D* objectTransform);
-		void UpdateTimer(QXdouble frameTime);
-		void SendAnimationData(Quantix::Core::Physic::Transform3D* objectTransform);
-		void Update(QXdouble frameTime, Quantix::Core::Physic::Transform3D* objectTransform);
+		void Load(const QXstring& pathFile) noexcept override;
+		void SetTRS(const aiAnimation* paiAnim, const aiMesh* paiMesh)  noexcept;
+		void Init() noexcept override;
+		void SetSkeletonOfMesh(QXuint indexBone, Quantix::Core::Physic::Transform3D* objectTransform) noexcept;
+		void UpdateTimer(QXdouble frameTime) noexcept;
+		void SendAnimationData(Quantix::Core::Physic::Transform3D* objectTransform) noexcept;
+		void Update(QXdouble frameTime, Quantix::Core::Physic::Transform3D* objectTransform) noexcept;
 
 	private:
 		std::vector<Math::QXmat4>								_localTRS;

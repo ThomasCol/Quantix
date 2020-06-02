@@ -55,7 +55,7 @@ namespace Quantix::Core::Render
 		InitPostProcessEffects(manager, info);
 	}
 
-	Renderer::~Renderer()
+	Renderer::~Renderer() noexcept
 	{
 		glDeleteFramebuffers(1, &_uniShadowBuffer.FBO);
 		glDeleteFramebuffers(1, &_omniShadowBuffer.FBO);

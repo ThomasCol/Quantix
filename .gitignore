@@ -368,3 +368,5 @@ MigrationBackup/
 *.quantix
 Quantix/QuantixEngine/externals/*
 Quantix/QuantixEngine/dll/*
+Quantix/QuantixEditor/media/*
+Quantix/QuantixEditor/Other/*

@@ -2,7 +2,7 @@
 
 namespace Quantix::Resources
 {
-	void Animation::Load(const QXstring& pathFile)
+	void Animation::Load(const QXstring& pathFile) noexcept
 	{
 		Assimp::Importer Importer;
 		const aiScene* pScene = Importer.ReadFile(pathFile.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
@@ -15,7 +15,7 @@ namespace Quantix::Resources
 		SetTRS(paiAnim, paiMesh); 
 	}
 
-	void Animation::SetTRS(const aiAnimation* paiAnim, const aiMesh* paiMesh)
+	void Animation::SetTRS(const aiAnimation* paiAnim, const aiMesh* paiMesh) noexcept
 	{
 		_nbBones = paiAnim->mNumChannels;
 		for (QXuint i = 0; i < paiAnim->mNumChannels; i++)
@@ -44,27 +44,27 @@ namespace Quantix::Resources
 		}
 	}
 
-	void Animation::Init()
+	void Animation::Init() noexcept
 	{
 
 	}
 
-	void Animation::SetSkeletonOfMesh(QXuint indexBone, Quantix::Core::Physic::Transform3D* objectTransform)
+	void Animation::SetSkeletonOfMesh(QXuint indexBone, Quantix::Core::Physic::Transform3D* objectTransform) noexcept
 	{
 		_BlendedTRS[indexBone] = objectTransform->GetTRS() * Math::QXmat4::CreateTRSMatrix(_dataAnim[indexBone][_info.animIndex].localPos, _dataAnim[indexBone][_info.animIndex].localRotation, _dataAnim[indexBone][_info.animIndex].localScale);
 	}
 
-	void Animation::UpdateTimer(QXdouble frameTime)
+	void Animation::UpdateTimer(QXdouble frameTime) noexcept
 	{
 		_info.Update((QXfloat)frameTime);
 	}
 
-	void Animation::SendAnimationData(Quantix::Core::Physic::Transform3D* objectTransform)
+	void Animation::SendAnimationData(Quantix::Core::Physic::Transform3D* objectTransform) noexcept
 	{
 
 	}
 	
-	void Animation::Update(QXdouble frameTime, Quantix::Core::Physic::Transform3D* objectTransform)
+	void Animation::Update(QXdouble frameTime, Quantix::Core::Physic::Transform3D* objectTransform) noexcept
 	{
 		for (QXuint i = 0; i < _nbBones; i++)
 			SetSkeletonOfMesh(i, objectTransform);

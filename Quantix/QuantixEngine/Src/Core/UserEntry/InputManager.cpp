@@ -4,7 +4,7 @@
 
 namespace Quantix::Core::UserEntry
 {
-	void InputManager::Update(GLFWwindow* window)
+	void InputManager::Update(GLFWwindow* window) noexcept
 	{
 		QXint state;
 
@@ -38,7 +38,7 @@ namespace Quantix::Core::UserEntry
 		_cursorPos = { (QXfloat)posX, (QXfloat)posY };
 	}
 
-	EKeyState InputManager::GetKeyState(EKey key)
+	EKeyState InputManager::GetKeyState(EKey key) noexcept
 	{
 		for (QXuint i = 0; i < 121; ++i)
 		{

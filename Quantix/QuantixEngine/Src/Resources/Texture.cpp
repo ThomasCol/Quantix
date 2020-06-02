@@ -9,7 +9,7 @@ namespace Quantix::Resources
 {
 #pragma region Constructors
 
-	Texture::~Texture()
+	Texture::~Texture() noexcept
 	{
 		if (_image)
 		{

@@ -85,11 +85,30 @@ namespace Quantix::Core::Render
 		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
 			std::vector<Core::Components::Light> & lights) noexcept;
 
+		/**
+		 * @brief Draw the shadow pass for point lights
+		 * 
+		 * @param meshes meshes to use
+		 * @param info App info
+		 * @param lights lights to use
+		 */
 		void RenderPointLightsShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,
 			std::vector<Core::Components::Light>& lights) noexcept;
 
+		/**
+		 * @brief Render Colliders in framebuffer
+		 * 
+		 * @param colliders colliders to render
+		 */
 		void RenderColliders(std::vector<Components::ICollider*>& colliders) noexcept;
 
+		/**
+		 * @brief send uniform buffers to shader
+		 * 
+		 * @param lights lights to send
+		 * @param info App info
+		 * @param cam camera to send
+		 */
 		void SendUniformBuffer(std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
 
 		#pragma endregion
@@ -127,7 +146,7 @@ namespace Quantix::Core::Render
 		/**
 		 * @brief Destroy the Renderer object
 		 */
-		~Renderer();
+		~Renderer() noexcept;
 
 		#pragma endregion
 
@@ -177,6 +196,11 @@ namespace Quantix::Core::Render
 
 		#pragma region Accessor
 
+		/**
+		 * @brief Get the Effects object
+		 * 
+		 * @return std::vector<PostProcess::PostProcessEffect*>& effects
+		 */
 		inline std::vector<PostProcess::PostProcessEffect*>& GetEffects() noexcept { return _effects; }
 
 		#pragma endregion
