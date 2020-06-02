@@ -33,7 +33,9 @@ namespace Quantix::Gameplay
 	}
 
 	void Arms::Start()
-	{}
+	{
+
+	}
 
 	void Arms::Update(QXdouble deltaTime)
 	{

@@ -84,6 +84,8 @@ namespace Quantix::Core::Components
 			 */
 			const QXbool	PlaySound();
 
+			void			StopSound();
+
 			/**
 			 * @brief Update position attributes of the emitter
 			 *

@@ -14,7 +14,7 @@ namespace Quantix::Core::Platform
 	private:
 #pragma region Attributes
 
-		
+		QXbool							_firstFrame { true };
 
 #pragma endregion
 

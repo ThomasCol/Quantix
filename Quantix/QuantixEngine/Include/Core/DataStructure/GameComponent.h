@@ -162,6 +162,7 @@ namespace Quantix::Core::DataStructure
 
 		virtual void	Awake() {};
 		virtual void	Start() {};
+		virtual void	Stop() {};
 		virtual void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector < Core::Components::ICollider* >& colliders,
 								std::vector<Components::Light>& lights, Platform::AppInfo& info, QXbool isPlaying) {};
 		virtual void	Destroy() {};

@@ -510,6 +510,7 @@ void Editor::ChangeStateSimulation()
 			//Update Scene
 			_play = QX_TRUE;
 			_pause = QX_FALSE;
+
 		}
 		else
 			_pause = QX_TRUE;

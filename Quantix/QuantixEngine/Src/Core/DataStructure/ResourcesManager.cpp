@@ -4,6 +4,7 @@
 
 #include "Core/Debugger/Logger.h"
 #include "Core/Threading/TaskSystem.hpp"
+#include "Core/SoundCore.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -56,6 +57,8 @@ namespace Quantix::Core::DataStructure
 			delete it->second;
 			it = _sounds.erase(it);
 		}
+
+		Core::SoundCore::GetInstance()->Destroy();
 	}
 
 #pragma endregion
