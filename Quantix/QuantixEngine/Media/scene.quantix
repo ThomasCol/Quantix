@@ -693,7 +693,7 @@
                                     "layer": 0,
                                     "Transform": {
                                         "position": {
-                                            "x": 11.990068435668946,
+                                            "x": 11.943079948425293,
                                             "y": 9.479999542236329,
                                             "z": 6.992992401123047
                                         },
@@ -32580,6 +32580,135 @@
                                         }
                                     ],
                                     "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject30": {
+                                    "name": "Generator",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 1.0,
+                                            "y": 1.0,
+                                            "z": 1.0
+                                        }
+                                    },
+                                    "Components": [],
+                                    "Childs": [
+                                        {
+                                            "GameObject0": {
+                                                "name": "CubeGenrator1",
+                                                "layer": 0,
+                                                "Transform": {
+                                                    "position": {
+                                                        "x": 18.365999221801759,
+                                                        "y": 7.895999908447266,
+                                                        "z": 13.944999694824219
+                                                    },
+                                                    "rotation": {
+                                                        "x": 0.0,
+                                                        "y": 0.0,
+                                                        "z": 0.0,
+                                                        "w": 1.0
+                                                    },
+                                                    "scale": {
+                                                        "x": 1.0,
+                                                        "y": 1.0,
+                                                        "z": 1.0
+                                                    }
+                                                },
+                                                "Components": [
+                                                    {
+                                                        "Cube Generator": {
+                                                            "Enable": true,
+                                                            "Max Cubes": 1,
+                                                            "Distance for Generation": 5.0
+                                                        }
+                                                    }
+                                                ],
+                                                "Childs": []
+                                            }
+                                        },
+                                        {
+                                            "GameObject1": {
+                                                "name": "CubeGenerator2",
+                                                "layer": 0,
+                                                "Transform": {
+                                                    "position": {
+                                                        "x": 10.994999885559082,
+                                                        "y": 20.77899932861328,
+                                                        "z": 18.023000717163087
+                                                    },
+                                                    "rotation": {
+                                                        "x": 0.0,
+                                                        "y": 0.0,
+                                                        "z": 0.0,
+                                                        "w": 1.0
+                                                    },
+                                                    "scale": {
+                                                        "x": 1.0,
+                                                        "y": 1.0,
+                                                        "z": 1.0
+                                                    }
+                                                },
+                                                "Components": [
+                                                    {
+                                                        "Cube Generator": {
+                                                            "Enable": true,
+                                                            "Max Cubes": 1,
+                                                            "Distance for Generation": 5.0
+                                                        }
+                                                    }
+                                                ],
+                                                "Childs": []
+                                            }
+                                        },
+                                        {
+                                            "GameObject2": {
+                                                "name": "CubeGenerator3",
+                                                "layer": 0,
+                                                "Transform": {
+                                                    "position": {
+                                                        "x": 31.985000610351564,
+                                                        "y": 20.70199966430664,
+                                                        "z": 42.992000579833987
+                                                    },
+                                                    "rotation": {
+                                                        "x": 0.0,
+                                                        "y": 0.0,
+                                                        "z": 0.0,
+                                                        "w": 1.0
+                                                    },
+                                                    "scale": {
+                                                        "x": 1.0,
+                                                        "y": 1.0,
+                                                        "z": 1.0
+                                                    }
+                                                },
+                                                "Components": [
+                                                    {
+                                                        "Cube Generator": {
+                                                            "Enable": true,
+                                                            "Max Cubes": 1,
+                                                            "Distance for Generation": 5.0
+                                                        }
+                                                    }
+                                                ],
+                                                "Childs": []
+                                            }
+                                        }
+                                    ]
                                 }
                             }
                         ]
