@@ -183,6 +183,347 @@
                         ],
                         "Childs": []
                     }
+                },
+                {
+                    "GameObject3": {
+                        "name": "GameObject",
+                        "layer": 0,
+                        "Transform": {
+                            "position": {
+                                "x": 0.0,
+                                "y": 13.005719184875489,
+                                "z": 0.0
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Cube Generator": {
+                                    "Enable": true,
+                                    "Max Cubes": 1,
+                                    "Distance for Generation": 5.0
+                                }
+                            }
+                        ],
+                        "Childs": [
+                            {
+                                "GameObject0": {
+                                    "name": "TopCube",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 0.0,
+                                            "y": 0.7200000286102295,
+                                            "z": 0.0
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 3.0,
+                                            "y": 0.10000000149011612,
+                                            "z": 3.0
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial2.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject1": {
+                                    "name": "BottomCube1",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 0.0,
+                                            "y": -0.7200000286102295,
+                                            "z": -1.1629999876022339
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 3.0,
+                                            "y": 0.10000000149011612,
+                                            "z": 0.699999988079071
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial3.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject2": {
+                                    "name": "BottomCube2",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 0.0,
+                                            "y": -0.7200000286102295,
+                                            "z": 1.1629999876022339
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 3.0,
+                                            "y": 0.10000000149011612,
+                                            "z": 0.699999988079071
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial4.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject3": {
+                                    "name": "BottomCube3",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": -1.1629999876022339,
+                                            "y": -0.7200000286102295,
+                                            "z": 0.0
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 0.699999988079071,
+                                            "y": 0.10000000149011612,
+                                            "z": 3.0
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial5.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject4": {
+                                    "name": "BottomCube4",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 1.1629999876022339,
+                                            "y": -0.7200000286102295,
+                                            "z": 0.0
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 0.699999988079071,
+                                            "y": 0.10000000149011612,
+                                            "z": 3.0
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial6.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject5": {
+                                    "name": "Plot1",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": -1.3799999952316285,
+                                            "y": 0.0,
+                                            "z": 0.0
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 0.20000000298023225,
+                                            "y": 1.5,
+                                            "z": 0.20000000298023225
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial7.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject6": {
+                                    "name": "Plot2",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 1.3799999952316285,
+                                            "y": 0.0,
+                                            "z": 0.0
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 0.20000000298023225,
+                                            "y": 1.5,
+                                            "z": 0.20000000298023225
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial8.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject7": {
+                                    "name": "Plot3",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": -1.3799999952316285
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 0.20000000298023225,
+                                            "y": 1.5,
+                                            "z": 0.20000000298023225
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial9.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject8": {
+                                    "name": "Plot4",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 1.3799999952316285
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 0.20000000298023225,
+                                            "y": 1.5,
+                                            "z": 0.20000000298023225
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "media/Material/DefaultMaterial10.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            }
+                        ]
+                    }
                 }
             ]
         }
