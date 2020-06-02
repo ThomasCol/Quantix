@@ -119,7 +119,7 @@ namespace Quantix::Core::Components::Behaviours
 		if (_gameobject)
 		{
 			//Cast a ray to check if a cube is near enough to be grabbed
-			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 100.f };
+			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 3 };
 
 			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
@@ -162,7 +162,7 @@ namespace Quantix::Core::Components::Behaviours
 		if (_gameobject)
 		{
 			//Cast a ray to check if a cube can be frozen
-			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 100 };
+			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 50 };
 
 			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
 			{
@@ -230,7 +230,7 @@ namespace Quantix::Core::Components::Behaviours
 		if (_gameobject)
 		{
 			//Cast a ray to check if a cube can be frozen
-			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 100 };
+			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 50 };
 
 			rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
 			Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
