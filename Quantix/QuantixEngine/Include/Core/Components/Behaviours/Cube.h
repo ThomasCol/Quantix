@@ -40,6 +40,7 @@ namespace Quantix::Core::Components::Behaviours
 			Resources::Material* saveMaterial;
 			Resources::Material* currentMaterial;
 
+
 			#pragma endregion
 
 			#pragma region Methods
@@ -50,6 +51,7 @@ namespace Quantix::Core::Components::Behaviours
 			#pragma endregion
 		
 		public:
+			Math::QXvec3 objectSaveVelocity;
 
 			Cube() = default;
 			Cube(Quantix::Core::DataStructure::GameComponent * par);
