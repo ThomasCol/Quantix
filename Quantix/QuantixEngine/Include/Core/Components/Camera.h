@@ -8,8 +8,9 @@
 #include "rttrEnabled.h"
 #include "Core/DataStructure/Component.h"
 
-#define SPEED (1000.f)
-#define SPEEDFREECAM (10.f)
+#define SPEED (3.f)
+#define SPEEDJUMP (25.F)
+#define SPEEDFREECAM (5.f)
 
 namespace Quantix::Core::Components
 {
@@ -20,7 +21,6 @@ namespace Quantix::Core::Components
 	private:
 		#pragma region Attributes
 		Math::QXvec3	_up;
-		Math::QXvec3	_pos;
 		Math::QXvec3	_dir;
 		Math::QXvec3	_angle;
 
@@ -30,6 +30,7 @@ namespace Quantix::Core::Components
 		#pragma endregion Attributes
 	public:
 		CharacterController* _controller = nullptr;
+		Math::QXvec3	_pos;
 
 #pragma region Constructors/Destructor
 		/**

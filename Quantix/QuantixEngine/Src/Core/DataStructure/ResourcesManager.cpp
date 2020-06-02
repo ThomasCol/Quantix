@@ -343,7 +343,7 @@ namespace Quantix::Core::DataStructure
 			emissive_path.resize(char_count);
 			fread(emissive_path.data(), sizeof(QXchar), char_count, file);
 
-			material->SetDiffuseTexture(CreateTexture(emissive_path));
+			material->SetEmissiveTexture(CreateTexture(emissive_path));
 		}
 
 		fclose(file);
@@ -357,7 +357,10 @@ namespace Quantix::Core::DataStructure
 		Material* mat = LoadMaterialFromFile(filePath);
 
 		if (mat)
+		{
+			mat->SetPath(filePath);
 			return mat;
+		}
 		else
 			return CreateDefaultMaterial();
 	}
@@ -385,7 +388,7 @@ namespace Quantix::Core::DataStructure
 		fwrite(&material->shininess, sizeof(QXfloat), 1, file);
 
 		const Texture* diffuse = material->GetDiffuseTexture();
-		const Texture* emissive = material->GetDiffuseTexture();
+		const Texture* emissive = material->GetEmissiveTexture();
 
 		for (auto it = _textures.begin(); it != _textures.end(); ++it)
 		{

@@ -200,6 +200,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Core\Render\PostProcess\Crosshair.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\CubeGenerator.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\FilmGrain.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Bumper.cpp" />
@@ -264,6 +265,7 @@
     <ClCompile Include="Src\Core\Render\PostProcess\Vignette.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\Render\PostProcess\Crosshair.h" />
     <ClInclude Include="Include\Core\Render\PostProcess\FilmGrain.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Bumper.h" />
     <ClInclude Include="Include\Core\Components\Behaviours\Arms.h" />

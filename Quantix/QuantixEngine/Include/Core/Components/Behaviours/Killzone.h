@@ -10,6 +10,8 @@ namespace Quantix::Gameplay
 	{
 	public:
 
+		Math::QXvec3 positionToRespawnController{ Math::QXvec3(0,0,0) };
+
 		/**
 		 * @brief Construct a new Killzone object
 		 * 
@@ -47,6 +49,8 @@ namespace Quantix::Gameplay
 		 * @return Killzone* new killzone
 		 */
 		Killzone* Copy() const override;
+
+		void	Awake() override;
 
 		/**
 		 * @brief Called when Physic raise an OnTriggerEvent for this behaviour

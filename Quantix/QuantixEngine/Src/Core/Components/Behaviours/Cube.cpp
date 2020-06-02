@@ -36,10 +36,10 @@ namespace Quantix::Gameplay
 
 	void Cube::Update(QXdouble deltaTime)
 	{
-		switch (_state)
+		switch (_stateMagnet)
 		{
-			case ECubeState::MAGNET_POS:	Attract(deltaTime); break;
-			case ECubeState::MAGNET_NEG:	Reject(deltaTime); break;
+			case ECubeMagnetState::MAGNET_POS:	Attract(deltaTime); break;
+			case ECubeMagnetState::MAGNET_NEG:	Reject(deltaTime); break;
 			default: break;
 		}
 	}
@@ -60,12 +60,12 @@ namespace Quantix::Gameplay
 
 				if (cube)
 				{
-					if ((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetGlobalPosition()).Length() > 1.f)
+					if ((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetGlobalPosition()).Length() > 0.5f)
 					{
 						Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
 
-						if (rigid)
-							rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * (QXfloat)deltaTime * 100.f);
+						if (rigid && cube->GetStatePhysic() == ECubePhysicState::DEFAULT)
+							rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * (QXfloat)deltaTime * ATTRACTFORCE);
 					}
 				}
 			}
@@ -90,8 +90,8 @@ namespace Quantix::Gameplay
 				{
 					Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
 
-					if (rigid)
-						rigid->AddForce((overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * (QXfloat)deltaTime * 100.f);
+					if (rigid && cube->GetStatePhysic() == ECubePhysicState::DEFAULT)
+						rigid->AddForce((overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * (QXfloat)deltaTime * REJECTFORCE);
 				}
 			}
 		}
@@ -99,30 +99,43 @@ namespace Quantix::Gameplay
 
 	void Cube::UpdateMaterial()
 	{
-		switch (_state)
+		QXbool physicColor = false;
+		switch (_stateMagnet)
 		{
-		case ECubeState::DEFAULT:
-			_mesh->GetMaterial()->ambient = Math::QXvec3(51, 51, 51) / 255;
-			_mesh->GetMaterial()->diffuse = Math::QXvec3(128, 128, 128) / 255;
-			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
-			break;
-		case ECubeState::FROZEN :
-			_mesh->GetMaterial()->ambient = Math::QXvec3(119, 248, 253) / 255;
-			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 248, 253) / 255;
-			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
-			break;
-		case ECubeState::MAGNET_NEG:
+		case ECubeMagnetState::MAGNET_NEG:
 			_mesh->GetMaterial()->ambient = Math::QXvec3(200, 60, 40) / 255;
 			_mesh->GetMaterial()->diffuse = Math::QXvec3(253, 130, 130) / 255;
 			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
 			break;
-		case ECubeState::MAGNET_POS:
+		case ECubeMagnetState::MAGNET_POS:
 			_mesh->GetMaterial()->ambient = Math::QXvec3(40, 60, 200) / 255;
 			_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 130, 253) / 255;
 			_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
 			break;
+		case ECubeMagnetState::DEFAULT:
+			physicColor = true;
+			break;
 		default:
 			break;
+		}
+
+		if (physicColor)
+		{
+			switch (_statePhysic)
+			{
+			case ECubePhysicState::DEFAULT:
+				_mesh->GetMaterial()->ambient = Math::QXvec3(51, 51, 51) / 255;
+				_mesh->GetMaterial()->diffuse = Math::QXvec3(128, 128, 128) / 255;
+				_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+				break;
+			case ECubePhysicState::FROZEN:
+				_mesh->GetMaterial()->ambient = Math::QXvec3(119, 248, 253) / 255;
+				_mesh->GetMaterial()->diffuse = Math::QXvec3(119, 248, 253) / 255;
+				_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+				break;
+			default:
+				break;
+			}
 		}
 
 	}

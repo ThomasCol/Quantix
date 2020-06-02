@@ -17,6 +17,8 @@ namespace Quantix::Core::DataStructure
 		Quantix::Physic::Transform3D*		_transform;
 		#pragma endregion Attributes
 	public:
+		QXbool toDestroy = false;
+
 		#pragma region Constructors/Destructor
 		GameObject3D() = default;
 		GameObject3D(const QXstring&, const Math::QXvec3& pos = Math::QXvec3(0, 0, 0), const Math::QXquaternion& rot = Math::QXquaternion(1, 0, 0, 0), const Math::QXvec3& sca = Math::QXvec3(1, 1, 1)) noexcept;
@@ -37,6 +39,8 @@ namespace Quantix::Core::DataStructure
 
 		void									Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
 													std::vector<Components::Light>& lights, const GameObject3D* parentObject, Platform::AppInfo& info, QXbool isPlaying);
+
+		void									CheckDestroy(Platform::AppInfo& info);
 
 		void									Start() override;
 		

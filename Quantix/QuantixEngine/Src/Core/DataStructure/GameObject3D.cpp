@@ -113,6 +113,26 @@ namespace Quantix::Core::DataStructure
 			child->GetObject()->Update(meshes, colliders, lights, this, info, isPlaying);
 	}
 
+	void	GameObject3D::CheckDestroy(Platform::AppInfo& info)
+	{
+
+		std::list<Quantix::Physic::Transform3D*>& list = _transform->GetChilds();
+		for (auto it = list.begin(); it != list.end();)
+		{
+			
+			(*it)->GetObject()->CheckDestroy(info);
+
+			if ((*it)->GetObject()->toDestroy)
+			{
+				(*it)->GetObject()->Destroy();
+				it = list.erase(it);
+			}
+			else
+				++it;
+		}
+	}
+
+
 	void	GameObject3D::Start()
 	{
 		if (_toUpdate)
@@ -141,7 +161,8 @@ namespace Quantix::Core::DataStructure
 
 	void GameObject3D::Destroy()	
 	{
-		std::cout << "Destroy" << std::endl;
+		for (QXuint i = 0; i < GetComponents().size();)
+			RemoveComponent(GetComponents()[i]);
 	}
 
 	void	GameObject3D::CallOnTrigger(GameObject3D* other)

@@ -35,6 +35,8 @@ namespace Quantix::Gameplay
 		Quantix::Resources::Scene*						_scene;
 		Quantix::Core::DataStructure::ResourcesManager*	_manager;
 
+		QXbool											_IsGeneratorCreated { false };
+
 		#pragma endregion
 
 		#pragma region Methods
@@ -75,7 +77,7 @@ namespace Quantix::Gameplay
 		inline void				SetNbMaxOfCubes(const QXuint& newNbMaxOfCubes) { _nbMaxOfCubes = newNbMaxOfCubes; };
 		inline const QXuint&	GetNbMaxOfCubes() { return _nbMaxOfCubes; };
 
-		void					SetSceneAndResourceManager(Quantix::Resources::Scene* scene, Quantix::Core::DataStructure::ResourcesManager* rm);
+		void					SetSceneAndResourcesManager(Quantix::Resources::Scene* scene, Quantix::Core::DataStructure::ResourcesManager* rm);
 
 		#pragma endregion
 

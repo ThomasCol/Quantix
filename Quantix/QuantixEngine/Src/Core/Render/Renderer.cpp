@@ -11,6 +11,7 @@
 #include "Core/UserEntry/InputManager.h"
 #include "Core/Render/PostProcess/FilmGrain.h"
 #include "Core/Render/PostProcess/Vignette.h"
+#include "Core/Render/PostProcess/Crosshair.h"
 
 namespace Quantix::Core::Render
 {
@@ -211,14 +212,12 @@ namespace Quantix::Core::Render
 		for (QXuint i = 0; i < 6; ++i)
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-		QXfloat borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 		// attach depth texture as FBO's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthMap, 0);
@@ -251,11 +250,15 @@ namespace Quantix::Core::Render
 		PostProcess::PostProcessEffect* vignette = new PostProcess::Vignette(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Vignette.vert", "../QuantixEngine/Media/Shader/Vignette.frag"),
 			manager.CreateModel("media/Mesh/quad.obj"), info);
 
+		PostProcess::PostProcessEffect* crosshair = new PostProcess::Crosshair(manager.CreateShaderProgram("../QuantixEngine/Media/Shader/Crosshair.vert", "../QuantixEngine/Media/Shader/Crosshair.frag"),
+			info, manager.CreateTexture("media/Textures/Crosshair.png"));
+
 		_effects.push_back(skybox);
 		_effects.push_back(bloom);
 		_effects.push_back(toneMapping);
 		_effects.push_back(filmGrain);
 		_effects.push_back(vignette);
+		_effects.push_back(crosshair);
 	}
 
 	QXuint Renderer::Draw(std::vector<Components::Mesh*>& mesh, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
@@ -273,7 +276,7 @@ namespace Quantix::Core::Render
 		switch (lights[0].type)
 		{
 		case Components::ELightType::DIRECTIONAL:
-			_projLight = Math::QXmat4::CreateOrthographicProjectionMatrix(20, 20, 1.0f, 7.5f);
+			_projLight = Math::QXmat4::CreateOrthographicProjectionMatrix(20, 20, 1.0f, 100.f);
 			break;
 		case Components::ELightType::SPOT:
 			_projLight = Math::QXmat4::CreateProjectionMatrix(20, 20, 1.0f, 25.0f, 90.0f);
@@ -329,6 +332,7 @@ namespace Quantix::Core::Render
 				{
 					material->SendData(_omniShadowBuffer.texture, true);
 					material->SetFloat3("lightPos", lights[1].position.e);
+					material->SendData(_uniShadowBuffer.texture);
 				}
 				else
 					material->SendData(_uniShadowBuffer.texture);
@@ -371,8 +375,14 @@ namespace Quantix::Core::Render
 		if (lights.size() >= 2)
 		{
 			RenderPointLightsShadows(meshes, info, lights);
-			return;
 		}
+
+		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4),
+			Math::QXmat4::CreateLookAtMatrix(-lights[0].direction, -lights[0].direction * 10 + lights[0].direction, Math::QXvec3::up).array);
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), _projLight.array);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
 		_uniShadowProgram->Use();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _uniShadowBuffer.FBO);
@@ -412,26 +422,26 @@ namespace Quantix::Core::Render
 		std::vector<Core::Components::Light>& lights)
 	{
 		Math::QXmat4 views[] = {
-			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{1, 0, 0}, {0, -1, 0}), //BACK
+			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{1, 0, 0}, {0, -1, 0}),
 			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{-1, 0, 0}, {0, -1, 0}),
-			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 1, 0}, {0, 0, 1}),//TOP
-			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, -1, 0}, {0, 0, -1}),//BOTTOM
+			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 1, 0}, {0, 0, 1}),
+			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, -1, 0}, {0, 0, -1}),
 			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 0, 1}, {0, -1, 0}),
-			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 0, -1}, {0, -1, 0}), //FRONT
+			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{0, 0, -1}, {0, -1, 0}),
 		};
 		_omniShadowProgram->Use();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, _omniShadowBuffer.FBO);
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		glViewport(0, 0, 4096, 4096);
+		glViewport(0, 0, 1024, 1024);
 
-		glUniformMatrix4fv(_omniShadowProgram->GetLocation("projection"), 1, GL_FALSE, Math::QXmat4::CreateProjectionMatrix(20, 20, 1.0f, 25.0f, 90.0f).array);
+		glUniformMatrix4fv(_omniShadowProgram->GetLocation("projection"), 1, GL_FALSE, Math::QXmat4::CreateProjectionMatrix(20, 20, 0.01f, 100.f, 90.f).array);
 
 		for (QXuint i = 0; i < 6; ++i)
 			glUniformMatrix4fv(_omniShadowProgram->GetLocation(QXstring("viewShadows[") + std::to_string(i) + "]"), 1, GL_FALSE, views[i].array);
 
-		glUniform1f(_omniShadowProgram->GetLocation("farPlane"), 50.f);
+		glUniform1f(_omniShadowProgram->GetLocation("farPlane"), 100.f);
 		glUniform3fv(_omniShadowProgram->GetLocation("lightPos"), 1, lights[1].position.e);
 
 		QXbyte last_shader_id = -1;
@@ -520,12 +530,6 @@ namespace Quantix::Core::Render
 
 		if (light_size)
 		{
-			glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
-			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4),
-				Math::QXmat4::CreateLookAtMatrix(-lights[0].direction * 10, -lights[0].direction * 10 + lights[0].direction, Math::QXvec3::up).array);
-			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), _projLight.array);
-			glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
 			glBindBuffer(GL_UNIFORM_BUFFER, _lightUBO);
 			glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(QXuint), &light_size);
 			glBufferSubData(GL_UNIFORM_BUFFER, sizeof(QXuint) * 2, light_size * sizeof(Core::Components::Light), &lights[0]);

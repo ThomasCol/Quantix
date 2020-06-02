@@ -12,7 +12,8 @@ RTTR_PLUGIN_REGISTRATION
 		.constructor<const Quantix::Gameplay::CubeGenerator&>()
 		.constructor<Quantix::Gameplay::CubeGenerator&&>()
 		.property("Max Cubes", &Quantix::Gameplay::CubeGenerator::GetNbMaxOfCubes, &Quantix::Gameplay::CubeGenerator::SetNbMaxOfCubes)
-		.property("Distance for Generation", &Quantix::Gameplay::CubeGenerator::GetDistForGeneration, &Quantix::Gameplay::CubeGenerator::SetDistForGeneration);
+		.property("Distance for Generation", &Quantix::Gameplay::CubeGenerator::GetDistForGeneration, &Quantix::Gameplay::CubeGenerator::SetDistForGeneration)
+		.method("SetSceneAndResourcesManager", &Quantix::Gameplay::CubeGenerator::SetSceneAndResourcesManager);
 }
 
 namespace Quantix::Gameplay
@@ -37,6 +38,17 @@ namespace Quantix::Gameplay
 
 	void CubeGenerator::Update(QXdouble deltaTime)
 	{
+		if (!_IsGeneratorCreated)
+		{
+			if (_scene->IsReady())
+			{
+				CreateGenerator();
+				_IsGeneratorCreated = true;
+			}
+			else
+				return;
+		}
+
 		for (auto it = _cubes.begin(); it != _cubes.end(); ++it)
 		{
 			if (!(*it)->GetIsActive())
@@ -89,11 +101,10 @@ namespace Quantix::Gameplay
 		GenerateMesh("Plot4", Math::QXvec3(0.f, 0.f, 1.38f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
 	}
 
-	void CubeGenerator::SetSceneAndResourceManager(Quantix::Resources::Scene* scene, Quantix::Core::DataStructure::ResourcesManager* rm)
+	void CubeGenerator::SetSceneAndResourcesManager(Quantix::Resources::Scene* scene, Quantix::Core::DataStructure::ResourcesManager* rm)
 	{
 		_scene = scene;
 		_manager = rm;
-		CreateGenerator();
 	}
 
 	void CubeGenerator::CreateCube()
