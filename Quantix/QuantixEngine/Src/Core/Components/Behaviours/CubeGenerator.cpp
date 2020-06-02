@@ -75,7 +75,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void CubeGenerator::GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, Math::QXvec3 ambient, Math::QXvec3 diffuse, Math::QXvec3 specular)
+	void CubeGenerator::GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, Math::QXvec3 ambient, Math::QXvec3 diffuse, Math::QXvec3 specular) noexcept
 	{
 		Core::DataStructure::GameObject3D* go = _scene->AddGameObject(name, _gameobject);
 		go->SetTransformValue(pos, Math::QXquaternion(1.f, 0.f, 0.f, 0.f), scale);
@@ -88,7 +88,7 @@ namespace Quantix::Gameplay
 		mesh->GetMaterial()->specular = specular;
 	}
 
-	void CubeGenerator::CreateGenerator()
+	void CubeGenerator::CreateGenerator() noexcept
 	{
 		GenerateMesh("TopCube", Math::QXvec3(0.f, 0.72f, 0.f), Math::QXvec3(3.f, 0.1f, 3.f), COLORTAMBIENT, COLORTDIFFUSE, COLORB);
 		GenerateMesh("BottomCube1", Math::QXvec3(0.f, -0.72f, -1.163f), Math::QXvec3(3.f, 0.1f, 0.7f), COLORB, COLORB, COLORB);
@@ -107,7 +107,7 @@ namespace Quantix::Gameplay
 		_manager = rm;
 	}
 
-	void CubeGenerator::CreateCube()
+	void CubeGenerator::CreateCube() noexcept
 	{
 		//GAMEOBJECT
 		Core::DataStructure::GameObject3D* cube = _scene->AddGameObject("Generated Cube " + std::to_string(_cubes.size() + 1));
@@ -135,7 +135,7 @@ namespace Quantix::Gameplay
 		_cubes.push_back(cube);
 	}
 
-	void CubeGenerator::ReUseCube(Core::DataStructure::GameObject3D* cube)
+	void CubeGenerator::ReUseCube(Core::DataStructure::GameObject3D* cube) noexcept
 	{
 		cube->SetTransformValue(_gameobject->GetGlobalPosition(), _gameobject->GetGlobalRotation(), _gameobject->GetGlobalScale());
 		cube->GetComponent<Core::Components::Rigidbody>()->SetTransformPosition(_gameobject->GetGlobalPosition());
