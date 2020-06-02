@@ -1,12 +1,11 @@
 #include "Core/Tool/Serializer.h"
 
-#include "Core/DataStructure/GameObject3D.h"
-#include "Core/DataStructure/ResourcesManager.h"
+#include <fstream>
+
 #include "Core/Components/Rigidbody.h"
 #include "Core/Components/CubeCollider.h"
 #include "Core/Components/SphereCollider.h"
-
-#include <fstream>
+#include "Core/Components/Behaviours/CubeGenerator.h"
 
 namespace Quantix::Core::Tool
 {
@@ -32,6 +31,7 @@ namespace Quantix::Core::Tool
 		rapidjson::Value::MemberIterator ret = doc.FindMember("Scene");
 		scene->Rename(ret->value.FindMember("name")->value.GetString());
 
+		_currScene = scene;
 
 		rapidjson::Value& root = ret->value.FindMember("GameObject0")->value;
 		rapidjson::Value& childs = root.FindMember("Childs")->value;
@@ -100,6 +100,10 @@ namespace Quantix::Core::Tool
 				Quantix::Core::DataStructure::Component* comp = object->GetComponents().back();
 				comp->Init(object);
 				rttr::type type = comp->get_type();
+				if (type == rttr::type::get<Gameplay::CubeGenerator>() || type.get_raw_type() == rttr::type::get<Gameplay::CubeGenerator>())
+				{
+					type.invoke("SetSceneAndResourcesManager", comp, { _currScene, manager });
+				}
 				for (QXsizei i = 0; i < val2.MemberCount(); ++i)
 				{
 					for (auto it = type.get_properties().begin(); it != type.get_properties().end(); ++it)

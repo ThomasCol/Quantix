@@ -12,6 +12,12 @@ namespace Quantix::Core::Tool
 	class QUANTIX_API Serializer
 	{
 	private:
+		#pragma region Attributes
+
+		Resources::Scene* _currScene;
+
+		#pragma endregion
+
 		#pragma region Functions
 
 		void DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, DataStructure::GameObject3D* parent,
