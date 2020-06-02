@@ -22,7 +22,6 @@
     <ClCompile Include="Src\Core\Render\Renderer.cpp" />
     <ClCompile Include="Lib\Glad\src\glad.c" />
     <ClCompile Include="Src\Resources\Scene.cpp" />
-    <ClCompile Include="Src\Core\DataStructure\SceneManager.cpp" />
     <ClCompile Include="Src\Core\Components\Collider.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\PostProcessEffect.cpp" />
     <ClCompile Include="Src\Core\Render\PostProcess\Skybox.cpp" />
