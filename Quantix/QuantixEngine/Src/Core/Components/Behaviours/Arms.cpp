@@ -50,12 +50,11 @@ namespace Quantix::Gameplay
 
 		if (GetKey(QX_KEY_TAB) == Core::UserEntry::EKeyState::PRESSED)
 			SwitchPower();
-		
 		if (GetKey(QX_KEY_E) == Core::UserEntry::EKeyState::PRESSED)
 			UseHands();
+
 		if (GetKey(QX_MOUSE_BUTTON_LEFT) == Core::UserEntry::EKeyState::PRESSED)
 			UsePunch();
-
 		if (GetKey(QX_MOUSE_BUTTON_RIGHT) == Core::UserEntry::EKeyState::PRESSED)
 			UsePower();
 
@@ -125,9 +124,9 @@ namespace Quantix::Gameplay
 			{
 				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
 
-				if (cube && cube->GetState() == ECubeState::DEFAULT)
+				if (cube && cube->GetStatePhysic() == ECubePhysicState::DEFAULT)
 				{
-					cube->ChangeState(ECubeState::GRABBED);
+					cube->ChangeStatePhysic(ECubePhysicState::GRABBED);
 
 					_grabbedObject = ray.actorClosestBlock;
 
@@ -147,7 +146,7 @@ namespace Quantix::Gameplay
 	{
 		//Drop
 
-		_grabbedObject->GetComponent<Cube>()->ChangeState(ECubeState::DEFAULT);
+		_grabbedObject->GetComponent<Cube>()->ChangeStatePhysic(ECubePhysicState::DEFAULT);
 
 		_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKinematic(false);
 		_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKineForQueries(false);
@@ -169,18 +168,18 @@ namespace Quantix::Gameplay
 				rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
 				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
 
-				if (cube && cube->GetState() != ECubeState::GRABBED)
+				if (cube && cube->GetStatePhysic() != ECubePhysicState::GRABBED)
 				{
 					//Detect if is already frozen or not
 					if (rigid->GetRigidFlagKinematic())
 					{
-						cube->ChangeState(ECubeState::DEFAULT);
+						cube->ChangeStatePhysic(ECubePhysicState::DEFAULT);
 						UnFreeze(ray.actorClosestBlock);
 						cube->UpdateMaterial();
 					}
 					else
 					{
-						cube->ChangeState(ECubeState::FROZEN);
+						cube->ChangeStatePhysic(ECubePhysicState::FROZEN);
 						Freeze(ray.actorClosestBlock);
 						cube->UpdateMaterial();
 					}
@@ -208,9 +207,9 @@ namespace Quantix::Gameplay
 
 	void	Arms::UsePunch()
 	{
-		if (_isGrabbingObject && _grabbedObject->GetComponent<Cube>()->GetState() == ECubeState::GRABBED)
+		if (_isGrabbingObject && _grabbedObject->GetComponent<Cube>()->GetStatePhysic() == ECubePhysicState::GRABBED)
 		{
-			_grabbedObject->GetComponent<Cube>()->ChangeState(ECubeState::DEFAULT);
+			_grabbedObject->GetComponent<Cube>()->ChangeStatePhysic(ECubePhysicState::DEFAULT);
 
 			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKinematic(false);
 			_grabbedObject->GetComponent<Core::Components::Rigidbody>()->SetRigidFlagKineForQueries(false);
@@ -232,27 +231,25 @@ namespace Quantix::Gameplay
 			//Cast a ray to check if a cube can be frozen
 			Physic::Raycast	ray{ _gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetForward() * 2, _gameobject->GetTransform()->GetForward(), 100 };
 
-			if (ray.actorClosestBlock && ray.actorClosestBlock->GetLayer() == Quantix::Core::DataStructure::Layer::SELECTABLE/*Layer?*/)// is a Cube
-			{
-				rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
-				Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
+			rigid = ray.actorClosestBlock->GetComponent<Core::Components::Rigidbody>();
+			Cube* cube = ray.actorClosestBlock->GetComponent<Cube>();
 
-				if (cube && cube->GetState() == ECubeState::DEFAULT)
+			if (cube && cube->GetStatePhysic() != ECubePhysicState::GRABBED)
+			{
+				if (positiveField)
 				{
-					if (positiveField)
-					{
-						cube->ChangeState(ECubeState::MAGNET_POS);
-						cube->UpdateMaterial();
-					}
+					if (cube->GetStateMagnet() != ECubeMagnetState::DEFAULT)
+						cube->ChangeStateMagnet(ECubeMagnetState::DEFAULT);
 					else
-					{
-						cube->ChangeState(ECubeState::MAGNET_NEG);
-						cube->UpdateMaterial();
-					}
+						cube->ChangeStateMagnet(ECubeMagnetState::MAGNET_POS);
+					cube->UpdateMaterial();
 				}
 				else
 				{
-					cube->ChangeState(ECubeState::DEFAULT);
+					if (cube->GetStateMagnet() != ECubeMagnetState::DEFAULT)
+						cube->ChangeStateMagnet(ECubeMagnetState::DEFAULT);
+					else
+						cube->ChangeStateMagnet(ECubeMagnetState::MAGNET_NEG);
 					cube->UpdateMaterial();
 				}
 			}

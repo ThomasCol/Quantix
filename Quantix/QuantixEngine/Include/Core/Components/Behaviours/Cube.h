@@ -10,13 +10,18 @@
 
 namespace Quantix::Gameplay
 {
-	enum class QUANTIX_API ECubeState
+	enum class QUANTIX_API ECubePhysicState
 	{
 		DEFAULT,
 		GRABBED,
-		FROZEN,
+		FROZEN
+	};
+
+	enum class QUANTIX_API ECubeMagnetState
+	{
+		DEFAULT,
 		MAGNET_NEG,
-		MAGNET_POS,
+		MAGNET_POS
 	};
 
 	class QUANTIX_API Cube : public Quantix::Core::Components::Behaviour
@@ -25,7 +30,9 @@ namespace Quantix::Gameplay
 
 			#pragma region Attributes
 
-			ECubeState	_state			{ ECubeState::DEFAULT };
+			ECubePhysicState	_statePhysic			{ ECubePhysicState::DEFAULT };
+			ECubeMagnetState	_stateMagnet			{ ECubeMagnetState::DEFAULT };
+
 			QXfloat		_rangeOfMagnet	{ 3.f };
 
 			Core::Components::Mesh* _mesh = nullptr;
@@ -58,8 +65,11 @@ namespace Quantix::Gameplay
 
 			#pragma region Accessors
 
-			inline void					ChangeState(ECubeState newState) { _state = newState; };
-			inline const ECubeState&	GetState() { return _state; };
+			inline void					ChangeStatePhysic(ECubePhysicState newState) { _statePhysic = newState; };
+			inline const ECubePhysicState&	GetStatePhysic() { return _statePhysic; };
+
+			inline void					ChangeStateMagnet(ECubeMagnetState newState) { _stateMagnet = newState; };
+			inline const ECubeMagnetState& GetStateMagnet() { return _stateMagnet; };
 			
 			inline const float&			GetRangeOfMagnet() { return _rangeOfMagnet; };
 			inline void					SetRangeOfMagnet(QXfloat range) { _rangeOfMagnet = range; };
