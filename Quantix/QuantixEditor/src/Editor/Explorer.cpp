@@ -139,7 +139,7 @@ void Explorer::DrawFile(QXint& index) noexcept
 			PushId(_folder.GetIDVCXPROJ(), name, index);
 		else if (name.find(".mp3") != std::string::npos || name.find(".wav") != std::string::npos || name.find(".ogg") != std::string::npos
 			|| name.find(".flac") != std::string::npos || name.find(".aif") != std::string::npos)
-			PushId(_folder.GetIDVCXPROJ(), name, index);
+			PushId(_folder.GetIDMP3(), name, index);
 		else
 			PushId(_folder.GetIDFile(), name, index);
 

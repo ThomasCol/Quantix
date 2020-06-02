@@ -8,11 +8,11 @@ Folder::Folder(Quantix::Core::DataStructure::ResourcesManager& cache, const fs::
 	_folderGLu = cache.CreateTexture("Other/ImgFolder/Folder.png");
 	_cppGLu = cache.CreateTexture("Other/ImgFolder/iconeCPP.png");
 	_hGLu = cache.CreateTexture("Other/ImgFolder/iconeH.png");
+	_imgMp3GLu = cache.CreateTexture("Other/ImgFolder/iconmp3.png");
 	_slnGLu = cache.CreateTexture("Other/ImgFolder/iconSLN.png");
 	_vcxprojGLu = cache.CreateTexture("Other/ImgFolder/iconeVCXPROJ.png");
 	_fileGLu = cache.CreateTexture("Other/ImgFolder/iconExtension.png");
 	_imgFileGLu = cache.CreateTexture("Other/ImgFolder/jpgfile.png");
-	_imgMp3GLu = cache.CreateTexture("Other/ImgFolder/iconmp3.png");
 
 	fs::directory_iterator end_itr;
 	fs::directory_iterator dir_itr(p);
@@ -48,6 +48,7 @@ Folder& Folder::operator=(const Folder& folder) noexcept
 	_vcxprojGLu = folder._vcxprojGLu;
 	_fileGLu = folder._fileGLu;
 	_imgFileGLu = folder._imgFileGLu;
+	_imgMp3GLu = folder._imgMp3GLu;
 
 	return *this;
 }

@@ -1,0 +1,190 @@
+{
+    "Scene": {
+        "name": "Default",
+        "GameObject0": {
+            "name": "root3D",
+            "layer": 0,
+            "Transform": {
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "w": 1.0
+                },
+                "scale": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                }
+            },
+            "Components": [],
+            "Childs": [
+                {
+                    "GameObject0": {
+                        "name": "Mesh",
+                        "layer": 0,
+                        "Transform": {
+                            "position": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Mesh": {
+                                    "Enable": true,
+                                    "Model": "./media/Mesh/fantasy_game_inn.obj",
+                                    "Material": "./media/Material/FantasyMaterial.mat"
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                },
+                {
+                    "GameObject1": {
+                        "name": "light",
+                        "layer": 0,
+                        "Transform": {
+                            "position": {
+                                "x": -2.0,
+                                "y": 4.0,
+                                "z": -1.0
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Light": {
+                                    "Enable": true,
+                                    "type": "Directional",
+                                    "ambient": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "diffuse": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "specular": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "direction": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 1.0
+                                    },
+                                    "position": {
+                                        "x": -2.0,
+                                        "y": 4.0,
+                                        "z": -1.0
+                                    },
+                                    "constant": 0.0,
+                                    "linear": 0.0,
+                                    "quadratic": 0.0,
+                                    "cutOff": 0.0,
+                                    "outerCutOff": 0.0
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                },
+                {
+                    "GameObject2": {
+                        "name": "Point Light",
+                        "layer": 0,
+                        "Transform": {
+                            "position": {
+                                "x": -2.7083702087402345,
+                                "y": 5.7943115234375,
+                                "z": 2.860809326171875
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Light": {
+                                    "Enable": true,
+                                    "type": "Point",
+                                    "ambient": {
+                                        "x": 0.009999999776482582,
+                                        "y": 0.009999999776482582,
+                                        "z": 0.009999999776482582
+                                    },
+                                    "diffuse": {
+                                        "x": 0.699999988079071,
+                                        "y": 0.699999988079071,
+                                        "z": 0.699999988079071
+                                    },
+                                    "specular": {
+                                        "x": 0.30000001192092898,
+                                        "y": 0.30000001192092898,
+                                        "z": 0.30000001192092898
+                                    },
+                                    "direction": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 1.0
+                                    },
+                                    "position": {
+                                        "x": -2.7083702087402345,
+                                        "y": 5.7943115234375,
+                                        "z": 2.860809326171875
+                                    },
+                                    "constant": 0.10000000149011612,
+                                    "linear": 0.30000001192092898,
+                                    "quadratic": 0.10000000149011612,
+                                    "cutOff": 0.0,
+                                    "outerCutOff": 0.0
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                }
+            ]
+        }
+    }
+}

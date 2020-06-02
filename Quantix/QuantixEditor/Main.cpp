@@ -6,7 +6,7 @@
 #include <Editor.h>
 #include <Core/Profiler/Profiler.h>
 
-int main()
+int WinMain()
 {
 	try
 	{

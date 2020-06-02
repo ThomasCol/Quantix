@@ -138,6 +138,13 @@ public:
 	inline QXuint						GetIDImg() const  noexcept { return _imgFileGLu->GetId(); };
 
 	/**
+	 * @brief Get the ID of MP3 file
+	 *
+	 * @return QXuint
+	 */
+	inline QXuint						GetIDMP3() const  noexcept { return _imgMp3GLu->GetId(); };
+
+	/**
 	 * @brief Set the Size Folder object
 	 *
 	 * @param value
