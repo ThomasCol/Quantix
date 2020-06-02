@@ -1,6 +1,7 @@
 #include "Core/DataStructure/GameObject3D.h"
 
 #include "Core/Components/CubeCollider.h"
+#include "Core/Components/SoundEmitter.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -137,13 +138,30 @@ namespace Quantix::Core::DataStructure
 	{
 		if (_toUpdate)
 		{
-			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>();
+			std::vector<Components::Behaviour*> behaviors = GetComponents<Components::Behaviour>(true);
 			for (QXsizei i = 0; i < behaviors.size(); ++i)
 				behaviors[i]->Start();
 		}
 
+		Components::SoundEmitter* emitter{ GetComponent<Components::SoundEmitter>() };
+
+		if (emitter && emitter->IsPlayingOnAwake())
+			emitter->PlaySound();
+
+
 		for (Physic::Transform3D* child : _transform->GetChilds())
 			child->GetObject()->Start();
+	}
+
+	void	GameObject3D::Stop()
+	{
+		Components::SoundEmitter* emitter{ GetComponent<Components::SoundEmitter>() };
+
+		if (emitter)
+			emitter->StopSound();
+
+		for (Physic::Transform3D* child : _transform->GetChilds())
+			child->GetObject()->Stop();
 	}
 	
 	void	GameObject3D::Awake()

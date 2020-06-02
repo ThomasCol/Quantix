@@ -25,7 +25,6 @@ namespace Quantix::Core::Platform
 	{
 		Physic::PhysicHandler::GetInstance()->ReleaseSystem();
 		Physic::PhysicHandler::GetInstance()->Destroy();
-		Core::SoundCore::GetInstance()->Destroy();
 		Threading::TaskSystem::Destroy();
 		delete scene;
 	}
@@ -35,6 +34,20 @@ namespace Quantix::Core::Platform
 	{
 		Threading::TaskSystem::GetInstance()->Update();
 		manager.UpdateResourcesState();
+
+		if (isPlaying && _firstFrame)
+		{
+			scene->Start();
+			_firstFrame = false;
+		}
+		if (!isPlaying)
+		{
+			if (!_firstFrame)
+			{
+				_firstFrame = true;
+				scene->Stop();
+			}
+		}
 
 		scene->Update(meshes, colliders, lights, info, isPlaying);
 

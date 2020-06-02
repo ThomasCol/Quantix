@@ -40,16 +40,16 @@ namespace Quantix::Gameplay
 
 			#pragma region Methods
 
-			void	UseHands();
-			void	Grab();
-			void	Drop();
-			void	UseIce();
-			void	Freeze(Core::DataStructure::GameObject3D* cube);
-			void	UnFreeze(Core::DataStructure::GameObject3D* cube);
-			void	UsePunch();
-			void	UseMagnet(QXbool positiveField);
-			void	SwitchPower();
-			void	UsePower();
+			void	UseHands() noexcept;
+			void	Grab() noexcept;
+			void	Drop() noexcept;
+			void	UseIce() noexcept;
+			void	Freeze(Core::DataStructure::GameObject3D* cube) noexcept;
+			void	UnFreeze(Core::DataStructure::GameObject3D* cube) noexcept;
+			void	UsePunch() noexcept;
+			void	UseMagnet(QXbool positiveField) noexcept;
+			void	SwitchPower() noexcept;
+			void	UsePower() noexcept;
 
 			#pragma endregion
 		
@@ -68,8 +68,8 @@ namespace Quantix::Gameplay
 			void						Awake() override;
 			void						Start() override;
 			void						Update(QXdouble deltaTime) override;
-			void						UpdateMaterial();
-			inline EArmState			GetPower() { return _state;  };
+			void						UpdateMaterial() noexcept;
+			inline EArmState			GetPower() noexcept { return _state;  };
 			
 			#pragma endregion
 			CLASS_REGISTRATION(Quantix::Core::DataStructure::Component, Quantix::Core::Components::Behaviour);

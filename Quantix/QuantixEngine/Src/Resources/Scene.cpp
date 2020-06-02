@@ -169,6 +169,14 @@ namespace Quantix::Resources
 			_root2D->Start();
 	}
 
+	void Scene::Stop() noexcept
+	{
+		if (_root3D)
+			_root3D->Stop();
+		if (_root2D)
+			_root2D->Stop();
+	}
+
 	void Scene::Rename(const QXstring& str) noexcept
 	{
 		_name = str;

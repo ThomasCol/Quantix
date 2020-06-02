@@ -43,6 +43,8 @@ namespace Quantix::Core::DataStructure
 		void									CheckDestroy(Platform::AppInfo& info);
 
 		void									Start() override;
+
+		void									Stop() override;
 		
 		void									Awake() override;
 

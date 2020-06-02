@@ -41,8 +41,8 @@ namespace Quantix::Gameplay
 
 		#pragma region Methods
 
-		void					CreateCube();
-		void					ReUseCube(Core::DataStructure::GameObject3D* cube);
+		void					CreateCube() noexcept;
+		void					ReUseCube(Core::DataStructure::GameObject3D* cube) noexcept;
 
 		#pragma endregion
 
@@ -66,16 +66,16 @@ namespace Quantix::Gameplay
 		void					Start() override;
 		void					Update(QXdouble deltaTime) override;
 		void					Destroy() override;
-		void					GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, Math::QXvec3 ambient, Math::QXvec3 diffuse, Math::QXvec3 specular);
-		void					CreateGenerator();
+		void					GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, Math::QXvec3 ambient, Math::QXvec3 diffuse, Math::QXvec3 specular) noexcept;
+		void					CreateGenerator() noexcept;
 
 		#pragma region Accessors
 
-		inline void				SetDistForGeneration(const QXfloat& newDistforGeneration) { _distForGeneration = newDistforGeneration; };
-		inline const QXfloat&	GetDistForGeneration() { return _distForGeneration; };
+		inline void				SetDistForGeneration(const QXfloat& newDistforGeneration) noexcept	{ _distForGeneration = newDistforGeneration; };
+		inline const QXfloat&	GetDistForGeneration() noexcept										{ return _distForGeneration; };
 
-		inline void				SetNbMaxOfCubes(const QXuint& newNbMaxOfCubes) { _nbMaxOfCubes = newNbMaxOfCubes; };
-		inline const QXuint&	GetNbMaxOfCubes() { return _nbMaxOfCubes; };
+		inline void				SetNbMaxOfCubes(const QXuint& newNbMaxOfCubes) noexcept { _nbMaxOfCubes = newNbMaxOfCubes; };
+		inline const QXuint&	GetNbMaxOfCubes() noexcept								{ return _nbMaxOfCubes; };
 
 		void					SetSceneAndResourcesManager(Quantix::Resources::Scene* scene, Quantix::Core::DataStructure::ResourcesManager* rm);
 

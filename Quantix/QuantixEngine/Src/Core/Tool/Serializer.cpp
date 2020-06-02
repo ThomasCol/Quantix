@@ -172,6 +172,11 @@ namespace Quantix::Core::Tool
 				currentProp.set_value(inst, manager->CreateModel(value.GetString()));
 				return;
 			}
+			else if (type == rttr::type::get<Resources::Sound*>() || type.get_raw_type() == rttr::type::get<Resources::Sound*>())
+			{
+				currentProp.set_value(inst, manager->CreateSound(value.GetString()));
+				return;
+			}
 			
 			for (QXsizei i = 0; i < value.MemberCount(); ++i)
 			{
@@ -340,7 +345,8 @@ namespace Quantix::Core::Tool
 		else if (currentProp.get_type().is_class() || (currentProp.get_type().is_pointer() && currentProp.get_type().get_raw_type().is_class()))
 		{
 			if (currentProp.get_type() == rttr::type::get<Resources::Material>() || currentProp.get_type().get_raw_type() == rttr::type::get<Resources::Material>() ||
-				currentProp.get_type() == rttr::type::get<Resources::Model>() || currentProp.get_type().get_raw_type() == rttr::type::get<Resources::Model>())
+				currentProp.get_type() == rttr::type::get<Resources::Model>() || currentProp.get_type().get_raw_type() == rttr::type::get<Resources::Model>() ||
+				currentProp.get_type() == rttr::type::get<Resources::Sound>() || currentProp.get_type().get_raw_type() == rttr::type::get<Resources::Sound>())
 			{
 				QXstring str = currentProp.get_type().invoke("GetPath", currentProp.get_value(inst), {}).get_value<QXstring>();
 				writer.String(currentProp.get_name().to_string());

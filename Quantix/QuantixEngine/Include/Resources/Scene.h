@@ -91,6 +91,7 @@ namespace Quantix::Resources
 			void CheckDestroy(Core::Platform::AppInfo& info);
 
 			void	Start() noexcept;
+			void	Stop() noexcept;
 
 			void Reset()noexcept;
 

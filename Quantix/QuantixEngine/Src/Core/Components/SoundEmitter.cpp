@@ -101,6 +101,13 @@ namespace Quantix::Core::Components
 		return _sound->Play(_channel);
 	}
 
+	void	SoundEmitter::StopSound()
+	{
+		FMOD::Channel* channel { _sound->GetChannel() };
+		if (channel)
+			Core::SoundCore::GetInstance()->Try(channel->stop());
+	}
+
 	void SoundEmitter::SetSoundMode(Resources::ESoundMode mode)
 	{
 		FMOD_MODE fmode;
