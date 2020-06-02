@@ -1737,8 +1737,8 @@
                                                 "numCubeInWidth": 2,
                                                 "numCubeInHeight": 5,
                                                 "numCubeInDepth": 5,
-                                                "BreakForce": 100.0,
-                                                "BreakTorque Z": 100.0
+                                                "BreakForce": 1000.0,
+                                                "BreakTorque Z": 1000.0
                                             }
                                         },
                                         {
