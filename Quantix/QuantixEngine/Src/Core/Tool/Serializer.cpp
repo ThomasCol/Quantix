@@ -235,7 +235,7 @@ namespace Quantix::Core::Tool
 	}
 
 	void Serializer::SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
-		QXbool isDeformable) noexcept
+		QXbool& isDeformable) noexcept
 	{
 		writer.String("GameObject" + std::to_string(index));
 		writer.StartObject();
@@ -252,7 +252,10 @@ namespace Quantix::Core::Tool
 			writer.StartObject();
 			auto comp = transform->GetObject()->GetComponents()[i];
 			if (comp->get_type().get_name() == "DeformableMesh")
+			{
 				isDeformable = true;
+				_lastObj = transform;
+			}
 			if (transform->GetObject()->GetComponents()[i] != nullptr)
 			{
 				rttr::type t = transform->GetObject()->GetComponents()[i]->get_type();
@@ -276,7 +279,9 @@ namespace Quantix::Core::Tool
 		}
 		writer.EndArray();
 		writer.EndObject();
-		isDeformable = false;
+
+		if (_lastObj != transform)
+			isDeformable = false;
 	}
 
 	void Serializer::WriteComponent(rttr::instance comp, rttr::type type, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept

@@ -5,8 +5,8 @@
 #include "rttrEnabled.h"
 #include "Core/Components//Mesh.h"
 
-#define ATTRACTFORCE 450.f
-#define REJECTFORCE 50.f
+#define ATTRACTFORCE 750.f
+#define REJECTFORCE 250.f
 
 namespace Quantix::Core::Components::Behaviours
 {
