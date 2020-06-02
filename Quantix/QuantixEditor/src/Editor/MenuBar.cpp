@@ -5,13 +5,13 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <filesystem>
-#include <Physic/PhysicHandler.h>
+#include <Core/Physic/PhysicHandler.h>
 
 #define DEFAULTPATH "media"
 
 void MenuBar::LoadScene(Quantix::Core::Platform::Application* app)
 {
-	Quantix::Physic::PhysicHandler::GetInstance()->CleanScene();
+	Quantix::Core::Physic::PhysicHandler::GetInstance()->CleanScene();
 	app->newScene = app->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
 	app->sceneChange = true;
 }
@@ -34,8 +34,8 @@ void MenuBar::PhysXSettings()
 	ImGui::GetStyle().WindowRounding = 8.f;
 	if (ImGui::Begin("PhysX Settings", &_winPhysX, ImGuiWindowFlags_NoCollapse))
 	{
-		rttr::instance inst(Quantix::Physic::PhysicHandler::GetInstance());
-		for (auto it = Quantix::Physic::PhysicHandler::GetInstance()->get_type().get_properties().begin(); it != Quantix::Physic::PhysicHandler::GetInstance()->get_type().get_properties().end(); ++it)
+		rttr::instance inst(Quantix::Core::Physic::PhysicHandler::GetInstance());
+		for (auto it = Quantix::Core::Physic::PhysicHandler::GetInstance()->get_type().get_properties().begin(); it != Quantix::Core::Physic::PhysicHandler::GetInstance()->get_type().get_properties().end(); ++it)
 		{
 			rttr::property currentProp = *(it);
 			ImGui::PushID(currentProp.get_name().to_string().c_str());

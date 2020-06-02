@@ -5,7 +5,7 @@
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
 
-#include "Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicHandler.h"
 
 #define GRAVITY Math::QXvec3(0.f, -5.f, 0.f)
 

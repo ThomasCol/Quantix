@@ -4,7 +4,7 @@
 
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
-#include "Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicHandler.h"
 #include "Core/Threading/TaskSystem.hpp"
 #include "Core/SoundCore.h"
 

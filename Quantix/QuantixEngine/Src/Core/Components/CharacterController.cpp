@@ -1,6 +1,6 @@
 #include "Core/Components/CharacterController.h"
-#include "Physic/PhysicSetting.h"
-#include "Physic/Raycast.h"
+#include "Core/Physic/PhysicSetting.h"
+#include "Core/Physic/Raycast.h"
 
 #include "Core/Components/Camera.h"
 
@@ -10,13 +10,13 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<>()
 	.constructor<const Quantix::Core::Components::CharacterController&>()
 	.constructor<Quantix::Core::Components::CharacterController&&>()
-	.enumeration<Quantix::Physic::NonWalkableMode>("NonWalkableMode")
-					 (rttr::value("PreventClimbing", Quantix::Physic::NonWalkableMode::PREVENTCLIMBING),
-					 rttr::value("PreventClimbingAndForceSlide", Quantix::Physic::NonWalkableMode::PREVENTCLIMBINGANDFORCESLIDING))
-	.enumeration<Quantix::Physic::ClimbingMode>("ClimbingMode")
-					 (rttr::value("Constrained", Quantix::Physic::ClimbingMode::CONSTRAINED),
-					 rttr::value("Easy", Quantix::Physic::ClimbingMode::EASY),
-					 rttr::value("Last", Quantix::Physic::ClimbingMode::LAST))
+	.enumeration<Quantix::Core::Physic::NonWalkableMode>("NonWalkableMode")
+					 (rttr::value("PreventClimbing", Quantix::Core::Physic::NonWalkableMode::PREVENTCLIMBING),
+					 rttr::value("PreventClimbingAndForceSlide", Quantix::Core::Physic::NonWalkableMode::PREVENTCLIMBINGANDFORCESLIDING))
+	.enumeration<Quantix::Core::Physic::ClimbingMode>("ClimbingMode")
+					 (rttr::value("Constrained", Quantix::Core::Physic::ClimbingMode::CONSTRAINED),
+					 rttr::value("Easy", Quantix::Core::Physic::ClimbingMode::EASY),
+					 rttr::value("Last", Quantix::Core::Physic::ClimbingMode::LAST))
 	.property("Radius", &Quantix::Core::Components::CharacterController::GetRadius, &Quantix::Core::Components::CharacterController::SetRadius)
 	.property("Height", &Quantix::Core::Components::CharacterController::GetHeight, &Quantix::Core::Components::CharacterController::SetHeight)
 	.property("UpDirection", &Quantix::Core::Components::CharacterController::GetUpDirection, &Quantix::Core::Components::CharacterController::SetUpDirection)

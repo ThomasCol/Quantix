@@ -1,8 +1,8 @@
 #include "Core/Components/Rigidbody.h"
 #include "Core/DataStructure/GameComponent.h"
 
-#include "Physic/PhysicHandler.h"
-#include "Physic/PhysicDynamic.h"
+#include "Core/Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicDynamic.h"
 #include <functional>
 
 #include "Core/MathHeader.h"

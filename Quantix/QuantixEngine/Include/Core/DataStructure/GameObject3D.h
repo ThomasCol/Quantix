@@ -2,7 +2,7 @@
 #define _GAMEOBJECT3D_H_
 
 #include "Core/DataStructure/GameComponent.h"
-#include "Physic/Transform3D.h"
+#include "Core/Physic/Transform3D.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -14,7 +14,7 @@ namespace Quantix::Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		Quantix::Physic::Transform3D*		_transform;
+		Quantix::Core::Physic::Transform3D*		_transform;
 		#pragma endregion Attributes
 	public:
 		QXbool toDestroy = false;
@@ -135,13 +135,13 @@ namespace Quantix::Core::DataStructure
 		 */
 		void									SetTransformValue(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& scale);
 
-		inline void								SetTransform(Quantix::Physic::Transform3D* transform) { _transform = transform; };
+		inline void								SetTransform(Quantix::Core::Physic::Transform3D* transform) { _transform = transform; };
 
 		/**
 		 * @brief Get the Transform object
 		 *
 		 */
-		Quantix::Physic::Transform3D*			GetTransform() const { return _transform; };
+		Quantix::Core::Physic::Transform3D*			GetTransform() const { return _transform; };
 		#pragma endregion Accessors
 		GameObject3D&							operator=(const GameObject3D& object);
 		#pragma endregion Methods

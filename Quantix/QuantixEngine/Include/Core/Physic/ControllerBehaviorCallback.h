@@ -3,7 +3,7 @@
 
 #include <../characterkinematic/PxControllerBehavior.h>
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
     class ControllerBehaviorCallback : public physx::PxControllerBehaviorCallback
     {

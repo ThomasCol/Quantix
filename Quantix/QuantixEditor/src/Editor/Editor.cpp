@@ -9,7 +9,7 @@
 #include <Core/Components/CharacterController.h>
 #include <Core/DataStructure/GameObject3D.h>
 #include <Core/SoundCore.h>
-#include <Physic/PhysicHandler.h>
+#include <Core/Physic/PhysicHandler.h>
 #include <Core/Profiler/Profiler.h>
 #include <Core/Components/Behaviours/Arms.h>
 #include "stb_image.h"
@@ -311,7 +311,7 @@ void Editor::SaveLoadScene()
 
 	if (GetKey(QX_KEY_F2) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
-		Quantix::Physic::PhysicHandler::GetInstance()->CleanScene();
+		Quantix::Core::Physic::PhysicHandler::GetInstance()->CleanScene();
 		_app->newScene = _app->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
 		_app->sceneChange = true;
 	}

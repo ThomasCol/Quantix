@@ -3,9 +3,9 @@
 
 #include "Core/DLLHeader.h"
 #include "rttrEnabled.h"
-#include "Physic/PhysicDynamic.h"
+#include "Core/Physic/PhysicDynamic.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	// Filter Collision Group 
 	struct QUANTIX_API FilterGroup

@@ -10,10 +10,10 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const ICollider&>()
 	.constructor<ICollider&&>()
-	.enumeration<Quantix::Physic::FilterGroup::Enum>("FilterGroup")
-		(rttr::value("Pawn", Quantix::Physic::FilterGroup::Enum::PAWN),
-		rttr::value("Crab", Quantix::Physic::FilterGroup::Enum::eCRAB),
-		rttr::value("MineHead", Quantix::Physic::FilterGroup::Enum::eMINE_HEAD))
+	.enumeration<Quantix::Core::Physic::FilterGroup::Enum>("FilterGroup")
+		(rttr::value("Pawn", Quantix::Core::Physic::FilterGroup::Enum::PAWN),
+		rttr::value("Crab", Quantix::Core::Physic::FilterGroup::Enum::eCRAB),
+		rttr::value("MineHead", Quantix::Core::Physic::FilterGroup::Enum::eMINE_HEAD))
 	.property("ToRender", &ICollider::toRender)
 	.property("Local Position", &ICollider::GetPosition, &ICollider::SetPosition)
 	.property("Local Rotation", &ICollider::GetRotation, &ICollider::SetRotation)

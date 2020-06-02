@@ -11,7 +11,7 @@ namespace Quantix::Core::DataStructure
 	class GameObject3D;
 }
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	enum class QUANTIX_API Space
 	{

@@ -1,13 +1,13 @@
-#include "Physic/PhysicHandler.h"
-#include "Physic/PhysicStatic.h"
-#include "Physic/PhysicDynamic.h"
+#include "Core/Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicStatic.h"
+#include "Core/Physic/PhysicDynamic.h"
 #include "Core/MathHeader.h"
 #include "Core/DataStructure/GameObject3D.h"
-#include "Physic/SimulationCallback.h"
+#include "Core/Physic/SimulationCallback.h"
 #include "characterkinematic/PxController.h"
 
-#include "Physic/ControllerBehaviorCallback.h"
-#include "Physic/ControllerHitReport.h"
+#include "Core/Physic/ControllerBehaviorCallback.h"
+#include "Core/Physic/ControllerHitReport.h"
 
 #include <vector>
 
@@ -16,12 +16,12 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
-	rttr::registration::class_<Quantix::Physic::PhysicHandler>("PhysicHandler")
+	rttr::registration::class_<Quantix::Core::Physic::PhysicHandler>("PhysicHandler")
 	.constructor<>();
 }
 
 using namespace physx;
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
 		PxFilterObjectAttributes attributes1, PxFilterData filterData1,

@@ -117,7 +117,7 @@ namespace Quantix::Core::DataStructure
 	void	GameObject3D::CheckDestroy(Platform::AppInfo& info)
 	{
 
-		std::list<Quantix::Physic::Transform3D*>& list = _transform->GetChilds();
+		std::list<Quantix::Core::Physic::Transform3D*>& list = _transform->GetChilds();
 		for (auto it = list.begin(); it != list.end();)
 		{
 			

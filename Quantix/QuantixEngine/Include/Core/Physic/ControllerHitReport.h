@@ -11,7 +11,7 @@
 #include "Core/Components/Behaviours/Killzone.h"
 #include "Core/Components/CharacterController.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	class ControllerHitReport : public physx::PxUserControllerHitReport
 	{

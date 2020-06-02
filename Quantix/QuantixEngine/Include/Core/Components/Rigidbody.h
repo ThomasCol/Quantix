@@ -5,11 +5,11 @@
 #include "Core/DataStructure/Component.h"
 #include "rttrEnabled.h"
 
-#include "Physic/IPhysicType.h"
-#include "Physic/PhysicHandler.h"
+#include "Core/Physic/IPhysicType.h"
+#include "Core/Physic/PhysicHandler.h"
 #include "Core/MathHeader.h"
 #include "Core/Event/Event.h"
-#include "Physic/PhysicSetting.h"
+#include "Core/Physic/PhysicSetting.h"
 
 namespace Quantix::Core::DataStructure
 {

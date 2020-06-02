@@ -8,13 +8,13 @@
 #include <PxRigidActorExt.h>
 #include "Core/DLLHeader.h"
 #include "rttrEnabled.h"
-#include "Physic/PhysicSetting.h"
-#include "Physic/Raycast.h"
-#include "Physic/Joint.h"
+#include "Core/Physic/PhysicSetting.h"
+#include "Core/Physic/Raycast.h"
+#include "Core/Physic/Joint.h"
 
 #include "Core/DataStructure/GameComponent.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	using namespace physx;
 	class IPhysicType;

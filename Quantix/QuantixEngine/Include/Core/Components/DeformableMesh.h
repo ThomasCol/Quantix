@@ -5,7 +5,7 @@
 #include "Core/MathHeader.h"
 #include "Core./DataStructure//Component.h"
 #include "Resources/Scene.h"
-#include "Physic/Joint.h"
+#include "Core/Physic/Joint.h"
 #include "Core/Platform/Application.h"
 
 namespace Quantix::Core::Components

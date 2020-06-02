@@ -24,13 +24,13 @@ namespace Quantix::Core::DataStructure
 {
 	GameObject2D::GameObject2D() noexcept :
 		GameComponent(),
-		_transform{ new Quantix::Physic::Transform2D(this) }
+		_transform{ new Quantix::Core::Physic::Transform2D(this) }
 	{
 	}
 
 	GameObject2D::GameObject2D(const QXstring& name) noexcept :
 		GameComponent(name, QX_TRUE),
-		_transform { new Quantix::Physic::Transform2D(this) }
+		_transform { new Quantix::Core::Physic::Transform2D(this) }
 	{
 	}
 

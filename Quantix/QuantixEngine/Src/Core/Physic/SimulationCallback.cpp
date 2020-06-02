@@ -1,11 +1,11 @@
-#include "Physic/SimulationCallback.h"
+#include "Core/Physic/SimulationCallback.h"
 
 #include "Core/DataStructure/GameObject3D.h"
 
 #include <PxActor.h>
 #include <PxRigidActorExt.h>
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	void SimulationCallback::onConstraintBreak(PxConstraintInfo*, PxU32)
 	{}

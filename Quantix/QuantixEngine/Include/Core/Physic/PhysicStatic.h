@@ -4,9 +4,9 @@
 #include <iostream>
 #include <PxPhysicsAPI.h>
 
-#include "Physic/IPhysicType.h"
+#include "Core/Physic/IPhysicType.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	using namespace physx;
 	class PhysicStatic : public IPhysicType
@@ -80,7 +80,7 @@ namespace Quantix::Physic
 		
 #pragma endregion
 #pragma endregion
-		CLASS_REGISTRATION(Quantix::Physic::IPhysicType)
+		CLASS_REGISTRATION(Quantix::Core::Physic::IPhysicType)
 	};
 }
 #endif
