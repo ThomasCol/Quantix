@@ -12,42 +12,42 @@ public:
 	 * @brief Construct a new Console object
 	 * 
 	 */
-	Console();
+	Console() noexcept;
 
 	/**
 	 * @brief Destroy the Console object
-	 * 
+	 *
 	 */
-	~Console();
-	#pragma endregion Constructors&Destructor
+	~Console() noexcept;
+#pragma endregion Constructors&Destructor
 
-	#pragma region Methods
+#pragma region Methods
 	/**
 	 * @brief Initialisation of Console
-	 * 
-	 * @param app 
+	 *
+	 * @param app
 	 */
-	void			Init(Quantix::Core::Platform::Application* app);
+	void			Init(Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Print all the Log
-	 * 
+	 *
 	 */
-	void			PrintLog();
+	void			PrintLog() noexcept;
 
 	/**
 	 * @brief User interface of the console
-	 * 
+	 *
 	 */
-	void			ConsoleUI();
+	void			ConsoleUI() noexcept;
 
 	/**
 	 * @brief Update of the window update
-	 * 
-	 * @param name 
-	 * @param flags 
+	 *
+	 * @param name
+	 * @param flags
 	 */
-	void			Update(const QXstring& name, ImGuiWindowFlags flags);
+	void			Update(const QXstring& name, ImGuiWindowFlags flags) noexcept;
 	#pragma endregion Methods
 
 private:

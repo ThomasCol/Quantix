@@ -32,22 +32,33 @@ namespace Quantix::Core::Platform
 		 * @param width New width
 		 * @param height New height
 		 */
-		static void	Resize(GLFWwindow* window, QXint width, QXint height);
+		static void	Resize(GLFWwindow* window, QXint width, QXint height) noexcept;
 
 #pragma endregion
 
 	public:
 #pragma region Contructors
+		/**
+		 * @brief Construct a new Window object
+		 *
+		 */
 		Window() = default;
 
 		/**
 		 * @brief Construct a new Window object
-		 * 
+		 *
 		 * @param width Width of the window
 		 * @param height Height of the window
 		 */
 		Window(QXuint width, QXuint height);
 
+		/**
+		 * @brief Construct a new Window object
+		 *
+		 * @param name
+		 * @param width
+		 * @param height
+		 */
 		Window(QXstring name, QXuint width, QXuint height);
 
 		/**
@@ -60,17 +71,17 @@ namespace Quantix::Core::Platform
 #pragma region Functions
 		/**
 		 * @brief Refresh the window
-		 * 
+		 *
 		 */
-		void		Refresh(AppInfo& info);
+		void		Refresh(AppInfo & info) noexcept;
 
 		/**
 		 * @brief Check if window should close
-		 * 
+		 *
 		 * @return true Window should close
 		 * @return false Window shouldn't close
 		 */
-		inline bool ShouldClose() { return glfwWindowShouldClose(_window); }
+		inline bool ShouldClose()  noexcept { return glfwWindowShouldClose(_window); }
 
 
 
@@ -89,6 +100,11 @@ namespace Quantix::Core::Platform
 		 */
 		inline const QXuint& GetWidth() const  { return _width; }
 
+		/**
+		 * @brief Get the Window object
+		 * 
+		 * @return GLFWwindow* 
+		 */
 		inline GLFWwindow* GetWindow() const { return _window; };
 
 #pragma endregion

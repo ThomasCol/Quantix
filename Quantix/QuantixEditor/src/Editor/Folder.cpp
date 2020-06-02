@@ -32,7 +32,7 @@ Folder::Folder(Quantix::Core::DataStructure::ResourcesManager& cache, const fs::
 	}
 }
 
-Folder& Folder::operator=(const Folder& folder)
+Folder& Folder::operator=(const Folder& folder) noexcept
 {
 	_folder = folder._folder;
 	_file = folder._file;

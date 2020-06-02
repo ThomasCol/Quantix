@@ -55,7 +55,7 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
-	GameComponent::~GameComponent()
+	GameComponent::~GameComponent() noexcept
 	{
 		for (size_t i = 0; i < _component.size(); i++)
 		{
@@ -67,7 +67,7 @@ namespace Quantix::Core::DataStructure
 		}
 	}
 
-	void GameComponent::CleanDestroyedComponents()
+	void GameComponent::CleanDestroyedComponents() noexcept
 	{
 		for (unsigned i{ 0 }; i < _component.size(); ++i)
 		{
@@ -80,7 +80,7 @@ namespace Quantix::Core::DataStructure
 		}
 	}
 
-	GameComponent& GameComponent::operator=(const GameComponent& gc)
+	GameComponent& GameComponent::operator=(const GameComponent& gc) noexcept
 	{
 		_component = gc._component;
 		_name = gc._name;

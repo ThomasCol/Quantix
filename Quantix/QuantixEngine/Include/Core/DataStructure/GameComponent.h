@@ -16,6 +16,10 @@
 
 namespace Quantix::Core::DataStructure
 {
+	/**
+	 * @brief enum Layer
+	 * 
+	 */
 	enum class QUANTIX_API Layer
 	{
 		DEFAULT = (1 << 0),
@@ -25,6 +29,10 @@ namespace Quantix::Core::DataStructure
 		DESTRUCTIBLEMESH = (1 << 4)
 	};
 
+	/**
+	 * @brief class GameComponent
+	 * 
+	 */
 	class QUANTIX_API GameComponent
 	{
 	protected:
@@ -42,11 +50,41 @@ namespace Quantix::Core::DataStructure
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
+		/**
+		 * @brief Construct a new Game Component object
+		 * 
+		 */
 		GameComponent() = default;
+
+		/**
+		 * @brief Construct a new Game Component object by copy
+		 * 
+		 * @param object 
+		 */
 		GameComponent(const GameComponent& object) noexcept;
+
+		/**
+		 * @brief Construct a new Game Component object by move
+		 * 
+		 * @param object 
+		 */
 		GameComponent(GameComponent&& object) noexcept;
+
+		/**
+		 * @brief Construct a new Game Component object
+		 * 
+		 * @param name 
+		 * @param is2D 
+		 * @param is3D 
+		 * @param isStatic 
+		 */
 		GameComponent(const QXstring& name, const QXbool& is2D = QX_FALSE, const QXbool& is3D = QX_FALSE, const QXbool& isStatic = QX_FALSE) noexcept;
-		~GameComponent();
+
+		/**
+		 * @brief Destroy the Game Component object
+		 * 
+		 */
+		~GameComponent() noexcept;
 		#pragma endregion Constructors/Destructor
 
 		#pragma region Methods
@@ -55,7 +93,7 @@ namespace Quantix::Core::DataStructure
 		 * @brief Clean Component that are destroyed
 		 * 
 		 */
-		void					CleanDestroyedComponents();
+		void					CleanDestroyedComponents() noexcept;
 
 		#pragma region Template
 		/**
@@ -64,14 +102,19 @@ namespace Quantix::Core::DataStructure
 		 * @tparam T type of Component
 		 */
 		template<typename T>
-		inline T*				AddComponent()
+		inline T*				AddComponent() noexcept
 		{
 			T* comp = new T;
 			_component.push_back(comp);
 			return comp;
 		}
 
-		inline void		AddComponent(Quantix::Core::DataStructure::Component* comp)
+		/**
+		 * @brief Add Component with type of Component
+		 * 
+		 * @param comp 
+		 */
+		inline void		AddComponent(Quantix::Core::DataStructure::Component* comp) noexcept
 		{
 			_component.push_back(comp);
 		}
@@ -83,7 +126,7 @@ namespace Quantix::Core::DataStructure
 		 * @return T* the component of that type
 		 */
 		template<typename T>
-		inline T*				GetComponent(QXbool usePolymorphism = false)
+		inline T*				GetComponent(QXbool usePolymorphism = false) noexcept
 		{
 			if (!usePolymorphism)
 			{
@@ -115,7 +158,7 @@ namespace Quantix::Core::DataStructure
 		 * @return std::vector<T*> components of that type
 		 */
 		template<typename T>
-		inline std::vector<T*>	GetComponents(QXbool usePolymorphism = false)
+		inline std::vector<T*>	GetComponents(QXbool usePolymorphism = false) noexcept
 		{
 			std::vector<T*>			vecT; 
 			if (!usePolymorphism)
@@ -141,12 +184,22 @@ namespace Quantix::Core::DataStructure
 			return vecT;
 		}
 
-		inline const std::vector<Component*>&	GetComponents()
+		/**
+		 * @brief Get the Components object
+		 * 
+		 * @return const std::vector<Component*>& 
+		 */
+		inline const std::vector<Component*>&	GetComponents() noexcept
 		{
 			return _component;
 		}
 
-		inline void				RemoveComponent(Component* component)
+		/**
+		 * @brief Remove the Component
+		 * 
+		 * @param component 
+		 */
+		inline void				RemoveComponent(Component* component) noexcept
 		{
 			for (auto it{_component.begin()}; it != _component.end(); ++it)
 			{
@@ -160,52 +213,101 @@ namespace Quantix::Core::DataStructure
 			}
 		}
 
+		/**
+		 * @brief Virtual method for the the GameObject
+		 * 
+		 */
 		virtual void	Awake() {};
+
+		/**
+		 * @brief Virtual method for the the GameObject
+		 * 
+		 */
 		virtual void	Start() {};
+
+		/**
+		 * @brief Update Method
+		 * 
+		 * @param meshes 
+		 * @param colliders 
+		 * @param lights 
+		 * @param info 
+		 * @param isPlaying 
+		 */
 		virtual void	Update(std::vector<Core::Components::Mesh*>& meshes, std::vector < Core::Components::ICollider* >& colliders,
 								std::vector<Components::Light>& lights, Platform::AppInfo& info, QXbool isPlaying) {};
+
+		/**
+		 * @brief Destroy for the GameObject
+		 * 
+		 */
 		virtual void	Destroy() {};
 
 		#pragma endregion Template
 
 		#pragma region Accessors
-		inline QXbool			Get3D() const { return _is3D; };
+		/**
+		 * @brief Get3D Object
+		 * 
+		 * @return QXbool 
+		 */
+		inline QXbool			Get3D() const  noexcept{ return _is3D; };
 
-		inline void				SetIsActive(QXbool IsActive) { _isActive = IsActive; };
+		/**
+		 * @brief Set the Is Active object
+		 * 
+		 * @param IsActive 
+		 */
+		inline void				SetIsActive(QXbool IsActive)  noexcept{ _isActive = IsActive; };
 
-		inline QXbool			GetIsActive() const { return _isActive; };
+		/**
+		 * @brief Get the Is Active object
+		 * 
+		 * @return QXbool 
+		 */
+		inline QXbool			GetIsActive() const  noexcept{ return _isActive; };
 
-		inline QXstring			GetName() const { return _name; };
+		/**
+		 * @brief Get the Name object
+		 * 
+		 * @return QXstring 
+		 */
+		inline QXstring			GetName() const  noexcept{ return _name; };
 
-		inline void				SetName(QXstring name) { _name = name; };
+		/**
+		 * @brief Set the Name object
+		 * 
+		 * @param name 
+		 */
+		inline void				SetName(QXstring name)  noexcept{ _name = name; };
 
 		/**
 		 * @brief Set the Is Static object
 		 * 
 		 * @param IsStatic QXbool
 		 */
-		inline void				SetIsStatic(QXbool IsStatic) { _isStatic = IsStatic; };
+		inline void				SetIsStatic(QXbool IsStatic)  noexcept{ _isStatic = IsStatic; };
 
 		/**
 		 * @brief Get the Is Static object
 		 * 
 		 * @return QXbool 
 		 */
-		inline QXbool			GetIsStatic() const { return _isStatic; };
+		inline QXbool			GetIsStatic() const  noexcept{ return _isStatic; };
 
 		/**
 		 * @brief Set the Layer object
 		 * 
 		 * @param layer QXint
 		 */
-		inline void				SetLayer(Layer layer) { _layer = layer; };
+		inline void				SetLayer(Layer layer)  noexcept{ _layer = layer; };
 
 		/**
 		 * @brief Get the Layer object
 		 * 
 		 * @return QXint 
 		 */
-		inline Layer			GetLayer() const { return _layer; };
+		inline Layer			GetLayer() const  noexcept{ return _layer; };
 
 
 		/**
@@ -213,31 +315,37 @@ namespace Quantix::Core::DataStructure
 		 *
 		 * @param layer QXbool
 		 */
-		inline void				SetRender(QXbool render) { _toRender = render; };
+		inline void				SetRender(QXbool render)  noexcept{ _toRender = render; };
 
 		/**
 		 * @brief Get the Render object
 		 *
 		 * @return QXbool
 		 */
-		inline QXbool			GetRender() const { return _toRender; };
+		inline QXbool			GetRender() const  noexcept{ return _toRender; };
 
 		/**
 		 * @brief Set the ToUpdate object
 		 *
 		 * @param update QXbool
 		 */
-		inline void				SetToUpdate(QXbool update) { _toUpdate = update; };
+		inline void				SetToUpdate(QXbool update)  noexcept{ _toUpdate = update; };
 
 		/**
 		 * @brief Get the ToUpdate object
 		 *
 		 * @return QXbool to update value
 		 */
-		inline QXbool			GetToUpdate() const { return _toUpdate; };
+		inline QXbool			GetToUpdate() const  noexcept{ return _toUpdate; };
 
 		#pragma endregion Accessors
-		GameComponent&			operator=(const GameComponent& gc);
+		/**
+		 * @brief operator by copy
+		 * 
+		 * @param gc 
+		 * @return GameComponent& 
+		 */
+		GameComponent&			operator=(const GameComponent& gc) noexcept;
 		#pragma endregion Methods
 
 		CLASS_REGISTRATION();

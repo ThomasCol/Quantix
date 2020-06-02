@@ -9,14 +9,14 @@
 
 #define DEFAULTPATH "media"
 
-void MenuBar::LoadScene(Quantix::Core::Platform::Application* app)
+void MenuBar::LoadScene(Quantix::Core::Platform::Application* app) noexcept
 {
 	Quantix::Physic::PhysicHandler::GetInstance()->CleanScene();
 	app->newScene = app->manager.LoadScene("../QuantixEngine/Media/scene.quantix");
 	app->sceneChange = true;
 }
 
-void MenuBar::FileButton(Quantix::Core::Platform::Application* app)
+void MenuBar::FileButton(Quantix::Core::Platform::Application* app) noexcept
 {
 	if (ImGui::BeginMenu("File"))
 	{
@@ -29,7 +29,7 @@ void MenuBar::FileButton(Quantix::Core::Platform::Application* app)
 	}
 }
 
-void MenuBar::PhysXSettings()
+void MenuBar::PhysXSettings() noexcept
 {
 	ImGui::GetStyle().WindowRounding = 8.f;
 	if (ImGui::Begin("PhysX Settings", &_winPhysX, ImGuiWindowFlags_NoCollapse))
@@ -51,7 +51,7 @@ void MenuBar::PhysXSettings()
 	ImGui::GetStyle().WindowRounding = 0.f;
 }
 
-Math::QXvec4 MenuBar::GetMatrixLineColorCorrection(QXint i, Math::QXmat4 mat)
+Math::QXvec4 MenuBar::GetMatrixLineColorCorrection(QXint i, Math::QXmat4 mat) noexcept
 {
 	Math::QXvec4 rgba;
 	for (QXint j = 0; j < 4; j++)
@@ -59,13 +59,13 @@ Math::QXvec4 MenuBar::GetMatrixLineColorCorrection(QXint i, Math::QXmat4 mat)
 	return rgba;
 }
 
-void MenuBar::SetMatrixLineColorCorrection(QXint i, Math::QXmat4& mat, Math::QXvec4 rgba)
+void MenuBar::SetMatrixLineColorCorrection(QXint i, Math::QXmat4& mat, Math::QXvec4 rgba) noexcept
 {
 	for (QXint j = 0; j < 4; j++)
 		mat.array[i * 4 + j] = rgba[j];
 }
 
-void MenuBar::CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
+void MenuBar::CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (type == rttr::type::get<QXbool>())
 	{
@@ -130,7 +130,7 @@ void MenuBar::CheckPrimitiveType(rttr::instance inst, rttr::property currentProp
 	}
 }
 
-void MenuBar::PostProcessSettings(Quantix::Core::Platform::Application* app)
+void MenuBar::PostProcessSettings(Quantix::Core::Platform::Application* app) noexcept
 {
 	ImGui::GetStyle().WindowRounding = 8.f;
 	if (ImGui::Begin("PostProcess Settings", &_postProcess, ImGuiWindowFlags_NoCollapse))
@@ -139,7 +139,6 @@ void MenuBar::PostProcessSettings(Quantix::Core::Platform::Application* app)
 		std::list<QXstring> postProcessName;
 		std::vector<Quantix::Core::Render::PostProcess::PostProcessEffect*> effect = app->renderer.GetEffects();
 
-		QXuint i = 0;
 		for (auto it : postProcess)
 			postProcessName.push_back(it.get_name().to_string());
 		postProcessName.sort();
@@ -154,7 +153,7 @@ void MenuBar::PostProcessSettings(Quantix::Core::Platform::Application* app)
 					{
 						if (effect[i]->name == itPostProcess->get_name().to_string())
 						{
-							ImGui::PushID(i);
+							ImGui::PushID((QXint)i);
 							if (ImGui::TreeNode(effect[i]->name.c_str()))
 							{
 								for (auto itProp = itPostProcess->get_properties().begin(); itProp != itPostProcess->get_properties().end(); ++itProp)
@@ -182,7 +181,7 @@ void MenuBar::PostProcessSettings(Quantix::Core::Platform::Application* app)
 	ImGui::GetStyle().WindowRounding = 0.f;
 }
 
-void MenuBar::Settings(QXbool* selection)
+void MenuBar::Settings(QXbool* selection) noexcept
 {
 	if (selection[0])
 	{
@@ -196,7 +195,7 @@ void MenuBar::Settings(QXbool* selection)
 	}
 }
 
-void MenuBar::EditButton()
+void MenuBar::EditButton() noexcept
 {
 	if (ImGui::BeginMenu("Edit"))
 	{
@@ -208,7 +207,7 @@ void MenuBar::EditButton()
 	}
 }
 
-void MenuBar::OpenExplorer(QXbool selection)
+void MenuBar::OpenExplorer(QXbool selection) noexcept
 {
 	if (selection)
 	{
@@ -219,7 +218,7 @@ void MenuBar::OpenExplorer(QXbool selection)
 	}
 }
 
-void MenuBar::AssetButton()
+void MenuBar::AssetButton() noexcept
 {
 	if (ImGui::BeginMenu("Asset"))
 	{
@@ -238,7 +237,7 @@ void MenuBar::AssetButton()
 	}
 }
 
-void MenuBar::Update(Quantix::Core::Platform::Application* app)
+void MenuBar::Update(Quantix::Core::Platform::Application* app) noexcept
 {
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(52 / 255, 73 / 255, 94 / 255, 1));
 	if (ImGui::BeginMenuBar())
@@ -258,7 +257,7 @@ void MenuBar::Update(Quantix::Core::Platform::Application* app)
 		PostProcessSettings(app);
 }
 
-void MenuBar::CreateGameObject(QXstring name, QXbool& selection, Quantix::Core::Platform::Application* app)
+void MenuBar::CreateGameObject(QXstring name, QXbool& selection, Quantix::Core::Platform::Application* app) noexcept
 {
 	static QXuint i = 0;
 	if (i == 0)
@@ -269,7 +268,7 @@ void MenuBar::CreateGameObject(QXstring name, QXbool& selection, Quantix::Core::
 	i++;
 }
 
-void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app)
+void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app) noexcept
 {
 	static QXuint j[2] = { 0, 0 };
 	for (QXuint i{ 0 }; i < objectName.size(); i++)
@@ -287,7 +286,7 @@ void MenuBar::CreateObject(QXbool* selection, std::vector<QXstring> objectName, 
 	}
 }
 
-void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app)
+void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app) noexcept
 {
 	static QXuint j[3] = { 0, 0, 0 };
 	for (QXuint i{ 0 }; i < objectName.size(); i++)
@@ -317,7 +316,7 @@ void MenuBar::CreateShapeObject(QXbool* selection, std::vector<QXstring> objectN
 	}
 }
 
-void MenuBar::CreateComponentLight(Quantix::Core::DataStructure::GameObject3D* obj, std::vector<QXstring> objectName, QXuint i)
+void MenuBar::CreateComponentLight(Quantix::Core::DataStructure::GameObject3D* obj, std::vector<QXstring> objectName, QXuint i) noexcept
 {
 	obj->AddComponent<Quantix::Core::Components::Light>();
 	Quantix::Core::Components::Light* light = obj->GetComponent<Quantix::Core::Components::Light>();
@@ -331,7 +330,7 @@ void MenuBar::CreateComponentLight(Quantix::Core::DataStructure::GameObject3D* o
 	light->position = obj->GetTransform()->GetPosition();
 }
 
-void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app)
+void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectName, Quantix::Core::Platform::Application* app) noexcept
 {
 	static QXuint j[2] = { 0, 0 };
 	for (QXuint i{ 0 }; i < objectName.size(); i++)
@@ -351,7 +350,7 @@ void MenuBar::CreateLightObject(QXbool* selection, std::vector<QXstring> objectN
 	}
 }
 
-void MenuBar::GameObjectButton(Quantix::Core::Platform::Application* app)
+void MenuBar::GameObjectButton(Quantix::Core::Platform::Application* app) noexcept
 {
 	static QXint id = 0;
 	if (ImGui::BeginMenu("GameObject"))

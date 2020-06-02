@@ -15,7 +15,7 @@
 #include "stb_image.h"
 #include "opengl_helper.h"
 
-Editor::Editor(QXuint width, QXuint height) :
+Editor::Editor(QXuint width, QXuint height)  noexcept :
 	_win{ width, height },
 	_lib{ "QuantixEngine" },
 	_docker{},
@@ -64,7 +64,7 @@ Editor::Editor(QXuint width, QXuint height) :
 }
 
 
-Editor::~Editor()
+Editor::~Editor() noexcept
 {
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
@@ -86,7 +86,7 @@ Editor::~Editor()
 	delete _mouseInput;
 }
 
-void Editor::InitEditorArtifact()
+void Editor::InitEditorArtifact() noexcept
 {
 	_app = new Quantix::Core::Platform::Application(_win.GetWidth(), _win.GetHeight());
 	_app->info.proj = { Math::QXmat4::CreateProjectionMatrix(_app->info.width, _app->info.height, 0.1f, 1000.f, 60.f) };
@@ -94,7 +94,7 @@ void Editor::InitEditorArtifact()
 	_console.Init(_app);
 }
 
-void Editor::InitImg()
+void Editor::InitImg() noexcept
 {
 	GLFWimage icon;
 	icon.pixels = stbi_load("Other/IconEditor/logo_Thomas4.png", &icon.width, &icon.height, 0, STBI_rgb_alpha);
@@ -111,7 +111,7 @@ void Editor::InitImg()
 	_command.insert(std::make_pair("Use Power", _app->manager.CreateTexture("Other/IconEditor/Simulation/RightMouseClick.png")));
 }
 
-void Editor::Init()
+void Editor::Init() noexcept
 {
 	glfwSetWindowUserPointer(_win.GetWindow(), _mouseInput);
 
@@ -119,7 +119,7 @@ void Editor::Init()
 	InitEditor();
 }
 
-void Editor::InitEditor()
+void Editor::InitEditor() noexcept
 {
 	InitImGui();
 
@@ -137,7 +137,7 @@ void Editor::InitEditor()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Editor::InitImGui()
+void Editor::InitImGui() noexcept
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
@@ -150,7 +150,7 @@ void Editor::InitImGui()
 		ImGui::GetIO().MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
 }
 
-void	Editor::DebugMode()
+void	Editor::DebugMode() noexcept
 {
 	static QXbool state = false;
 	if (GetKey(QX_KEY_F1) == Quantix::Core::UserEntry::EKeyState::PRESSED)
@@ -163,7 +163,7 @@ void	Editor::DebugMode()
 		state = false;
 }
 
-void Editor::Update()
+void Editor::Update() noexcept
 {
 	while (!_win.ShouldClose())
 	{
@@ -172,7 +172,7 @@ void Editor::Update()
 	}
 }
 
-void Editor::UpdateMouse(Quantix::Core::Components::Camera* camera)
+void Editor::UpdateMouse(Quantix::Core::Components::Camera* camera) noexcept
 {
 	// Mouse state
 	{
@@ -191,7 +191,7 @@ void Editor::UpdateMouse(Quantix::Core::Components::Camera* camera)
 	glfwGetWindowSize(_win.GetWindow(), (QXint*)&_app->info.width, (QXint*)&_app->info.height);
 }
 
-void	Editor::CameraUpdateEditor()
+void	Editor::CameraUpdateEditor() noexcept
 {
 	if (_sceneFocus)
 	{
@@ -214,7 +214,7 @@ void	Editor::CameraUpdateEditor()
 	}
 }
 
-void	Editor::MovePlayerController()
+void	Editor::MovePlayerController() noexcept
 {
 	if (_mainCamera->_controller->needSpawn)
 	{
@@ -243,7 +243,7 @@ void	Editor::MovePlayerController()
 	_mainCamera->_controller->_velocity.z = 0.f;
 }
 
-void	Editor::MoveFreeCam()
+void	Editor::MoveFreeCam() noexcept
 {
 	if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
 		_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir() * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
@@ -255,7 +255,7 @@ void	Editor::MoveFreeCam()
 		_mainCamera->SetPos(_mainCamera->GetPos() + (_mainCamera->GetDir().Cross(_mainCamera->GetUp()) * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 }
 
-void	Editor::CameraUpdate()
+void	Editor::CameraUpdate() noexcept
 {
 	if (_gameFocus)
 	{
@@ -276,7 +276,7 @@ void	Editor::CameraUpdate()
 	}
 }
 
-void Editor::CheckNewSceneCamera(Quantix::Core::DataStructure::GameObject3D* object)
+void Editor::CheckNewSceneCamera(Quantix::Core::DataStructure::GameObject3D* object) noexcept
 {
 	for (auto it = object->GetTransform()->GetChilds().begin(); it != object->GetTransform()->GetChilds().end(); ++it)
 	{
@@ -301,7 +301,7 @@ void Editor::CheckNewSceneCamera(Quantix::Core::DataStructure::GameObject3D* obj
 	}
 }
 
-void Editor::SaveLoadScene()
+void Editor::SaveLoadScene() noexcept
 {
 	if ((GetKey(QX_KEY_LEFT_CONTROL) == Quantix::Core::UserEntry::EKeyState::PRESSED || GetKey(QX_KEY_LEFT_CONTROL) == Quantix::Core::UserEntry::EKeyState::DOWN) &&
 		(GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::PRESSED || GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN))
@@ -329,7 +329,7 @@ void Editor::SaveLoadScene()
 	}
 }
 
-void Editor::UpdateScene()
+void Editor::UpdateScene() noexcept
 {
 	if (GetKey(QX_KEY_ESCAPE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
@@ -381,7 +381,7 @@ void Editor::UpdateScene()
 	STOP_PROFILING("Refresh");
 }
 
-void Editor::UpdateEditor()
+void Editor::UpdateEditor() noexcept
 {
 	InitImGui();
 
@@ -419,7 +419,7 @@ void Editor::UpdateEditor()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Editor::Draw(const QXstring& name, ImGuiWindowFlags flags)
+void Editor::Draw(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	if (name == "Console")
 		DrawConsole(name, flags);
@@ -437,19 +437,19 @@ void Editor::Draw(const QXstring& name, ImGuiWindowFlags flags)
 		DrawInspector(name, flags);
 }
 
-void Editor::DrawMenuBar()
+void Editor::DrawMenuBar() noexcept
 {
 	_menuBar.Update(_app);
 }
 
-void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags)
+void Editor::DrawHierarchy(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	_hierarchy.Update(name, flags, _root->GetTransform(), _app);
 }
 
-QXstring Editor::GetNameOfShader(QXstring shaderPath)
+QXstring Editor::GetNameOfShader(QXstring shaderPath) noexcept
 {
-	QXuint pos = shaderPath.find_last_of("/");
+	QXsizei pos = shaderPath.find_last_of("/");
 	QXstring fileName = shaderPath.substr(pos + 1);
 	QXstring name = fileName.substr(0, fileName.size() - 5);
 	if (name == "fragmentShader")
@@ -457,7 +457,7 @@ QXstring Editor::GetNameOfShader(QXstring shaderPath)
 	return name;
 }
 
-void Editor::DrawShader(const QXstring& name, ImGuiWindowFlags flags)
+void Editor::DrawShader(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
@@ -484,7 +484,7 @@ void Editor::DrawShader(const QXstring& name, ImGuiWindowFlags flags)
 	ImGui::End();
 }
 
-void Editor::Simulation()
+void Editor::Simulation() noexcept
 {
 	QXint pos = -20;
 	for (auto it = _simState.rbegin(); it != _simState.rend(); ++it)
@@ -501,7 +501,7 @@ void Editor::Simulation()
 	}
 }
 
-void Editor::ChangeStateSimulation()
+void Editor::ChangeStateSimulation() noexcept
 {
 	if (_simState["Play"])
 	{
@@ -522,7 +522,7 @@ void Editor::ChangeStateSimulation()
 	}
 }
 
-void Editor::FocusScene()
+void Editor::FocusScene() noexcept
 {
 	if (ImGui::BeginPopupContextWindow("Context Menu", 1, QX_FALSE))
 	{
@@ -538,7 +538,7 @@ void Editor::FocusScene()
 	}
 }
 
-void Editor::MaximizeOnPlay()
+void Editor::MaximizeOnPlay() noexcept
 {
 	QXfloat posX = ImGui::GetWindowSize().x / 2 + 70;
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 1));
@@ -553,7 +553,7 @@ void Editor::MaximizeOnPlay()
 	ImGui::PopStyleColor();
 }
 
-void Editor::ShowCollider()
+void Editor::ShowCollider() noexcept
 {
 	QXfloat posX = ImGui::GetWindowSize().x / 2 + 160;
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 1));
@@ -568,7 +568,7 @@ void Editor::ShowCollider()
 	ImGui::PopStyleColor();
 }
 
-void Editor::DrawSimulation()
+void Editor::DrawSimulation() noexcept
 {
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
 	ImGui::BeginChild(ImGui::GetID("Editor"), ImVec2(0, 35), QX_FALSE, flags);
@@ -580,7 +580,7 @@ void Editor::DrawSimulation()
 	ImGui::EndChild();
 }
 
-void Editor::PrintPower()
+void Editor::PrintPower() noexcept
 {
 	ImGui::SetCursorPos(ImVec2(20, ImGui::GetWindowSize().y - 45));
 	switch (_mainCamera->GetObject()->GetComponent<Quantix::Gameplay::Arms>()->GetPower())
@@ -613,7 +613,7 @@ void Editor::PrintPower()
 	}
 }
 
-void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
+void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	if (_maximize && _play)
 	{
@@ -645,7 +645,7 @@ void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 	ImGui::End();
 }
 
-void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
+void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	static QXint i = 0;
 	ImGui::Begin(name.c_str(), NULL, flags);
@@ -665,17 +665,17 @@ void Editor::DrawScene(const QXstring& name, ImGuiWindowFlags flags)
 	ImGui::End();
 }
 
-void Editor::DrawConsole(const QXstring& name, ImGuiWindowFlags flags)
+void Editor::DrawConsole(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	_console.Update(name, flags);
 }
 
-void Editor::DrawExplorer(const QXstring& name, ImGuiWindowFlags flags)
+void Editor::DrawExplorer(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	_explorer.Update(_app->manager, name, flags);
 }
 
-void Editor::CheckCamera()
+void Editor::CheckCamera() noexcept
 {
 	if (_hasCamera.size() == 0)
 	{
@@ -704,7 +704,7 @@ void Editor::CheckCamera()
 	}
 }
 
-void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags)
+void Editor::DrawInspector(const QXstring& name, ImGuiWindowFlags flags) noexcept
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{

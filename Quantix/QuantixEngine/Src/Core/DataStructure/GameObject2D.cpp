@@ -46,7 +46,7 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
-	GameObject2D::~GameObject2D()
+	GameObject2D::~GameObject2D() noexcept
 	{
 		delete _transform;
 	}
@@ -63,45 +63,45 @@ namespace Quantix::Core::DataStructure
 			child->GetObject()->Awake();
 	}
 
-	void	GameObject2D::Update()
+	void	GameObject2D::Update() noexcept
 	{
- 		for (Physic::Transform2D* child : _transform->GetChilds())
+		for (Physic::Transform2D* child : _transform->GetChilds())
 			child->GetObject()->Update(this);
 	}
 
-	void	GameObject2D::Update(const GameObject2D* parentObject)
+	void	GameObject2D::Update(const GameObject2D* parentObject) noexcept
 	{
 		_transform->Update(parentObject->GetTransform());
 		for (Physic::Transform2D* child : _transform->GetChilds())
 			child->GetObject()->Update(this);
 	}
 
-	void	GameObject2D::SetGlobalPosition(Math::QXvec2 pos)
+	void	GameObject2D::SetGlobalPosition(Math::QXvec2 pos) noexcept
 	{
 		//_transform.SetGlobalPosition(pos);
 	}
 
-	void	GameObject2D::SetGlobalRotation(QXfloat rot)
+	void	GameObject2D::SetGlobalRotation(QXfloat rot) noexcept
 	{
 		//_transform.SetGlobalRotation(pos);
 	}
 
-	void	GameObject2D::SetLocalPosition(Math::QXvec2 pos)
+	void	GameObject2D::SetLocalPosition(Math::QXvec2 pos) noexcept
 	{
 		_transform->SetPosition(pos);
 	}
 
-	void	GameObject2D::SetLocalRotation(QXfloat rot)
+	void	GameObject2D::SetLocalRotation(QXfloat rot) noexcept
 	{
 		_transform->SetRotationAngle(rot);
 	}
 
-	void	GameObject2D::SetLocalScale(Math::QXvec2 scale)
+	void	GameObject2D::SetLocalScale(Math::QXvec2 scale) noexcept
 	{
 		_transform->SetScale(scale);
 	}
 
-	void	GameObject2D::SetTransform(const Math::QXvec2& pos, const QXfloat rot, const Math::QXvec2& scale)
+	void	GameObject2D::SetTransform(const Math::QXvec2& pos, const QXfloat rot, const Math::QXvec2& scale) noexcept
 	{
 		_transform->SetPosition(pos);
 		_transform->SetRotationAngle(rot);
