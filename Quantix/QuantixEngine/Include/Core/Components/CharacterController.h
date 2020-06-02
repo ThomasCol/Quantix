@@ -17,7 +17,7 @@ namespace Quantix::Core::Components
 
 		Math::QXvec3 _velocity;
 
-		QXbool needSpawn = false;
+		QXbool needSpawn = QX_FALSE;
 		Math::QXvec3 spawnPos;
 
 		/**
@@ -72,128 +72,126 @@ namespace Quantix::Core::Components
 		 * @param minDist Minimum distance to travel
 		 * @param deltaTime Time during the frame
 		 */
-		void Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
-
-		void Jump(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime);
+		void Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime) noexcept;
 
 		/**
 		 * @brief Check if the controller is falling 
 		 * 
 		 * @return QXbool return true if the controller is falling
 		 */
-		QXbool CheckIsFalling();
+		QXbool CheckIsFalling() noexcept;
 
 		/**
 		 * @brief Get the Radius object
 		 * 
 		 * @return QXfloat 
 		 */
-		QXfloat GetRadius();
+		QXfloat GetRadius() noexcept;
 
 		/**
 		 * @brief Set the Radius object
 		 * 
 		 * @param f 
 		 */
-		void SetRadius(QXfloat f);
+		void SetRadius(QXfloat f) noexcept;
 
 		/**
 		 * @brief Get the Height object
 		 * 
 		 * @return QXfloat 
 		 */
-		QXfloat GetHeight();
+		QXfloat GetHeight() noexcept;
 
 		/**
 		 * @brief Set the Height object
 		 * 
 		 * @param f 
 		 */
-		void SetHeight(QXfloat f);
+		void SetHeight(QXfloat f) noexcept;
 
 		/**
 		 * @brief Change the size of the character controller with foot position always on the grown
 		 * 
 		 * @param f 
 		 */
-		void Resize(QXfloat f);
+		void Resize(QXfloat f) noexcept;
 
 		/**
 		 * @brief Get the Up Direction object
 		 * 
 		 * @return Math::QXvec3 
 		 */
-		Math::QXvec3 GetUpDirection();
+		Math::QXvec3 GetUpDirection() noexcept;
 
 		/**
 		 * @brief Set the Up Direction object
 		 * 
 		 * @param vec 
 		 */
-		void SetUpDirection(Math::QXvec3 vec);
+		void SetUpDirection(Math::QXvec3 vec) noexcept;
 
 		/**
 		 * @brief Get the Position object
 		 * 
 		 * @return Math::QXvec3 
 		 */
-		Math::QXvec3 GetPosition();
+		Math::QXvec3 GetPosition() noexcept;
 
 		/**
 		 * @brief Set the Position object
 		 * 
 		 * @param v 
 		 */
-		void SetPosition(Math::QXvec3 v);
+		void SetPosition(Math::QXvec3 v) noexcept;
 
 		/**
 		 * @brief Get the Foot Position object
 		 * 
 		 * @return Math::QXvec3 
 		 */
-		Math::QXvec3 GetFootPosition();
+		Math::QXvec3 GetFootPosition() noexcept;
 
 		/**
 		 * @brief Set the Foot Position object
 		 * 
 		 * @param v 
 		 */
-		void SetFootPosition(Math::QXvec3 v);
+		void SetFootPosition(Math::QXvec3 v) noexcept;
 
 		/**
 		 * @brief Set the Non Walkable Mode object
 		 * 
 		 * @param mode 
 		 */
-		void SetNonWalkableMode(Physic::NonWalkableMode mode);
+		void SetNonWalkableMode(Physic::NonWalkableMode mode) noexcept;
 
 		/**
 		 * @brief Get the Non Walkable Mode object
 		 * 
 		 * @return Physic::NonWalkableMode 
 		 */
-		Physic::NonWalkableMode GetNonWalkableMode();
+		Physic::NonWalkableMode GetNonWalkableMode() noexcept;
 
 		/**
 		 * @brief Set the Climbing Mode object
 		 * 
 		 * @param mode 
 		 */
-		void SetClimbingMode(Physic::ClimbingMode mode);
+		void SetClimbingMode(Physic::ClimbingMode mode) noexcept;
 
 		/**
 		 * @brief Get the Climbing Mode object
 		 * 
 		 * @return Physic::ClimbingMode 
 		 */
-		Physic::ClimbingMode GetClimbingMode();
+		Physic::ClimbingMode GetClimbingMode() noexcept;
 
 		/**
 		 * @brief Get the Linear Velocity object
 		 * 
 		 * @return Math::QXvec3 
 		 */
-		Math::QXvec3 GetLinearVelocity();
+		Math::QXvec3 GetLinearVelocity() noexcept;
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};

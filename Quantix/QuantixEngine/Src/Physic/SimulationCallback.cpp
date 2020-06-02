@@ -16,7 +16,6 @@ namespace Quantix::Physic
 	void SimulationCallback::onSleep(PxActor**, PxU32)
 	{}
 
-
 	void SimulationCallback::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 	{
 		for (PxU32 i = 0; i < nbPairs; i++)
@@ -49,10 +48,6 @@ namespace Quantix::Physic
 		}
 	}
 
-	void SimulationCallback::onAdvance(const PxRigidBody* const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count)
-	{
-		(void*)bodyBuffer;
-		(void*)poseBuffer;
-		(void*)count;
-	};
+	void SimulationCallback::onAdvance(const PxRigidBody* const*, const PxTransform*, const PxU32)
+	{}
 }
