@@ -6,6 +6,7 @@
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
 #include "Resources/Sound.h"
+#include "Core/SoundMode.h"
 
 namespace Quantix::Core::Components
 {
@@ -18,7 +19,8 @@ namespace Quantix::Core::Components
 			Resources::Sound*		_sound;
 			FMOD::ChannelGroup*		_channel;
 
-			Resources::ESoundMode	_soundMode;
+			Resources::ESoundMode	_dimensionMode;
+			QXSoundMode				_soundMode;
 
 			QXfloat					_volume;
 
@@ -106,21 +108,21 @@ namespace Quantix::Core::Components
 			 *
 			 * @return const Resources::ESoundMode mode value
 			 */
-			inline Resources::ESoundMode GetSoundMode() { return _soundMode; }
+			inline const Resources::ESoundMode&		GetSoundMode() { return _dimensionMode; }
 
 			/**
 			 * @brief Get Sound
 			 *
 			 * @return const Resources::Sound* sound value
 			 */
-			inline	const Resources::Sound*		GetSound() const					{ return _sound; }
+			inline	const Resources::Sound*			GetSound() const					{ return _sound; }
 
 			/**
 			 * @brief Is Looping
 			 *
 			 * @return const QXbool is looping value
 			 */
-			inline	const QXbool				IsLooping() const					{ return _loop; }
+			inline	const QXbool&				IsLooping() const					{ return _loop; }
 
 			/**
 			 * @brief Is Playing On Awake
@@ -147,21 +149,30 @@ namespace Quantix::Core::Components
 			/**
 			 * @brief Set Mode of the Sound
 			 *
-			 * @return QXbool Setted successfully value
 			 */
-			void								SetSoundMode(Resources::ESoundMode mode);
+			void								SetSoundMode(const Resources::ESoundMode& mode);
+
+			/**
+			 * @brief Add a mode to the Sound
+			 *
+			 */
+			void								AddSoundMode(const QXSoundMode& mode);
+
+			/**
+			 * @brief Delete a mode from the Sound
+			 *
+			 */
+			void								DeleteSoundMode(const QXSoundMode& mode);
 
 			/**
 			 * @brief Set Loop
 			 *
-			 * @param QXbool is looping new value
 			 */
-			inline	void						SetLoop(QXbool loop)				{ _loop = loop; }
+			inline	void						SetLoop(const QXbool& loop) { _loop = loop; loop ? AddSoundMode(QX_SOUNDMODE_LOOPNORMAL) : DeleteSoundMode(QX_SOUNDMODE_LOOPNORMAL); }
 
 			/**
 			 * @brief Set Play On Awake
 			 *
-			 * @param QXbool is playing on awake new value
 			 */
 			inline	void						SetPlayOnAwake(QXbool playOnAwake)	{ _playOnAwake = playOnAwake; }
 

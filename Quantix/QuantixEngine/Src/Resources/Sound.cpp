@@ -140,7 +140,7 @@ namespace Quantix::Resources
 	const QXbool Sound::Pause(FMOD::ChannelGroup* channel)
 	{
 		if (this != nullptr && _clip)
-			return Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->playSound(_clip, channel, true, nullptr));
+			return Core::SoundCore::GetInstance()->Try(channel->setPaused(QX_TRUE));
 		return false;
 	}
 
@@ -160,7 +160,7 @@ namespace Quantix::Resources
 	const QXbool Sound::ChangeMode(FMOD_MODE mode)
 	{
 		if (this)
-			return (Core::SoundCore::GetInstance()->Try(_clip->setMode(mode)));
+			return (Core::SoundCore::GetInstance()->Try(_clip->setMode(mode)) && Core::SoundCore::GetInstance()->Try(_channel->setMode(mode)));
 		else
 			return false;
 	}

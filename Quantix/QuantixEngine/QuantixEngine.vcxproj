@@ -273,6 +273,7 @@
     <ClInclude Include="Include\Core\Components\Animator.h" />
     <ClInclude Include="Include\Core\Event\Event.h" />
     <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
+    <ClInclude Include="Include\Core\SoundMode.h" />
     <ClInclude Include="Include\Physic\ControllerHitReport.h" />
     <ClInclude Include="Include\Physic\ControllerBehaviorCallback.h" />
     <ClInclude Include="Include\Core\Components\CharacterController.h" />

@@ -16,7 +16,7 @@ RTTR_PLUGIN_REGISTRATION
 	.property("Channel", &Quantix::Core::Components::SoundEmitter::_channel)
 	.property("Mode", &Quantix::Core::Components::SoundEmitter::GetSoundMode, &Quantix::Core::Components::SoundEmitter::SetSoundMode)
 	.property("Volume", &Quantix::Core::Components::SoundEmitter::GetVolume, &Quantix::Core::Components::SoundEmitter::SetVolume)
-	.property("Loop", &Quantix::Core::Components::SoundEmitter::_loop)
+	.property("Loop", &Quantix::Core::Components::SoundEmitter::IsLooping, &Quantix::Core::Components::SoundEmitter::SetLoop)
 	.property("On Awake", &Quantix::Core::Components::SoundEmitter::_playOnAwake)
 	.method("AttributesEmitter", &Quantix::Core::Components::SoundEmitter::UpdateAttributes)
 	.method("PlaySound", &Quantix::Core::Components::SoundEmitter::PlaySound);
@@ -29,7 +29,8 @@ namespace Quantix::Core::Components
 	SoundEmitter::SoundEmitter() :
 	_sound {nullptr},
 	_channel {nullptr},
-	_soundMode {Resources::ESoundMode::QX_2D},
+	_soundMode{ QX_SOUNDMODE_DEFAULT },
+	_dimensionMode { Resources::ESoundMode::QX_2D },
 	_loop {false},
 	_playOnAwake {false}
 	{}
@@ -37,7 +38,8 @@ namespace Quantix::Core::Components
 	SoundEmitter::SoundEmitter(Resources::Sound* sound) noexcept :
 	_sound { sound },
 	_channel { nullptr },
-	_soundMode { Resources::ESoundMode::QX_2D },
+	_soundMode { QX_SOUNDMODE_DEFAULT },
+	_dimensionMode{ Resources::ESoundMode::QX_2D },
 	_volume{ 1.f },
 	_loop { false },
 	_playOnAwake { false }
@@ -47,6 +49,7 @@ namespace Quantix::Core::Components
 	_sound { copy._sound },
 	_channel { copy._channel },
 	_soundMode {copy._soundMode},
+	_dimensionMode{ copy._dimensionMode },
 	_volume{ copy._volume },
 	_loop { copy._loop },
 	_playOnAwake { copy._playOnAwake }
@@ -56,6 +59,7 @@ namespace Quantix::Core::Components
 	_sound { std::move(copy._sound) },
 	_channel { std::move(copy._channel) },
 	_soundMode { std::move(copy._soundMode) },
+	_dimensionMode{ std::move(copy._dimensionMode) },
 	_volume{ std::move(copy._volume) },
 	_loop { std::move(copy._loop) },
 	_playOnAwake { std::move(copy._playOnAwake) }
@@ -91,7 +95,8 @@ namespace Quantix::Core::Components
 		_object = object;
 		_sound = nullptr;
 		_channel = nullptr;
-		_soundMode = Resources::ESoundMode::QX_2D;
+		_soundMode = QX_SOUNDMODE_DEFAULT;
+		_dimensionMode = Resources::ESoundMode::QX_2D;
 		_loop = false;
 		_playOnAwake = false;
 	}
@@ -108,24 +113,38 @@ namespace Quantix::Core::Components
 			Core::SoundCore::GetInstance()->Try(channel->stop());
 	}
 
-	void SoundEmitter::SetSoundMode(Resources::ESoundMode mode)
+	void SoundEmitter::SetSoundMode(const Resources::ESoundMode& mode)
 	{
-		FMOD_MODE fmode;
-		switch (mode)
+		QXuint	soundMode = QX_SOUNDMODE_DEFAULT;
+
+		if (mode == Resources::ESoundMode::QX_2D)
 		{
-			case Resources::ESoundMode::QX_2D:	
-				fmode = FMOD_2D;
-				break;
-			case Resources::ESoundMode::QX_3D:	
-				fmode = FMOD_3D;
-				break;
-			default:
-				fmode = FMOD_DEFAULT;
-				break;
+			DeleteSoundMode(QX_SOUNDMODE_3D);
+			soundMode = QX_SOUNDMODE_2D;
+		}
+		else if (mode == Resources::ESoundMode::QX_3D)
+		{
+			DeleteSoundMode(QX_SOUNDMODE_2D);
+			soundMode = QX_SOUNDMODE_3D;
 		}
 
-		_soundMode = mode;
-		_sound->ChangeMode(fmode);
+		_dimensionMode = mode;
+		_soundMode = soundMode;
+		AddSoundMode(_soundMode);
+	}
+
+	void SoundEmitter::AddSoundMode(const QXSoundMode& mode)
+	{
+		_soundMode |= mode;
+		Core::SoundCore::GetInstance()->Try(_channel->setMode(_soundMode));
+		_sound->ChangeMode(_soundMode);
+	}
+
+	void SoundEmitter::DeleteSoundMode(const QXSoundMode& mode)
+	{
+		_soundMode &= ~mode;
+		Core::SoundCore::GetInstance()->Try(_channel->setMode(_soundMode));
+		_sound->ChangeMode(_soundMode);
 	}
 
 	#pragma endregion
