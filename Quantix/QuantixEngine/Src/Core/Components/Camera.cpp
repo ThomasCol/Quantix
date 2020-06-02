@@ -88,12 +88,16 @@ namespace Quantix::Core::Components
 	void	Camera::UpdateLookAt(Math::QXvec3 pos)
 	{
 		_pos = pos;
+		Math::QXvec3 right = _dir.Cross(_up);
+
 		_lookAt = Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up);
+		_trs = Math::QXmat4::CreateTRSMatrix(_pos, Math::QXquaternion::ConvertMatToQuaternion(_lookAt), Math::QXvec3(1, 1, 1));
+
 		if (_object)
 		{
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(_pos);
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::EulerToQuaternion(-_angle));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetRotation(Math::QXquaternion::ConvertMatToQuaternion(_lookAt.Inverse()));
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetTRS(_trs);
 		}
 	}
 
@@ -113,23 +117,29 @@ namespace Quantix::Core::Components
 		if (_angle.x < (-Q_PI / 2.f) + 0.01f)
 			_angle.x = -Q_PI / 2.f + 0.01f;
 
-		_dir.z = cos(_angle.x) * cos(_angle.y);
-		_dir.y = sin(-_angle.x);
-		_dir.x = cos(_angle.x) * sin(_angle.y);
+		/*_dir.z = cos(_angle.x) * cos(_angle.y);
+		_dir.y = sin(_angle.x);
+		_dir.x = cos(_angle.x) * sin(_angle.y);*/
+		_dir = Math::QXquaternion::EulerToQuaternion(_angle) * Math::QXvec3::forward;
+		_up = Math::QXquaternion::EulerToQuaternion(_angle) * Math::QXvec3::up;
 		if (_object)
 		{
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->Rotate(Math::QXquaternion::EulerToQuaternion(rotate));
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetForward(_dir);
-			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetUp(((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation() * Math::QXvec3::up);
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetUp(_up);
 		}
+	}
+
+	void Camera::SetPos(Math::QXvec3 pos)
+	{
+		_pos = pos;
+		if (_object)
+			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(_pos);
 	}
 
 	Math::QXvec3	Camera::GetPos()
 	{ 
 		if (_object)
-		{
 			return ((Core::DataStructure::GameObject3D*)_object)->GetLocalPosition();
-		}
 		
 		return _pos;
 	}
