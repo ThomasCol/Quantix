@@ -262,7 +262,13 @@ namespace Quantix::Core::Tool
 		writer.EndArray();
 
 		if (is_deformable)
+		{
+			writer.String("Childs");
+			writer.StartArray();
+			writer.EndArray();
+			writer.EndObject();
 			return;
+		}
 
 		writer.String("Childs");
 		writer.StartArray();
