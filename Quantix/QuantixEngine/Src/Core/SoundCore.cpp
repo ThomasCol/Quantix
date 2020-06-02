@@ -21,8 +21,8 @@ namespace Quantix::Core
 
 	SoundCore::~SoundCore()
 	{
-		_system->close();
-		_system->release();
+		_system->close(); //UnInitialize FMOD
+		_system->release(); //Release all allocated memory from FMOD
 	}
 
 	#pragma endregion
@@ -59,7 +59,7 @@ namespace Quantix::Core
 		_listeners.push_back(true);
 		return static_cast<QXuint>(_listeners.size()) - 1;
 
-		//TODO : Maybe manage with _system->Set3DNumListener() and _system->Get3DNumListener() ?
+		//Can be managable with _system->Set3DNumListener() and _system->Get3DNumListener()
 	}
 
 	void SoundCore::SuppListener(const QXuint ID)

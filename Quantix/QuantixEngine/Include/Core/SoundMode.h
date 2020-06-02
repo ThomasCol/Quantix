@@ -18,7 +18,7 @@ namespace Quantix::Core
 	#define	QX_SOUNDMODE_CREATECOMPRESSEDSAMPLE			FMOD_CREATECOMPRESSEDSAMPLE                 
 	#define	QX_SOUNDMODE_OPENUSER						FMOD_OPENUSER                               
 	#define	QX_SOUNDMODE_OPENMEMORY						FMOD_OPENMEMORY                             
-	#define	QX_SOUNDMODE_OPENMEMORY						FMOD_OPENMEMORY_POINT                       
+	#define	QX_SOUNDMODE_OPENMEMORYPOINT				FMOD_OPENMEMORY_POINT                       
 	#define	QX_SOUNDMODE_OPENRAW						FMOD_OPENRAW                                
 	#define	QX_SOUNDMODE_OPENONLY						FMOD_OPENONLY                               
 	#define	QX_SOUNDMODE_ACURRATETIME					FMOD_ACCURATETIME                           

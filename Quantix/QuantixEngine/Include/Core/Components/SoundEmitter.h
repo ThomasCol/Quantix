@@ -19,7 +19,7 @@ namespace Quantix::Core::Components
 			Resources::Sound*		_sound;
 			FMOD::ChannelGroup*		_channel;
 
-			Resources::ESoundMode	_dimensionMode;
+			Resources::ESoundMode	_dimensionalMode;
 			QXSoundMode				_soundMode;
 
 			QXfloat					_volume;
@@ -86,7 +86,26 @@ namespace Quantix::Core::Components
 			 */
 			const QXbool	PlaySound();
 
-			void			StopSound();
+			/**
+			 * @brief Pause Sound of the emitter
+			 *
+			 * @return QXbool paused successfully value
+			 */
+			const QXbool	PauseSound();
+
+			/**
+			 * @brief UnPause Sound of the emitter
+			 *
+			 * @return QXbool unpaused successfully value
+			 */
+			const QXbool	UnPauseSound();
+
+			/**
+			 * @brief Stop Sound of the emitter
+			 *
+			 * @return QXbool stopped successfully value
+			 */
+			const QXbool	StopSound();
 
 			/**
 			 * @brief Update position attributes of the emitter
@@ -101,14 +120,14 @@ namespace Quantix::Core::Components
 			 *
 			 * @return const QXfloat volume value
 			 */
-			inline QXfloat				GetVolume() { _volume = _sound->GetVolume(); return _volume; }
+			inline QXfloat							GetVolume() { _volume = _sound->GetVolume(); return _volume; }
 
 			/**
 			 * @brief Get Sound's Mode
 			 *
 			 * @return const Resources::ESoundMode mode value
 			 */
-			inline const Resources::ESoundMode&		GetSoundMode() { return _dimensionMode; }
+			inline const Resources::ESoundMode&		GetDimensionalSoundMode() { return _dimensionalMode; }
 
 			/**
 			 * @brief Get Sound
@@ -122,14 +141,14 @@ namespace Quantix::Core::Components
 			 *
 			 * @return const QXbool is looping value
 			 */
-			inline	const QXbool&				IsLooping() const					{ return _loop; }
+			inline	const QXbool&					IsLooping() const					{ return _loop; }
 
 			/**
 			 * @brief Is Playing On Awake
 			 *
 			 * @return const QXbool is playing on awake value
 			 */
-			inline	const QXbool				IsPlayingOnAwake() const			{ return _playOnAwake; }
+			inline	const QXbool					IsPlayingOnAwake() const			{ return _playOnAwake; }
 
 
 			/**
@@ -137,44 +156,44 @@ namespace Quantix::Core::Components
 			 *
 			 * @param Resources::Sound* sound new value
 			 */
-			inline	void						SetSound(Resources::Sound* sound)	{_sound = sound; }
+			inline	void							SetSound(Resources::Sound* sound)	{_sound = sound; }
 
 			/**
 			 * @brief Set Sound's volume
 			 *
 			 * @param QXfloat sound new value
 			 */
-			inline void							SetVolume(QXfloat volume) { _sound->SetVolume(volume); _volume = volume;}
+			inline void								SetVolume(QXfloat volume) { _sound->SetVolume(volume); _volume = volume;}
 
 			/**
 			 * @brief Set Mode of the Sound
 			 *
 			 */
-			void								SetSoundMode(const Resources::ESoundMode& mode);
+			void									SetDimensionalSoundMode(const Resources::ESoundMode& mode);
 
 			/**
 			 * @brief Add a mode to the Sound
 			 *
 			 */
-			void								AddSoundMode(const QXSoundMode& mode);
+			void									AddSoundMode(const QXSoundMode& mode);
 
 			/**
 			 * @brief Delete a mode from the Sound
 			 *
 			 */
-			void								DeleteSoundMode(const QXSoundMode& mode);
+			void									DeleteSoundMode(const QXSoundMode& mode);
 
 			/**
 			 * @brief Set Loop
 			 *
 			 */
-			inline	void						SetLoop(const QXbool& loop) { _loop = loop; loop ? AddSoundMode(QX_SOUNDMODE_LOOPNORMAL) : DeleteSoundMode(QX_SOUNDMODE_LOOPNORMAL); }
+			inline	void							SetLoop(const QXbool& loop) { _loop = loop; loop ? AddSoundMode(QX_SOUNDMODE_LOOPNORMAL) : DeleteSoundMode(QX_SOUNDMODE_LOOPNORMAL); }
 
 			/**
 			 * @brief Set Play On Awake
 			 *
 			 */
-			inline	void						SetPlayOnAwake(QXbool playOnAwake)	{ _playOnAwake = playOnAwake; }
+			inline	void							SetPlayOnAwake(QXbool playOnAwake)	{ _playOnAwake = playOnAwake; }
 
 			#pragma endregion
 
