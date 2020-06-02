@@ -1,25 +1,25 @@
-#include "Physic/PhysicDynamic.h"
+#include "Core/Physic/PhysicDynamic.h"
 
 #include <iostream>
-#include "Physic/PhysicStatic.h"
+#include "Core/Physic/PhysicStatic.h"
 #include <PxRigidActorExt.h>
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Physic::PhysicDynamic>("PhysicDynamic")
+	rttr::registration::class_<Quantix::Core::Physic::PhysicDynamic>("PhysicDynamic")
 	.constructor<>()
 	.constructor<physx::PxPhysics*>()
-	.constructor<physx::PxPhysics*, Quantix::Physic::PhysicStatic*>()
-	.constructor<const Quantix::Physic::PhysicDynamic&>()
-	.constructor<Quantix::Physic::PhysicDynamic&&>()
-	.enumeration<Quantix::Physic::EPhysXShape>("EPhysXShape")
-					 (rttr::value("Cube", Quantix::Physic::EPhysXShape::CUBE),
-					 rttr::value("Sphere", Quantix::Physic::EPhysXShape::SPHERE),
-					 rttr::value("Capsule", Quantix::Physic::EPhysXShape::CAPSULE))
-	.property("dynamic", &Quantix::Physic::PhysicDynamic::GetRigid, &Quantix::Physic::PhysicDynamic::SetRigid);
+	.constructor<physx::PxPhysics*, Quantix::Core::Physic::PhysicStatic*>()
+	.constructor<const Quantix::Core::Physic::PhysicDynamic&>()
+	.constructor<Quantix::Core::Physic::PhysicDynamic&&>()
+	.enumeration<Quantix::Core::Physic::EPhysXShape>("EPhysXShape")
+					 (rttr::value("Cube", Quantix::Core::Physic::EPhysXShape::CUBE),
+					 rttr::value("Sphere", Quantix::Core::Physic::EPhysXShape::SPHERE),
+					 rttr::value("Capsule", Quantix::Core::Physic::EPhysXShape::CAPSULE))
+	.property("dynamic", &Quantix::Core::Physic::PhysicDynamic::GetRigid, &Quantix::Core::Physic::PhysicDynamic::SetRigid);
 }
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	using namespace physx;
 	PhysicDynamic::PhysicDynamic() noexcept : IPhysicType(ETypePhysic::DYNAMIC)

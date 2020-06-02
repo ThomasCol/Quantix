@@ -6,7 +6,7 @@
 #include "Core/DataStructure/GameObject3D.h"
 #include "Type.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	struct QUANTIX_API Raycast
 	{

@@ -12,7 +12,7 @@ Hierarchy::~Hierarchy()
 	delete _inspector;
 }
 
-void Hierarchy::DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app)
+void Hierarchy::DrawObject(std::list<Quantix::Core::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Core::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app)
 {
 	for (auto it = node.begin(); it != node.end(); ++it)
 	{
@@ -57,7 +57,7 @@ void Hierarchy::DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal,
 	}
 }
 
-void Hierarchy::DrawObject2D(std::list<Quantix::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Physic::Transform2D*>& node, Quantix::Core::Platform::Application* app)
+void Hierarchy::DrawObject2D(std::list<Quantix::Core::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Core::Physic::Transform2D*>& node, Quantix::Core::Platform::Application* app)
 {
 	for (auto it = node.begin(); it != node.end(); ++it)
 	{
@@ -145,7 +145,7 @@ void Hierarchy::DrawGameComponent(Quantix::Core::Platform::Application* app)
 	}
 }
 
-void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::Transform3D* node, Quantix::Core::Platform::Application* app)
+void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Core::Physic::Transform3D* node, Quantix::Core::Platform::Application* app)
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{
@@ -164,7 +164,7 @@ void Hierarchy::Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::T
 	ImGui::End();
 }
 
-void Hierarchy::CreateChild(QXbool& select, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app)
+void Hierarchy::CreateChild(QXbool& select, std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app)
 {
 	for (auto it = nodes.begin(); it != nodes.end(); ++it)
 	{
@@ -190,7 +190,7 @@ void Hierarchy::CreateChild(QXbool& select, std::list<Quantix::Physic::Transform
 	}
 }
 
-void Hierarchy::RemoveObject(QXbool& select, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app)
+void Hierarchy::RemoveObject(QXbool& select, std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app)
 {
 	for (auto it = nodes.begin(); it != nodes.end();)
 	{
@@ -211,7 +211,7 @@ void Hierarchy::RemoveObject(QXbool& select, std::list<Quantix::Physic::Transfor
 	}
 }
 
-void Hierarchy::RemoveObject2D(QXbool& select, std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app)
+void Hierarchy::RemoveObject2D(QXbool& select, std::list<Quantix::Core::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app)
 {
 	for (auto it = nodes.begin(); it != nodes.end();)
 	{
@@ -260,7 +260,7 @@ QXstring Hierarchy::Rename(const QXchar* name, QXsizei size)
 	return "";
 }
 
-QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Physic::Transform2D* node, Quantix::Core::Platform::Application* app)
+QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Core::Physic::Transform2D*>& nodes, Quantix::Core::Physic::Transform2D* node, Quantix::Core::Platform::Application* app)
 {
 	QXbool isRemoved = QX_FALSE;
 	if (ImGui::BeginPopupContextItem("Context Item 2D"))
@@ -283,7 +283,7 @@ QXbool Hierarchy::PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& node
 	return isRemoved;
 }
 
-QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Core::Platform::Application* app)
+QXbool Hierarchy::PopUpMenuItem(std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Physic::Transform3D* node, Quantix::Core::Platform::Application* app)
 {
 	QXbool isRemoved = QX_FALSE;
 	if (ImGui::BeginPopupContextItem("Context Item 3D"))
@@ -363,17 +363,17 @@ void Hierarchy::CreateEmptyObject3D(QXbool& selection, Quantix::Core::Platform::
 	{
 		QXuint value = 0;
 		if (_selected)
-			value = (QXuint)((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Core::Physic::Transform3D*)_selected)->GetChilds().size();
 		else
 			value = (QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
-			app->scene->AddGameObject("GameObject", (Quantix::Physic::Transform3D*)_selected);
+			app->scene->AddGameObject("GameObject", (Quantix::Core::Physic::Transform3D*)_selected);
 		}
 		else
 		{
 			std::string name = "GameObject" + std::to_string(value);
-			app->scene->AddGameObject(name, (Quantix::Physic::Transform3D*)_selected);
+			app->scene->AddGameObject(name, (Quantix::Core::Physic::Transform3D*)_selected);
 		}
 		_selected = nullptr;
 		selection = false;
@@ -387,17 +387,17 @@ void Hierarchy::CreateCube(QXbool& selection, Quantix::Core::Platform::Applicati
 		Quantix::Core::DataStructure::GameObject3D* obj;
 		QXuint value = 0;
 		if (_selected)
-			value = (QXuint)((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Core::Physic::Transform3D*)_selected)->GetChilds().size();
 		else
 			value = (QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
-			obj = app->scene->AddGameObject("Cube", (Quantix::Physic::Transform3D*)_selected);
+			obj = app->scene->AddGameObject("Cube", (Quantix::Core::Physic::Transform3D*)_selected);
 		}
 		else
 		{
 			QXstring name = "Cube" + std::to_string(value);
-			obj = app->scene->AddGameObject(name, (Quantix::Physic::Transform3D*)_selected);
+			obj = app->scene->AddGameObject(name, (Quantix::Core::Physic::Transform3D*)_selected);
 		}
 		obj->AddComponent<Quantix::Core::Components::Mesh>();
 		Quantix::Core::Components::Mesh* mesh = obj->GetComponent<Quantix::Core::Components::Mesh>();
@@ -416,17 +416,17 @@ void Hierarchy::CreateSphere(QXbool& selection, Quantix::Core::Platform::Applica
 		Quantix::Core::DataStructure::GameObject3D* obj;
 		QXuint value = 0;
 		if (_selected)
-			value = (QXuint)((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Core::Physic::Transform3D*)_selected)->GetChilds().size();
 		else
 			value = (QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
-			obj = app->scene->AddGameObject("Sphere", (Quantix::Physic::Transform3D*)_selected);
+			obj = app->scene->AddGameObject("Sphere", (Quantix::Core::Physic::Transform3D*)_selected);
 		}
 		else
 		{
 			QXstring name = "Sphere" + std::to_string(value);
-			obj = app->scene->AddGameObject(name, (Quantix::Physic::Transform3D*)_selected);
+			obj = app->scene->AddGameObject(name, (Quantix::Core::Physic::Transform3D*)_selected);
 		}
 		obj->AddComponent<Quantix::Core::Components::Mesh>();
 		Quantix::Core::Components::Mesh* mesh = obj->GetComponent<Quantix::Core::Components::Mesh>();
@@ -445,17 +445,17 @@ void Hierarchy::CreateCapsule(QXbool& selection, Quantix::Core::Platform::Applic
 		Quantix::Core::DataStructure::GameObject3D* obj;
 		QXuint value = 0;
 		if (_selected)
-			value = (QXuint)((Quantix::Physic::Transform3D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Core::Physic::Transform3D*)_selected)->GetChilds().size();
 		else
 			value = (QXuint)app->scene->GetRoot()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
-			obj = app->scene->AddGameObject("Capsule", (Quantix::Physic::Transform3D*)_selected);
+			obj = app->scene->AddGameObject("Capsule", (Quantix::Core::Physic::Transform3D*)_selected);
 		}
 		else
 		{
 			QXstring name = "Capsule" + std::to_string(value);
-			obj = app->scene->AddGameObject(name, (Quantix::Physic::Transform3D*)_selected);
+			obj = app->scene->AddGameObject(name, (Quantix::Core::Physic::Transform3D*)_selected);
 		}
 		obj->AddComponent<Quantix::Core::Components::Mesh>();
 		Quantix::Core::Components::Mesh* mesh = obj->GetComponent<Quantix::Core::Components::Mesh>();
@@ -473,17 +473,17 @@ void Hierarchy::CreateEmptyObject2D(QXbool& selection, Quantix::Core::Platform::
 	{
 		QXuint value = 0;
 		if (_selected)
-			value = (QXuint)((Quantix::Physic::Transform2D*)_selected)->GetChilds().size();
+			value = (QXuint)((Quantix::Core::Physic::Transform2D*)_selected)->GetChilds().size();
 		else
 			value = (QXuint)app->scene->GetRoot2D()->GetTransform()->GetChilds().size();
 		if (value == 0)
 		{
-			app->scene->AddGameObject2D("GameObject", (Quantix::Physic::Transform2D*)_selected);
+			app->scene->AddGameObject2D("GameObject", (Quantix::Core::Physic::Transform2D*)_selected);
 		}
 		else
 		{
 			std::string name = "GameObject" + std::to_string(value);
-			app->scene->AddGameObject2D(name, (Quantix::Physic::Transform2D*)_selected);
+			app->scene->AddGameObject2D(name, (Quantix::Core::Physic::Transform2D*)_selected);
 		}
 		_selected = nullptr;
 		selection = false;

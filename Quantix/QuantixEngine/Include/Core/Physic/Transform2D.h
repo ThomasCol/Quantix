@@ -12,7 +12,7 @@ namespace Quantix::Core::DataStructure
 	class GameObject2D;
 }
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	class QUANTIX_API Transform2D
 	{

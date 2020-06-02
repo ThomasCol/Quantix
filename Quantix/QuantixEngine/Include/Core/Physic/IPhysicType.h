@@ -9,7 +9,7 @@
 
 #include "rttrEnabled.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	class PhysicStatic;
 	class PhysicDynamic;

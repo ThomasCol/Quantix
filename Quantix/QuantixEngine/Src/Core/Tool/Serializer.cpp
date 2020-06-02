@@ -101,7 +101,7 @@ namespace Quantix::Core::Tool
 				Quantix::Core::DataStructure::Component* comp = object->GetComponents().back();
 				comp->Init(object);
 				rttr::type type = comp->get_type();
-				if (type == rttr::type::get<Gameplay::CubeGenerator>() || type.get_raw_type() == rttr::type::get<Gameplay::CubeGenerator>())
+				if (type == rttr::type::get<Core::Components::Behaviours::CubeGenerator>() || type.get_raw_type() == rttr::type::get<Core::Components::Behaviours::CubeGenerator>())
 				{
 					type.invoke("SetSceneAndResourcesManager", comp, { _currScene, manager });
 				}

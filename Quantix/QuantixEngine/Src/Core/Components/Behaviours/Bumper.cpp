@@ -3,15 +3,15 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Gameplay::Bumper>("Bumper")
+	rttr::registration::class_<Quantix::Core::Components::Behaviours::Bumper>("Bumper")
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
-		.constructor<const Quantix::Gameplay::Bumper&>()
-		.constructor<Quantix::Gameplay::Bumper&&>()
-		.property("Force", &Quantix::Gameplay::Bumper::GetForce, &Quantix::Gameplay::Bumper::SetForce);
+		.constructor<const Quantix::Core::Components::Behaviours::Bumper&>()
+		.constructor<Quantix::Core::Components::Behaviours::Bumper&&>()
+		.property("Force", &Quantix::Core::Components::Behaviours::Bumper::GetForce, &Quantix::Core::Components::Behaviours::Bumper::SetForce);
 }
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	Bumper::Bumper(Quantix::Core::DataStructure::GameComponent* par) :
 		Component(par),

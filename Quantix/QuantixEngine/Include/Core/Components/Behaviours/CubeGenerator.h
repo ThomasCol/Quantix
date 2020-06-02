@@ -19,7 +19,7 @@
 #define COLORPDIFFUSE Math::QXvec3(35, 8, 3)/255
 #define COLORPSPECULAR Math::QXvec3(10, 10, 10)/255
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	class QUANTIX_API CubeGenerator : public Quantix::Core::Components::Behaviour
 	{

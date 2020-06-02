@@ -3,11 +3,11 @@
 
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
-#include "Physic/IPhysicType.h"
+#include "Core/Physic/IPhysicType.h"
 #include <PxPhysicsAPI.h>
 #include "rttrEnabled.h"
 #include "Core/MathHeader.h"
-#include "Physic/PhysicSetting.h"
+#include "Core/Physic/PhysicSetting.h"
 
 namespace Quantix::Core::DataStructure
 {

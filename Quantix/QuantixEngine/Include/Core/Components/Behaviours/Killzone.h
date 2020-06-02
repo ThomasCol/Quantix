@@ -4,7 +4,7 @@
 #include "Core\Components\Behaviour.h"
 #include "rttrEnabled.h"
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	class QUANTIX_API Killzone : public Quantix::Core::Components::Behaviour
 	{

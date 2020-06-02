@@ -1,9 +1,9 @@
 #include "Core/Components/SphereCollider.h"
 #include "Core/DataStructure/GameComponent.h"
 #include "Core/Components/Rigidbody.h"
-#include "Physic/PhysicHandler.h"
-#include "Physic/PhysicDynamic.h"
-#include "Physic/PhysicStatic.h"
+#include "Core/Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicDynamic.h"
+#include "Core/Physic/PhysicStatic.h"
 
 RTTR_PLUGIN_REGISTRATION
 {

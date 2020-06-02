@@ -6,17 +6,17 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Gameplay::CubeGenerator>("Cube Generator")
+	rttr::registration::class_<Quantix::Core::Components::Behaviours::CubeGenerator>("Cube Generator")
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
-		.constructor<const Quantix::Gameplay::CubeGenerator&>()
-		.constructor<Quantix::Gameplay::CubeGenerator&&>()
-		.property("Max Cubes", &Quantix::Gameplay::CubeGenerator::GetNbMaxOfCubes, &Quantix::Gameplay::CubeGenerator::SetNbMaxOfCubes)
-		.property("Distance for Generation", &Quantix::Gameplay::CubeGenerator::GetDistForGeneration, &Quantix::Gameplay::CubeGenerator::SetDistForGeneration)
-		.method("SetSceneAndResourcesManager", &Quantix::Gameplay::CubeGenerator::SetSceneAndResourcesManager);
+		.constructor<const Quantix::Core::Components::Behaviours::CubeGenerator&>()
+		.constructor<Quantix::Core::Components::Behaviours::CubeGenerator&&>()
+		.property("Max Cubes", &Quantix::Core::Components::Behaviours::CubeGenerator::GetNbMaxOfCubes, &Quantix::Core::Components::Behaviours::CubeGenerator::SetNbMaxOfCubes)
+		.property("Distance for Generation", &Quantix::Core::Components::Behaviours::CubeGenerator::GetDistForGeneration, &Quantix::Core::Components::Behaviours::CubeGenerator::SetDistForGeneration)
+		.method("SetSceneAndResourcesManager", &Quantix::Core::Components::Behaviours::CubeGenerator::SetSceneAndResourcesManager);
 }
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	CubeGenerator::CubeGenerator(Quantix::Core::DataStructure::GameComponent* par) :
 		Component(par),

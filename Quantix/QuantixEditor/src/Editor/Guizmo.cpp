@@ -78,7 +78,7 @@ void Guizmo::GuizmoUI()
 	LocalWorldGuizmo(pos);
 }
 
-void Guizmo::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp)
+void Guizmo::MoveObject(Quantix::Core::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp)
 {
 	Math::QXmat4 matrixTmp2 = Math::QXmat4::CreateTRSMatrix(transform->GetPosition(), Math::QXquaternion(1, 0, 0, 0), transform->GetScale());
 	Math::QXvec3 translation, transTmp, rotation, rotTmp, scale, scaleTmp;
@@ -106,7 +106,7 @@ void Guizmo::MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& m
 	}
 }
 
-void Guizmo::ShowGuizmoObject(Quantix::Physic::Transform3D* transform)
+void Guizmo::ShowGuizmoObject(Quantix::Core::Physic::Transform3D* transform)
 {
 	Math::QXmat4 matrix, matrixTmp;
 	/*if (_guizmoMode == ImGuizmo::MODE::WORLD)

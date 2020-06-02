@@ -11,7 +11,7 @@
 
 #include "Type.h"
 #include "Resource.h"
-#include "Physic/Transform3D.h"
+#include "Core/Physic/Transform3D.h"
 
 #define FRAME 30.f
 #define BLENDINGTIME 2.f
@@ -65,10 +65,10 @@ namespace Quantix::Resources
 		void Load(const QXstring& pathFile) override;
 		void SetTRS(const aiAnimation* paiAnim, const aiMesh* paiMesh);
 		void Init() override;
-		void SetSkeletonOfMesh(QXuint indexBone, Quantix::Physic::Transform3D* objectTransform);
+		void SetSkeletonOfMesh(QXuint indexBone, Quantix::Core::Physic::Transform3D* objectTransform);
 		void UpdateTimer(QXdouble frameTime);
-		void SendAnimationData(Quantix::Physic::Transform3D* objectTransform);
-		void Update(QXdouble frameTime, Quantix::Physic::Transform3D* objectTransform);
+		void SendAnimationData(Quantix::Core::Physic::Transform3D* objectTransform);
+		void Update(QXdouble frameTime, Quantix::Core::Physic::Transform3D* objectTransform);
 
 	private:
 		std::vector<Math::QXmat4>								_localTRS;

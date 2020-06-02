@@ -49,7 +49,7 @@ namespace Quantix::Resources
 
 	}
 
-	void Animation::SetSkeletonOfMesh(QXuint indexBone, Quantix::Physic::Transform3D* objectTransform)
+	void Animation::SetSkeletonOfMesh(QXuint indexBone, Quantix::Core::Physic::Transform3D* objectTransform)
 	{
 		_BlendedTRS[indexBone] = objectTransform->GetTRS() * Math::QXmat4::CreateTRSMatrix(_dataAnim[indexBone][_info.animIndex].localPos, _dataAnim[indexBone][_info.animIndex].localRotation, _dataAnim[indexBone][_info.animIndex].localScale);
 	}
@@ -59,12 +59,12 @@ namespace Quantix::Resources
 		_info.Update((QXfloat)frameTime);
 	}
 
-	void Animation::SendAnimationData(Quantix::Physic::Transform3D* objectTransform)
+	void Animation::SendAnimationData(Quantix::Core::Physic::Transform3D* objectTransform)
 	{
 
 	}
 	
-	void Animation::Update(QXdouble frameTime, Quantix::Physic::Transform3D* objectTransform)
+	void Animation::Update(QXdouble frameTime, Quantix::Core::Physic::Transform3D* objectTransform)
 	{
 		for (QXuint i = 0; i < _nbBones; i++)
 			SetSkeletonOfMesh(i, objectTransform);

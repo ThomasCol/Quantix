@@ -6,7 +6,7 @@
 
 using namespace physx;
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	class SimulationCallback : public PxSimulationEventCallback
 	{

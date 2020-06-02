@@ -1,9 +1,9 @@
-#include "Physic/Transform3D.h"
+#include "Core/Physic/Transform3D.h"
 #include "Core/DataStructure/GameObject3D.h"
 #include "Core/Components/CharacterController.h"
 #include "Core/Components/Camera.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	#pragma region Constructors&Destructor
 

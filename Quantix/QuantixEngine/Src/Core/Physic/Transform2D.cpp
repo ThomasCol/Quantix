@@ -1,7 +1,7 @@
-#include "Physic/Transform2D.h"
+#include "Core/Physic/Transform2D.h"
 #include "Core/DataStructure/GameObject2D.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	#pragma region Constructors&Destructor
 

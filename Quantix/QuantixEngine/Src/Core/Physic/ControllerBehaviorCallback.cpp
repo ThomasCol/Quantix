@@ -1,9 +1,9 @@
-#include "Physic/ControllerBehaviorCallback.h"
+#include "Core/Physic/ControllerBehaviorCallback.h"
 #include <iostream>
 
 
 using namespace physx;
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	physx::PxControllerBehaviorFlags ControllerBehaviorCallback::getBehaviorFlags(const physx::PxShape& shape, const physx::PxActor& actor)
 	{

@@ -5,7 +5,7 @@
 #include "Core/MathHeader.h"
 #include "Core./DataStructure//Component.h"
 #include "Resources/Scene.h"
-#include "Physic/Joint.h"
+#include "Core/Physic/Joint.h"
 #include "Core/Platform/Application.h"
 
 namespace Quantix::Core::Components
@@ -85,17 +85,17 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param scene Current scene
 		 */
-		void Generate(Core::Platform::Application* app);
+		void Generate(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager);
 
-		void MoveCube(Core::Platform::Application* app) noexcept;
-		void CreateCube(Core::Platform::Application* app) noexcept;
+		void MoveCube(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager) noexcept;
+		void CreateCube(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager) noexcept;
 
 		/**
 		 * @brief addComponent for the deformableMesh during Generation
 		 * 
 		 * @param object 
 		 */
-		void AddComponent(DataStructure::GameObject3D* object, Core::Platform::Application* app) noexcept;
+		void AddComponent(DataStructure::GameObject3D* object, Core::DataStructure::ResourcesManager* manager) noexcept;
 
 		/**
 		 * @brief Get the Num Width object

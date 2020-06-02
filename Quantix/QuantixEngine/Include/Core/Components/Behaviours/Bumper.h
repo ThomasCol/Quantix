@@ -7,7 +7,7 @@
 
 #include "rttrEnabled.h"
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	class QUANTIX_API Bumper : public Quantix::Core::Components::Behaviour
 	{

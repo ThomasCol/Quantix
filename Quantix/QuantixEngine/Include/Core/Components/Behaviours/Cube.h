@@ -8,7 +8,7 @@
 #define ATTRACTFORCE 1000.f
 #define REJECTFORCE 1000.f
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	enum class QUANTIX_API ECubePhysicState
 	{

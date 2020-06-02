@@ -6,7 +6,7 @@
 #include "Core\Components\Rigidbody.h"
 #include "rttrEnabled.h"
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	enum class QUANTIX_API EArmState
 	{

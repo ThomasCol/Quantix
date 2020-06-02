@@ -3,15 +3,15 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Gameplay::Killzone>("Killzone")
+	rttr::registration::class_<Quantix::Core::Components::Behaviours::Killzone>("Killzone")
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
-		.constructor<const Quantix::Gameplay::Killzone&>()
-		.constructor<Quantix::Gameplay::Killzone&&>()
-		.property("RespawnPosition", &Quantix::Gameplay::Killzone::positionToRespawnController);
+		.constructor<const Quantix::Core::Components::Behaviours::Killzone&>()
+		.constructor<Quantix::Core::Components::Behaviours::Killzone&&>()
+		.property("RespawnPosition", &Quantix::Core::Components::Behaviours::Killzone::positionToRespawnController);
 }
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	Killzone::Killzone(Quantix::Core::DataStructure::GameComponent* par) :
 		Component(par),

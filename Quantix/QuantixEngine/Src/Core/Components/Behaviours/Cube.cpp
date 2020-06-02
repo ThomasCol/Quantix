@@ -1,19 +1,19 @@
 #include "Core/Components//Behaviours//Cube.h"
 
-#include <Physic/Raycast.h>
+#include <Core/Physic/Raycast.h>
 #include "Core/UserEntry/InputManager.h"
 #include "Core/Components/Rigidbody.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Gameplay::Cube>("Cube")
+	rttr::registration::class_<Quantix::Core::Components::Behaviours::Cube>("Cube")
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
-		.constructor<const Quantix::Gameplay::Cube&>()
-		.constructor<Quantix::Gameplay::Cube&&>();
+		.constructor<const Quantix::Core::Components::Behaviours::Cube&>()
+		.constructor<Quantix::Core::Components::Behaviours::Cube&&>();
 }
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	Cube::Cube(Quantix::Core::DataStructure::GameComponent* par) :
 		Component(par),

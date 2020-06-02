@@ -1,8 +1,8 @@
 #include <PxPhysicsAPI.h>
-#include "Physic/Raycast.h"
-#include "Physic/PhysicHandler.h"
+#include "Core/Physic/Raycast.h"
+#include "Core/Physic/PhysicHandler.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	Raycast::Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax) noexcept
 	{

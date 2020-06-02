@@ -1,10 +1,10 @@
 #ifndef __PHYSICDYNAMIC_H__
 #define __PHYSICDYNAMIC_H__
 
-#include "Physic/IPhysicType.h"
-#include "Physic/Transform3D.h"
+#include "Core/Physic/IPhysicType.h"
+#include "Core/Physic/Transform3D.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	using namespace physx;
 
@@ -89,7 +89,7 @@ namespace Quantix::Physic
 #pragma endregion
 #pragma endregion
 
-		CLASS_REGISTRATION(Quantix::Physic::IPhysicType)
+		CLASS_REGISTRATION(Quantix::Core::Physic::IPhysicType)
 	};
 }
 
