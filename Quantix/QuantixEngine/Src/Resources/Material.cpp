@@ -21,7 +21,7 @@ namespace Quantix::Resources
 {
 #pragma region Constructors
 
-	Material::Material(ShaderProgram* program) :
+	Material::Material(ShaderProgram* program) noexcept :
 		_program {program},
 		_diffuse {nullptr}
 	{
@@ -32,21 +32,21 @@ namespace Quantix::Resources
 		SetInt("material.emissiveTexture", 3);
 	}
 
-	Material::~Material()
+	Material::~Material() noexcept
 	{}
 
 #pragma endregion
 
 #pragma region Functions
 
-	QXbool	Material::IsReady()
+	QXbool	Material::IsReady() noexcept
 	{
 		if (!_diffuse)
 			return true;
 		return _diffuse->IsReady();
 	}
 	
-	void Material::SendData(QXuint shadowTexture, QXbool isPointLight)
+	void Material::SendData(QXuint shadowTexture, QXbool isPointLight) noexcept
 	{
 		SetFloat3("material.ambient", ambient.e);
 		SetFloat3("material.diffuse", diffuse.e);
@@ -67,7 +67,7 @@ namespace Quantix::Resources
 		}
 	}
 
-	void Material::SendTextures()
+	void Material::SendTextures() noexcept
 	{
 		if (_diffuse && _diffuse->IsReady())
 		{
@@ -91,7 +91,7 @@ namespace Quantix::Resources
 		}
 	}
 
-	void Material::SetFloat(QXstring location, QXfloat value)
+	void Material::SetFloat(QXstring location, QXfloat value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -101,7 +101,7 @@ namespace Quantix::Resources
 		glUniform1f(location_id, value);
 	}
 	
-	void Material::SetFloat2(QXstring location, const QXfloat* value)
+	void Material::SetFloat2(QXstring location, const QXfloat* value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -111,7 +111,7 @@ namespace Quantix::Resources
 		glUniform2fv(location_id, 1, value);
 	}
 	
-	void Material::SetFloat3(QXstring location, const QXfloat* value)
+	void Material::SetFloat3(QXstring location, const QXfloat* value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -121,7 +121,7 @@ namespace Quantix::Resources
 		glUniform3fv(location_id, 1, value);
 	}
 	
-	void Material::SetFloat4(QXstring location, const QXfloat* value)
+	void Material::SetFloat4(QXstring location, const QXfloat* value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -131,7 +131,7 @@ namespace Quantix::Resources
 		glUniform1fv(location_id, 4, value);
 	}
 
-	void Material::SetInt(QXstring location, QXint value)
+	void Material::SetInt(QXstring location, QXint value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -141,7 +141,7 @@ namespace Quantix::Resources
 		glUniform1i(location_id, value);
 	}
 	
-	void Material::SetInt2(QXstring location, const QXint* value)
+	void Material::SetInt2(QXstring location, const QXint* value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -150,7 +150,7 @@ namespace Quantix::Resources
 		glUniform1iv(location_id, 2, value);
 	}
 	
-	void Material::SetInt3(QXstring location, const QXint* value)
+	void Material::SetInt3(QXstring location, const QXint* value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -159,31 +159,8 @@ namespace Quantix::Resources
 
 		glUniform1iv(location_id, 3, value);
 	}
-
-	void Material::SetLightArray(std::vector<Core::Components::Light*>& lights)
-	{
-		QXsizei size = (lights.size() <= 10 ? lights.size() : 10);
-
-		for (QXsizei i = 0; i < size; ++i)
-		{
-			std::string lightName{ "lightArray[" + std::to_string(i) + "]." };
-			SetFloat3(lightName + "ambient", lights[i]->ambient.e);
-			SetFloat3(lightName + "diffuse", lights[i]->diffuse.e);
-			SetFloat3(lightName + "specular", lights[i]->specular.e);
-			SetFloat3(lightName + "direction", lights[i]->direction.e);
-			SetFloat3(lightName + "position", lights[i]->position.e);
-
-			SetFloat(lightName + "constant", lights[i]->constant);
-			SetFloat(lightName + "linear", lights[i]->linear);
-			SetFloat(lightName + "quadratic", lights[i]->quadratic);
-			SetFloat(lightName + "cutOff", lights[i]->cutOff);
-			SetFloat(lightName + "outerCutOff", lights[i]->outerCutOff);
-
-			SetInt(lightName + "type", (QXint)lights[i]->type);
-		}
-	}
 		
-	void Material::SetMat4(QXstring location, Math::QXmat4 value)
+	void Material::SetMat4(QXstring location, Math::QXmat4 value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -193,12 +170,12 @@ namespace Quantix::Resources
 		glUniformMatrix4fv(location_id, 1, false, value.array);
 	}
 
-	void Material::SetTexture(QXstring location, const Texture& texture)
+	void Material::SetTexture(QXstring location, const Texture& texture) noexcept
 	{
 		SetUint(location, texture.GetId());
 	}
 
-	void Material::SetUint(QXstring location, QXuint value)
+	void Material::SetUint(QXstring location, QXuint value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -208,7 +185,7 @@ namespace Quantix::Resources
 		glUniform1ui(location_id, value);
 	}
 	
-	void Material::SetUint2(QXstring location, const QXuint* value)
+	void Material::SetUint2(QXstring location, const QXuint* value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -218,7 +195,7 @@ namespace Quantix::Resources
 		glUniform1uiv(location_id, 2, value);
 	}
 	
-	void Material::SetUint3(QXstring location, const QXuint* value)
+	void Material::SetUint3(QXstring location, const QXuint* value) noexcept
 	{
 		QXuint location_id {_program->GetLocation(location)};
 
@@ -228,7 +205,7 @@ namespace Quantix::Resources
 		glUniform1uiv(location_id, 3, value);
 	}
 
-	void Material::HasChanged(QXbool changed)
+	void Material::HasChanged(QXbool changed) noexcept
 	{
 		textureHasChanged = changed;
 	}

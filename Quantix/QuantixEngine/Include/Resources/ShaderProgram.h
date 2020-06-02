@@ -55,13 +55,14 @@ namespace Quantix::Resources
 		 * 
 		 * @param vertexShader Path to the vertex shader
 		 * @param fragmentShader Path to the Fragment shader
+		 * @param geometryShader Path to the Fragment shader
 		 */
 		ShaderProgram(Shader* vertexShader, Shader* fragmentShader, Shader* geometryShader = nullptr) noexcept;
 
 		/**
 		 * @brief Destroy the Shader Program object
 		 */
-		~ShaderProgram();
+		~ShaderProgram() noexcept;
 
 #pragma endregion
 
@@ -87,11 +88,26 @@ namespace Quantix::Resources
 		 */
 		QXuint GetLocation(QXstring location) noexcept;
 
-		inline void AddShaderPath(const QXstring& path) { _shadersPath.push_back(path); }
+		/**
+		 * @brief Add shader past to the list
+		 * 
+		 * @param path path to add
+		 */
+		inline void AddShaderPath(const QXstring& path) noexcept { _shadersPath.push_back(path); }
 
-		inline std::vector<QXstring> GetPath() { return _shadersPath; }
+		/**
+		 * @brief Get the Path object
+		 * 
+		 * @return std::vector<QXstring> path
+		 */
+		inline std::vector<QXstring> GetPath() noexcept { return _shadersPath; }
 
-		inline QXuint GetID() { return _id; }
+		/**
+		 * @brief Get program ID
+		 * 
+		 * @return QXuint ID
+		 */
+		inline QXuint GetID() noexcept { return _id; }
 
 #pragma endregion
 

@@ -19,7 +19,7 @@ namespace Quantix::Resources
 {
 #pragma region Constructors
 
-	Model::Model(const std::vector<Vertex>& vertices, const std::vector<QXuint>& indices) :
+	Model::Model(const std::vector<Vertex>& vertices, const std::vector<QXuint>& indices) noexcept :
 		_vertices {vertices},
 		_indices {indices}
 	{}
@@ -28,7 +28,7 @@ namespace Quantix::Resources
 
 #pragma region Functions
 
-	void Model::Init()
+	void Model::Init() noexcept
 	{
 		QXuint VBO, EBO;
 		glGenVertexArrays(1, &_VAO);
@@ -65,7 +65,7 @@ namespace Quantix::Resources
 		_status.store(EResourceStatus::READY);
 	}
 
-	void Model::Load(const QXstring& file)
+	void Model::Load(const QXstring& file) noexcept
 	{
 		_path = file;
 
@@ -73,7 +73,7 @@ namespace Quantix::Resources
 			LoadWithLib(file);
 	}
 
-	QXbool Model::LoadFromCache(const QXstring& filePath)
+	QXbool Model::LoadFromCache(const QXstring& filePath) noexcept
 	{
 		QXstring cache_file = filePath + ".quantix";
 		FILE* file;
@@ -100,7 +100,7 @@ namespace Quantix::Resources
 		return true;
 	}
 
-	void Model::LoadWithLib(const QXstring& file)
+	void Model::LoadWithLib(const QXstring& file) noexcept
 	{
 		Assimp::Importer Importer;
 		const aiScene* pScene = Importer.ReadFile(file.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);

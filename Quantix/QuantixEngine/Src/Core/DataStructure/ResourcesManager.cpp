@@ -10,7 +10,7 @@ namespace Quantix::Core::DataStructure
 {
 #pragma region Constructors
 
-	ResourcesManager::~ResourcesManager()
+	ResourcesManager::~ResourcesManager() noexcept
 	{
 		for (auto it = _materials.begin(); it != _materials.end();)
 		{
@@ -496,7 +496,6 @@ namespace Quantix::Core::DataStructure
 	{
 		Tool::Serializer* serializer = new Tool::Serializer;
 		Scene* scene = new Scene();
-		//serializer.Deserialize(path, scene, *this);
 		Threading::TaskSystem::GetInstance()->AddTask(&Tool::Serializer::Deserialize, serializer, path, scene, this);
 		return scene;
 	}

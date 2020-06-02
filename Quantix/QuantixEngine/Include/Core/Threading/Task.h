@@ -20,7 +20,7 @@ namespace Quantix::Core::Threading
 		 * 
 		 * @param task Task to copy
 		 */
-		Task(const Task& task) :
+		Task(const Task& task) noexcept :
 			done{ task.done.load() }
 		{};
 

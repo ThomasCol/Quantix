@@ -14,7 +14,7 @@ namespace Quantix::Core::Threading
 	{
 	}
 
-	void TaskSystem::Destroy() 
+	void TaskSystem::Destroy() noexcept
 	{
 		TaskSystem* syst = GetInstance();
 		for (size_t i = 0; i < syst->_threadNumber; i++)
@@ -25,7 +25,7 @@ namespace Quantix::Core::Threading
 		delete[] syst->_threadPool;
 	}
 
-	void TaskSystem::Update() 
+	void TaskSystem::Update() noexcept
 	{
 		TaskSystem* tasks = GetInstance();
 		if (tasks->_tasks.empty())

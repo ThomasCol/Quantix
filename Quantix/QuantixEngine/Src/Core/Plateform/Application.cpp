@@ -20,7 +20,7 @@ namespace Quantix::Core::Platform
 		scene->Init(manager);
 	}
 
-	Application::~Application()
+	Application::~Application() noexcept
 	{
 		Physic::PhysicHandler::GetInstance()->ReleaseSystem();
 		Physic::PhysicHandler::GetInstance()->Destroy();
