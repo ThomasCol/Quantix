@@ -71,7 +71,7 @@ namespace Quantix::Core::Components
 		 */
 		DeformableMesh* Copy() const override;
 
-		void Destroy() override;
+		void Destroy() noexcept override;
 
 		/**
 		 * @brief Init a new DeformableMesh
@@ -87,57 +87,57 @@ namespace Quantix::Core::Components
 		 */
 		void Generate(Core::Platform::Application* app);
 
-		void MoveCube(Core::Platform::Application* app);
-		void CreateCube(Core::Platform::Application* app);
+		void MoveCube(Core::Platform::Application* app) noexcept;
+		void CreateCube(Core::Platform::Application* app) noexcept;
 
 		/**
 		 * @brief addComponent for the deformableMesh during Generation
 		 * 
 		 * @param object 
 		 */
-		void AddComponent(DataStructure::GameObject3D* object, Core::Platform::Application* app);
+		void AddComponent(DataStructure::GameObject3D* object, Core::Platform::Application* app) noexcept;
 
 		/**
 		 * @brief Get the Num Width object
 		 * 
 		 * @return QXuint 
 		 */
-		QXuint GetNumWidth() { return numCubeInWidth; }
+		QXuint GetNumWidth() noexcept { return numCubeInWidth; }
 
 		/**
 		 * @brief Set the Num Width object
 		 * 
 		 * @param i 
 		 */
-		void SetNumWidth(QXuint i) { numCubeInWidth = i; }
+		void SetNumWidth(QXuint i) noexcept { numCubeInWidth = i; }
 
 		/**
 		 * @brief Get the Break Force object
 		 * 
 		 * @return QXuint 
 		 */
-		QXfloat GetBreakForce() { return joint.breakForce; }
+		QXfloat GetBreakForce() noexcept { return joint.breakForce; }
 
 		/**
 		 * @brief Set the Break Force object
 		 * 
 		 * @param i 
 		 */
-		void SetBreakForce(QXfloat i) { joint.breakForce = i; }
+		void SetBreakForce(QXfloat i) noexcept { joint.breakForce = i; }
 
 		/**
 		 * @brief Get the Break Torque object
 		 * 
 		 * @return QXuint 
 		 */
-		QXfloat GetBreakTorque() { return joint.breakTorque; }
+		QXfloat GetBreakTorque() noexcept { return joint.breakTorque; }
 
 		/**
 		 * @brief Set the Break Torque object
 		 * 
 		 * @param i 
 		 */
-		void SetBreakTorque(QXfloat i) { joint.breakTorque = i; }
+		void SetBreakTorque(QXfloat i) noexcept { joint.breakTorque = i; }
 
 		CLASS_REGISTRATION(Core::DataStructure::Component);
 	};

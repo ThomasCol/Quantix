@@ -77,14 +77,14 @@ namespace Quantix::Physic
 		 * 
 		 * @return PxRigidDynamic* Pointer on the rigid
 		 */
-		PxRigidDynamic* GetRigid();
+		PxRigidDynamic* GetRigid() noexcept;
 
 		/**
 		 * @brief Set the Rigid object
 		 * 
 		 * @param rigid new Value of rigid
 		 */
-		void SetRigid(PxRigidDynamic* rigid);
+		void SetRigid(PxRigidDynamic* rigid) noexcept;
 		
 #pragma endregion
 #pragma endregion

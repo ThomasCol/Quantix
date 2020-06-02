@@ -51,7 +51,6 @@
     <ClCompile Include="Src\Physic\Raycast.cpp" />
     <ClCompile Include="Src\Core\Components\CharacterController.cpp" />
     <ClCompile Include="Src\Physic\ControllerBehaviorCallback.cpp" />
-    <ClCompile Include="Src\Physic\ControllerHitReport.cpp" />
     <ClCompile Include="Src\Core\Components\DeformableMesh.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Cube.cpp" />
     <ClCompile Include="Src\Core\Components\Behaviours\Arms.cpp" />

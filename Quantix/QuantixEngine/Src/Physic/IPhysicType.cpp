@@ -36,7 +36,7 @@ namespace Quantix::Physic
 		type {std::move(pt.type)}
 	{}
 
-	ETypePhysic& IPhysicType::GetType()
+	ETypePhysic& IPhysicType::GetType() noexcept
 	{
 		return type;
 	}

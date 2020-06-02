@@ -67,7 +67,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Arms::SwitchPower()
+	void Arms::SwitchPower() noexcept
 	{
 		switch (_state)
 		{
@@ -87,7 +87,7 @@ namespace Quantix::Gameplay
 		UpdateMaterial();
 	}
 
-	void Arms::UsePower()
+	void Arms::UsePower() noexcept
 	{
 		switch (_state)
 		{
@@ -105,7 +105,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Arms::UseHands()
+	void Arms::UseHands() noexcept
 	{
 		if (_isGrabbingObject)
 			return Drop();
@@ -113,7 +113,7 @@ namespace Quantix::Gameplay
 			return Grab();
 	}
 
-	void Arms::Grab()
+	void Arms::Grab() noexcept
 	{
 		//Grab
 
@@ -144,7 +144,7 @@ namespace Quantix::Gameplay
 			return;
 	}
 
-	void Arms::Drop()
+	void Arms::Drop() noexcept
 	{
 		//Drop
 
@@ -158,7 +158,7 @@ namespace Quantix::Gameplay
 		_isGrabbingObject = QX_FALSE;
 	}
 
-	void Arms::UseIce()
+	void Arms::UseIce() noexcept
 	{
 		if (_gameobject)
 		{
@@ -190,7 +190,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void	Arms::Freeze(Core::DataStructure::GameObject3D* cube)
+	void	Arms::Freeze(Core::DataStructure::GameObject3D* cube) noexcept
 	{
 		objectFrozenVelocity = rigid->GetLinearVelocity();
 			
@@ -198,7 +198,7 @@ namespace Quantix::Gameplay
 		rigid->SetRigidFlagKineForQueries(true);
 	}
 
-	void	Arms::UnFreeze(Core::DataStructure::GameObject3D* cube)
+	void	Arms::UnFreeze(Core::DataStructure::GameObject3D* cube) noexcept
 	{
 		rigid->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetUp());
 
@@ -207,7 +207,7 @@ namespace Quantix::Gameplay
 		rigid->SetLinearVelocity(objectFrozenVelocity);
 	}
 
-	void	Arms::UsePunch()
+	void	Arms::UsePunch() noexcept
 	{
 		if (_isGrabbingObject && _grabbedObject->GetComponent<Cube>()->GetStatePhysic() == ECubePhysicState::GRABBED)
 		{
@@ -226,7 +226,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void	Arms::UseMagnet(QXbool positiveField)
+	void	Arms::UseMagnet(QXbool positiveField) noexcept
 	{
 		if (_gameobject)
 		{
@@ -258,7 +258,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Arms::UpdateMaterial()
+	void Arms::UpdateMaterial() noexcept
 	{
 		switch (_state)
 		{
@@ -282,14 +282,4 @@ namespace Quantix::Gameplay
 		}
 
 	}
-
-	//Questions to ask my teammates
-	/*
-	* Comment j'accède à la liste des layers pour comparer le layer actuel à ceux existants ?
-	*/ 
-
-	//TODO:
-	/* 
-	* 
-	*/
 }

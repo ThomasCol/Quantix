@@ -76,12 +76,12 @@ namespace Quantix::Physic
 	{
 	}
 
-	PxRigidDynamic* PhysicDynamic::GetRigid()
+	PxRigidDynamic* PhysicDynamic::GetRigid() noexcept
 	{
 		return _dynamic;
 	}
 
-	void PhysicDynamic::SetRigid(PxRigidDynamic* rigid)
+	void PhysicDynamic::SetRigid(PxRigidDynamic* rigid) noexcept
 	{
 		_dynamic = rigid;
 	}

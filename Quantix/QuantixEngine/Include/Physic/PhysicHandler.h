@@ -36,7 +36,7 @@ namespace Quantix::Physic
 #pragma endregion
 
 #pragma region PhysX
-		bool recordMemoryAllocations = true;
+		QXbool recordMemoryAllocations = true;
 		PxPhysics* mSDK = nullptr;
 		PxCooking* mCooking = nullptr;
 		PxDefaultErrorCallback pDefaultErrorCallback;
@@ -80,31 +80,31 @@ namespace Quantix::Physic
 		 * 
 		 * @return PhysicHandler* return a pointer on the PhysicHandler Instance
 		 */
-		static PhysicHandler* GetInstance();
+		static PhysicHandler* GetInstance() noexcept;
 
 		/**
 		 * @brief Init Physic System
 		 * 
 		 */
-		void		InitSystem();
+		void		InitSystem() noexcept;
 		
 		/**
 		 * @brief Init Physic Scene
 		 * 
 		 */
-		void		InitScene();
+		void		InitScene() noexcept;
 
 		/**
 		 * @brief Release System Physic
 		 * 
 		 */
-		void		ReleaseSystem();
+		void		ReleaseSystem() noexcept;
 
 		/**
 		 * @brief Delete Singleton
 		 *
 		 */
-		void Destroy();
+		void Destroy() noexcept;
 
 		/**
 		 * @brief Return PhysicType Linked to the GameComponent
@@ -113,7 +113,7 @@ namespace Quantix::Physic
 		 * @param hasRigidbody 
 		 * @return IPhysicType* PhysicType Linked
 		 */
-		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody = false);
+		IPhysicType* GetObject(Core::DataStructure::GameComponent* object, QXbool hasRigidbody = false) noexcept;
 
 		/**
 		 * @brief Create a And Link Actor Physic object
@@ -122,7 +122,7 @@ namespace Quantix::Physic
 		 * @param dynamic 
 		 * @return IPhysicType* Pointer on IPhysicType Linked in map
 		 */
-		IPhysicType* CreateAndLinkActorPhysic(Core::DataStructure::GameComponent* object, bool dynamic);
+		IPhysicType* CreateAndLinkActorPhysic(Core::DataStructure::GameComponent* object, QXbool dynamic) noexcept;
 
 		/**
 		 * @brief Swap ActorPhysic in static to dynamic
@@ -130,8 +130,8 @@ namespace Quantix::Physic
 		 * @param object GameComponent linked in map
 		 * @param staticActor ActorPhysic Static
 		 * @return IPhysicType* Pointer on IPhysicType Linked in map
-		 */
-		IPhysicType* SwapActorPhysicStaticToDynamic(Core::DataStructure::GameComponent* object, PhysicStatic* staticActor);
+		 */ 
+		IPhysicType* SwapActorPhysicStaticToDynamic(Core::DataStructure::GameComponent* object, PhysicStatic* staticActor) noexcept;
 
 		/**
 		 * @brief  Swap ActorPhysic in dynamic to static
@@ -140,7 +140,7 @@ namespace Quantix::Physic
 		 * @param dynamicActor ActorPhysic dynamic
 		 * @return IPhysicType* Pointer on IPhysicType Linked in map
 		 */
-		IPhysicType* SwapActorPhysicDynamicToStatic(Core::DataStructure::GameComponent* object, PhysicDynamic* dynamicActor);
+		IPhysicType* SwapActorPhysicDynamicToStatic(Core::DataStructure::GameComponent* object, PhysicDynamic* dynamicActor) noexcept;
 
 
 		/**
@@ -150,7 +150,7 @@ namespace Quantix::Physic
 		 * @param hasRigidbody 
 		 * @return PxShape* New Shape
 		 */
-		PxShape* CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+		PxShape* CreateCubeCollider(Core::DataStructure::GameComponent* object, QXbool hasRigidbody) noexcept;
 
 		/**
 		 * @brief Create a Sphere Collider object
@@ -159,7 +159,7 @@ namespace Quantix::Physic
 		 * @param hasRigidbody 
 		 * @return PxShape* New Shape
 		 */
-		PxShape* CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+		PxShape* CreateSphereCollider(Core::DataStructure::GameComponent* object, QXbool hasRigidbody) noexcept;
 
 		/**
 		 * @brief Create a Capsule Collider object
@@ -168,7 +168,7 @@ namespace Quantix::Physic
 		 * @param hasRigidbody 
 		 * @return PxShape* New Shape
 		 */
-		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody);
+		PxShape* CreateCapsuleCollider(Core::DataStructure::GameComponent* object, QXbool hasRigidbody) noexcept;
 
 		/**
 		 * @brief Create a CharacterController object
@@ -176,7 +176,7 @@ namespace Quantix::Physic
 		 * @param object Gamecomponent who will be link to the future charactercontroller
 		 * @return PxCapsuleController* New Controller
 		 */
-		PxCapsuleController* CreateController(Core::DataStructure::GameComponent* object);
+		PxCapsuleController* CreateController(Core::DataStructure::GameComponent* object) noexcept;
 
 		/**
 		 * @brief Create a Joint object between object and other
@@ -187,7 +187,7 @@ namespace Quantix::Physic
 		 * @param joint Struct who have some information for the future joint
 		 * @return PxJoint* new joint
 		 */
-		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec, Physic::Joint joint);
+		PxJoint* CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec, const Physic::Joint& joint) noexcept;
 
 		// Update
 		/**
@@ -195,26 +195,26 @@ namespace Quantix::Physic
 		 * 
 		 * @param deltaTime 
 		 */
-		void		UpdateSystem(double deltaTime);
+		void		UpdateSystem(double deltaTime) noexcept;
 
 		/**
 		 * @brief Synchronize Physic Actor with GameObject
 		 * 
 		 * @param isPlaying 
 		 */
-		void		UpdatePhysicActor(bool isPlaying = false);
+		void		UpdatePhysicActor(QXbool isPlaying = false) noexcept;
 
 		/**
 		 * @brief Update Actor in playing
 		 * 
 		 */
-		void UpdatePlayingActor();
+		void UpdatePlayingActor() noexcept;
 
 		/**
 		 * @brief Update Actor in Editor
 		 * 
 		 */
-		void UpdateEditorActor();
+		void UpdateEditorActor() noexcept;
 
 		/**
 		 * @brief generate a raycast and return the information
@@ -224,7 +224,7 @@ namespace Quantix::Physic
 		 * @param distMax Distance Maximum of the raycast
 		 * @param ownRaycast Structure who will have the information of the raycast
 		 */
-		void Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Raycast& ownRaycast);
+		void Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Raycast& ownRaycast) noexcept;
 
 		/**
 		 * @brief Generate an overlap of a sphere and return a list of the GameObject who intersect with it
@@ -233,19 +233,32 @@ namespace Quantix::Physic
 		 * @param transform Transform of the Sphere (Position and rotation)
 		 * @return std::vector<Core::DataStructure::GameObject3D*> List of GameObject3D who intersect
 		 */
-		std::vector<Core::DataStructure::GameObject3D*> OverlapSphere(QXfloat radius, Physic::Transform3D* transform);
+		std::vector<Core::DataStructure::GameObject3D*> OverlapSphere(QXfloat radius, Physic::Transform3D* transform) noexcept;
 
 		/**
 		 * @brief Reboot the PxScene
 		 * 
 		 */
-		void CleanScene();
+		void CleanScene() noexcept;
 
-		void CleanController(PxCapsuleController* controller);
+		/**
+		* @brief Remove a controller of the PxScene
+		*
+		* @param controller Controller to remove
+		*
+		*/
+		void CleanController(PxCapsuleController* controller) noexcept;
 
 #pragma region Operators
 
+		/**
+		 * @brief Operator = per copy , delete
+		 */
 		PhysicHandler& operator=(const PhysicHandler& other) = delete;
+
+		/**
+		 * @brief Operator = per move , delete
+		 */
 		PhysicHandler& operator=(PhysicHandler&& other) = delete;
 
 #pragma endregion
@@ -257,39 +270,37 @@ namespace Quantix::Physic
 		 * 
 		 * @return Value of the Flag
 		 */
-		bool GetFlagAdaptiveForce()				{ return sceneFlag.adaptiveForce; }
+		QXbool GetFlagAdaptiveForce()				noexcept	{ return sceneFlag.adaptiveForce; }
+		QXbool GetFlagDisableCCDResweep()			noexcept	{ return sceneFlag.disableCCDResweep; }
+		QXbool GetFlagDisableContactCache()			noexcept	{ return sceneFlag.disableContactCache; }
+		QXbool GetFlagDisableContactReport()		noexcept	{ return sceneFlag.disableContactReportResize; }
+		QXbool GetFlagActiveActors()				noexcept	{ return sceneFlag.activeActors; }
+		QXbool GetFlagAveragePoint()				noexcept	{ return sceneFlag.averagePoint; }
+		QXbool GetFlagCCD()							noexcept	{ return sceneFlag.ccd; }
+		QXbool GetFlagEnhancedDeterminism()			noexcept	{ return sceneFlag.enhancedDeterminism; }
+		QXbool GetFlagFrictionEveryIt()				noexcept	{ return sceneFlag.frictionEveryIteration; }
+		QXbool GetFlagGPUDynamics()					noexcept	{ return sceneFlag.gpuDynamics; }
+		QXbool GetFlagPCM()							noexcept	{ return sceneFlag.pcm; }
+		QXbool GetFlagStabilization()				noexcept	{ return sceneFlag.stabilization; }
+		QXbool GetFlagExcludeKineActiverActors()	noexcept	{ return sceneFlag.excludeKineActiveActors; }
+		QXbool GetFlagMutable()						noexcept	{ return sceneFlag.mutableFlags; }
+		QXbool GetFlagRequireRWLock()				noexcept	{ return sceneFlag.requireRWLock; }
 
-		bool GetFlagDisableCCDResweep()			{ return sceneFlag.disableCCDResweep; }
-		bool GetFlagDisableContactCache()		{ return sceneFlag.disableContactCache; }	
-		bool GetFlagDisableContactReport()		{ return sceneFlag.disableContactReportResize; }
-		bool GetFlagActiveActors()				{ return sceneFlag.activeActors; }
-		bool GetFlagAveragePoint()				{ return sceneFlag.averagePoint; }
-		bool GetFlagCCD()						{ return sceneFlag.ccd; }
-		bool GetFlagEnhancedDeterminism()		{ return sceneFlag.enhancedDeterminism; }
-		bool GetFlagFrictionEveryIt()			{ return sceneFlag.frictionEveryIteration; }
-		bool GetFlagGPUDynamics()				{ return sceneFlag.gpuDynamics; }
-		bool GetFlagPCM()						{ return sceneFlag.pcm; }
-		bool GetFlagStabilization()				{ return sceneFlag.stabilization; }
-		bool GetFlagExcludeKineActiverActors()	{ return sceneFlag.excludeKineActiveActors; }
-		bool GetFlagMutable()					{ return sceneFlag.mutableFlags; }
-		bool GetFlagRequireRWLock()				{ return sceneFlag.requireRWLock; }
-
-
-		void SetFlagAdaptiveForce(bool b);
-		void SetFlagDisableCCDResweep(bool b);
-		void SetFlagDisableContactCache(bool b);
-		void SetFlagDisableContactReport(bool b);
-		void SetFlagActiveActors(bool b);
-		void SetFlagAveragePoint(bool b);
-		void SetFlagCCD(bool b);
-		void SetFlagEnhancedDeterminism(bool b);
-		void SetFlagFrictionEveryIt(bool b);
-		void SetFlagGPUDynamics(bool b);
-		void SetFlagPCM(bool b);
-		void SetFlagStabilization(bool b);
-		void SetFlagExcludeKineActiverActors(bool b);
-		void SetFlagMutable(bool b);
-		void SetFlagRequireRWLock(bool b);
+		void SetFlagAdaptiveForce(QXbool b)				noexcept;
+		void SetFlagDisableCCDResweep(QXbool b)			noexcept;
+		void SetFlagDisableContactCache(QXbool b)		noexcept;
+		void SetFlagDisableContactReport(QXbool b)		noexcept;
+		void SetFlagActiveActors(QXbool b)				noexcept;
+		void SetFlagAveragePoint(QXbool b)				noexcept;
+		void SetFlagCCD(QXbool b)						noexcept;
+		void SetFlagEnhancedDeterminism(QXbool b)		noexcept;
+		void SetFlagFrictionEveryIt(QXbool b)			noexcept;
+		void SetFlagGPUDynamics(QXbool b)				noexcept;
+		void SetFlagPCM(QXbool b)						noexcept;
+		void SetFlagStabilization(QXbool b)				noexcept;
+		void SetFlagExcludeKineActiverActors(QXbool b)	noexcept;
+		void SetFlagMutable(QXbool b)					noexcept;
+		void SetFlagRequireRWLock(QXbool b)				noexcept;
 #pragma endregion
 
 

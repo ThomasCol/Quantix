@@ -76,8 +76,8 @@ namespace Quantix::Gameplay
 
 			#pragma region Accessors
 
-			inline const Math::QXvec3&	GetForce()	{ return _force; };
-			inline void					SetForce(const Math::QXvec3& newForce)	{ _force = newForce; };
+			inline const Math::QXvec3&	GetForce() noexcept								{ return _force; };
+			inline void					SetForce(const Math::QXvec3& newForce) noexcept { _force = newForce; };
 			#pragma endregion
 
 			#pragma endregion

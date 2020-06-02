@@ -92,7 +92,7 @@ namespace Quantix::Core::Components
 		CreateCube(app);
 	}
 
-	void DeformableMesh::MoveCube(Core::Platform::Application* app)
+	void DeformableMesh::MoveCube(Core::Platform::Application* app) noexcept
 	{
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
 		for (QXuint i = 0; i < numCubeInWidth; i++)
@@ -131,7 +131,7 @@ namespace Quantix::Core::Components
 		}
 	}
 
-	void DeformableMesh::CreateCube(Core::Platform::Application* app)
+	void DeformableMesh::CreateCube(Core::Platform::Application* app) noexcept
 	{
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
 		Core::DataStructure::GameObject3D* gameobject = (Core::DataStructure::GameObject3D*)_object;
@@ -171,7 +171,7 @@ namespace Quantix::Core::Components
 		}
 	}
 
-	void DeformableMesh::AddComponent(DataStructure::GameObject3D* object, Core::Platform::Application* app)
+	void DeformableMesh::AddComponent(DataStructure::GameObject3D* object, Core::Platform::Application* app) noexcept
 	{
 		// Add Mesh
 		Core::Components::Mesh* mesh = object->AddComponent<Mesh>();
@@ -189,7 +189,7 @@ namespace Quantix::Core::Components
 		object->SetLayer(Core::DataStructure::Layer::DESTRUCTIBLEMESH);
 	}
 
-	void DeformableMesh::Destroy()
+	void DeformableMesh::Destroy() noexcept
 	{
 		if (gameobjects)
 		{

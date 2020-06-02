@@ -42,33 +42,33 @@ namespace Quantix::Physic
 
 	struct QUANTIX_API CollideGroup
 	{
-		bool pawn = true;
-		bool mine = true;
-		bool crab = true;
+		QXbool pawn = QX_TRUE;
+		QXbool mine = QX_TRUE;
+		QXbool crab = QX_TRUE;
 	};
 
 	// Wrapper PxRigidFlag
 	struct QUANTIX_API RigidBodyFlag
 	{
-		bool					ccd = false;
-		bool					ccdFriction = false;
-		bool					speculativeCCD = false;
-		bool					kinematic = false;
-		bool					retainAcceleration = false;
-		bool					useKinematicTargetForQueries = false;
-		bool					poseIntegrationPreview = false;
-		bool					ccdMaxContactImpulse = false;
+		QXbool					ccd = QX_FALSE;
+		QXbool					ccdFriction = QX_FALSE;
+		QXbool					speculativeCCD = QX_FALSE;
+		QXbool					kinematic = QX_FALSE;
+		QXbool					retainAcceleration = QX_FALSE;
+		QXbool					useKinematicTargetForQueries = QX_FALSE;
+		QXbool					poseIntegrationPreview = QX_FALSE;
+		QXbool					ccdMaxContactImpulse = QX_FALSE;
 	};
 
 	// Wrapper PxRigidLockFlag
 	struct QUANTIX_API RigidBodyLockFlag
 	{
-		bool					lockLinearX = false;
-		bool					lockLinearY = false;
-		bool					lockLinearZ = false;
-		bool					lockAngularX = false;
-		bool					lockAngularY = false;
-		bool					lockAngularZ = false;
+		QXbool					lockLinearX = QX_FALSE;
+		QXbool					lockLinearY = QX_FALSE;
+		QXbool					lockLinearZ = QX_FALSE;
+		QXbool					lockAngularX = QX_FALSE;
+		QXbool					lockAngularY = QX_FALSE;
+		QXbool					lockAngularZ = QX_FALSE;
 	};
 
 	// Wrapper PxBaseFlag
@@ -80,39 +80,39 @@ namespace Quantix::Physic
 	// Wrapper PxActorFlag
 	struct QUANTIX_API ActorFlag
 	{
-		bool					disableGravity = false;
-		bool					disableSimulation = false;
-		bool					sendSleepNotifies = false;
-		bool					visualization = false;
+		QXbool					disableGravity = QX_FALSE;
+		QXbool					disableSimulation = QX_FALSE;
+		QXbool					sendSleepNotifies = QX_FALSE;
+		QXbool					visualization = QX_FALSE;
 	};
 
 	// Wrapper PxShapeFlag
 	struct QUANTIX_API ShapeFlag
 	{
-		bool sceneQuery = true;
-		bool simulation = true;
-		bool trigger = false;
-		bool visualization = false;
+		QXbool sceneQuery = QX_TRUE;
+		QXbool simulation = QX_TRUE;
+		QXbool trigger = QX_FALSE;
+		QXbool visualization = QX_FALSE;
 	};
 
 	// Wrapper PxSceneFlag
 	struct QUANTIX_API SceneFlag
 	{
-		bool adaptiveForce = false;
-		bool disableCCDResweep = false;
-		bool disableContactCache = false;
-		bool disableContactReportResize = false;
-		bool activeActors = true;
-		bool averagePoint = false;
-		bool ccd = false;
-		bool enhancedDeterminism = false;
-		bool frictionEveryIteration = false;
-		bool gpuDynamics = false;
-		bool pcm = false;
-		bool stabilization = false;
-		bool excludeKineActiveActors = false;
-		bool mutableFlags = false;
-		bool requireRWLock = false;
+		QXbool adaptiveForce = QX_FALSE;
+		QXbool disableCCDResweep = QX_FALSE;
+		QXbool disableContactCache = QX_FALSE;
+		QXbool disableContactReportResize = QX_FALSE;
+		QXbool activeActors = QX_TRUE;
+		QXbool averagePoint = QX_FALSE;
+		QXbool ccd = QX_FALSE;
+		QXbool enhancedDeterminism = QX_FALSE;
+		QXbool frictionEveryIteration = QX_FALSE;
+		QXbool gpuDynamics = QX_FALSE;
+		QXbool pcm = QX_FALSE;
+		QXbool stabilization = QX_FALSE;
+		QXbool excludeKineActiveActors = QX_FALSE;
+		QXbool mutableFlags = QX_FALSE;
+		QXbool requireRWLock = QX_FALSE;
 	};
 }
 

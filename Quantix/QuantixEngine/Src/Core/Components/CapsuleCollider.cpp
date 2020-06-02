@@ -34,14 +34,14 @@ namespace Quantix::Core::Components
 		ICollider(other)
 	{}
 
-	QXfloat CapsuleCollider::GetRadius()
+	QXfloat CapsuleCollider::GetRadius() noexcept
 	{
 		physx::PxCapsuleGeometry cap;
 		shape->getCapsuleGeometry(cap);
 		return cap.radius;
 	}
 
-	void CapsuleCollider::SetRadius(QXfloat f)
+	void CapsuleCollider::SetRadius(QXfloat f) noexcept
 	{
 		scale.x = f;
 		scale.z = f;
@@ -49,14 +49,14 @@ namespace Quantix::Core::Components
 		shape->setGeometry(physx::PxCapsuleGeometry(physx::PxReal(f), physx::PxReal(GetHalfHeight())));
 	}
 
-	QXfloat CapsuleCollider::GetHalfHeight()
+	QXfloat CapsuleCollider::GetHalfHeight() noexcept
 	{
 		physx::PxCapsuleGeometry cap;
 		shape->getCapsuleGeometry(cap);
 		return cap.halfHeight;
 	}
 
-	void CapsuleCollider::SetHalfHeight(QXfloat f)
+	void CapsuleCollider::SetHalfHeight(QXfloat f) noexcept
 	{
 		scale.y = 2 * GetRadius() * f;
 		shape->setGeometry(physx::PxCapsuleGeometry(physx::PxReal(GetRadius()), physx::PxReal(f)));
@@ -85,6 +85,8 @@ namespace Quantix::Core::Components
 			shape = Physic::PhysicHandler::GetInstance()->CreateCapsuleCollider(par, false);
 			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(par, false);
 		}
+
+		// Set Collider Group
 		SetCollideFilterCrab(true);
 		SetCollideFilterMine(true);
 		SetCollideFilterPawn(true);

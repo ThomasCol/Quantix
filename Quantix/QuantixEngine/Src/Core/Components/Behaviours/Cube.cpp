@@ -44,7 +44,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Cube::Attract(QXdouble deltaTime)
+	void Cube::Attract(QXdouble deltaTime) noexcept
 	{
 		Core::DataStructure::GameObject3D* gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
 
@@ -72,7 +72,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Cube::Reject(QXdouble deltaTime)
+	void Cube::Reject(QXdouble deltaTime) noexcept
 	{
 		Core::DataStructure::GameObject3D* gameobject = static_cast<Core::DataStructure::GameObject3D*>(_object);
 
@@ -97,7 +97,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Cube::UpdateMaterial()
+	void Cube::UpdateMaterial() noexcept
 	{
 		QXbool physicColor = false;
 		switch (_stateMagnet)
@@ -139,14 +139,4 @@ namespace Quantix::Gameplay
 		}
 
 	}
-
-	//Questions to ask my teammates
-	/*
-	* Comment accéder à tout les cubes de la scène, ou à la limite tout ceux d'une certaine zone ?
-	*/
-
-	//TODO:
-	/*
-	* 
-	*/
 }
