@@ -5,8 +5,8 @@
 #include "rttrEnabled.h"
 #include "Core/Components//Mesh.h"
 
-#define ATTRACTFORCE 1000.f
-#define REJECTFORCE 1000.f
+#define ATTRACTFORCE 750.f
+#define REJECTFORCE 750.f
 
 namespace Quantix::Core::Components::Behaviours
 {
@@ -33,7 +33,7 @@ namespace Quantix::Core::Components::Behaviours
 			ECubePhysicState	_statePhysic			{ ECubePhysicState::DEFAULT };
 			ECubeMagnetState	_stateMagnet			{ ECubeMagnetState::DEFAULT };
 
-			QXfloat		_rangeOfMagnet	{ 3.f };
+			QXfloat		_rangeOfMagnet	{ 10.f };
 
 			Core::Components::Mesh* _mesh = nullptr;
 
