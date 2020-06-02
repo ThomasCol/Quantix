@@ -15,7 +15,7 @@
 #include <filesystem>
 
 
-Inspector::Inspector(Quantix::Core::DataStructure::GameComponent* object) :
+Inspector::Inspector(Quantix::Core::DataStructure::GameComponent* object)  noexcept :
 	_object{ object },
 	_enable{ QX_TRUE },
 	_is3D{ QX_FALSE },
@@ -23,7 +23,7 @@ Inspector::Inspector(Quantix::Core::DataStructure::GameComponent* object) :
 {
 }
 
-static void TreeNodeImage(const QXstring& name, const QXstring& imgPath, Quantix::Core::Platform::Application* app, ImVec2 pos)
+static void TreeNodeImage(const QXstring& name, const QXstring& imgPath, Quantix::Core::Platform::Application* app, ImVec2 pos) noexcept
 {
 	QXuint		idImg;
 
@@ -41,7 +41,7 @@ static void TreeNodeImage(const QXstring& name, const QXstring& imgPath, Quantix
 	ImGui::Text(name.c_str());
 }
 
-void Inspector::ShowTransform3D(Quantix::Core::Platform::Application* app)
+void Inspector::ShowTransform3D(Quantix::Core::Platform::Application* app) noexcept
 {
 	ImVec2 cursorPos = ImGui::GetCursorPos();
 	QXbool open = ImGui::TreeNodeEx("##Transform", ImGuiTreeNodeFlags_Framed);
@@ -66,7 +66,7 @@ void Inspector::ShowTransform3D(Quantix::Core::Platform::Application* app)
 	}
 }
 
-void Inspector::ShowTransform2D(Quantix::Core::Platform::Application* app)
+void Inspector::ShowTransform2D(Quantix::Core::Platform::Application* app) noexcept
 {
 	ImVec2 cursorPos = ImGui::GetCursorPos();
 	QXbool open = ImGui::TreeNodeEx("##Transform", ImGuiTreeNodeFlags_Framed);
@@ -90,7 +90,7 @@ void Inspector::ShowTransform2D(Quantix::Core::Platform::Application* app)
 	}
 }
 
-void Inspector::LayerObject(rttr::property currentProp, rttr::instance inst)
+void Inspector::LayerObject(rttr::property currentProp, rttr::instance inst) noexcept
 {
 	auto value = currentProp.get_enumeration().value_to_name(currentProp.get_value(inst)).to_string();
 
@@ -104,7 +104,7 @@ void Inspector::LayerObject(rttr::property currentProp, rttr::instance inst)
 	}
 }
 
-void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Platform::Application* app)
+void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (_enable)
 	{
@@ -135,19 +135,19 @@ void Inspector::Update(Quantix::Core::Platform::Window& win, Quantix::Core::Plat
 			}
 
 			PopUpMenuItem(_object->GetComponents()[i]);
-			ImGui::PopID(); 
+			ImGui::PopID();
 		}
 
 		AddComponent(app);
 	}
 }
 
-void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component)
+void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component) noexcept
 {
 	if (ImGui::BeginPopupContextItem("Context Item"))
 	{
 		QXbool selection = QX_FALSE;
-		
+
 		ImGui::Selectable("Remove Component", &selection);
 		if (selection)
 			_object->RemoveComponent(component);
@@ -156,7 +156,7 @@ void Inspector::PopUpMenuItem(Quantix::Core::DataStructure::Component* component
 	}
 }
 
-void Inspector::SelectComponent(const QXstring name, rttr::type type, QXbool& enable, Quantix::Core::Platform::Application* app, QXbool behaviour)
+void Inspector::SelectComponent(const QXstring name, rttr::type type, QXbool& enable, Quantix::Core::Platform::Application* app, QXbool behaviour) noexcept
 {
 	ImGui::Selectable(name.c_str(), &enable);
 	if (enable)
@@ -187,7 +187,7 @@ void Inspector::SelectComponent(const QXstring name, rttr::type type, QXbool& en
 	}
 }
 
-void Inspector::ShowBehaviour(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app)
+void Inspector::ShowBehaviour(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app) noexcept
 {
 	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
 	QXuint i = 0;
@@ -215,7 +215,7 @@ void Inspector::ShowBehaviour(std::list<QXstring> componentsName, Quantix::Core:
 	}
 }
 
-void Inspector::ShowSoundComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app)
+void Inspector::ShowSoundComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app) noexcept
 {
 	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
 	QXuint i = 0;
@@ -241,7 +241,7 @@ void Inspector::ShowSoundComponents(std::list<QXstring> componentsName, Quantix:
 	}
 }
 
-void Inspector::ShowPhysicsComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app)
+void Inspector::ShowPhysicsComponents(std::list<QXstring> componentsName, Quantix::Core::Platform::Application* app) noexcept
 {
 	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
 	QXuint i = 0;
@@ -268,7 +268,7 @@ void Inspector::ShowPhysicsComponents(std::list<QXstring> componentsName, Quanti
 	}
 }
 
-void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
+void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app) noexcept
 {
 	rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
 	std::list<QXstring> componentsName;
@@ -290,7 +290,7 @@ void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 				if (itCompo.get_name().to_string() == (*it))
 				{
 					if (!itCompo.is_derived_from(rttr::type::get<Quantix::Core::Components::Behaviour>()))
-						SelectComponent((*it), itCompo,enable, app);
+						SelectComponent((*it), itCompo, enable, app);
 				}
 			}
 			ImGui::PopID();
@@ -303,7 +303,7 @@ void Inspector::ShowAddComponent(Quantix::Core::Platform::Application* app)
 	ShowBehaviour(componentsName, app);
 }
 
-void Inspector::ShowComponent(Quantix::Core::Platform::Application* app)
+void Inspector::ShowComponent(Quantix::Core::Platform::Application* app) noexcept
 {
 	if (ImGui::BeginPopup("Item Component"))
 	{
@@ -313,7 +313,7 @@ void Inspector::ShowComponent(Quantix::Core::Platform::Application* app)
 
 }
 
-void Inspector::AddComponent(Quantix::Core::Platform::Application* app)
+void Inspector::AddComponent(Quantix::Core::Platform::Application* app) noexcept
 {
 	ImVec2 ButtonSize = ImVec2(150, 0);
 	float size = ImGui::GetWindowContentRegionWidth() / 2;
@@ -325,7 +325,7 @@ void Inspector::AddComponent(Quantix::Core::Platform::Application* app)
 	ShowComponent(app);
 }
 
-void Inspector::DrawMaterialPath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app)
+void Inspector::DrawMaterialPath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app) noexcept
 {
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
@@ -357,7 +357,7 @@ void Inspector::DrawMaterialPath(rttr::instance inst, rttr::property currentProp
 	ImGui::PopID();
 }
 
-void Inspector::DrawModelPath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app)
+void Inspector::DrawModelPath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app) noexcept
 {
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
@@ -390,7 +390,7 @@ void Inspector::DrawModelPath(rttr::instance inst, rttr::property currentProp, Q
 	ImGui::PopID();
 }
 
-void Inspector::DrawMTexturePath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app)
+void Inspector::DrawMTexturePath(rttr::instance inst, rttr::property currentProp, Quantix::Core::Platform::Application* app) noexcept
 {
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
@@ -425,7 +425,7 @@ void Inspector::DrawMTexturePath(rttr::instance inst, rttr::property currentProp
 	ImGui::PopID();
 }
 
-void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app)
+void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app) noexcept
 {
 	QXstring name = currentProp.get_name().to_string();
 	ImGui::PushID(&currentProp);
@@ -459,7 +459,7 @@ void Inspector::DrawSoundEmitterPath(rttr::instance inst, rttr::type t, rttr::pr
 	ImGui::PopID();
 }
 
-static void PlaySound(rttr::instance inst, rttr::type t)
+static void PlaySound(rttr::instance inst, rttr::type t) noexcept
 {
 	ImGui::Indent(ImGui::GetWindowSize().x / 3);
 	if (ImGui::Button("Play", ImVec2(100.f, 25.f)))
@@ -467,21 +467,21 @@ static void PlaySound(rttr::instance inst, rttr::type t)
 	ImGui::Indent();
 }
 
-void Inspector::SetAttributesListener(rttr::instance inst, rttr::type t)
+void Inspector::SetAttributesListener(rttr::instance inst, rttr::type t) noexcept
 {
 	auto tmpInst = inst.get_derived_type();
 
 	tmpInst.invoke("AttributesListener", inst, {});
 }
 
-void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app)
+void Inspector::SetSound(rttr::instance inst, rttr::type t, rttr::property currentProp, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (inst.get_derived_type() == rttr::type::get<Quantix::Core::Components::SoundEmitter>())
 		if (currentProp.get_name().to_string() == "Sound")
 			DrawSoundEmitterPath(inst, t, currentProp, app);
 }
 
-void Inspector::GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app)
+void Inspector::GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app) noexcept
 {
 	QXfloat posY = ImGui::GetCursorPosY();
 	ImGui::SetCursorPos(ImVec2(ImGui::GetWindowSize().x / 3, posY));
@@ -489,11 +489,11 @@ void Inspector::GenerateDeformableMesh(rttr::type t, rttr::instance inst, Quanti
 	{
 		auto tmpInst = inst.get_derived_type();
 
-		tmpInst.invoke("Generate", inst, { app->scene, &app->manager });
+		tmpInst.invoke("Generate", inst, { app->scene, &app->manager, false });
 	}
 }
 
-void Inspector::CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app)
+void Inspector::CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (t == rttr::type::get<Quantix::Core::Components::SoundListener>())
 		SetAttributesListener(inst, inst.get_type());
@@ -503,7 +503,7 @@ void Inspector::CheckSpecClass(rttr::type t, rttr::instance inst, Quantix::Core:
 		GenerateDeformableMesh(t, inst, app);
 }
 
-void Inspector::ShowXYZ(QXbool& isOpen, QXstring& name)
+void Inspector::ShowXYZ(QXbool& isOpen, QXstring& name) noexcept
 {
 	if (isOpen && name == "RigidLock Flags")
 	{
@@ -517,7 +517,7 @@ void Inspector::ShowXYZ(QXbool& isOpen, QXstring& name)
 	}
 }
 
-QXbool Inspector::DrawRigidLock(rttr::instance inst, rttr::property currentProp, QXstring& name)
+QXbool Inspector::DrawRigidLock(rttr::instance inst, rttr::property currentProp, QXstring& name) noexcept
 {
 	if (name == "RigidLock Flags")
 	{
@@ -547,7 +547,7 @@ QXbool Inspector::DrawRigidLock(rttr::instance inst, rttr::property currentProp,
 	return QX_FALSE;
 }
 
-void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app)
+void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (t != rttr::type::get<Quantix::Resources::Texture*>())
 	{
@@ -594,9 +594,9 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 				}
 				else
 					DrawVariable(inst, currentProp, type, app);
-				
+
 				ImGui::PopID();
-				index++;				
+				index++;
 				if (meta.is_valid() && meta.get_value<QXstring>() == "End")
 				{
 					node = false;
@@ -611,7 +611,7 @@ void Inspector::GetInstance(rttr::instance inst, rttr::type t, Quantix::Core::Pl
 	}
 }
 
-void Inspector::ShowEnum(rttr::property currentProp, rttr::instance inst)
+void Inspector::ShowEnum(rttr::property currentProp, rttr::instance inst) noexcept
 {
 	auto value = currentProp.get_enumeration().value_to_name(currentProp.get_value(inst)).to_string();
 
@@ -625,7 +625,7 @@ void Inspector::ShowEnum(rttr::property currentProp, rttr::instance inst)
 	}
 }
 
-void Inspector::LookType(rttr::instance inst, rttr::type type, rttr::property currentProp, Quantix::Core::Platform::Application* app)
+void Inspector::LookType(rttr::instance inst, rttr::type type, rttr::property currentProp, Quantix::Core::Platform::Application* app) noexcept
 {
 	if ((type.get_raw_type() == rttr::type::get<Quantix::Resources::Material*>().get_raw_type())
 		|| (type == rttr::type::get<Quantix::Resources::Material>()))
@@ -638,7 +638,7 @@ void Inspector::LookType(rttr::instance inst, rttr::type type, rttr::property cu
 	SetSound(inst, type, currentProp, app);
 }
 
-QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
+QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (type == rttr::type::get<QXbool>())
 	{
@@ -746,7 +746,7 @@ QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property current
 	return QX_FALSE;
 }
 
-void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app)
+void Inspector::DrawVariable(rttr::instance inst, rttr::property currentProp, rttr::type type, Quantix::Core::Platform::Application* app) noexcept
 {
 	if (!CheckPrimitiveType(inst, currentProp, type, app))
 	{

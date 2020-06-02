@@ -105,10 +105,6 @@ namespace Quantix::Core::Tool
 				{
 					type.invoke("SetSceneAndResourcesManager", comp, { _currScene, manager });
 				}
-				else if (type == rttr::type::get<Core::Components::DeformableMesh>() || type.get_raw_type() == rttr::type::get<Core::Components::DeformableMesh>())
-				{
-					type.invoke("Generate", comp, {_currScene, manager, QX_TRUE});
-				}
 				for (QXsizei i = 0; i < val2.MemberCount(); ++i)
 				{
 					for (auto it = type.get_properties().begin(); it != type.get_properties().end(); ++it)
@@ -116,6 +112,10 @@ namespace Quantix::Core::Tool
 						if ((*it).get_name() == val2.MemberBegin()[i].name.GetString())
 							ReadInstance(comp, (*it).get_type(), (*it), val2.MemberBegin()[i].value, manager);
 					}
+				}
+				if (type == rttr::type::get<Core::Components::DeformableMesh>() || type.get_raw_type() == rttr::type::get<Core::Components::DeformableMesh>())
+				{
+					type.invoke("Generate", comp, {_currScene, manager, true});
 				}
 			}
 		}

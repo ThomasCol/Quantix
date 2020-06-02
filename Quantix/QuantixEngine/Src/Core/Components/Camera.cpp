@@ -22,21 +22,21 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::Components
 {
-	Camera::Camera():
+	Camera::Camera() noexcept :
 		_pos(Math::QXvec3(0,0,0)), _dir(Math::QXvec3(0, 0, 1)), _up(Math::QXvec3(0, 1, 0)), _angle(Math::QXvec3(0, 0, 0))
 	{
 	}
 
-	Camera::Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up) :
+	Camera::Camera(const Math::QXvec3& pos, const Math::QXvec3& dir, const Math::QXvec3& up)  noexcept :
 		_pos(pos),
 		_dir(dir),
 		_up(up),
 		_angle(Math::QXvec3(0, 0, 0)),
-		_lookAt { Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up) }
+		_lookAt{ Math::QXmat4::CreateLookAtMatrix(_pos, _pos + _dir, _up) }
 	{
 	}
 
-	Camera::Camera(const Camera& camera)
+	Camera::Camera(const Camera& camera) noexcept
 	{
 		_pos = camera._pos;
 		_dir = camera._dir;
@@ -69,7 +69,7 @@ namespace Quantix::Core::Components
 		{
 			_pos = ((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetPosition();
 			_angle = ((Core::DataStructure::GameObject3D*)_object)->GetTransform()->GetRotation().QuaternionToEuler();
-			
+
 			if (_object->GetComponent<CharacterController>() != nullptr)
 				_controller = _object->GetComponent<CharacterController>();
 		}
@@ -80,12 +80,12 @@ namespace Quantix::Core::Components
 		}
 	}
 
-	void Camera::ActualizeRigid(CharacterController* con)
+	void Camera::ActualizeRigid(CharacterController* con) noexcept
 	{
 		_controller = con;
 	}
 
-	void	Camera::UpdateLookAt(Math::QXvec3 pos)
+	void	Camera::UpdateLookAt(Math::QXvec3 pos) noexcept
 	{
 		_pos = pos;
 		Math::QXvec3 right = _dir.Cross(_up);
@@ -101,14 +101,14 @@ namespace Quantix::Core::Components
 		}
 	}
 
-	void			Camera::ChangeView(QXfloat posX, QXfloat posY, QXint width, QXint height, QXdouble frameTime)
+	void			Camera::ChangeView(QXfloat posX, QXfloat posY, QXint width, QXint height, QXdouble frameTime) noexcept
 	{
 		Math::QXvec3	rotDir{ posY, -posX, 0.f };
 
 		Rotate(rotDir * (QXfloat)frameTime * SENSIBILITY);
 	}
 
-	void			Camera::Rotate(Math::QXvec3 rotate)
+	void			Camera::Rotate(Math::QXvec3 rotate) noexcept
 	{
 		_angle += rotate;
 
@@ -129,14 +129,14 @@ namespace Quantix::Core::Components
 		}
 	}
 
-	void Camera::SetPos(Math::QXvec3 pos)
+	void Camera::SetPos(Math::QXvec3 pos) noexcept
 	{
 		_pos = pos;
 		if (_object)
 			((Core::DataStructure::GameObject3D*)_object)->GetTransform()->SetPosition(_pos);
 	}
 
-	Math::QXvec3	Camera::GetPos()
+	Math::QXvec3	Camera::GetPos() noexcept
 	{ 
 		if (_object)
 			return ((Core::DataStructure::GameObject3D*)_object)->GetLocalPosition();

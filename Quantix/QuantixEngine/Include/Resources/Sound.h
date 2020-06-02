@@ -113,8 +113,18 @@ namespace Quantix::Resources
 			 */
 			const QXfloat	GetVolume();
 
+			/**
+			 * @brief Get Sound's channel
+			 *
+			 * @return FMOD::Channel* channel value
+			 */
 			inline FMOD::Channel*	GetChannel() { return _channel; }
 
+			/**
+			 * @brief Get Sound's path
+			 *
+			 * @return QXstring path value
+			 */
 			inline QXstring			GetPath() { return _path; }
 
 			/**
@@ -147,7 +157,23 @@ namespace Quantix::Resources
 			 * @param channel to manage the clip
 			 * @return QXbool pause successfully value
 			 */
-			const QXbool	Pause(FMOD::ChannelGroup* channel);
+			const QXbool	Pause();
+
+			/**
+			 * @brief UnPause Sound's clip
+			 *
+			 * @param channel to manage the clip
+			 * @return QXbool unpause successfully value
+			 */
+			const QXbool	UnPause();
+
+			/**
+			 * @brief Stop Sound's clip
+			 *
+			 * @param channel to manage the clip
+			 * @return QXbool stopped successfully value
+			 */
+			const QXbool	Stop();
 
 			/**
 			 * @brief Check if the sound is in 3D

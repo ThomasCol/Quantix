@@ -7,7 +7,7 @@
 #include "Explorer.h"
 #include "Profiler.h"
 
-static void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr)
+static void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr) noexcept
 {
 	// Get the first occurrence
 	size_t pos = data.find(toSearch);
@@ -22,13 +22,13 @@ static void findAndReplaceAll(std::string& data, std::string toSearch, std::stri
 	}
 }
 
-Explorer::Explorer() :
+Explorer::Explorer()  noexcept :
 	_folder{},
-	_path{"./media"}
+	_path{ "./media" }
 {
 }
 
-int Explorer::InitFormatFolder()
+int Explorer::InitFormatFolder() noexcept
 {
 	static QXint folderSize = _folder.GetSizeFolder();
 	ImGui::SliderInt("Size", &folderSize, 25, 100);
@@ -50,7 +50,7 @@ int Explorer::InitFormatFolder()
 }
 
 
-void Explorer::CheckRootFolder(QXint& index)
+void Explorer::CheckRootFolder(QXint& index) noexcept
 {
 	if (_path != "./media" && index == 0)
 	{
@@ -63,7 +63,7 @@ void Explorer::CheckRootFolder(QXint& index)
 	}
 }
 
-void	Explorer::ModifyFolder(QXstring name)
+void	Explorer::ModifyFolder(QXstring name) noexcept
 {
 	if (name != "")
 	{
@@ -74,7 +74,7 @@ void	Explorer::ModifyFolder(QXstring name)
 	}
 }
 
-void	Explorer::OpenSoftware(QXstring name)
+void	Explorer::OpenSoftware(QXstring name) noexcept
 {
 	QXstring filePath;
 	filePath = _path + "/" + name;
@@ -88,13 +88,13 @@ void	Explorer::OpenSoftware(QXstring name)
 	system(cmd.c_str());
 }
 
-void Explorer::PushId(QXuint img, QXstring name, QXint& index)
+void Explorer::PushId(QXuint img, QXstring name, QXint& index) noexcept
 {
 	ImGui::PushID(index);
 	ImGui::BeginGroup();
 	ImGui::ImageButton((ImTextureID)(size_t)img, _folder.GetSizeFile(), ImVec2(0, 1), ImVec2(1, 0), -1, ImVec4(0, 0, 0, 0));
 	ImGui::TextWrapped(name.c_str());
-	ImGui::EndGroup(); 
+	ImGui::EndGroup();
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 	{
 		QXstring filePath = _path + "/" + name;
@@ -107,7 +107,7 @@ void Explorer::PushId(QXuint img, QXstring name, QXint& index)
 	ImGui::PopID();
 }
 
-void Explorer::DrawFolder(QXint& index)
+void Explorer::DrawFolder(QXint& index) noexcept
 {
 	for (int i = 0; i < _folder.GetFolder().size(); i++)
 	{
@@ -120,7 +120,7 @@ void Explorer::DrawFolder(QXint& index)
 	}
 }
 
-void Explorer::DrawFile(QXint& index)
+void Explorer::DrawFile(QXint& index) noexcept
 {
 	for (QXint i = 0; i < _folder.GetFile().size(); i++)
 	{
@@ -129,7 +129,7 @@ void Explorer::DrawFile(QXint& index)
 		if (name.find(".cpp") != std::string::npos)
 			PushId(_folder.GetIDCPP(), name, index);
 		else if (name.find(".png") != std::string::npos || name.find(".jpg") != std::string::npos
-				|| name.find(".jpeg") != std::string::npos || name.find(".hdr") != std::string::npos)
+			|| name.find(".jpeg") != std::string::npos || name.find(".hdr") != std::string::npos)
 			PushId(_folder.GetIDImg(), name, index);
 		else if (name.find(".h") != std::string::npos)
 			PushId(_folder.GetIDH(), name, index);
@@ -150,7 +150,7 @@ void Explorer::DrawFile(QXint& index)
 	}
 }
 
-void Explorer::DrawImg(QXint& index)
+void Explorer::DrawImg(QXint& index) noexcept
 {
 	for (int i = 0; i < _folder.GetImg().size(); i++)
 	{
@@ -163,7 +163,7 @@ void Explorer::DrawImg(QXint& index)
 	}
 }
 
-void Explorer::DrawRepository(QXint& index)
+void Explorer::DrawRepository(QXint& index) noexcept
 {
 	DrawFolder(index);
 	DrawFile(index);
@@ -171,7 +171,7 @@ void Explorer::DrawRepository(QXint& index)
 }
 
 
-void Explorer::MenuRename(QXstring file)
+void Explorer::MenuRename(QXstring file) noexcept
 {
 	QXstring name;
 	QXchar currName[64];
@@ -189,7 +189,7 @@ void Explorer::MenuRename(QXstring file)
 	}
 }
 
-void Explorer::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, QXstring file)
+void Explorer::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, QXstring file) noexcept
 {
 	for (QXuint i{ 0 }; i < itemMenu.size(); i++)
 	{
@@ -212,7 +212,7 @@ void Explorer::MenuItem(QXbool* selection, std::vector<QXstring> itemMenu, QXstr
 	}
 }
 
-void Explorer::PopUpMenuItem(QXstring& itemFile)
+void Explorer::PopUpMenuItem(QXstring& itemFile) noexcept
 {
 	if (ImGui::BeginPopupContextItem("Context Item"))
 	{
@@ -226,7 +226,7 @@ void Explorer::PopUpMenuItem(QXstring& itemFile)
 	}
 }
 
-void Explorer::CreateItemFolder(QXstring item)
+void Explorer::CreateItemFolder(QXstring item) noexcept
 {
 	QXchar currName[64];
 	memset(currName, 0, 64);
@@ -242,7 +242,7 @@ void Explorer::CreateItemFolder(QXstring item)
 	}
 }
 
-void Explorer::CreateItemFile(QXstring item)
+void Explorer::CreateItemFile(QXstring item) noexcept
 {
 	QXchar currName[64];
 
@@ -260,13 +260,13 @@ void Explorer::CreateItemFile(QXstring item)
 	}
 }
 
-void Explorer::CreateItem(std::vector<QXstring> itemMenu)
+void Explorer::CreateItem(std::vector<QXstring> itemMenu) noexcept
 {
 	CreateItemFolder(itemMenu[0]);
 	CreateItemFile(itemMenu[1]);
 }
 
-void Explorer::PopUpMenu()
+void Explorer::PopUpMenu() noexcept
 {
 	if (ImGui::BeginPopupContextWindow("Context Menu", 1, false))
 	{
@@ -280,7 +280,7 @@ void Explorer::PopUpMenu()
 	}
 }
 
-void Explorer::Update(Quantix::Core::DataStructure::ResourcesManager& cache, QXstring name, ImGuiWindowFlags flags)
+void Explorer::Update(Quantix::Core::DataStructure::ResourcesManager& cache, QXstring name, ImGuiWindowFlags flags) noexcept
 {
 	ImGui::Begin(name.c_str(), NULL, flags);
 	{

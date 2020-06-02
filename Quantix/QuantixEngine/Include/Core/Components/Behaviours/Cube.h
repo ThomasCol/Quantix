@@ -37,6 +37,9 @@ namespace Quantix::Core::Components::Behaviours
 
 			Core::Components::Mesh* _mesh = nullptr;
 
+			Resources::Material* saveMaterial;
+			Resources::Material* currentMaterial;
+
 			#pragma endregion
 
 			#pragma region Methods
@@ -60,6 +63,8 @@ namespace Quantix::Core::Components::Behaviours
 			void						Awake() override;
 			void						Start() override;
 			void						Update(QXdouble deltaTime) override;
+
+			void						Destroy() override;
 
 			void UpdateMaterial() noexcept;
 

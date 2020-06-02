@@ -2,17 +2,17 @@
 #include "Guizmo.h"
 #include <Core/UserEntry/InputManager.h>
 
-Guizmo::Guizmo() :
+Guizmo::Guizmo()  noexcept :
 	_guizmoType{ ImGuizmo::OPERATION::TRANSLATE },
 	_guizmoMode{ ImGuizmo::MODE::LOCAL }
 {
 }
 
-Guizmo::~Guizmo()
+Guizmo::~Guizmo() noexcept
 {
 }
 
-void Guizmo::Init(Quantix::Core::Platform::Application* app)
+void Guizmo::Init(Quantix::Core::Platform::Application* app) noexcept
 {
 	_info = app->info;
 	_imgGuizmo.push_back(app->manager.CreateTexture("Other/IconEditor/Simulation/Translate.png"));
@@ -20,7 +20,7 @@ void Guizmo::Init(Quantix::Core::Platform::Application* app)
 	_imgGuizmo.push_back(app->manager.CreateTexture("Other/IconEditor/Simulation/Scale.png"));
 }
 
-void Guizmo::ChangeGuizmoOperation(QXuint index)
+void Guizmo::ChangeGuizmoOperation(QXuint index) noexcept
 {
 	if (index == 0)
 		_guizmoType = ImGuizmo::OPERATION::TRANSLATE;
@@ -30,7 +30,7 @@ void Guizmo::ChangeGuizmoOperation(QXuint index)
 		_guizmoType = ImGuizmo::OPERATION::SCALE;
 }
 
-void Guizmo::LocalWorldGuizmo(QXint pos)
+void Guizmo::LocalWorldGuizmo(QXint pos) noexcept
 {
 	pos += 20;
 	ImGui::SetCursorPos(ImVec2((QXfloat)pos, 0.f));
@@ -62,7 +62,7 @@ void Guizmo::LocalWorldGuizmo(QXint pos)
 }
 
 
-void Guizmo::GuizmoUI()
+void Guizmo::GuizmoUI() noexcept
 {
 	QXint pos = 0;
 	for (QXuint i = 0; i < _imgGuizmo.size(); i++)
@@ -78,7 +78,7 @@ void Guizmo::GuizmoUI()
 	LocalWorldGuizmo(pos);
 }
 
-void Guizmo::MoveObject(Quantix::Core::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp)
+void Guizmo::MoveObject(Quantix::Core::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp) noexcept
 {
 	Math::QXmat4 matrixTmp2 = Math::QXmat4::CreateTRSMatrix(transform->GetPosition(), Math::QXquaternion(1, 0, 0, 0), transform->GetScale());
 	Math::QXvec3 translation, transTmp, rotation, rotTmp, scale, scaleTmp;
@@ -106,7 +106,7 @@ void Guizmo::MoveObject(Quantix::Core::Physic::Transform3D* transform, Math::QXm
 	}
 }
 
-void Guizmo::ShowGuizmoObject(Quantix::Core::Physic::Transform3D* transform)
+void Guizmo::ShowGuizmoObject(Quantix::Core::Physic::Transform3D* transform) noexcept
 {
 	Math::QXmat4 matrix, matrixTmp;
 	/*if (_guizmoMode == ImGuizmo::MODE::WORLD)
@@ -116,8 +116,8 @@ void Guizmo::ShowGuizmoObject(Quantix::Core::Physic::Transform3D* transform)
 	}
 	else if (_guizmoMode == ImGuizmo::MODE::LOCAL)
 	{*/
-		//transform->SetSpace(Quantix::Physic::Space::LOCAL);
-		matrixTmp = matrix = transform->GetTRS();
+	//transform->SetSpace(Quantix::Physic::Space::LOCAL);
+	matrixTmp = matrix = transform->GetTRS();
 	//}
 	ImVec2 size = ImGui::GetWindowSize();
 	ImVec2 pos = ImGui::GetWindowPos();
@@ -132,7 +132,7 @@ void Guizmo::ShowGuizmoObject(Quantix::Core::Physic::Transform3D* transform)
 	MoveObject(transform, matrix, matrixTmp);
 }
 
-void Guizmo::DrawGuizmo(Inspector* inspector, Quantix::Core::DataStructure::GameObject3D* root)
+void Guizmo::DrawGuizmo(Inspector* inspector, Quantix::Core::DataStructure::GameObject3D* root) noexcept
 {
 	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED)
 	{
@@ -148,7 +148,7 @@ void Guizmo::DrawGuizmo(Inspector* inspector, Quantix::Core::DataStructure::Game
 		ShowGuizmoObject(inspector->GetTransform3D());
 }
 
-void Guizmo::Update(Inspector* inspector, Quantix::Core::DataStructure::GameObject3D* root, Quantix::Core::Components::Camera* camera)
+void Guizmo::Update(Inspector* inspector, Quantix::Core::DataStructure::GameObject3D* root, Quantix::Core::Components::Camera* camera) noexcept
 {
 	_camera = camera;
 	if (inspector)

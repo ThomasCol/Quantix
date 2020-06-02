@@ -43,7 +43,7 @@ namespace Quantix::Core::Components::Behaviours
 		{
 			std::list<Physic::Transform3D*> list = _gameobject->GetTransform()->GetChilds();
 
-			if ((*list.begin())->GetObject()->GetComponent<Core::Components::Mesh>())
+			if (list.size() != 0 && (*list.begin())->GetObject()->GetComponent<Core::Components::Mesh>())
 			{
 				_mesh = (*list.begin())->GetObject()->GetComponent<Core::Components::Mesh>();
 				UpdateMaterial();

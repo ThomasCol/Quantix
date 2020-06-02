@@ -15,43 +15,43 @@ class Docker
 {
 public:
 	#pragma region Constructors&Destructor
-	Docker();
+	Docker() noexcept;
 	Docker(const Docker& doc) = default;
-	Docker(Docker&& doc) = default;
+	Docker(Docker && doc) = default;
 	~Docker() = default;
-	#pragma endregion
+#pragma endregion
 
 
-	#pragma region Methods
+#pragma region Methods
 	/**
 	 * @brief Init DockSpace
-	 * 
+	 *
 	 */
-	void								Init();
+	void								Init() noexcept;
 
 	/**
 	 * @brief Create a Window Editor Dock object
-	 * 
-	 * @param name 
-	 * @param id 
-	 * @return QXstring 
+	 *
+	 * @param name
+	 * @param id
+	 * @return QXstring
 	 */
-	QXstring							CreateWindowEditorDock(QXstring name, ImGuiID& id);
+	QXstring							CreateWindowEditorDock(QXstring name, ImGuiID & id) noexcept;
 
-	#pragma region Getters
+#pragma region Getters
 	/**
 	 * @brief Get the Windows Editor object
-	 * 
-	 * @return std::vector<QXstring> 
+	 *
+	 * @return std::vector<QXstring>
 	 */
-	inline std::vector<QXstring>		GetWindowsEditor() const { return _winEditor; };
+	inline std::vector<QXstring>		GetWindowsEditor() const  noexcept { return _winEditor; };
 
 	/**
-	 * @brief 
-	 * 
-	 * @return ImGuiID 
+	 * @brief
+	 *
+	 * @return ImGuiID
 	 */
-	inline ImGuiID						GetIDDockspace() const { return _idDocker; };
+	inline ImGuiID						GetIDDockspace() const  noexcept { return _idDocker; };
 	#pragma endregion
 	#pragma endregion
 

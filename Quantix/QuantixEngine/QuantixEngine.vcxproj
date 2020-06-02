@@ -274,6 +274,7 @@
     <ClInclude Include="Include\Core\Components\DeformableMesh.h" />
     <ClInclude Include="Include\Core\Physic\ControllerHitReport.h" />
     <ClInclude Include="Include\Core\Physic\ControllerBehaviorCallback.h" />
+    <ClInclude Include="Include\Core\SoundMode.h" />
     <ClInclude Include="Include\Core\Components\CharacterController.h" />
     <ClInclude Include="Include\Core\Components\Behaviour.h" />
     <ClInclude Include="Include\Core\Components\CapsuleCollider.h" />

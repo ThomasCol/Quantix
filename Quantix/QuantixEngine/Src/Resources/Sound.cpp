@@ -137,14 +137,28 @@ namespace Quantix::Resources
 		return false;
 	}
 
-	const QXbool Sound::Pause(FMOD::ChannelGroup* channel)
+	const QXbool Sound::Pause()
 	{
-		if (this != nullptr && _clip)
-			return Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->playSound(_clip, channel, true, nullptr));
+		if (this != nullptr && _clip && _channel)
+			return Core::SoundCore::GetInstance()->Try(_channel->setPaused(QX_TRUE));
 		return false;
 	}
 
-	const QXbool Sound::Is3D()
+	const QXbool Sound::UnPause()
+	{
+		if (this != nullptr && _clip && _channel)
+			return Core::SoundCore::GetInstance()->Try(_channel->setPaused(QX_FALSE));
+		return false;
+	}
+
+	const QXbool Sound::Stop()
+	{
+		if (this != nullptr && _clip && _channel)
+			return Core::SoundCore::GetInstance()->Try(_channel->stop());
+		return false;
+	}
+
+	const QXbool Sound::Is3D() // Check if sound is in 3D by its mode
 	{
 		if (this && _clip)
 		{
@@ -160,7 +174,12 @@ namespace Quantix::Resources
 	const QXbool Sound::ChangeMode(FMOD_MODE mode)
 	{
 		if (this)
-			return (Core::SoundCore::GetInstance()->Try(_clip->setMode(mode)));
+		{
+			if (_channel)
+				return (Core::SoundCore::GetInstance()->Try(_clip->setMode(mode)) && Core::SoundCore::GetInstance()->Try(_channel->setMode(mode)));
+			else
+				return (Core::SoundCore::GetInstance()->Try(_clip->setMode(mode)));
+		}
 		else
 			return false;
 	}

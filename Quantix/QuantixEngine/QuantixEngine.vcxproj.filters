@@ -134,5 +134,6 @@
     <ClInclude Include="Include\Core\Physic\SimulationCallback.h" />
     <ClInclude Include="Include\Core\Physic\Transform2D.h" />
     <ClInclude Include="Include\Core\Physic\Transform3D.h" />
+    <ClInclude Include="Include\Core\SoundMode.h" />
   </ItemGroup>
 </Project>

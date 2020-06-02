@@ -8,6 +8,8 @@
 #include "Core/Physic/Joint.h"
 #include "Core/Platform/Application.h"
 
+#define PATHMATERIAL "media/Material/Deformable.mat"
+
 namespace Quantix::Core::Components
 {
 	struct QUANTIX_API DeformableMesh : public Core::DataStructure::Component

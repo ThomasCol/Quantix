@@ -28,11 +28,23 @@ namespace Quantix::Core::Components::Behaviours
 	void Cube::Awake()
 	{
 		if (_object->GetComponent<Core::Components::Mesh>())
+		{
 			_mesh = _object->GetComponent<Core::Components::Mesh>();
+			currentMaterial = new Resources::Material(*_mesh->GetMaterial());
+			saveMaterial= _mesh->GetMaterial();
+			_mesh->SetMaterial(currentMaterial);
+
+		}
 	}
 
 	void Cube::Start()
 	{}
+
+	void Cube::Destroy()
+	{
+		_mesh->SetMaterial(saveMaterial);
+		delete currentMaterial;
+	}
 
 	void Cube::Update(QXdouble deltaTime)
 	{
@@ -124,9 +136,9 @@ namespace Quantix::Core::Components::Behaviours
 			switch (_statePhysic)
 			{
 			case ECubePhysicState::DEFAULT:
-				_mesh->GetMaterial()->ambient = Math::QXvec3(51, 51, 51) / 255;
-				_mesh->GetMaterial()->diffuse = Math::QXvec3(128, 128, 128) / 255;
-				_mesh->GetMaterial()->specular = Math::QXvec3(255, 255, 255) / 255;
+				_mesh->GetMaterial()->ambient = saveMaterial->ambient;
+				_mesh->GetMaterial()->diffuse = saveMaterial->diffuse;
+				_mesh->GetMaterial()->specular = saveMaterial->specular;
 				break;
 			case ECubePhysicState::FROZEN:
 				_mesh->GetMaterial()->ambient = Math::QXvec3(119, 248, 253) / 255;

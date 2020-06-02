@@ -58,112 +58,113 @@ public:
 	 * 
 	 * @return std::vector<QXstring> 
 	 */
-	inline std::vector<QXstring>		GetFolder() const { return _folder; };
+	inline std::vector<QXstring>		GetFolder() const  noexcept { return _folder; };
 
 	/**
 	 * @brief Get the File object
-	 * 
-	 * @return std::vector<QXstring> 
+	 *
+	 * @return std::vector<QXstring>
 	 */
-	inline std::vector<QXstring>		GetFile() const { return _file; };
-	
+	inline std::vector<QXstring>		GetFile() const  noexcept { return _file; };
+
 	/**
 	 * @brief Get the Img object
-	 * 
-	 * @return std::vector<QXstring> 
+	 *
+	 * @return std::vector<QXstring>
 	 */
-	inline std::vector<QXstring>		GetImg() const { return _imgFile; };
+	inline std::vector<QXstring>		GetImg() const  noexcept { return _imgFile; };
 
 	/**
 	* @brief Get the Size File object
-	* 
-	* @return ImVec2 
+	*
+	* @return ImVec2
 	*/
-	inline ImVec2						GetSizeFile() const { return _sizeFile; };
+	inline ImVec2						GetSizeFile() const  noexcept { return _sizeFile; };
 
 	/**
 	 * @brief Get the Size Folder object
-	 * 
-	 * @return QXint 
+	 *
+	 * @return QXint
 	 */
-	inline QXint						GetSizeFolder() const { return _sizeFolder; };
+	inline QXint						GetSizeFolder() const  noexcept { return _sizeFolder; };
 
 	/**
 	 * @brief Get the ID of image Folder
-	 * 
-	 * @return QXuint 
+	 *
+	 * @return QXuint
 	 */
-	inline QXuint						GetIDFolder() const { return _folderGLu->GetId(); };
+	inline QXuint						GetIDFolder() const  noexcept { return _folderGLu->GetId(); };
 
 	/**
 	 * @brief Get the ID of image CPP
-	 * 
-	 * @return QXuint 
+	 *
+	 * @return QXuint
 	 */
-	inline QXuint						GetIDCPP() const { return _cppGLu->GetId();	};
+	inline QXuint						GetIDCPP() const  noexcept { return _cppGLu->GetId(); };
 
 	/**
 	 * @brief Get the ID of image H
-	 * 
-	 * @return QXuint 
+	 *
+	 * @return QXuint
 	 */
-	inline QXuint						GetIDH() const { return _hGLu->GetId(); };
+	inline QXuint						GetIDH() const  noexcept { return _hGLu->GetId(); };
 
 	/**
 	 * @brief Get the ID of image SLN
-	 * 
-	 * @return QXuint 
+	 *
+	 * @return QXuint
 	 */
-	inline QXuint						GetIDSLN() const { return _slnGLu->GetId(); };
+	inline QXuint						GetIDSLN() const  noexcept { return _slnGLu->GetId(); };
 
 	/**
 	 * @brief Get the ID of image VCXPROJ
-	 * 
-	 * @return QXuint 
+	 *
+	 * @return QXuint
 	 */
-	inline QXuint						GetIDVCXPROJ() const { return _vcxprojGLu->GetId(); };
+	inline QXuint						GetIDVCXPROJ() const  noexcept { return _vcxprojGLu->GetId(); };
 
 	/**
 	 * @brief Get the ID of image File
-	 * 
-	 * @return QXuint 
+	 *
+	 * @return QXuint
 	 */
-	inline QXuint						GetIDFile() const { return _fileGLu->GetId(); };
+	inline QXuint						GetIDFile() const  noexcept { return _fileGLu->GetId(); };
 
 	/**
-	 * @brief Get the ID of image 
-	 * 
-	 * @return QXuint 
+	 * @brief Get the ID of image
+	 *
+	 * @return QXuint
 	 */
-	inline QXuint						GetIDImg() const { return _imgFileGLu->GetId(); };
+	inline QXuint						GetIDImg() const  noexcept { return _imgFileGLu->GetId(); };
 
 	/**
 	 * @brief Set the Size Folder object
-	 * 
-	 * @param value 
+	 *
+	 * @param value
 	 */
-	inline void							SetSizeFolder(QXint value) { _sizeFolder = value; };
-	
+	inline void							SetSizeFolder(QXint value)  noexcept { _sizeFolder = value; };
+
 	/**
 	 * @brief Set the Size File object
-	 * 
+	 *
 	 * @param value ImVec2
 	 */
-	inline void							SetSizeFile(ImVec2 value) { _sizeFile = value; };
-	#pragma endregion Getters&Setters
+	inline void							SetSizeFile(ImVec2 value)  noexcept { _sizeFile = value; };
+#pragma endregion Getters&Setters
 
-	#pragma endregion Operator
+#pragma endregion Operator
 	/**
 	 * @brief operator by copy
-	 * 
-	 * @param folder 
-	 * @return Folder& 
+	 *
+	 * @param folder
+	 * @return Folder&
 	 */
-	Folder&								operator=(const Folder& folder);
+	Folder& operator=(const Folder& folder) noexcept;
 	#pragma endregion Operator
 	#pragma endregion Methods
 
 private:
+	#pragma region Attributes
 	std::vector<QXstring>			_folder;
 	std::vector<QXstring>			_file;
 	std::vector<QXstring>			_imgFile;
@@ -179,6 +180,7 @@ private:
 	Quantix::Resources::Texture*	_fileGLu{ nullptr };
 	Quantix::Resources::Texture*	_imgFileGLu{ nullptr };
 	Quantix::Resources::Texture*	_imgMp3GLu{ nullptr };
+	#pragma endregion Attributes
 };
 
 #endif // !_FOLDER_H_

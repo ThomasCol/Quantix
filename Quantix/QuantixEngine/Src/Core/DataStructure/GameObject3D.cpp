@@ -41,7 +41,7 @@ namespace Quantix::Core::DataStructure
 	{
 	}
 
-	GameObject3D::~GameObject3D()
+	GameObject3D::~GameObject3D() noexcept
 	{
 		// Destroy Component
 		std::vector<Core::DataStructure::Component*> components = GetComponents<Core::DataStructure::Component>();
@@ -74,7 +74,7 @@ namespace Quantix::Core::DataStructure
 	}
 
 	void	GameObject3D::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-		std::vector<Components::Light>& lights, const GameObject3D* parentObject, Platform::AppInfo& info, QXbool isPlaying)
+		std::vector<Components::Light>& lights, const GameObject3D* parentObject, Platform::AppInfo& info, QXbool isPlaying) noexcept
 	{
 		if (_toRender)
 		{
@@ -114,13 +114,13 @@ namespace Quantix::Core::DataStructure
 			child->GetObject()->Update(meshes, colliders, lights, this, info, isPlaying);
 	}
 
-	void	GameObject3D::CheckDestroy(Platform::AppInfo& info)
+	void	GameObject3D::CheckDestroy(Platform::AppInfo& info) noexcept
 	{
 
 		std::list<Quantix::Core::Physic::Transform3D*>& list = _transform->GetChilds();
 		for (auto it = list.begin(); it != list.end();)
 		{
-			
+
 			(*it)->GetObject()->CheckDestroy(info);
 
 			if ((*it)->GetObject()->toDestroy)
@@ -177,13 +177,13 @@ namespace Quantix::Core::DataStructure
 			child->GetObject()->Awake();
 	}
 
-	void GameObject3D::Destroy()	
+	void GameObject3D::Destroy()
 	{
 		for (QXuint i = 0; i < GetComponents().size();)
 			RemoveComponent(GetComponents()[i]);
 	}
 
-	void	GameObject3D::CallOnTrigger(GameObject3D* other)
+	void	GameObject3D::CallOnTrigger(GameObject3D* other) noexcept
 	{
 		if (_toUpdate)
 		{
@@ -193,7 +193,7 @@ namespace Quantix::Core::DataStructure
 		}
 	}
 
-	void	GameObject3D::CallOnContact(GameObject3D* other, Math::QXvec3& position, Math::QXvec3& normal)
+	void	GameObject3D::CallOnContact(GameObject3D* other, Math::QXvec3& position, Math::QXvec3& normal) noexcept
 	{
 		if (_toUpdate)
 		{
@@ -203,36 +203,37 @@ namespace Quantix::Core::DataStructure
 		}
 	}
 
-	void	GameObject3D::SetGlobalPosition(Math::QXvec3 pos)
+	void	GameObject3D::SetGlobalPosition(Math::QXvec3 pos) noexcept
 	{
 	}
 
-	void	GameObject3D::SetGlobalRotation(Math::QXquaternion rot)
+	void	GameObject3D::SetGlobalRotation(Math::QXquaternion rot) noexcept
 	{
 	}
 
-	void	GameObject3D::SetLocalPosition(Math::QXvec3 pos)
+	void	GameObject3D::SetLocalPosition(Math::QXvec3 pos) noexcept
 	{
 		_transform->SetPosition(pos);
 	}
 
-	void	GameObject3D::SetLocalRotation(Math::QXquaternion rot)
+	void	GameObject3D::SetLocalRotation(Math::QXquaternion rot) noexcept
 	{
 		_transform->SetRotation(rot);
 	}
 
-	void	GameObject3D::SetLocalScale(Math::QXvec3 scale)
+	void	GameObject3D::SetLocalScale(Math::QXvec3 scale) noexcept
 	{
 		_transform->SetScale(scale);
 	}
 
-	void	GameObject3D::SetTransformValue(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& scale)
+	void	GameObject3D::SetTransformValue(const Math::QXvec3& pos, const Math::QXquaternion& rot, const Math::QXvec3& scale) noexcept
 	{
 		_transform->SetPosition(pos);
 		_transform->SetRotation(rot);
 		_transform->SetScale(scale);
 	}
-	GameObject3D& GameObject3D::operator=(const GameObject3D& object)
+
+	GameObject3D& GameObject3D::operator=(const GameObject3D& object) noexcept
 	{
 		_transform = object._transform;
 		_component = object._component;
