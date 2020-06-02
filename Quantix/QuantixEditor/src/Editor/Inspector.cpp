@@ -181,7 +181,7 @@ void Inspector::SelectComponent(const QXstring name, rttr::type type, QXbool& en
 			if (behaviour)
 			{
 				if (name == "Cube Generator")
-					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetSceneAndResourcesManager(app->scene, &app->manager);
+					_object->GetComponent<Quantix::Core::Components::Behaviours::CubeGenerator>(true)->SetSceneAndResourcesManager(app->scene, &app->manager);
 			}
 		}
 	}

@@ -8,14 +8,14 @@
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Gameplay::Arms>("Arms")
+	rttr::registration::class_<Quantix::Core::Components::Behaviours::Arms>("Arms")
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
-		.constructor<const Quantix::Gameplay::Arms&>()
-		.constructor<Quantix::Gameplay::Arms&&>();
+		.constructor<const Quantix::Core::Components::Behaviours::Arms&>()
+		.constructor<Quantix::Core::Components::Behaviours::Arms&&>();
 }
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	Arms::Arms(Quantix::Core::DataStructure::GameComponent* par) :
 		Component(par),

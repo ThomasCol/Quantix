@@ -568,15 +568,15 @@ void Editor::DrawSimulation()
 void Editor::PrintPower()
 {
 	ImGui::SetCursorPos(ImVec2(20, ImGui::GetWindowSize().y - 45));
-	switch (_mainCamera->GetObject()->GetComponent<Quantix::Gameplay::Arms>()->GetPower())
+	switch (_mainCamera->GetObject()->GetComponent<Quantix::Core::Components::Behaviours::Arms>()->GetPower())
 	{
-		case Quantix::Gameplay::EArmState::FREEZE:
+		case Quantix::Core::Components::Behaviours::EArmState::FREEZE:
 			ImGui::Text("Freeze");
 			break;
-		case Quantix::Gameplay::EArmState::MAGNET_NEG:
+		case Quantix::Core::Components::Behaviours::EArmState::MAGNET_NEG:
 			ImGui::Text("Repulsion");
 			break;
-		case Quantix::Gameplay::EArmState::MAGNET_POS:
+		case Quantix::Core::Components::Behaviours::EArmState::MAGNET_POS:
 			ImGui::Text("Attraction");
 			break;
 		default:
@@ -623,7 +623,7 @@ void Editor::DrawGame(const QXstring& name, ImGuiWindowFlags flags)
 		ImGui::Image((ImTextureID)(size_t)_gameBuffer.texture[0], size, { 0.f, 1.f }, { 1.f, 0.f });
 		if (_mainCamera->GetObject())
 		{
-			if (_mainCamera->GetObject()->GetComponent<Quantix::Gameplay::Arms>(true))
+			if (_mainCamera->GetObject()->GetComponent<Quantix::Core::Components::Behaviours::Arms>(true))
 				PrintPower();
 		}
 	}

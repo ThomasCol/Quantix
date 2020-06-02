@@ -25,7 +25,7 @@ namespace Quantix::Physic
 			Core::DataStructure::GameObject3D* other = ((Core::DataStructure::GameObject3D*)hit.actor->userData);
 			if (other)
 			{
-				Gameplay::Bumper* bumper = other->GetComponent<Gameplay::Bumper>();
+				Core::Components::Behaviours::Bumper* bumper = other->GetComponent<Core::Components::Behaviours::Bumper>();
 
 				// Controller Collide with a Bumper
 				if (bumper)
@@ -38,7 +38,7 @@ namespace Quantix::Physic
 
 					// Teleport the controller at the Position of spawn found in the killzone
 					controllerGO->GetComponent<Core::Components::CharacterController>()->needSpawn = true;
-					controllerGO->GetComponent<Core::Components::CharacterController>()->spawnPos = other->GetComponent<Gameplay::Killzone>()->positionToRespawnController;
+					controllerGO->GetComponent<Core::Components::CharacterController>()->spawnPos = other->GetComponent<Core::Components::Behaviours::Killzone>()->positionToRespawnController;
 				}
 			}
 		};
