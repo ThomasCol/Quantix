@@ -64,7 +64,7 @@ namespace Quantix::Gameplay
 					{
 						Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
 
-						if (rigid && cube->GetStatePhysic() != ECubePhysicState::GRABBED)
+						if (rigid && cube->GetStatePhysic() == ECubePhysicState::DEFAULT)
 							rigid->AddForce((gameobject->GetGlobalPosition() - overlapedObjects[i]->GetLocalPosition()) * (QXfloat)deltaTime * ATTRACTFORCE);
 					}
 				}
@@ -90,7 +90,7 @@ namespace Quantix::Gameplay
 				{
 					Core::Components::Rigidbody* rigid = overlapedObjects[i]->GetComponent< Core::Components::Rigidbody>();
 
-					if (rigid && cube->GetStatePhysic() != ECubePhysicState::GRABBED)
+					if (rigid && cube->GetStatePhysic() == ECubePhysicState::DEFAULT)
 						rigid->AddForce((overlapedObjects[i]->GetLocalPosition() - gameobject->GetGlobalPosition()) * (QXfloat)deltaTime * REJECTFORCE);
 				}
 			}
