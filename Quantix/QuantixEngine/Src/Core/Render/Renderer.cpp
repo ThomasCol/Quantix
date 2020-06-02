@@ -377,7 +377,7 @@ namespace Quantix::Core::Render
 			RenderPointLightsShadows(meshes, info, lights);
 		}
 
-		glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
+		/*glBindBuffer(GL_UNIFORM_BUFFER, _viewProjShadowMatrixUBO);
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Math::QXmat4),
 			Math::QXmat4::CreateLookAtMatrix(-lights[0].direction, -lights[0].direction * 10 + lights[0].direction, Math::QXvec3::up).array);
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Math::QXmat4), sizeof(Math::QXmat4), _projLight.array);
@@ -415,7 +415,7 @@ namespace Quantix::Core::Render
 
 		glCullFace(GL_BACK);
 
-		_uniShadowProgram->Unuse();
+		_uniShadowProgram->Unuse();*/
 	}
 
 	void Renderer::RenderPointLightsShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,

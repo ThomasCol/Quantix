@@ -206,10 +206,10 @@ void	Editor::CameraUpdateEditor()
 				_cameraEditor->SetPos(_cameraEditor->GetPos() - (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
 			if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
 				_cameraEditor->SetPos(_cameraEditor->GetPos() + (_cameraEditor->GetDir().Cross(_cameraEditor->GetUp()) * SPEEDFREECAM * (QXfloat)_app->info.deltaTime));
-			_cameraEditor->UpdateLookAt(_cameraEditor->GetPos());
 		}
 		if (_mainCamera->GetObject() != nullptr)
 			_mainCamera->SetPos(((Quantix::Core::DataStructure::GameObject3D*)_mainCamera->GetObject())->GetTransform()->GetPosition());
+		_cameraEditor->UpdateLookAt(_cameraEditor->GetPos());
 		_mainCamera->UpdateLookAt(_mainCamera->GetPos());
 	}
 }
@@ -370,7 +370,7 @@ void Editor::UpdateScene()
 
 	START_PROFILING("Draw");
 	_app->renderer.Draw(meshes, colliders, _lights, _app->info, _mainCamera, _gameBuffer, false);
-	_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor, _sceneBuffer, true);
+	_app->renderer.Draw(meshes, colliders, _lights, _app->info, _cameraEditor, _sceneBuffer, _showCollider);
 	//Update Editor + Draw Scene
 	UpdateEditor();
 	STOP_PROFILING("Draw");
@@ -554,6 +554,21 @@ void Editor::MaximizeOnPlay()
 	ImGui::PopStyleColor();
 }
 
+void Editor::ShowCollider()
+{
+	QXfloat posX = ImGui::GetWindowSize().x / 2 + 160;
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 0, 0, 1));
+	if (_showCollider)
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(44 / 255, 62 / 255, 80 / 255, 1));
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(128 / 255.f, 128 / 255.f, 128 / 255.f, 1));
+	ImGui::SetCursorPos(ImVec2(posX, 0));
+	if (ImGui::Button("Collider", ImVec2(80, 30)))
+		_showCollider = !_showCollider;
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
+}
+
 void Editor::DrawSimulation()
 {
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
@@ -561,6 +576,7 @@ void Editor::DrawSimulation()
 	_guizmo.GuizmoUI();
 	Simulation();
 	MaximizeOnPlay();
+	ShowCollider();
 	ChangeStateSimulation();
 	ImGui::EndChild();
 }

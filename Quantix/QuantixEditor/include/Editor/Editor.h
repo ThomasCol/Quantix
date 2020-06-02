@@ -222,6 +222,8 @@ public:
 
 	void												MaximizeOnPlay();
 
+	void												ShowCollider();
+
 	/**
 	 * @brief Draw Game
 	 * 
@@ -362,6 +364,7 @@ private:
 	QXbool																_sceneFocus;
 	QXbool																_gameFocus;
 	QXbool																_maximize;
+	QXbool																_showCollider;
 
 	ImGuiWindowFlags													_flagsEditor;
 	#pragma endregion Attributes
