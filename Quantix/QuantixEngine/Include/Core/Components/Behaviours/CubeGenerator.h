@@ -32,7 +32,8 @@ namespace Quantix::Gameplay
 		QXuint											_nbMaxOfCubes		{ 1 };
 		Core::DataStructure::GameObject3D*				_gameobject			{ nullptr };
 
-		Core::Platform::Application*					_app;
+		Quantix::Resources::Scene*						_scene;
+		Quantix::Core::DataStructure::ResourcesManager*	_manager;
 
 		#pragma endregion
 
@@ -74,7 +75,7 @@ namespace Quantix::Gameplay
 		inline void				SetNbMaxOfCubes(const QXuint& newNbMaxOfCubes) { _nbMaxOfCubes = newNbMaxOfCubes; };
 		inline const QXuint&	GetNbMaxOfCubes() { return _nbMaxOfCubes; };
 
-		inline void				SetApplication(Core::Platform::Application* app) { _app = app; CreateGenerator(); };
+		void					SetSceneAndResourceManager(Quantix::Resources::Scene* scene, Quantix::Core::DataStructure::ResourcesManager* rm);
 
 		#pragma endregion
 

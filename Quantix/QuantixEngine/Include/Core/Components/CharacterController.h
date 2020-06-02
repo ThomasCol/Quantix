@@ -7,7 +7,7 @@
 
 #include "Physic/PhysicHandler.h"
 
-#define GRAVITY Math::QXvec3(0.f, -9.81f, 0.f)
+#define GRAVITY Math::QXvec3(0.f, -5.f, 0.f)
 
 namespace Quantix::Core::Components
 {
@@ -16,6 +16,9 @@ namespace Quantix::Core::Components
 		physx::PxCapsuleController* controller {nullptr};
 
 		Math::QXvec3 _velocity;
+
+		QXbool needSpawn = false;
+		Math::QXvec3 spawnPos;
 
 		/**
 		 * @brief Construct a new Character Controller object
@@ -60,7 +63,7 @@ namespace Quantix::Core::Components
 		 * @brief Destroy Function
 		 * 
 		 */
-		void	Destroy() noexcept override {};
+		void	Destroy() noexcept override;
 
 		/**
 		 * @brief Move the character controller to the position

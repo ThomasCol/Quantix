@@ -7,6 +7,7 @@
 #include <MathDefines.h>
 #include <Core/UserEntry/InputManager.h>
 #include <Core/Components/CharacterController.h>
+#include <Core/DataStructure/GameObject3D.h>
 #include <Core/SoundCore.h>
 #include <Physic/PhysicHandler.h>
 #include <Core/Profiler/Profiler.h>
@@ -215,19 +216,25 @@ void	Editor::CameraUpdateEditor()
 
 void	Editor::MovePlayerController()
 {
+	if (_mainCamera->_controller->needSpawn)
+	{
+		_mainCamera->_controller->SetPosition(_mainCamera->_controller->spawnPos);
+		_mainCamera->_controller->needSpawn = false;
+	}
+
 	Math::QXvec3 dir = _mainCamera->GetDir();
 	dir.y = 0.f;
 	dir = dir.Normalize();
 	if (GetKey(QX_KEY_W) == Quantix::Core::UserEntry::EKeyState::DOWN)
-		_mainCamera->_controller->_velocity += dir;
+		_mainCamera->_controller->_velocity += dir * SPEED;
 	if (GetKey(QX_KEY_S) == Quantix::Core::UserEntry::EKeyState::DOWN)
-		_mainCamera->_controller->_velocity -= dir;
+		_mainCamera->_controller->_velocity -= dir * SPEED;
 	if (GetKey(QX_KEY_A) == Quantix::Core::UserEntry::EKeyState::DOWN)
-		_mainCamera->_controller->_velocity -= dir.Cross(_mainCamera->GetUp());
+		_mainCamera->_controller->_velocity -= dir.Cross(_mainCamera->GetUp()) * SPEED;
 	if (GetKey(QX_KEY_D) == Quantix::Core::UserEntry::EKeyState::DOWN)
-		_mainCamera->_controller->_velocity += dir.Cross(_mainCamera->GetUp());
+		_mainCamera->_controller->_velocity += dir.Cross(_mainCamera->GetUp()) * SPEED;
 	if (GetKey(QX_KEY_SPACE) == Quantix::Core::UserEntry::EKeyState::PRESSED && !_mainCamera->_controller->CheckIsFalling())
-		_mainCamera->_controller->_velocity += _mainCamera->_controller->GetUpDirection() * 30;
+		_mainCamera->_controller->_velocity += _mainCamera->_controller->GetUpDirection() * SPEEDJUMP;
 
 	_mainCamera->_controller->_velocity.y *= 0.95f;
 
@@ -256,10 +263,15 @@ void	Editor::CameraUpdate()
 		{
 			UpdateMouse(_mainCamera);
 			if (_mainCamera->_controller)
+			{
 				MovePlayerController();
+				_mainCamera->UpdateLookAt(_mainCamera->GetPos());
+			}
 			else
+			{
 				MoveFreeCam();
-			_mainCamera->UpdateLookAt(_mainCamera->GetPos());
+				_mainCamera->UpdateLookAt(_mainCamera->_pos);
+			}
 		}
 	}
 }

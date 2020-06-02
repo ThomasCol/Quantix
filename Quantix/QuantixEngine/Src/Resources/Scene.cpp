@@ -155,6 +155,12 @@ namespace Quantix::Resources
 			_root2D->Update();
 	}
 
+	void Scene::CheckDestroy(Core::Platform::AppInfo& info)
+	{
+		if (_root3D)
+			_root3D->CheckDestroy(info);
+	}
+
 	void Scene::Start() noexcept
 	{
 		if (_root3D)

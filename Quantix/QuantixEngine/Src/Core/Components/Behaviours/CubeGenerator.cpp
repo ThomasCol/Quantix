@@ -65,12 +65,12 @@ namespace Quantix::Gameplay
 
 	void CubeGenerator::GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, Math::QXvec3 ambient, Math::QXvec3 diffuse, Math::QXvec3 specular)
 	{
-		Core::DataStructure::GameObject3D* go = _app->scene->AddGameObject(name, _gameobject);
+		Core::DataStructure::GameObject3D* go = _scene->AddGameObject(name, _gameobject);
 		go->SetTransformValue(pos, Math::QXquaternion(1.f, 0.f, 0.f, 0.f), scale);
 		//MESH
 		Core::Components::Mesh* mesh = go->AddComponent<Core::Components::Mesh>();
 		mesh->Init(go);
-		_app->manager.CreateMesh(mesh, "media/Mesh/cube.obj");
+		_manager->CreateMesh(mesh, "media/Mesh/cube.obj");
 		mesh->GetMaterial()->ambient = ambient;
 		mesh->GetMaterial()->diffuse = diffuse;
 		mesh->GetMaterial()->specular = specular;
@@ -89,10 +89,17 @@ namespace Quantix::Gameplay
 		GenerateMesh("Plot4", Math::QXvec3(0.f, 0.f, 1.38f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
 	}
 
+	void CubeGenerator::SetSceneAndResourceManager(Quantix::Resources::Scene* scene, Quantix::Core::DataStructure::ResourcesManager* rm)
+	{
+		_scene = scene;
+		_manager = rm;
+		CreateGenerator();
+	}
+
 	void CubeGenerator::CreateCube()
 	{
 		//GAMEOBJECT
-		Core::DataStructure::GameObject3D* cube = _app->scene->AddGameObject("Generated Cube " + std::to_string(_cubes.size() + 1));
+		Core::DataStructure::GameObject3D* cube = _scene->AddGameObject("Generated Cube " + std::to_string(_cubes.size() + 1));
 		cube->SetTransformValue(_gameobject->GetGlobalPosition(), _gameobject->GetGlobalRotation(), _gameobject->GetGlobalScale());
 
 		cube->SetLayer(Core::DataStructure::Layer::SELECTABLE);
@@ -100,7 +107,7 @@ namespace Quantix::Gameplay
 		//MESH
 		Core::Components::Mesh* mesh = cube->AddComponent<Core::Components::Mesh>();
 		mesh->Init(cube);
-		_app->manager.CreateMesh(mesh, "media/Mesh/cube.obj");
+		_manager->CreateMesh(mesh, "media/Mesh/cube.obj");
 
 		//CUBE COLLIDER
 		Core::Components::CubeCollider* collider = cube->AddComponent<Core::Components::CubeCollider>();
