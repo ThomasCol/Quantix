@@ -138,7 +138,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial1.mat"
                                             }
                                         },
                                         {
@@ -232,7 +232,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "./media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial2.mat"
                                             }
                                         }
                                     ],
@@ -266,7 +266,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial3.mat"
                                             }
                                         },
                                         {
@@ -330,7 +330,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial4.mat"
                                             }
                                         },
                                         {
@@ -394,7 +394,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial5.mat"
                                             }
                                         },
                                         {
@@ -458,7 +458,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial6.mat"
                                             }
                                         },
                                         {
@@ -522,7 +522,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial7.mat"
                                             }
                                         },
                                         {
@@ -586,7 +586,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial8.mat"
                                             }
                                         },
                                         {
@@ -650,7 +650,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial9.mat"
                                             }
                                         },
                                         {
@@ -714,7 +714,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial10.mat"
                                             }
                                         },
                                         {
@@ -778,7 +778,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial11.mat"
                                             }
                                         },
                                         {
@@ -842,7 +842,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial12.mat"
                                             }
                                         },
                                         {
@@ -906,7 +906,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial13.mat"
                                             }
                                         },
                                         {
@@ -970,7 +970,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial14.mat"
                                             }
                                         },
                                         {
@@ -1034,7 +1034,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial15.mat"
                                             }
                                         },
                                         {
@@ -1098,7 +1098,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial16.mat"
                                             }
                                         },
                                         {
@@ -1162,7 +1162,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial17.mat"
                                             }
                                         },
                                         {
@@ -1226,7 +1226,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial18.mat"
                                             }
                                         },
                                         {
@@ -1339,7 +1339,7 @@
                                             "Mesh": {
                                                 "Enable": true,
                                                 "Model": "media/Mesh/cube.obj",
-                                                "Material": ""
+                                                "Material": "media/Material/DefaultMaterial19.mat"
                                             }
                                         },
                                         {
@@ -1463,10 +1463,10 @@
                                             "z": 0.0
                                         },
                                         "rotation": {
-                                            "x": -0.0,
-                                            "y": 0.0,
+                                            "x": 0.0,
+                                            "y": 1.0,
                                             "z": -0.0,
-                                            "w": 1.0
+                                            "w": 0.0
                                         },
                                         "scale": {
                                             "x": 1.0,
@@ -1538,7 +1538,7 @@
                                                         "Mesh": {
                                                             "Enable": true,
                                                             "Model": "./media/Mesh/SK_Mannequin_Arms.FBX",
-                                                            "Material": ""
+                                                            "Material": "media/Material/DefaultMaterial20.mat"
                                                         }
                                                     }
                                                 ],
@@ -1549,6 +1549,73 @@
                                 }
                             }
                         ]
+                    }
+                },
+                {
+                    "GameObject3": {
+                        "name": "GameObject",
+                        "layer": 8,
+                        "Transform": {
+                            "position": {
+                                "x": 13.673657417297364,
+                                "y": 0.0,
+                                "z": 11.493050575256348
+                            },
+                            "rotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "MyGroup": "Crab",
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 2.5
+                                    }
+                                }
+                            },
+                            {
+                                "Killzone": {
+                                    "Enable": true,
+                                    "RespawnPosition": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    }
+                                }
+                            }
+                        ],
+                        "Childs": []
                     }
                 }
             ]

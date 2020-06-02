@@ -25,6 +25,7 @@ namespace Quantix::Core::Components
 		Math::QXvec3	_angle;
 
 		Math::QXmat4	_lookAt;
+		Math::QXmat4	_trs;
 
 		#pragma endregion Attributes
 	public:
@@ -126,7 +127,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param pos 
 		 */
-		inline void						SetPos(Math::QXvec3 pos) { _pos = pos; }
+		void							SetPos(Math::QXvec3 pos);
 
 		/**
 		 * @brief Get the Pos object

@@ -7,6 +7,7 @@
 #include <Core/DataStructure/Component.h>
 #include <Core/Components/Behaviour.h>
 #include <Core/Components/Behaviours/CubeGenerator.h>
+#include <Core/Components//Behaviours//Killzone.h>
 
 #include "Inspector.h"
 #include <Core/UserEntry/InputManager.h>
@@ -180,7 +181,7 @@ void Inspector::SelectComponent(const QXstring name, rttr::type type, QXbool& en
 			if (behaviour)
 			{
 				if (name == "Cube Generator")
-					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetApplication(app);
+					_object->GetComponent<Quantix::Gameplay::CubeGenerator>(true)->SetSceneAndResourceManager(app->scene, &app->manager);
 			}
 		}
 	}
