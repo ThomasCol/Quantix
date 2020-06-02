@@ -4,6 +4,7 @@
 #include "Core\Components\Behaviour.h"
 #include "Core\DataStructure\GameObject3D.h"
 #include "Core\Components\Rigidbody.h"
+#include "Core\Components\Behaviours\Cube.h"
 #include "rttrEnabled.h"
 
 namespace Quantix::Core::Components::Behaviours
@@ -31,8 +32,6 @@ namespace Quantix::Core::Components::Behaviours
 
 			EArmState _state = EArmState::FREEZE;
 
-			Math::QXvec3 objectFrozenVelocity;
-
 			Math::QXvec3 objectFrozenAmbiant;
 			Math::QXvec3 objectFrozenDiffuse;
 			Math::QXvec3 objectFrozenSpecular;
@@ -44,8 +43,8 @@ namespace Quantix::Core::Components::Behaviours
 			void	Grab() noexcept;
 			void	Drop() noexcept;
 			void	UseIce() noexcept;
-			void	Freeze(Core::DataStructure::GameObject3D* cube) noexcept;
-			void	UnFreeze(Core::DataStructure::GameObject3D* cube) noexcept;
+			void	Freeze(Core::DataStructure::GameObject3D* cube, Cube* comp) noexcept;
+			void	UnFreeze(Core::DataStructure::GameObject3D* cube, Cube* comp) noexcept;
 			void	UsePunch() noexcept;
 			void	UseMagnet(QXbool positiveField) noexcept;
 			void	SwitchPower() noexcept;
