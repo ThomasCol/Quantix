@@ -36,8 +36,6 @@ namespace Quantix::Core::Components
 
 		controller = Physic::PhysicHandler::GetInstance()->CreateController(object);
 		_velocity = Math::QXvec3(0, 0, 0);
-		needSpawn = QX_TRUE;
-		spawnPos = Math::QXvec3(35, 20, 45);
 	}
 
 	CharacterController* CharacterController::Copy() const noexcept
