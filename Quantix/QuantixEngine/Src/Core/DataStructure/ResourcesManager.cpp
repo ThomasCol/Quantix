@@ -359,10 +359,11 @@ namespace Quantix::Core::DataStructure
 			return LoadMaterialFromFbx(filePath);
 		Material* mat = LoadMaterialFromFile(filePath);
 
-		mat->SetPath(filePath);
-
 		if (mat)
+		{
+			mat->SetPath(filePath);
 			return mat;
+		}
 		else
 			return CreateDefaultMaterial();
 	}
