@@ -57,14 +57,14 @@ namespace Quantix::Core::Components
 		 * 
 		 * @return Math::QXvec3 halfExtents Value
 		 */
-		Math::QXvec3 GetHalfExtents();
+		Math::QXvec3 GetHalfExtents() noexcept;
 
 		/**
 		 * @brief Set the Half Extents object
 		 * 
 		 * @param extent new HalfExtents
 		 */
-		void SetHalfExtents(Math::QXvec3 extent);
+		void SetHalfExtents(Math::QXvec3 extent) noexcept;
 
 #pragma endregion
 

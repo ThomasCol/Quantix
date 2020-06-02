@@ -4,6 +4,7 @@
 
 #include "Core/Debugger/Logger.h"
 #include "Core/Threading/TaskSystem.hpp"
+#include "Core/SoundCore.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -56,6 +57,8 @@ namespace Quantix::Core::DataStructure
 			delete it->second;
 			it = _sounds.erase(it);
 		}
+
+		Core::SoundCore::GetInstance()->Destroy();
 	}
 
 #pragma endregion
@@ -185,7 +188,7 @@ namespace Quantix::Core::DataStructure
 		return model;
 	}
 
-	Scene* ResourcesManager::CreateScene(const QXstring& filepath)
+	Scene* ResourcesManager::CreateScene(const QXstring& filepath) noexcept
 	{
 		if (filepath == "")
 			return CreateDefaultScene();
@@ -270,7 +273,7 @@ namespace Quantix::Core::DataStructure
 		return texture;
 	}
 
-	Material* ResourcesManager::LoadMaterialFromFbx(const QXstring& filePath)
+	Material* ResourcesManager::LoadMaterialFromFbx(const QXstring& filePath) noexcept
 	{
 		Assimp::Importer Importer;
 		const aiScene* pScene = Importer.ReadFile(filePath.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
@@ -304,7 +307,7 @@ namespace Quantix::Core::DataStructure
 		return material;
 	}
 
-	Material* ResourcesManager::LoadMaterialFromFile(const QXstring& filePath)
+	Material* ResourcesManager::LoadMaterialFromFile(const QXstring& filePath) noexcept
 	{
 		FILE* file;
 
@@ -481,7 +484,7 @@ namespace Quantix::Core::DataStructure
 		_textures[filePath] = nullptr;
 	}
 
-	void ResourcesManager::SaveScene(Scene* scene)
+	void ResourcesManager::SaveScene(Scene* scene) noexcept
 	{
 		std::ofstream stream("../QuantixEngine/Media/scene.quantix");
 
@@ -489,7 +492,7 @@ namespace Quantix::Core::DataStructure
 		stream << serializer.Serialize(scene);
 	}
 
-	Scene* ResourcesManager::LoadScene(const QXstring& path)
+	Scene* ResourcesManager::LoadScene(const QXstring& path) noexcept
 	{
 		Tool::Serializer* serializer = new Tool::Serializer;
 		Scene* scene = new Scene();
@@ -498,7 +501,7 @@ namespace Quantix::Core::DataStructure
 		return scene;
 	}
 
-	void ResourcesManager::UpdateResourcesState()
+	void ResourcesManager::UpdateResourcesState() noexcept
 	{
 		if (_resourcesToBind.size() == 0)
 			return;

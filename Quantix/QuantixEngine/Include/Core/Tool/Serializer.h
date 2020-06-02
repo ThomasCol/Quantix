@@ -20,31 +20,56 @@ namespace Quantix::Core::Tool
 
 		#pragma region Functions
 
+		/**
+		 * @brief Deserialize recursively all objects
+		 * 
+		 * @param scene Scene to fill
+		 * @param index index of the object
+		 * @param val Current value in JSON
+		 * @param parent Parent of the object
+		 * @param manager Resources manager to unit some components
+		 */
 		void DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, DataStructure::GameObject3D* parent,
-			DataStructure::ResourcesManager* manager);
+			DataStructure::ResourcesManager* manager) noexcept;
 
-		void ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager* manager);
+		/**
+		 * @brief Read a component
+		 * 
+		 * @param object Game object to fill
+		 * @param val value to read
+		 * @param manager Manager to init some components
+		 */
+		void ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager* manager) noexcept;
 
-		void ReadInstance(rttr::instance inst, rttr::type type, rttr::property currentProp, rapidjson::Value& value, DataStructure::ResourcesManager* manager);
+		/**
+		 * @brief Read an instance
+		 * 
+		 * @param inst Instance to fill
+		 * @param type type of the propertie
+		 * @param currentProp current property value
+		 * @param value value to read
+		 * @param manager Manager to init some components
+		 */
+		void ReadInstance(rttr::instance inst, rttr::type type, rttr::property currentProp, rapidjson::Value& value, DataStructure::ResourcesManager* manager) noexcept;
 
-		void ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val);
+		void ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val) noexcept;
 
-		Math::QXvec3 ReadVec3(rapidjson::Value& val);
+		Math::QXvec3 ReadVec3(rapidjson::Value& val) noexcept;
 
-		Math::QXquaternion ReadQuat(rapidjson::Value& val);
+		Math::QXquaternion ReadQuat(rapidjson::Value& val) noexcept;
 
-		void SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept;
 
-		void WriteComponent(rttr::instance comp, rttr::type type, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void WriteComponent(rttr::instance comp, rttr::type type, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept;
 
 		void WriteInstance(rttr::instance inst, rttr::property currentProp, rttr::type type,
-			rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+			rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept;
 
-		void WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept;
 
-		void WriteVec3(const QXstring& name, const Math::QXvec3& vec, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void WriteVec3(const QXstring& name, const Math::QXvec3& vec, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept;
 
-		void WriteQuat(const QXstring& name, Math::QXquaternion& quat, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void WriteQuat(const QXstring& name, Math::QXquaternion& quat, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept;
 
 		#pragma endregion
 
@@ -61,9 +86,9 @@ namespace Quantix::Core::Tool
 
 		#pragma region Functions
 
-		QXbool		Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager* manager);
+		QXbool		Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager* manager) noexcept;
 
-		QXstring	Serialize(Resources::Scene* scene);
+		QXstring	Serialize(Resources::Scene* scene) noexcept;
 
 		#pragma endregion
 	};

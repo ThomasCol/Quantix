@@ -24,6 +24,8 @@ namespace Quantix::Resources
 			FMOD::Sound*	_clip	{ nullptr };
 			FMOD::Channel* _channel	{ nullptr };
 
+			QXstring		_path;
+
 			#pragma endregion
 
 			#pragma region Methods
@@ -110,6 +112,10 @@ namespace Quantix::Resources
 			 * @return QXfloat volume value
 			 */
 			const QXfloat	GetVolume();
+
+			inline FMOD::Channel*	GetChannel() { return _channel; }
+
+			inline QXstring			GetPath() { return _path; }
 
 			/**
 			 * @brief Set Sound's volume

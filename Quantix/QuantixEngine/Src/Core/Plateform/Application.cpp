@@ -4,16 +4,15 @@
 
 #include "Resources/ShaderProgram.h"
 #include "Core/Components/Mesh.h"
-#include "Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicHandler.h"
 #include "Core/Threading/TaskSystem.hpp"
 #include "Core/SoundCore.h"
 
 namespace Quantix::Core::Platform
 {
-	Application::Application(QXuint width, QXuint height) :
+	Application::Application(QXuint width, QXuint height) noexcept :
 		info{ width, height },
 		renderer { info, manager },
-		sceneManager {},
 		scene {new Resources::Scene()}
 	{
 		stbi_set_flip_vertically_on_load(true);
@@ -25,16 +24,29 @@ namespace Quantix::Core::Platform
 	{
 		Physic::PhysicHandler::GetInstance()->ReleaseSystem();
 		Physic::PhysicHandler::GetInstance()->Destroy();
-		Core::SoundCore::GetInstance()->Destroy();
 		Threading::TaskSystem::Destroy();
 		delete scene;
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-		std::vector<Components::Light>& lights, QXbool isPlaying)
+		std::vector<Components::Light>& lights, QXbool isPlaying) noexcept
 	{
 		Threading::TaskSystem::GetInstance()->Update();
 		manager.UpdateResourcesState();
+
+		if (isPlaying && _firstFrame)
+		{
+			scene->Start();
+			_firstFrame = false;
+		}
+		if (!isPlaying)
+		{
+			if (!_firstFrame)
+			{
+				_firstFrame = true;
+				scene->Stop();
+			}
+		}
 
 		scene->Update(meshes, colliders, lights, info, isPlaying);
 

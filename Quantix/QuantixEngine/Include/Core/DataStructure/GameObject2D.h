@@ -2,7 +2,7 @@
 #define _GAMEOBJECT2D_H_
 
 #include "Core/DataStructure/GameComponent.h"
-#include "Physic/Transform2D.h"
+#include "Core/Physic/Transform2D.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -14,7 +14,7 @@ namespace Quantix::Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		Quantix::Physic::Transform2D*		_transform;
+		Quantix::Core::Physic::Transform2D*		_transform;
 		#pragma endregion Attributes
 	public:
 		#pragma region Constructors/Destructor
@@ -159,7 +159,7 @@ namespace Quantix::Core::DataStructure
 		 *
 		 * @return Transform2D transform
 		 */
-		Quantix::Physic::Transform2D*				GetTransform() const  noexcept { return _transform; };
+		Quantix::Core::Physic::Transform2D*			GetTransform() const noexcept{ return _transform; };
 		#pragma endregion Accessors
 		#pragma endregion Methods
 

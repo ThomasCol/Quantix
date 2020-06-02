@@ -103,14 +103,14 @@ public:
 	 *
 	 * @return Transform3D*
 	 */
-	inline Quantix::Physic::Transform3D* GetTransform3D()  noexcept { return ((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform(); };
+	inline Quantix::Core::Physic::Transform3D*					GetTransform3D() { return ((Quantix::Core::DataStructure::GameObject3D*)_object)->GetTransform(); };
 
 	/**
 	 * @brief Get the Transform2D object
 	 *
 	 * @return Transform2D*
 	 */
-	inline Quantix::Physic::Transform2D* GetTransform2D()  noexcept { return ((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform(); };
+	inline Quantix::Core::Physic::Transform2D*					GetTransform2D() { return ((Quantix::Core::DataStructure::GameObject2D*)_object)->GetTransform(); };
 
 	/**
 	 * @brief Get the Game Component object

@@ -83,14 +83,14 @@ namespace Quantix::Core::Render
 		 * @param lights ligths to use
 		 */
 		void RenderShadows(std::vector<Core::Components::Mesh*> & meshes, Quantix::Core::Platform::AppInfo & info,
-			std::vector<Core::Components::Light> & lights);
+			std::vector<Core::Components::Light> & lights) noexcept;
 
 		void RenderPointLightsShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,
-			std::vector<Core::Components::Light>& lights);
+			std::vector<Core::Components::Light>& lights) noexcept;
 
-		void RenderColliders(std::vector<Components::ICollider*>& colliders);
+		void RenderColliders(std::vector<Components::ICollider*>& colliders) noexcept;
 
-		void SendUniformBuffer(std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam);
+		void SendUniformBuffer(std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
 
 		#pragma endregion
 
@@ -177,7 +177,7 @@ namespace Quantix::Core::Render
 
 		#pragma region Accessor
 
-		inline std::vector<PostProcess::PostProcessEffect*>& GetEffects() { return _effects; }
+		inline std::vector<PostProcess::PostProcessEffect*>& GetEffects() noexcept { return _effects; }
 
 		#pragma endregion
 

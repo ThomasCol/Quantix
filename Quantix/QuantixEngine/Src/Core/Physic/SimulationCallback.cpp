@@ -1,11 +1,11 @@
-#include "Physic/SimulationCallback.h"
+#include "Core/Physic/SimulationCallback.h"
 
 #include "Core/DataStructure/GameObject3D.h"
 
 #include <PxActor.h>
 #include <PxRigidActorExt.h>
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	void SimulationCallback::onConstraintBreak(PxConstraintInfo*, PxU32)
 	{}
@@ -15,7 +15,6 @@ namespace Quantix::Physic
 
 	void SimulationCallback::onSleep(PxActor**, PxU32)
 	{}
-
 
 	void SimulationCallback::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 	{
@@ -49,10 +48,6 @@ namespace Quantix::Physic
 		}
 	}
 
-	void SimulationCallback::onAdvance(const PxRigidBody* const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count)
-	{
-		(void*)bodyBuffer;
-		(void*)poseBuffer;
-		(void*)count;
-	};
+	void SimulationCallback::onAdvance(const PxRigidBody* const*, const PxTransform*, const PxU32)
+	{}
 }

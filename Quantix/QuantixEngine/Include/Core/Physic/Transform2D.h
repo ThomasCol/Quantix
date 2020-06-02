@@ -12,33 +12,33 @@ namespace Quantix::Core::DataStructure
 	class GameObject2D;
 }
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	class QUANTIX_API Transform2D
 	{
-		private:
+	private:
 
-		#pragma region Attributes
+#pragma region Attributes
 
-			Transform2D*				_parent;
-			Math::QXvec2				_position;
-			QXfloat						_rotationAngle;
-			Math::QXvec2				_scale;
+		Transform2D* _parent;
+		Math::QXvec2				_position;
+		QXfloat						_rotationAngle;
+		Math::QXvec2				_scale;
 
-			Math::QXmat4				_trs;
+		Math::QXmat4				_trs;
 
-			std::list<Transform2D*>		_childs;
+		std::list<Transform2D*>		_childs;
 
-			Quantix::Core::DataStructure::GameObject2D* _gameObject;
+		Quantix::Core::DataStructure::GameObject2D* _gameObject;
 
-		#pragma endregion
+#pragma endregion
 
-		#pragma region Functions
+#pragma region Functions
 
-			/**
-			 * @brief Update the TRS of the Transform
-			 */
-			void	UpdateTRS() noexcept;
+		/**
+		 * @brief Update the TRS of the Transform
+		 */
+		void	UpdateTRS() noexcept;
 
 #pragma endregion
 
@@ -105,49 +105,49 @@ namespace Quantix::Physic
 		 *
 		 * @return Transform2D*
 		 */
-		inline Transform2D*							GetParent() const  noexcept { return _parent; };
+		inline Transform2D* GetParent() const  noexcept { return _parent; };
 
 		/**
 		 * @brief Get the Object object
 		 *
 		 * @return Core::DataStructure::GameObject2D*
 		 */
-		inline Core::DataStructure::GameObject2D*	GetObject() const  noexcept { return _gameObject; };
+		inline Core::DataStructure::GameObject2D* GetObject() const  noexcept { return _gameObject; };
 
 		/**
 		 * @brief Get the Childs object
 		 *
 		 * @return std::list<Transform2D*>&
 		 */
-		inline std::list<Transform2D*>&				GetChilds()  noexcept { return _childs; };
+		inline std::list<Transform2D*>& GetChilds()  noexcept { return _childs; };
 
 		/**
 		 * @brief Get the position of the current transform
 		 *
 		 * @return const Math::QXvec2 Current Position
 		 */
-		const Math::QXvec2&							GetPosition() noexcept;
+		const Math::QXvec2& GetPosition() noexcept;
 
 		/**
 		 * @brief Get the rotationAngle of the current transform
 		 *
 		 * @return const QXfloat& Current Rotation Angle
 		 */
-		const QXfloat&								GetRotationAngle() noexcept;
+		const QXfloat& GetRotationAngle() noexcept;
 
 		/**
 		 * @brief Get the scale of the current transform
 		 *
 		 * @return const Math::QXvec2& Current Scale
 		 */
-		const Math::QXvec2&							GetScale() noexcept;
+		const Math::QXvec2& GetScale() noexcept;
 
 		/**
 		 * @brief Get the trs of the current transform
 		 *
 		 * @return const Math::QXmat4& Current TRS
 		 */
-		const Math::QXmat4&							GetTRS() noexcept;
+		const Math::QXmat4& GetTRS() noexcept;
 
 		/**
 		 * @brief Set the position of the current transform
@@ -231,31 +231,31 @@ namespace Quantix::Physic
 		 */
 		void										RemoveChild(Transform2D* toRemove) noexcept;
 
-		#pragma endregion
+#pragma endregion
 
-		#pragma region Operators
+#pragma region Operators
 
-			/**
-			 * @brief Operator = for 2D transforms
-			 *
-			 * @param t Transform to copy
-			 * @return Transform2D& Reference to the current transform
-			 */
-			Transform2D&	operator=(const Transform2D& t) noexcept;
+		/**
+		 * @brief Operator = for 2D transforms
+		 *
+		 * @param t Transform to copy
+		 * @return Transform2D& Reference to the current transform
+		 */
+		Transform2D& operator=(const Transform2D& t) noexcept;
 
-			/**
-			 * @brief Operator = for 2D transforms
-			 *
-			 * @param t Transform to copy
-			 * @return Transform2D& Reference to the current transform
-			 */
-			Transform2D&	operator=(Transform2D&& t) noexcept;
+		/**
+		 * @brief Operator = for 2D transforms
+		 *
+		 * @param t Transform to copy
+		 * @return Transform2D& Reference to the current transform
+		 */
+		Transform2D& operator=(Transform2D&& t) noexcept;
 
-		#pragma endregion
+#pragma endregion
 
-		#pragma endregion
+#pragma endregion
 
-		};
-	}
+	};
+}
 
 #endif // __TRANSFORM2D_H__

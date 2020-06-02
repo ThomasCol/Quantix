@@ -11,7 +11,7 @@
 #include "Core/Components/Behaviours/Killzone.h"
 #include "Core/Components/CharacterController.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	class ControllerHitReport : public physx::PxUserControllerHitReport
 	{
@@ -20,24 +20,25 @@ namespace Quantix::Physic
 		 * 
 		 * @param hit Information of hit
 		 */
-		virtual void							onShapeHit(const physx::PxControllerShapeHit& hit) 
+		virtual void							onShapeHit(const physx::PxControllerShapeHit& hit) override
 		{
 			Core::DataStructure::GameObject3D* other = ((Core::DataStructure::GameObject3D*)hit.actor->userData);
 			if (other)
 			{
-				Gameplay::Bumper* bumper = other->GetComponent<Gameplay::Bumper>();
+				Core::Components::Behaviours::Bumper* bumper = other->GetComponent<Core::Components::Behaviours::Bumper>();
+
+				// Controller Collide with a Bumper
 				if (bumper)
-				{
 					bumper->OnTrigger(other, ((Core::DataStructure::GameObject3D*)hit.controller->getUserData()));
-				}
+
+				// Controller Collide with a Killzone
 				if (other->GetLayer() == Quantix::Core::DataStructure::Layer::KILLZONE)
 				{
-
 					Core::DataStructure::GameObject3D* controllerGO = ((Core::DataStructure::GameObject3D*)hit.controller->getUserData());
-					Math::QXvec3 SpawnPos = other->GetComponent<Gameplay::Killzone>()->positionToRespawnController;
 
+					// Teleport the controller at the Position of spawn found in the killzone
 					controllerGO->GetComponent<Core::Components::CharacterController>()->needSpawn = true;
-					controllerGO->GetComponent<Core::Components::CharacterController>()->spawnPos = SpawnPos;
+					controllerGO->GetComponent<Core::Components::CharacterController>()->spawnPos = other->GetComponent<Core::Components::Behaviours::Killzone>()->positionToRespawnController;
 				}
 			}
 		};
@@ -47,7 +48,7 @@ namespace Quantix::Physic
 		 * 
 		 * @param hit information of hit
 		 */
-		virtual void							onControllerHit(const physx::PxControllersHit& hit) {}
+		virtual void							onControllerHit(const physx::PxControllersHit& hit) override {}
 
 		/**
 		 * @brief called when Physic raise a collision between an obstacle and a controller

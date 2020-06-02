@@ -1,21 +1,21 @@
 //#include "Core\Components\Behaviours\Arms.h"
 #include "Core/Components/Behaviours/Arms.h"
-#include <Physic/Raycast.h>
+#include <Core/Physic/Raycast.h>
 #include "Core/UserEntry/InputManager.h"
 #include "Core\Components\Behaviours\Cube.h"
 #include "Core\Components\Mesh.h"
-#include "Physic/Transform3D.h"
+#include "Core/Physic/Transform3D.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
-	rttr::registration::class_<Quantix::Gameplay::Arms>("Arms")
+	rttr::registration::class_<Quantix::Core::Components::Behaviours::Arms>("Arms")
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
-		.constructor<const Quantix::Gameplay::Arms&>()
-		.constructor<Quantix::Gameplay::Arms&&>();
+		.constructor<const Quantix::Core::Components::Behaviours::Arms&>()
+		.constructor<Quantix::Core::Components::Behaviours::Arms&&>();
 }
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	Arms::Arms(Quantix::Core::DataStructure::GameComponent* par) :
 		Component(par),
@@ -33,7 +33,9 @@ namespace Quantix::Gameplay
 	}
 
 	void Arms::Start()
-	{}
+	{
+
+	}
 
 	void Arms::Update(QXdouble deltaTime)
 	{
@@ -65,7 +67,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Arms::SwitchPower()
+	void Arms::SwitchPower() noexcept
 	{
 		switch (_state)
 		{
@@ -85,7 +87,7 @@ namespace Quantix::Gameplay
 		UpdateMaterial();
 	}
 
-	void Arms::UsePower()
+	void Arms::UsePower() noexcept
 	{
 		switch (_state)
 		{
@@ -103,7 +105,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Arms::UseHands()
+	void Arms::UseHands() noexcept
 	{
 		if (_isGrabbingObject)
 			return Drop();
@@ -111,7 +113,7 @@ namespace Quantix::Gameplay
 			return Grab();
 	}
 
-	void Arms::Grab()
+	void Arms::Grab() noexcept
 	{
 		//Grab
 
@@ -142,7 +144,7 @@ namespace Quantix::Gameplay
 			return;
 	}
 
-	void Arms::Drop()
+	void Arms::Drop() noexcept
 	{
 		//Drop
 
@@ -156,7 +158,7 @@ namespace Quantix::Gameplay
 		_isGrabbingObject = QX_FALSE;
 	}
 
-	void Arms::UseIce()
+	void Arms::UseIce() noexcept
 	{
 		if (_gameobject)
 		{
@@ -188,7 +190,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void	Arms::Freeze(Core::DataStructure::GameObject3D* cube)
+	void	Arms::Freeze(Core::DataStructure::GameObject3D* cube) noexcept
 	{
 		objectFrozenVelocity = rigid->GetLinearVelocity();
 			
@@ -196,7 +198,7 @@ namespace Quantix::Gameplay
 		rigid->SetRigidFlagKineForQueries(true);
 	}
 
-	void	Arms::UnFreeze(Core::DataStructure::GameObject3D* cube)
+	void	Arms::UnFreeze(Core::DataStructure::GameObject3D* cube) noexcept
 	{
 		rigid->SetKinematicTarget(_gameobject->GetGlobalPosition() + _gameobject->GetTransform()->GetUp());
 
@@ -205,7 +207,7 @@ namespace Quantix::Gameplay
 		rigid->SetLinearVelocity(objectFrozenVelocity);
 	}
 
-	void	Arms::UsePunch()
+	void	Arms::UsePunch() noexcept
 	{
 		if (_isGrabbingObject && _grabbedObject->GetComponent<Cube>()->GetStatePhysic() == ECubePhysicState::GRABBED)
 		{
@@ -224,7 +226,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void	Arms::UseMagnet(QXbool positiveField)
+	void	Arms::UseMagnet(QXbool positiveField) noexcept
 	{
 		if (_gameobject)
 		{
@@ -256,7 +258,7 @@ namespace Quantix::Gameplay
 		}
 	}
 
-	void Arms::UpdateMaterial()
+	void Arms::UpdateMaterial() noexcept
 	{
 		switch (_state)
 		{
@@ -280,14 +282,4 @@ namespace Quantix::Gameplay
 		}
 
 	}
-
-	//Questions to ask my teammates
-	/*
-	* Comment j'accède à la liste des layers pour comparer le layer actuel à ceux existants ?
-	*/ 
-
-	//TODO:
-	/* 
-	* 
-	*/
 }

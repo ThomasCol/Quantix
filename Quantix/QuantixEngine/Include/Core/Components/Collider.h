@@ -3,11 +3,11 @@
 
 #include "Core/DLLHeader.h"
 #include "Core/DataStructure/Component.h"
-#include "Physic/IPhysicType.h"
+#include "Core/Physic/IPhysicType.h"
 #include <PxPhysicsAPI.h>
 #include "rttrEnabled.h"
 #include "Core/MathHeader.h"
-#include "Physic/PhysicSetting.h"
+#include "Core/Physic/PhysicSetting.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -125,7 +125,7 @@ namespace Quantix::Core::Components
 		 * @brief Actualize actorPhysic
 		 *
 		 */
-		void UpdateActorPhysic();
+		void UpdateActorPhysic() noexcept;
 
 		/**
 		 * @brief Destroy Collider
@@ -140,49 +140,49 @@ namespace Quantix::Core::Components
 		 * 
 		 * @return Math::QXvec3 Position of the Collider
 		 */
-		Math::QXvec3 GetPosition();
+		Math::QXvec3 GetPosition() noexcept;
 
 		/**
 		 * @brief Set the Position object
 		 * 
 		 * @param pos new position
 		 */
-		void SetPosition(Math::QXvec3 pos);
+		void SetPosition(Math::QXvec3 pos) noexcept;
 
 		/**
 		 * @brief Get the Rotation object
 		 * 
 		 * @return Math::QXquaternion Rotation of the Collider
 		 */
-		Math::QXquaternion GetRotation();
+		Math::QXquaternion GetRotation() noexcept;
 
 		/**
 		 * @brief Set the Rotation object
 		 * 
 		 * @param rot new Rotation
 		 */
-		void SetRotation(Math::QXquaternion rot);
+		void SetRotation(Math::QXquaternion rot) noexcept;
 
 		/**
 		 * @brief Set the My Filter Group object
 		 * 
 		 * @param newGroup 
 		 */
-		void SetMyFilterGroup(Physic::FilterGroup::Enum newGroup);
+		void SetMyFilterGroup(Physic::FilterGroup::Enum newGroup) noexcept;
 
 		/**
 		 * @brief Get the My Filter Group object
 		 * 
 		 * @return Physic::FilterGroup::Enum 
 		 */
-		Physic::FilterGroup::Enum GetMyFilterGroup();
+		Physic::FilterGroup::Enum GetMyFilterGroup() noexcept;
 
 		/**
  		* @brief Set the Shape Flag Scene Query object
  		*	
  		* @param b Value of the flag
  		*/
-		void SetShapeFlagSceneQuery(bool b)
+		void SetShapeFlagSceneQuery(bool b) noexcept
 		{
 			shapeFlag.sceneQuery = b;
 			shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, b);
@@ -194,14 +194,14 @@ namespace Quantix::Core::Components
 		 * @return true Flag is at true
 		 * @return false Flag is at false
 		 */
-		bool GetShapeFlagSceneQuery() { return shapeFlag.sceneQuery; };
+		bool GetShapeFlagSceneQuery() noexcept { return shapeFlag.sceneQuery; };
 
 		/**
 		 * @brief Set the Shape Flag Simulation object
 		 *
 		 * @param b Value of the flag
 		 */
-		void SetShapeFlagSimulation(bool b)
+		void SetShapeFlagSimulation(bool b) noexcept
 		{
 			if (b && GetShapeFlagTrigger())
 				return;
@@ -216,14 +216,14 @@ namespace Quantix::Core::Components
 		 * @return true Flag is at true
 		 * @return false  Flag is at false
 		 */
-		bool GetShapeFlagSimulation() { return shapeFlag.simulation; };
+		bool GetShapeFlagSimulation() noexcept { return shapeFlag.simulation; };
 
 		/**
 		 * @brief Set the Shape Flag Trigger object
 		 *
 		 * @param b Value of the Flag
 		 */
-		void SetShapeFlagTrigger(bool b)
+		void SetShapeFlagTrigger(bool b) noexcept
 		{
 			if (b && GetShapeFlagSimulation())
 				return;
@@ -238,14 +238,14 @@ namespace Quantix::Core::Components
 		 * @return true Flag is at true
 		 * @return false Flag is at false
 		 */
-		bool GetShapeFlagTrigger() { return shapeFlag.trigger; };
+		bool GetShapeFlagTrigger() noexcept { return shapeFlag.trigger; };
 
 		/**
 		 * @brief Set the Shape Flag Visualization object
 		 *
 		 * @param b Value of the Flag
 		 */
-		void SetShapeFlagVisualization(bool b)
+		void SetShapeFlagVisualization(bool b) noexcept
 		{
 			shapeFlag.visualization = b;
 			shape->setFlag(physx::PxShapeFlag::eVISUALIZATION, b);
@@ -256,35 +256,35 @@ namespace Quantix::Core::Components
 		 *
 		 * @return Value of the flag
 		 */
-		bool GetShapeFlagVisualization() { return shapeFlag.visualization; };
+		bool GetShapeFlagVisualization() noexcept { return shapeFlag.visualization; };
 
 		/**
 		 * @brief Get the Collide Filter Pawn object
 		 * 
 		 * @return true if this collide with pawn
 		 */
-		bool GetCollideFilterPawn() { return collideFilter.pawn; };
+		bool GetCollideFilterPawn() noexcept { return collideFilter.pawn; };
 
 		/**
 		 * @brief Get the Collide Filter Mine object
 		 * 
 		* @return true if this collide with Mine
 		 */
-		bool GetCollideFilterMine() { return collideFilter.mine; };
+		bool GetCollideFilterMine() noexcept { return collideFilter.mine; };
 
 		/**
 		 * @brief Get the Collide Filter Mine object
 		 * 
 		* @return true if this collide with Crab
 		 */
-		bool GetCollideFilterCrab() { return collideFilter.crab; };
+		bool GetCollideFilterCrab() noexcept { return collideFilter.crab; };
 
 		/**
 		 * @brief Set the Collide Filter Pawn object
 		 * 
 		 * @param b 
 		 */
-		void SetCollideFilterPawn(bool b)
+		void SetCollideFilterPawn(bool b) noexcept
 		{
 			collideFilter.pawn = b;
 
@@ -308,7 +308,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param b 
 		 */
-		void SetCollideFilterMine(bool b)
+		void SetCollideFilterMine(bool b) noexcept
 		{
 			collideFilter.mine = b;
 
@@ -332,7 +332,7 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param b 
 		 */
-		void SetCollideFilterCrab(bool b)
+		void SetCollideFilterCrab(bool b) noexcept
 		{
 			collideFilter.crab = b;
 

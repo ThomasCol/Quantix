@@ -13,7 +13,8 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<Quantix::Resources::Sound&&>()
 	.enumeration<Quantix::Resources::ESoundMode>("Sound Type")
 					 (rttr::value("QX_2D", Quantix::Resources::ESoundMode::QX_2D),
-					 rttr::value("QX_3D", Quantix::Resources::ESoundMode::QX_3D));
+					 rttr::value("QX_3D", Quantix::Resources::ESoundMode::QX_3D))
+	.method("GetPath", &Quantix::Resources::Sound::GetPath);
 }
 
 namespace Quantix::Resources
@@ -22,8 +23,9 @@ namespace Quantix::Resources
 	#pragma region Constructors & Destructor
 
 	Sound::Sound(const char* path) : 
-	_clip{ nullptr },
-	_channel {nullptr}
+		_clip{ nullptr },
+		_channel {nullptr},
+		_path {path}
 	{
 		Core::SoundCore::GetInstance()->Try(Core::SoundCore::GetInstance()->GetSystem()->createSound(path, FMOD_DEFAULT, nullptr, &_clip));
 	}

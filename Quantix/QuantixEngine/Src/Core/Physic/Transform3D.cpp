@@ -1,11 +1,11 @@
-#include "Physic/Transform3D.h"
+#include "Core/Physic/Transform3D.h"
 #include "Core/DataStructure/GameObject3D.h"
 #include "Core/Components/CharacterController.h"
 #include "Core/Components/Camera.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
-	#pragma region Constructors&Destructor
+#pragma region Constructors&Destructor
 
 	Transform3D::Transform3D()  noexcept :
 		_parent{ nullptr },
@@ -330,9 +330,9 @@ namespace Quantix::Physic
 		return QX_FALSE;
 	}
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Operators
+#pragma region Operators
 
 	Transform3D& Transform3D::operator=(const Transform3D& t) noexcept
 	{
@@ -356,7 +356,7 @@ namespace Quantix::Physic
 		return *this;
 	}
 
-	#pragma endregion
-	
-	#pragma endregion
+#pragma endregion
+
+#pragma endregion
 }

@@ -1,13 +1,13 @@
-#include "Physic/PhysicHandler.h"
-#include "Physic/PhysicStatic.h"
-#include "Physic/PhysicDynamic.h"
+#include "Core/Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicStatic.h"
+#include "Core/Physic/PhysicDynamic.h"
 #include "Core/MathHeader.h"
 #include "Core/DataStructure/GameObject3D.h"
-#include "Physic/SimulationCallback.h"
+#include "Core/Physic/SimulationCallback.h"
 #include "characterkinematic/PxController.h"
 
-#include "Physic/ControllerBehaviorCallback.h"
-#include "Physic/ControllerHitReport.h"
+#include "Core/Physic/ControllerBehaviorCallback.h"
+#include "Core/Physic/ControllerHitReport.h"
 
 #include <vector>
 
@@ -16,32 +16,16 @@
 RTTR_PLUGIN_REGISTRATION
 {
 	using namespace Quantix::Core::Components;
-rttr::registration::class_<Quantix::Physic::PhysicHandler>("PhysicHandler")
-.constructor<>();
-	/*.property("AdaptiveForce", &Quantix::Physic::PhysicHandler::GetFlagAdaptiveForce, &Quantix::Physic::PhysicHandler::SetFlagAdaptiveForce)
-	.property("DisableCCDResweep", &Quantix::Physic::PhysicHandler::GetFlagDisableCCDResweep, &Quantix::Physic::PhysicHandler::SetFlagDisableCCDResweep)
-	.property("DisableContactCache", &Quantix::Physic::PhysicHandler::GetFlagDisableContactCache, &Quantix::Physic::PhysicHandler::SetFlagDisableContactCache)
-	.property("DisableContactReport", &Quantix::Physic::PhysicHandler::GetFlagDisableContactReport, &Quantix::Physic::PhysicHandler::SetFlagDisableContactReport)
-	.property("ActiveActors", &Quantix::Physic::PhysicHandler::GetFlagActiveActors, &Quantix::Physic::PhysicHandler::SetFlagActiveActors)
-	.property("AveragePoint", &Quantix::Physic::PhysicHandler::GetFlagAveragePoint, &Quantix::Physic::PhysicHandler::SetFlagAveragePoint)
-	.property("CCD", &Quantix::Physic::PhysicHandler::GetFlagCCD, &Quantix::Physic::PhysicHandler::SetFlagCCD)
-	.property("EnhancedDeterminism", &Quantix::Physic::PhysicHandler::GetFlagEnhancedDeterminism, &Quantix::Physic::PhysicHandler::SetFlagEnhancedDeterminism)
-	.property("FrictionEveryIt", &Quantix::Physic::PhysicHandler::GetFlagFrictionEveryIt, &Quantix::Physic::PhysicHandler::SetFlagFrictionEveryIt)
-	.property("GPUDynamics", &Quantix::Physic::PhysicHandler::GetFlagGPUDynamics, &Quantix::Physic::PhysicHandler::SetFlagGPUDynamics)
-	.property("PCM", &Quantix::Physic::PhysicHandler::GetFlagPCM, &Quantix::Physic::PhysicHandler::SetFlagPCM)
-	.property("Stabilization", &Quantix::Physic::PhysicHandler::GetFlagStabilization, &Quantix::Physic::PhysicHandler::SetFlagStabilization)
-	.property("ExcludeKineActiverActors", &Quantix::Physic::PhysicHandler::GetFlagExcludeKineActiverActors, &Quantix::Physic::PhysicHandler::SetFlagExcludeKineActiverActors)
-	.property("Mutable", &Quantix::Physic::PhysicHandler::GetFlagMutable, &Quantix::Physic::PhysicHandler::SetFlagMutable)
-	.property("RequireRWLock", &Quantix::Physic::PhysicHandler::GetFlagRequireRWLock, &Quantix::Physic::PhysicHandler::SetFlagRequireRWLock);*/
+	rttr::registration::class_<Quantix::Core::Physic::PhysicHandler>("PhysicHandler")
+	.constructor<>();
 }
 
 using namespace physx;
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
 		PxFilterObjectAttributes attributes1, PxFilterData filterData1,
 		PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
-
 	{
 		// If it is a trigger
 		if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
@@ -63,12 +47,11 @@ namespace Quantix::Physic
 
 	PhysicHandler* PhysicHandler::_instance = nullptr;
 
-	PhysicHandler* PhysicHandler::GetInstance()
+	PhysicHandler* PhysicHandler::GetInstance() noexcept
 	{
 		if (!_instance)
-		{
 			_instance = new PhysicHandler();
-		}
+
 		return _instance;
 	}
 
@@ -78,7 +61,7 @@ namespace Quantix::Physic
 			delete it->second;
 	}
 
-	IPhysicType* PhysicHandler::GetObject(Core::DataStructure::GameComponent* object, bool hasRigidbody)
+	IPhysicType* PhysicHandler::GetObject(Core::DataStructure::GameComponent* object, QXbool hasRigidbody) noexcept
 	{
 		auto it = _physObject.find(object);
 
@@ -101,7 +84,7 @@ namespace Quantix::Physic
 		return it->second;
 	}
 
-	IPhysicType* PhysicHandler::CreateAndLinkActorPhysic(Core::DataStructure::GameComponent* object, bool dynamic)
+	IPhysicType* PhysicHandler::CreateAndLinkActorPhysic(Core::DataStructure::GameComponent* object, QXbool dynamic) noexcept
 	{
 		if (dynamic)
 		{
@@ -123,7 +106,7 @@ namespace Quantix::Physic
 		}
 	}
 
-	IPhysicType* PhysicHandler::SwapActorPhysicStaticToDynamic(Core::DataStructure::GameComponent* object, PhysicStatic* staticActor)
+	IPhysicType* PhysicHandler::SwapActorPhysicStaticToDynamic(Core::DataStructure::GameComponent* object, PhysicStatic* staticActor) noexcept
 	{
 		PhysicDynamic* tmp = new PhysicDynamic(mSDK, staticActor);
 		mScene->removeActor(*staticActor->GetRigid());
@@ -133,7 +116,7 @@ namespace Quantix::Physic
 		return tmp;
 	}
 
-	IPhysicType* PhysicHandler::SwapActorPhysicDynamicToStatic(Core::DataStructure::GameComponent* object, PhysicDynamic* dynamicActor)
+	IPhysicType* PhysicHandler::SwapActorPhysicDynamicToStatic(Core::DataStructure::GameComponent* object, PhysicDynamic* dynamicActor) noexcept
 	{
 		PhysicStatic* tmp = new PhysicStatic(mSDK, dynamicActor);
 		mScene->removeActor(*dynamicActor->GetRigid());
@@ -143,13 +126,13 @@ namespace Quantix::Physic
 		return tmp;
 	}
 
-	PxShape* PhysicHandler::CreateCubeCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
+	PxShape* PhysicHandler::CreateCubeCollider(Core::DataStructure::GameComponent* object, QXbool hasRigidbody) noexcept
 	{
 		// Take ActorPhysic Link to the GameComponent
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
 		// Create Shape With BoxGeometrie
-		PxShape* s = mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *mMaterial, true);
+		PxShape* s = mSDK->createShape(PxBoxGeometry(0.5f, 0.5f, 0.5f), *mMaterial, QX_TRUE);
 		
 		// Attach the shape to the actor
 		if (hasRigidbody)
@@ -160,13 +143,13 @@ namespace Quantix::Physic
 		return s;
 	}
 
-	PxShape* PhysicHandler::CreateSphereCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
+	PxShape* PhysicHandler::CreateSphereCollider(Core::DataStructure::GameComponent* object, QXbool hasRigidbody) noexcept
 	{
 		// Take ActorPhysic Link to the GameComponent
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
 		// Create Shape With SphereGeometrie
-		PxShape* s = mSDK->createShape(PxSphereGeometry(1.f), *mMaterial, true);
+		PxShape* s = mSDK->createShape(PxSphereGeometry(1.f), *mMaterial, QX_TRUE);
 		
 		// Attach the shape to the actor
 		if (hasRigidbody)
@@ -179,13 +162,13 @@ namespace Quantix::Physic
 		return s;
 	}
 
-	PxShape* PhysicHandler::CreateCapsuleCollider(Core::DataStructure::GameComponent* object, bool hasRigidbody)
+	PxShape* PhysicHandler::CreateCapsuleCollider(Core::DataStructure::GameComponent* object, QXbool hasRigidbody) noexcept
 	{
 		// Take ActorPhysic Link to the GameComponent
 		IPhysicType* physicType = GetObject(object, hasRigidbody);
 
 		// Create Shape With CapsuleGeometrie
-		PxShape* s = mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *mMaterial, true);
+		PxShape* s = mSDK->createShape(PxCapsuleGeometry(1.f, 1.f), *mMaterial, QX_TRUE);
 		
 		// Attach the shape to the actor
 		if (hasRigidbody)
@@ -196,7 +179,7 @@ namespace Quantix::Physic
 		return s;
 	}
 
-	void PhysicHandler::InitSystem()
+	void PhysicHandler::InitSystem() noexcept
 	{
 		// Init Foundation
 		pDefaultFundation = PxCreateFoundation(PX_PHYSICS_VERSION, pDefaultAllocatorCallback, pDefaultErrorCallback);
@@ -243,13 +226,13 @@ namespace Quantix::Physic
 		PxPvdSceneClient* pvdClient = mScene->getScenePvdClient();
 		if (pvdClient)
 		{
-			pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
-			pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
-			pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+			pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, QX_TRUE);
+			pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, QX_TRUE);
+			pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, QX_TRUE);
 		}
 	}
 
-	void PhysicHandler::InitScene()
+	void PhysicHandler::InitScene() noexcept
 	{
 		PxSceneDesc sceneDesc(mSDK->getTolerancesScale());
 		sceneDesc.gravity = PxVec3(0.0f, -15.f, 0.0f);
@@ -269,7 +252,7 @@ namespace Quantix::Physic
 			std::cerr << "createScene failed!";
 	}
 
-	void PhysicHandler::ReleaseSystem()
+	void PhysicHandler::ReleaseSystem() noexcept
 	{
 		manager->purgeControllers();
 		manager->release();
@@ -292,12 +275,12 @@ namespace Quantix::Physic
 		pDefaultFundation->release();
 	}
 
-	void PhysicHandler::Destroy()
+	void PhysicHandler::Destroy() noexcept
 	{
 		delete _instance;
 	}
 
-	PxCapsuleController* PhysicHandler::CreateController(Core::DataStructure::GameComponent* object)
+	PxCapsuleController* PhysicHandler::CreateController(Core::DataStructure::GameComponent* object) noexcept
 	{
 		PxCapsuleControllerDesc desc;
 		PxControllerDesc* cDesc;
@@ -327,11 +310,11 @@ namespace Quantix::Physic
 		return (PxCapsuleController*)c;
 	}
 
-	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec, Physic::Joint joint)
+	PxJoint* PhysicHandler::CreateJoint(Core::DataStructure::GameComponent* object, Core::DataStructure::GameComponent* other, Math::QXvec3 vec, const Physic::Joint& joint) noexcept
 	{
-		PhysicDynamic* type0 = GetObject(object, true)->GetObjectDynamic();
+		PhysicDynamic* type0 = GetObject(object, QX_TRUE)->GetObjectDynamic();
 
-		PhysicDynamic* type1 = GetObject(other, true)->GetObjectDynamic();
+		PhysicDynamic* type1 = GetObject(other, QX_TRUE)->GetObjectDynamic();
 
 
 		//PxRevoluteJointCreate
@@ -341,7 +324,7 @@ namespace Quantix::Physic
 		return newJoint;
 	}
 
-	void PhysicHandler::UpdateSystem(double deltaTime)
+	void PhysicHandler::UpdateSystem(double deltaTime) noexcept
 	{
 		mAccumulator += (physx::PxReal)deltaTime;
 		if (mAccumulator < mStepSize)
@@ -351,10 +334,10 @@ namespace Quantix::Physic
 
 		mScene->simulate(PxReal(mStepSize));
 
-		mScene->fetchResults(true);
+		mScene->fetchResults(QX_TRUE);
 	}
 
-	void PhysicHandler::UpdatePhysicActor(bool isPlaying)
+	void PhysicHandler::UpdatePhysicActor(QXbool isPlaying) noexcept
 	{
 		if (isPlaying)
 			UpdatePlayingActor();
@@ -362,7 +345,7 @@ namespace Quantix::Physic
 			UpdateEditorActor();
 	}
 
-	void PhysicHandler::UpdatePlayingActor()
+	void PhysicHandler::UpdatePlayingActor() noexcept
 	{
 		PxU32 nbActors;
 		PxActor** listActor = mScene->getActiveActors(nbActors);
@@ -385,7 +368,8 @@ namespace Quantix::Physic
 			}
 		}
 
-		int numController = manager->getNbControllers(); 
+		// Update Controller : his linked GameObject follow the Controller Physic  
+		int numController = manager->getNbControllers();
 		for (int i = 0; i < numController; i++)
 		{
 			PxController* controller = manager->getController(i);
@@ -398,7 +382,7 @@ namespace Quantix::Physic
 		}
 	}
 
-	void PhysicHandler::UpdateEditorActor()
+	void PhysicHandler::UpdateEditorActor() noexcept
 	{
 		for (auto it = _physObject.begin(); it != _physObject.end(); ++it)
 		{
@@ -429,6 +413,7 @@ namespace Quantix::Physic
 			}
 		}
 
+		// Update Controller : Controller Physic follow his linked GameObject
 		int numController = manager->getNbControllers();
 		for (int i = 0; i < numController; i++)
 		{
@@ -447,13 +432,14 @@ namespace Quantix::Physic
 		}
 	}
 
-	void PhysicHandler::Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Physic::Raycast& ownRaycast)
+	void PhysicHandler::Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax, Physic::Raycast& ownRaycast) noexcept 
 	{
-		PxRaycastBuffer hitRaycast;                 // resultat du ray cast apres test
+		PxRaycastBuffer hitRaycast; // resultat du ray cast apres test
 
 		ownRaycast.status = mScene->raycast(PxVec3(origin.x, origin.y, origin.z), PxVec3(unitDir.x, unitDir.y, unitDir.z), distMax, hitRaycast);
 		if (ownRaycast.status && hitRaycast.hasBlock)
 		{
+			// Load Own Raycast Struct
 			ownRaycast.normalClosestBlock = Math::QXvec3(hitRaycast.block.normal.x, hitRaycast.block.normal.y, hitRaycast.block.normal.z);
 			ownRaycast.positionClosestBlock = Math::QXvec3(hitRaycast.block.position.x, hitRaycast.block.position.y, hitRaycast.block.position.z);
 			ownRaycast.distanceClosestBlock = hitRaycast.block.distance;
@@ -461,7 +447,7 @@ namespace Quantix::Physic
 		}
 	}
 
-	std::vector<Core::DataStructure::GameObject3D*> PhysicHandler::OverlapSphere(QXfloat radius, Physic::Transform3D* transform)
+	std::vector<Core::DataStructure::GameObject3D*> PhysicHandler::OverlapSphere(QXfloat radius, Physic::Transform3D* transform) noexcept 
 	{
 		Math::QXvec3 p = transform->GetGlobalPosition();
 		Math::QXquaternion q = transform->GetGlobalRotation().ConjugateQuaternion();
@@ -476,121 +462,124 @@ namespace Quantix::Physic
 		PxOverlapHit hitBuffer[256];
 		PxOverlapBuffer hit(hitBuffer, 256);
 
-		bool status = mScene->overlap(overlapGeometrie, shapePosition, hit, fd);
+		QXbool status = mScene->overlap(overlapGeometrie, shapePosition, hit, fd);
 		std::vector<Core::DataStructure::GameObject3D*> list;
 		for (QXint i = 0; i < hit.nbTouches; i++)
 				list.push_back((Core::DataStructure::GameObject3D*)(hit.touches[i].actor->userData));
 		return list;
 	}
 
-	void PhysicHandler::CleanScene()
+	void PhysicHandler::CleanScene() noexcept
 	{
+		// Remove Actor Dynamic
 		int numActorsDynamic = mScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
 		PxActor** actorsDyna = (PxActor**)malloc(sizeof(PxActor*) * numActorsDynamic);
 		mScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, actorsDyna, numActorsDynamic);
 
 		mScene->removeActors(actorsDyna, numActorsDynamic);
 
+		// Remove Actor Static
 		int numActorsStatic = mScene->getNbActors(PxActorTypeFlag::eRIGID_STATIC);
 		PxActor** actorsStat = (PxActor**)malloc(sizeof(PxActor*) * numActorsStatic);
 		mScene->getActors(PxActorTypeFlag::eRIGID_STATIC, actorsStat, numActorsStatic);
 
 		mScene->removeActors(actorsStat, numActorsStatic);
 
+		// Remove Controller
 		manager->purgeControllers();
 	}
 
-	void PhysicHandler::CleanController(PxCapsuleController* controller)
+	void PhysicHandler::CleanController(PxCapsuleController* controller) noexcept
 	{
 		manager->purgeControllers();
 	}
 
 #pragma region FlagSetters
-	void PhysicHandler::SetFlagAdaptiveForce(bool b)
+	void PhysicHandler::SetFlagAdaptiveForce(QXbool b) noexcept
 	{
 		sceneFlag.adaptiveForce = b;
 		mScene->setFlag(PxSceneFlag::eADAPTIVE_FORCE, b);
 	}
 
-	void PhysicHandler::SetFlagDisableCCDResweep(bool b)
+	void PhysicHandler::SetFlagDisableCCDResweep(QXbool b) noexcept
 	{
 		sceneFlag.disableCCDResweep = b;
 		mScene->setFlag(PxSceneFlag::eDISABLE_CCD_RESWEEP, b);
 	}
 
-	void PhysicHandler::SetFlagDisableContactCache(bool b)
+	void PhysicHandler::SetFlagDisableContactCache(QXbool b) noexcept
 	{
 		sceneFlag.disableContactCache = b;
 		mScene->setFlag(PxSceneFlag::eDISABLE_CONTACT_CACHE, b);
 	}
 
-	void PhysicHandler::SetFlagDisableContactReport(bool b)
+	void PhysicHandler::SetFlagDisableContactReport(QXbool b) noexcept
 	{
 		sceneFlag.disableContactReportResize = b;
 		mScene->setFlag(PxSceneFlag::eDISABLE_CONTACT_REPORT_BUFFER_RESIZE, b);
 	}
 
-	void PhysicHandler::SetFlagActiveActors(bool b)
+	void PhysicHandler::SetFlagActiveActors(QXbool b) noexcept
 	{
 		sceneFlag.activeActors = b;
 		mScene->setFlag(PxSceneFlag::eENABLE_ACTIVE_ACTORS, b);
 	}
 
-	void PhysicHandler::SetFlagAveragePoint(bool b)
+	void PhysicHandler::SetFlagAveragePoint(QXbool b) noexcept
 	{
 		sceneFlag.averagePoint = b;
 		mScene->setFlag(PxSceneFlag::eENABLE_AVERAGE_POINT, b);
 	}
 
-	void PhysicHandler::SetFlagCCD(bool b)
+	void PhysicHandler::SetFlagCCD(QXbool b) noexcept
 	{
 		sceneFlag.ccd = b;
 		mScene->setFlag(PxSceneFlag::eENABLE_CCD, b);
 	}
 
-	void PhysicHandler::SetFlagEnhancedDeterminism(bool b)
+	void PhysicHandler::SetFlagEnhancedDeterminism(QXbool b) noexcept
 	{
 		sceneFlag.enhancedDeterminism = b;
 		mScene->setFlag(PxSceneFlag::eENABLE_ENHANCED_DETERMINISM, b);
 	}
 
-	void PhysicHandler::SetFlagFrictionEveryIt(bool b)
+	void PhysicHandler::SetFlagFrictionEveryIt(QXbool b) noexcept
 	{
 		sceneFlag.frictionEveryIteration = b;
 		mScene->setFlag(PxSceneFlag::eENABLE_FRICTION_EVERY_ITERATION, b);
 	}
 
-	void PhysicHandler::SetFlagGPUDynamics(bool b)
+	void PhysicHandler::SetFlagGPUDynamics(QXbool b) noexcept
 	{
 		sceneFlag.gpuDynamics = b;
 		mScene->setFlag(PxSceneFlag::eENABLE_GPU_DYNAMICS, b);
 	}
 
-	void PhysicHandler::SetFlagPCM(bool b)
+	void PhysicHandler::SetFlagPCM(QXbool b) noexcept
 	{
 		sceneFlag.pcm = b;
 		mScene->setFlag(PxSceneFlag::eENABLE_PCM, b);
 	}
 
-	void PhysicHandler::SetFlagStabilization(bool b)
+	void PhysicHandler::SetFlagStabilization(QXbool b) noexcept
 	{
 		sceneFlag.stabilization = b;
 		mScene->setFlag(PxSceneFlag::eENABLE_STABILIZATION, b);
 	}
 
-	void PhysicHandler::SetFlagExcludeKineActiverActors(bool b)
+	void PhysicHandler::SetFlagExcludeKineActiverActors(QXbool b) noexcept
 	{
 		sceneFlag.excludeKineActiveActors = b;
 		mScene->setFlag(PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS, b);
 	}
 
-	void PhysicHandler::SetFlagMutable(bool b)
+	void PhysicHandler::SetFlagMutable(QXbool b) noexcept
 	{
 		sceneFlag.mutableFlags = b;
 		mScene->setFlag(PxSceneFlag::eMUTABLE_FLAGS, b);
 	}
 
-	void PhysicHandler::SetFlagRequireRWLock(bool b)
+	void PhysicHandler::SetFlagRequireRWLock(QXbool b) noexcept
 	{
 		sceneFlag.requireRWLock = b;
 		mScene->setFlag(PxSceneFlag::eREQUIRE_RW_LOCK, b);

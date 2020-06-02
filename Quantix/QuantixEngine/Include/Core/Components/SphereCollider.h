@@ -59,14 +59,14 @@ namespace Quantix::Core::Components
 		 * 
 		 * @return QXfloat Value of Radius
 		 */
-		QXfloat GetRadius();
+		QXfloat GetRadius() noexcept;
 
 		/**
 		 * @brief Set the Radius object
 		 * 
 		 * @param f New Value of the Radius
 		 */
-		void SetRadius(QXfloat f);
+		void SetRadius(QXfloat f) noexcept;
 
 #pragma endregion
 

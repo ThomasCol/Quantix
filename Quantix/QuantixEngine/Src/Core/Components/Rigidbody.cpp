@@ -1,8 +1,8 @@
 #include "Core/Components/Rigidbody.h"
 #include "Core/DataStructure/GameComponent.h"
 
-#include "Physic/PhysicHandler.h"
-#include "Physic/PhysicDynamic.h"
+#include "Core/Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicDynamic.h"
 #include <functional>
 
 #include "Core/MathHeader.h"
@@ -119,18 +119,18 @@ namespace Quantix::Core::Components
 			vector[i]->UpdateActorPhysic();
 	}
 
-	void Rigidbody::SetKinematicTarget(Math::QXvec3 vec)
+	void Rigidbody::SetKinematicTarget(Math::QXvec3 vec) noexcept
 	{
 		actorPhysic->GetRigid()->setKinematicTarget(physx::PxTransform(physx::PxVec3(vec.x, vec.y, vec.z)));
 	}
 
 
-	QXfloat Rigidbody::GetMass()
+	QXfloat Rigidbody::GetMass() noexcept
 	{
 		return mass;
 	}
 
-	void Rigidbody::SetMass(QXfloat m)
+	void Rigidbody::SetMass(QXfloat m) noexcept
 	{
 		if (m < 0.f)
 			m = 0.00001f;
@@ -138,48 +138,48 @@ namespace Quantix::Core::Components
 		physx::PxRigidBodyExt::updateMassAndInertia(*actorPhysic->GetRigid(), m);
 	}
 
-	Math::QXvec3 Rigidbody::GetLinearVelocity()
+	Math::QXvec3 Rigidbody::GetLinearVelocity() noexcept
 	{
 		physx::PxVec3 v = actorPhysic->GetRigid()->getLinearVelocity();
 		return 	Math::QXvec3(v.x, v.y, v.z);
 	}
 
-	void Rigidbody::SetLinearVelocity(Math::QXvec3 v)
+	void Rigidbody::SetLinearVelocity(Math::QXvec3 v) noexcept
 	{
 		actorPhysic->GetRigid()->setLinearVelocity(physx::PxVec3(v.x, v.y, v.z));
 	}
 
-	Math::QXvec3 Rigidbody::GetAngularVelocity()
+	Math::QXvec3 Rigidbody::GetAngularVelocity() noexcept
 	{
 		physx::PxVec3 v = actorPhysic->GetRigid()->getAngularVelocity();
 		return 	Math::QXvec3(v.x, v.y, v.z);
 	}
 
-	void Rigidbody::SetAngularVelocity(Math::QXvec3 v)
+	void Rigidbody::SetAngularVelocity(Math::QXvec3 v) noexcept
 	{
 		actorPhysic->GetRigid()->setAngularVelocity(physx::PxVec3(v.x, v.y, v.z));
 	}
 
-	Math::QXvec3 Rigidbody::GetTransformPosition()
+	Math::QXvec3 Rigidbody::GetTransformPosition() noexcept
 	{
 		physx::PxVec3 v = actorPhysic->GetRigid()->getGlobalPose().p;
 		return 	Math::QXvec3(v.x, v.y, v.z);
 	}
 
-	void Rigidbody::SetTransformPosition(Math::QXvec3 v)
+	void Rigidbody::SetTransformPosition(Math::QXvec3 v) noexcept
 	{
 		actorPhysic->GetRigid()->setGlobalPose(physx::PxTransform(
 												physx::PxVec3(v.x, v.y, v.z),
 												actorPhysic->GetRigid()->getGlobalPose().q));
 	}
 
-	Math::QXquaternion Rigidbody::GetTransformRotation()
+	Math::QXquaternion Rigidbody::GetTransformRotation() noexcept
 	{
 		physx::PxQuat q = actorPhysic->GetRigid()->getGlobalPose().q;
 		return 	Math::QXquaternion(q.w, q.x, q.y, q.z);
 	}
 
-	void Rigidbody::SetTransformRotation(Math::QXquaternion q)
+	void Rigidbody::SetTransformRotation(Math::QXquaternion q) noexcept
 	{
 		actorPhysic->GetRigid()->setGlobalPose(physx::PxTransform(
 												actorPhysic->GetRigid()->getGlobalPose().p, 
@@ -187,42 +187,42 @@ namespace Quantix::Core::Components
 												));
 	}
 
-	void Rigidbody::SetRigidLockFlagLinearX(bool b)
+	void Rigidbody::SetRigidLockFlagLinearX(bool b) noexcept
 	{
 		rigidLockFlag.lockLinearX = b;
 
 		actorPhysic->GetRigid()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_X, b);
 	}
 
-	void Rigidbody::SetRigidLockFlagLinearY(bool b)
+	void Rigidbody::SetRigidLockFlagLinearY(bool b) noexcept
 	{
 		rigidLockFlag.lockLinearY = b;
 
 		actorPhysic->GetRigid()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, b);
 	}
 
-	void Rigidbody::SetRigidLockFlagLinearZ(bool b)
+	void Rigidbody::SetRigidLockFlagLinearZ(bool b) noexcept
 	{
 		rigidLockFlag.lockLinearZ = b;
 
 		actorPhysic->GetRigid()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, b);
 	}
 
-	void Rigidbody::SetRigidLockFlagAngularX(bool b)
+	void Rigidbody::SetRigidLockFlagAngularX(bool b) noexcept
 	{
 		rigidLockFlag.lockAngularX = b;
 
 		actorPhysic->GetRigid()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, b);
 	}
 
-	void Rigidbody::SetRigidLockFlagAngularY(bool b)
+	void Rigidbody::SetRigidLockFlagAngularY(bool b) noexcept
 	{
 		rigidLockFlag.lockAngularY = b;
 
 		actorPhysic->GetRigid()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, b);
 	}
 
-	void Rigidbody::SetRigidLockFlagAngularZ(bool b)
+	void Rigidbody::SetRigidLockFlagAngularZ(bool b) noexcept
 	{
 		rigidLockFlag.lockAngularZ = b;
 

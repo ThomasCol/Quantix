@@ -1,7 +1,7 @@
 #include "Core/Components/PlaneCollider.h"
 #include "Core/DataStructure/GameComponent.h"
 #include "Core/Components/Rigidbody.h"
-#include "Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicHandler.h"
 
 RTTR_PLUGIN_REGISTRATION
 {

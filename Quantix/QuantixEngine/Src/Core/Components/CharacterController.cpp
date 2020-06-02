@@ -1,6 +1,6 @@
 #include "Core/Components/CharacterController.h"
-#include "Physic/PhysicSetting.h"
-#include "Physic/Raycast.h"
+#include "Core/Physic/PhysicSetting.h"
+#include "Core/Physic/Raycast.h"
 
 #include "Core/Components/Camera.h"
 
@@ -10,13 +10,13 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<>()
 	.constructor<const Quantix::Core::Components::CharacterController&>()
 	.constructor<Quantix::Core::Components::CharacterController&&>()
-	.enumeration<Quantix::Physic::NonWalkableMode>("NonWalkableMode")
-					 (rttr::value("PreventClimbing", Quantix::Physic::NonWalkableMode::PREVENTCLIMBING),
-					 rttr::value("PreventClimbingAndForceSlide", Quantix::Physic::NonWalkableMode::PREVENTCLIMBINGANDFORCESLIDING))
-	.enumeration<Quantix::Physic::ClimbingMode>("ClimbingMode")
-					 (rttr::value("Constrained", Quantix::Physic::ClimbingMode::CONSTRAINED),
-					 rttr::value("Easy", Quantix::Physic::ClimbingMode::EASY),
-					 rttr::value("Last", Quantix::Physic::ClimbingMode::LAST))
+	.enumeration<Quantix::Core::Physic::NonWalkableMode>("NonWalkableMode")
+					 (rttr::value("PreventClimbing", Quantix::Core::Physic::NonWalkableMode::PREVENTCLIMBING),
+					 rttr::value("PreventClimbingAndForceSlide", Quantix::Core::Physic::NonWalkableMode::PREVENTCLIMBINGANDFORCESLIDING))
+	.enumeration<Quantix::Core::Physic::ClimbingMode>("ClimbingMode")
+					 (rttr::value("Constrained", Quantix::Core::Physic::ClimbingMode::CONSTRAINED),
+					 rttr::value("Easy", Quantix::Core::Physic::ClimbingMode::EASY),
+					 rttr::value("Last", Quantix::Core::Physic::ClimbingMode::LAST))
 	.property("Radius", &Quantix::Core::Components::CharacterController::GetRadius, &Quantix::Core::Components::CharacterController::SetRadius)
 	.property("Height", &Quantix::Core::Components::CharacterController::GetHeight, &Quantix::Core::Components::CharacterController::SetHeight)
 	.property("UpDirection", &Quantix::Core::Components::CharacterController::GetUpDirection, &Quantix::Core::Components::CharacterController::SetUpDirection)
@@ -31,8 +31,8 @@ namespace Quantix::Core::Components
 	void CharacterController::Init(Core::DataStructure::GameComponent* object) noexcept
 	{
 		_object = object;
-		_isDestroyed = false;
-		_isEnable = true;
+		_isDestroyed = QX_FALSE;
+		_isEnable = QX_TRUE;
 
 		controller = Physic::PhysicHandler::GetInstance()->CreateController(object);
 		_velocity = Math::QXvec3(0, 0, 0);
@@ -46,100 +46,87 @@ namespace Quantix::Core::Components
 	void CharacterController::Destroy() noexcept
 	{
 		if (_object->GetComponent<Core::Components::Camera>())
-		{
 			_object->GetComponent<Core::Components::Camera>()->_controller = nullptr;
-		}
 
 		Physic::PhysicHandler::GetInstance()->CleanController(controller);
 	}
 
-	void CharacterController::Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime)
+	void CharacterController::Move(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime) noexcept
 	{
 		physx::PxControllerFilters filters;
 		
 		physx::PxControllerCollisionFlags tmp = controller->move(physx::PxVec3(vec.x, vec.y, vec.z), (physx::PxF32)minDist, deltaTime, filters);
 	}
 
-	void CharacterController::Jump(Math::QXvec3 vec, QXint minDist, QXfloat deltaTime)
-	{
-		//physx::PxControllerFilters filters;
-		//controller->move(physx::PxVec3(vec.x, vec.y, vec.z), minDist, deltaTime, filters);
-		controller->getActor()->addForce(physx::PxVec3(vec.x, vec.y, vec.z));
-
-		//controller->getActor()->setLinearVelocity(controller->getActor()->getLinearVelocity() + physx::PxVec3(vec.x, vec.y, vec.z));
-	}
-
-	QXbool CharacterController::CheckIsFalling()
+	QXbool CharacterController::CheckIsFalling() noexcept
 	{
 		Physic::Raycast ray(GetFootPosition(), -GetUpDirection(), 0.01f);
 
 		if (ray.actorClosestBlock)
-		{
-			return false;
-		}
-		return true;
+			return QX_FALSE;
+		return QX_TRUE;
 	}
 
-	QXfloat CharacterController::GetRadius()
+	QXfloat CharacterController::GetRadius() noexcept
 	{
 		return controller->getRadius();
 	}
 
-	void CharacterController::SetRadius(QXfloat f)
+	void CharacterController::SetRadius(QXfloat f) noexcept
 	{
 		controller->setRadius(f);
 	}
 
-	QXfloat CharacterController::GetHeight()
+	QXfloat CharacterController::GetHeight() noexcept
 	{
 		return controller->getHeight();
 	}
 
-	void CharacterController::SetHeight(QXfloat f)
+	void CharacterController::SetHeight(QXfloat f) noexcept
 	{
 		controller->setHeight(f);
 		
 	}
 
-	void CharacterController::Resize(QXfloat f)
+	void CharacterController::Resize(QXfloat f) noexcept
 	{
 		controller->resize(f);
 	}
 
-	Math::QXvec3 CharacterController::GetUpDirection()
+	Math::QXvec3 CharacterController::GetUpDirection() noexcept
 	{
 		physx::PxVec3 v = controller->getUpDirection();
 		return Math::QXvec3(v.x, v.y, v.z);
 	}
 
-	void CharacterController::SetUpDirection(Math::QXvec3 v)
+	void CharacterController::SetUpDirection(Math::QXvec3 v) noexcept
 	{
 		controller->setUpDirection(physx::PxVec3(v.x, v.y, v.z));
 	}
 
-	Math::QXvec3 CharacterController::GetPosition()
+	Math::QXvec3 CharacterController::GetPosition() noexcept
 	{
 		physx::PxExtendedVec3 v = controller->getPosition();
 		return Math::QXvec3((QXfloat)v.x, (QXfloat)v.y, (QXfloat)v.z);
 	}
 
-	void CharacterController::SetPosition(Math::QXvec3 v)
+	void CharacterController::SetPosition(Math::QXvec3 v) noexcept
 	{
 		controller->setPosition(physx::PxExtendedVec3(v.x, v.y, v.z));
 	}
 
-	Math::QXvec3 CharacterController::GetFootPosition()
+	Math::QXvec3 CharacterController::GetFootPosition() noexcept
 	{
 		physx::PxExtendedVec3 v = controller->getFootPosition();
 		return Math::QXvec3((QXfloat)v.x, (QXfloat)v.y, (QXfloat)v.z);
 	}
 
-	void CharacterController::SetFootPosition(Math::QXvec3 v)
+	void CharacterController::SetFootPosition(Math::QXvec3 v) noexcept
 	{
 		controller->setFootPosition(physx::PxExtendedVec3(v.x, v.y, v.z));
 	}
 
-	void CharacterController::SetNonWalkableMode(Physic::NonWalkableMode mode)
+	void CharacterController::SetNonWalkableMode(Physic::NonWalkableMode mode) noexcept
 	{
 		if (mode == Physic::NonWalkableMode::PREVENTCLIMBING)
 			controller->setNonWalkableMode(physx::PxControllerNonWalkableMode::ePREVENT_CLIMBING);
@@ -147,7 +134,7 @@ namespace Quantix::Core::Components
 			controller->setNonWalkableMode(physx::PxControllerNonWalkableMode::ePREVENT_CLIMBING_AND_FORCE_SLIDING);
 	}
 
-	Physic::NonWalkableMode CharacterController::GetNonWalkableMode()
+	Physic::NonWalkableMode CharacterController::GetNonWalkableMode() noexcept
 	{
 		physx::PxControllerNonWalkableMode::Enum tmp = controller->getNonWalkableMode();
 		if (tmp == physx::PxControllerNonWalkableMode::ePREVENT_CLIMBING)
@@ -156,13 +143,13 @@ namespace Quantix::Core::Components
 			return Physic::NonWalkableMode::PREVENTCLIMBINGANDFORCESLIDING;
 	}
 
-	Math::QXvec3 CharacterController::GetLinearVelocity()
+	Math::QXvec3 CharacterController::GetLinearVelocity() noexcept
 	{
 		physx::PxVec3 v = controller->getActor()->getLinearVelocity();
 		return Math::QXvec3(v.x, v.y, v.z);
 	}
 
-	void CharacterController::SetClimbingMode(Physic::ClimbingMode mode)
+	void CharacterController::SetClimbingMode(Physic::ClimbingMode mode) noexcept
 	{
 		if (mode == Physic::ClimbingMode::CONSTRAINED)
 			controller->setClimbingMode(physx::PxCapsuleClimbingMode::eCONSTRAINED);
@@ -172,7 +159,7 @@ namespace Quantix::Core::Components
 			controller->setClimbingMode(physx::PxCapsuleClimbingMode::eLAST);
 	}
 
-	Physic::ClimbingMode CharacterController::GetClimbingMode()
+	Physic::ClimbingMode CharacterController::GetClimbingMode() noexcept
 	{
 		physx::PxCapsuleClimbingMode::Enum tmp = controller->getClimbingMode();
 		if (tmp == physx::PxCapsuleClimbingMode::eCONSTRAINED)

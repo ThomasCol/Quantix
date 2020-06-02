@@ -6,7 +6,7 @@
 #include "Core/DataStructure/GameObject3D.h"
 #include "Type.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	struct QUANTIX_API Raycast
 	{
@@ -26,7 +26,7 @@ namespace Quantix::Physic
 		 * @param unitDir Direction of the raycast
 		 * @param distMax Distance Max of the raycast
 		 */
-		Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax);
+		Raycast(const Math::QXvec3& origin, const Math::QXvec3& unitDir, QXfloat distMax) noexcept;
 
 		/**
 		 * @brief Construct a new Raycast object

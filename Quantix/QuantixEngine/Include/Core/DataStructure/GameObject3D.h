@@ -2,7 +2,7 @@
 #define _GAMEOBJECT3D_H_
 
 #include "Core/DataStructure/GameComponent.h"
-#include "Physic/Transform3D.h"
+#include "Core/Physic/Transform3D.h"
 
 namespace Quantix::Core::DataStructure
 {
@@ -14,7 +14,7 @@ namespace Quantix::Core::DataStructure
 	{
 	protected:
 		#pragma region Attributes
-		Quantix::Physic::Transform3D*		_transform;
+		Quantix::Core::Physic::Transform3D*		_transform;
 		#pragma endregion Attributes
 	public:
 		QXbool toDestroy = false;
@@ -107,6 +107,12 @@ namespace Quantix::Core::DataStructure
 		void									Start() override;
 
 		/**
+		 * @brief Stop of GameObject3D
+		 * 
+		 */
+		void									Stop() override;
+		
+		/**
 		 * @brief Awake of GameObject3D
 		 *
 		 */
@@ -198,7 +204,7 @@ namespace Quantix::Core::DataStructure
 		* @brief Get the Local Rotation object
 		*
 		*/
-		const Math::QXquaternion& GetLocalRotation()  noexcept {
+		const Math::QXquaternion&				GetLocalRotation()  noexcept {
 			return _transform->GetRotation();
 		};
 
@@ -206,7 +212,7 @@ namespace Quantix::Core::DataStructure
 		* @brief Get the Local Scale object
 		*
 		*/
-		const Math::QXvec3& GetLocalScale()  noexcept { return _transform->GetScale(); };
+		const Math::QXvec3&						GetLocalScale()  noexcept { return _transform->GetScale(); };
 
 		/**
 		 * @brief Set the Transform object
@@ -222,13 +228,13 @@ namespace Quantix::Core::DataStructure
 		 *
 		 * @param transform
 		 */
-		inline void								SetTransform(Quantix::Physic::Transform3D* transform)  noexcept { _transform = transform; };
+		inline void								SetTransform(Quantix::Core::Physic::Transform3D* transform)  noexcept { _transform = transform; };
 
 		/**
 		 * @brief Get the Transform object
 		 *
 		 */
-		Quantix::Physic::Transform3D* GetTransform() const  noexcept { return _transform; };
+		Quantix::Core::Physic::Transform3D*		GetTransform() const  noexcept { return _transform; };
 #pragma endregion Accessors
 		/**
 		 * @brief operator by copy

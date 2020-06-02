@@ -58,14 +58,14 @@ public:
 	 * @param matrix
 	 * @param matrixTmp
 	 */
-	void MoveObject(Quantix::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp) noexcept;
+	void MoveObject(Quantix::Core::Physic::Transform3D* transform, Math::QXmat4& matrix, Math::QXmat4& matrixTmp) noexcept;
 
 	/**
 	 * @brief Show Guizmo Object
 	 *
 	 * @param transform
 	 */
-	void ShowGuizmoObject(Quantix::Physic::Transform3D* transform) noexcept;
+	void ShowGuizmoObject(Quantix::Core::Physic::Transform3D* transform) noexcept;
 
 	/**
 	 * @brief Draw Guizmo

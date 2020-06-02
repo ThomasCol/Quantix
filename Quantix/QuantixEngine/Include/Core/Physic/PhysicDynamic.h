@@ -1,10 +1,10 @@
 #ifndef __PHYSICDYNAMIC_H__
 #define __PHYSICDYNAMIC_H__
 
-#include "Physic/IPhysicType.h"
-#include "Physic/Transform3D.h"
+#include "Core/Physic/IPhysicType.h"
+#include "Core/Physic/Transform3D.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	using namespace physx;
 
@@ -77,19 +77,19 @@ namespace Quantix::Physic
 		 * 
 		 * @return PxRigidDynamic* Pointer on the rigid
 		 */
-		PxRigidDynamic* GetRigid();
+		PxRigidDynamic* GetRigid() noexcept;
 
 		/**
 		 * @brief Set the Rigid object
 		 * 
 		 * @param rigid new Value of rigid
 		 */
-		void SetRigid(PxRigidDynamic* rigid);
+		void SetRigid(PxRigidDynamic* rigid) noexcept;
 		
 #pragma endregion
 #pragma endregion
 
-		CLASS_REGISTRATION(Quantix::Physic::IPhysicType)
+		CLASS_REGISTRATION(Quantix::Core::Physic::IPhysicType)
 	};
 }
 

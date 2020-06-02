@@ -57,28 +57,28 @@ namespace Quantix::Core::Components
 		 * 
 		 * @return QXfloat Radius of the Capsule
 		 */
-		QXfloat GetRadius();
+		QXfloat GetRadius() noexcept;
 
 		/**
 		 * @brief Set the Radius object
 		 * 
 		 * @param rad new radius of the capsule
 		 */
-		void SetRadius(QXfloat rad);
+		void SetRadius(QXfloat rad) noexcept;
 
 		/**
 		 * @brief Get the Half Height object
 		 * 
 		 * @return QXfloat Height of the Capsule
 		 */
-		QXfloat GetHalfHeight();
+		QXfloat GetHalfHeight() noexcept;
 
 		/**
 		 * @brief Set the Half Height object
 		 * 
 		 * @param hei new height of the capsule
 		 */
-		void SetHalfHeight(QXfloat hei);
+		void SetHalfHeight(QXfloat hei) noexcept;
 
 #pragma endregion
 

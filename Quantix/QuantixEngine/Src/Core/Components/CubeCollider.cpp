@@ -1,7 +1,7 @@
 #include "Core/Components/CubeCollider.h"
 #include "Core/DataStructure/GameComponent.h"
 #include "Core/Components/Rigidbody.h"
-#include "Physic/PhysicHandler.h"
+#include "Core/Physic/PhysicHandler.h"
 
 RTTR_PLUGIN_REGISTRATION
 {
@@ -34,7 +34,7 @@ namespace Quantix::Core::Components
 		ICollider(other)
 	{}
 
-	Math::QXvec3 CubeCollider::GetHalfExtents()
+	Math::QXvec3 CubeCollider::GetHalfExtents() noexcept
 	{
 		physx::PxBoxGeometry box;
 		shape->getBoxGeometry(box);
@@ -42,7 +42,7 @@ namespace Quantix::Core::Components
 		return Math::QXvec3(vec.x, vec.y, vec.z);
 	}
 
-	void CubeCollider::SetHalfExtents(Math::QXvec3 vec)
+	void CubeCollider::SetHalfExtents(Math::QXvec3 vec) noexcept
 	{
 		scale = vec * 2;
 		shape->setGeometry(physx::PxBoxGeometry(vec.x, vec.y, vec.z));

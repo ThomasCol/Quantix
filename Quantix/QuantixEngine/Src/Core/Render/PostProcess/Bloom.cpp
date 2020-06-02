@@ -17,7 +17,7 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::Render::PostProcess
 {
-	Bloom::Bloom(Resources::ShaderProgram* blurProgram, Resources::ShaderProgram* bloomProgram, Resources::Model* model, Platform::AppInfo& info) :
+	Bloom::Bloom(Resources::ShaderProgram* blurProgram, Resources::ShaderProgram* bloomProgram, Resources::Model* model, Platform::AppInfo& info) noexcept :
 		PostProcessEffect(blurProgram, model),
 		_bloomProgram {bloomProgram}
 	{

@@ -10,10 +10,10 @@ RTTR_PLUGIN_REGISTRATION
 	.constructor<Quantix::Core::DataStructure::GameComponent*>()
 	.constructor<const ICollider&>()
 	.constructor<ICollider&&>()
-	.enumeration<Quantix::Physic::FilterGroup::Enum>("FilterGroup")
-		(rttr::value("Pawn", Quantix::Physic::FilterGroup::Enum::PAWN),
-		rttr::value("Crab", Quantix::Physic::FilterGroup::Enum::eCRAB),
-		rttr::value("MineHead", Quantix::Physic::FilterGroup::Enum::eMINE_HEAD))
+	.enumeration<Quantix::Core::Physic::FilterGroup::Enum>("FilterGroup")
+		(rttr::value("Pawn", Quantix::Core::Physic::FilterGroup::Enum::PAWN),
+		rttr::value("Crab", Quantix::Core::Physic::FilterGroup::Enum::eCRAB),
+		rttr::value("MineHead", Quantix::Core::Physic::FilterGroup::Enum::eMINE_HEAD))
 	.property("ToRender", &ICollider::toRender)
 	.property("Local Position", &ICollider::GetPosition, &ICollider::SetPosition)
 	.property("Local Rotation", &ICollider::GetRotation, &ICollider::SetRotation)
@@ -93,7 +93,7 @@ namespace Quantix::Core::Components
 		return new ICollider(*this);
 	}
 
-	void ICollider::UpdateActorPhysic()
+	void ICollider::UpdateActorPhysic() noexcept
 	{
 		if (_object->GetComponent<Rigidbody>())
 			actorPhysic = Physic::PhysicHandler::GetInstance()->GetObject(_object, true);
@@ -106,32 +106,32 @@ namespace Quantix::Core::Components
 		shape->getActor()->detachShape(*shape);
 	}
 
-	Math::QXvec3 ICollider::GetPosition()
+	Math::QXvec3 ICollider::GetPosition() noexcept
 	{
 		physx::PxVec3 tmp = shape->getLocalPose().p;
 		return Math::QXvec3(tmp.x, tmp.y, tmp.z);
 	}
 
-	void ICollider::SetPosition(Math::QXvec3 v)
+	void ICollider::SetPosition(Math::QXvec3 v) noexcept
 	{
 		physx::PxVec3 tmp = physx::PxVec3(v.x, v.y, v.z);
 		shape->setLocalPose(physx::PxTransform(tmp, shape->getLocalPose().q));
 	}
 
-	Math::QXquaternion ICollider::GetRotation()
+	Math::QXquaternion ICollider::GetRotation() noexcept
 	{
 		physx::PxQuat tmp = shape->getLocalPose().q;
 
 		return Math::QXquaternion(tmp.w, tmp.x, tmp.y, tmp.z);
 	}
 
-	void ICollider::SetRotation(Math::QXquaternion q)
+	void ICollider::SetRotation(Math::QXquaternion q) noexcept
 	{
 		physx::PxQuat tmp = physx::PxQuat(q.v.x, q.v.y, q.v.z, q.w);
 		shape->setLocalPose(physx::PxTransform(shape->getLocalPose().p, tmp));
 	}
 
-	void ICollider::SetMyFilterGroup(Physic::FilterGroup::Enum newGroup)
+	void ICollider::SetMyFilterGroup(Physic::FilterGroup::Enum newGroup) noexcept
 	{
 		physx::PxFilterData filterData;
 		filterData.word0 = newGroup; // word0 = own ID
@@ -140,7 +140,7 @@ namespace Quantix::Core::Components
 		shape->setSimulationFilterData(filterData);
 	}
 
-	Physic::FilterGroup::Enum ICollider::GetMyFilterGroup()
+	Physic::FilterGroup::Enum ICollider::GetMyFilterGroup() noexcept
 	{
 		return (Physic::FilterGroup::Enum)shape->getSimulationFilterData().word0;
 	}

@@ -32,7 +32,7 @@ public:
 	 * @param gameComponents Transform3D
 	 * @param scene Scene*
 	 */
-	void				Update(QXstring name, ImGuiWindowFlags flags, Quantix::Physic::Transform3D* gameComponents, Quantix::Core::Platform::Application* app) noexcept;
+	void				Update(QXstring name, ImGuiWindowFlags flags, Quantix::Core::Physic::Transform3D* gameComponents, Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Draw Object
@@ -41,7 +41,7 @@ public:
 	 * @param node std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				DrawObject(std::list<Quantix::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app) noexcept;
+	void				DrawObject(std::list<Quantix::Core::Physic::Transform3D*>& nodeGlobal, std::list<Quantix::Core::Physic::Transform3D*>& node, Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Draw Game Component
@@ -57,7 +57,7 @@ public:
 	 * @param node
 	 * @param app
 	 */
-	void				DrawObject2D(std::list<Quantix::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Physic::Transform2D*>& node, Quantix::Core::Platform::Application* app) noexcept;
+	void				DrawObject2D(std::list<Quantix::Core::Physic::Transform2D*>& nodeGlobal, std::list<Quantix::Core::Physic::Transform2D*>& node, Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Desactive All nodes selected except the one just selected
@@ -74,7 +74,7 @@ public:
 	 * @param nodes std::list<Quantix::Physic::Transform3D*>&
 	 * @param scene Scene*
 	 */
-	void				CreateChild(QXbool& select, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app) noexcept;
+	void				CreateChild(QXbool& select, std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Remove Object 3D
@@ -83,7 +83,7 @@ public:
 	 * @param nodes
 	 * @param app
 	 */
-	void				RemoveObject(QXbool& select, std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app) noexcept;
+	void				RemoveObject(QXbool& select, std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Remove Object 2D
@@ -92,7 +92,7 @@ public:
 	 * @param nodes
 	 * @param app
 	 */
-	void				RemoveObject2D(QXbool& select, std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app) noexcept;
+	void				RemoveObject2D(QXbool& select, std::list<Quantix::Core::Physic::Transform2D*>& nodes, Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Remove Game Component
@@ -120,7 +120,7 @@ public:
 	 * @param app
 	 * @return QXbool
 	 */
-	QXbool				PopUpMenuItem2D(std::list<Quantix::Physic::Transform2D*>& nodes, Quantix::Physic::Transform2D* node, Quantix::Core::Platform::Application* app) noexcept;
+	QXbool				PopUpMenuItem2D(std::list<Quantix::Core::Physic::Transform2D*>& nodes, Quantix::Core::Physic::Transform2D* node, Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Popup Item Menu 3D
@@ -129,7 +129,7 @@ public:
 	 * @param node Transform3D*
 	 * @param scene Scene*
 	 */
-	QXbool				PopUpMenuItem(std::list<Quantix::Physic::Transform3D*>& nodes, Quantix::Physic::Transform3D* node, Quantix::Core::Platform::Application* app) noexcept;
+	QXbool				PopUpMenuItem(std::list<Quantix::Core::Physic::Transform3D*>& nodes, Quantix::Core::Physic::Transform3D* node, Quantix::Core::Platform::Application* app) noexcept;
 
 	/**
 	 * @brief Popup Item Menu of Game Component

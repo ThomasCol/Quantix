@@ -9,7 +9,7 @@
 
 #include "rttrEnabled.h"
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	class PhysicStatic;
 	class PhysicDynamic;
@@ -81,14 +81,14 @@ namespace Quantix::Physic
 		 * 
 		 * @return ETypePhysic& Value of type
 		 */
-		ETypePhysic&		GetType();
+		ETypePhysic&		GetType() noexcept;
 
 		/**
 		 * @brief Set the Type object
 		 * 
 		 * @param nt new value of type
 		 */
-		void		SetType(ETypePhysic& nt) { type = nt; };
+		void		SetType(ETypePhysic& nt) noexcept { type = nt; };
 		
 		/**
 		 * @brief Get the IPhysicType object
@@ -97,7 +97,7 @@ namespace Quantix::Physic
 		 * @return T* Object IPhysictype
 		 */
 		template<class T>
-		T* GetObject()
+		T* GetObject() noexcept
 		{
 			if (type == ETypePhysic::STATIC)
 				return (dynamic_cast<PhysicStatic*>(this));
@@ -109,8 +109,8 @@ namespace Quantix::Physic
 		 * @brief Get the Object Dynamic object
 		 * 
 		 * @return PhysicDynamic* Pointer on PhysicDynamic
-		 */
-		PhysicDynamic* GetObjectDynamic()
+		 */ 
+		PhysicDynamic* GetObjectDynamic() noexcept
 		{
 			return (PhysicDynamic*)this;
 		}
@@ -120,7 +120,7 @@ namespace Quantix::Physic
 		 * 
 		 * @return PhysicStatic* Pointer on PhysicStatic
 		 */
-		PhysicStatic* GetObjectStatic()
+		PhysicStatic* GetObjectStatic() noexcept
 		{
 			return (PhysicStatic*)this;
 		}

@@ -214,16 +214,22 @@ namespace Quantix::Core::DataStructure
 		}
 
 		/**
-		 * @brief Virtual method for the the GameObject
+		 * @brief Virtual method Awake for the the GameObject
 		 * 
 		 */
 		virtual void	Awake() {};
 
 		/**
-		 * @brief Virtual method for the the GameObject
+		 * @brief Virtual method Start for the the GameObject
 		 * 
 		 */
 		virtual void	Start() {};
+
+		/**
+		 * @brief Virtual method Stop for the the GameObject
+		 * 
+		 */
+		virtual void	Stop() {};
 
 		/**
 		 * @brief Update Method

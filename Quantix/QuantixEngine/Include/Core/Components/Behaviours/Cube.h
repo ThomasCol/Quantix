@@ -8,7 +8,7 @@
 #define ATTRACTFORCE 1000.f
 #define REJECTFORCE 1000.f
 
-namespace Quantix::Gameplay
+namespace Quantix::Core::Components::Behaviours
 {
 	enum class QUANTIX_API ECubePhysicState
 	{
@@ -41,8 +41,8 @@ namespace Quantix::Gameplay
 
 			#pragma region Methods
 
-			void						Attract(QXdouble deltaTime);
-			void						Reject(QXdouble deltaTime);
+			void						Attract(QXdouble deltaTime) noexcept;
+			void						Reject(QXdouble deltaTime) noexcept;
 
 			#pragma endregion
 		
@@ -61,18 +61,18 @@ namespace Quantix::Gameplay
 			void						Start() override;
 			void						Update(QXdouble deltaTime) override;
 
-			void UpdateMaterial();
+			void UpdateMaterial() noexcept;
 
 			#pragma region Accessors
 
-			inline void					ChangeStatePhysic(ECubePhysicState newState) { _statePhysic = newState; };
-			inline const ECubePhysicState&	GetStatePhysic() { return _statePhysic; };
+			inline void					ChangeStatePhysic(ECubePhysicState newState) noexcept { _statePhysic = newState; };
+			inline const ECubePhysicState&	GetStatePhysic() noexcept { return _statePhysic; };
 
-			inline void					ChangeStateMagnet(ECubeMagnetState newState) { _stateMagnet = newState; };
-			inline const ECubeMagnetState& GetStateMagnet() { return _stateMagnet; };
+			inline void					ChangeStateMagnet(ECubeMagnetState newState) noexcept { _stateMagnet = newState; };
+			inline const ECubeMagnetState& GetStateMagnet() noexcept { return _stateMagnet; };
 			
-			inline const float&			GetRangeOfMagnet() { return _rangeOfMagnet; };
-			inline void					SetRangeOfMagnet(QXfloat range) { _rangeOfMagnet = range; };
+			inline const float&			GetRangeOfMagnet() noexcept { return _rangeOfMagnet; };
+			inline void					SetRangeOfMagnet(QXfloat range) noexcept { _rangeOfMagnet = range; };
 
 			#pragma endregion
 

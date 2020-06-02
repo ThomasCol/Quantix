@@ -9,7 +9,7 @@ namespace Quantix::Core::Platform
 {
 	struct QUANTIX_API AppInfo
 	{
-#pragma region Attributes
+		#pragma region Attributes
 
 		QXuint			width;
 		QXuint			height;
@@ -20,7 +20,7 @@ namespace Quantix::Core::Platform
 
 		Math::QXmat4	proj;
 
-#pragma endregion
+		#pragma endregion
 	};
 }
 

@@ -11,11 +11,11 @@ namespace Quantix::Core::DataStructure
 	class GameObject3D;
 }
 
-namespace Quantix::Physic
+namespace Quantix::Core::Physic
 {
 	/**
 	 * @brief Space enum
-	 * 
+	 *
 	 */
 	enum class QUANTIX_API Space
 	{
@@ -25,55 +25,55 @@ namespace Quantix::Physic
 
 	/**
 	 * @brief class Transform3D
-	 * 
+	 *
 	 */
 	class QUANTIX_API Transform3D
 	{
-		private:
+	private:
 
-		#pragma region Attributes
-			
-			Transform3D*								_parent;
-			Math::QXvec3								_globalPosition;
-			Math::QXquaternion							_globalRotation;
-			Math::QXvec3								_globalScale;
-			Math::QXvec3								_position;
-			Math::QXquaternion							_rotation;
-			Math::QXvec3								_scale;
-			Math::QXvec3								_forward;
-			Math::QXvec3								_up;
+#pragma region Attributes
 
-			Math::QXmat4								_trs;
-			Math::QXmat4								_trsLocal;
+		Transform3D* _parent;
+		Math::QXvec3								_globalPosition;
+		Math::QXquaternion							_globalRotation;
+		Math::QXvec3								_globalScale;
+		Math::QXvec3								_position;
+		Math::QXquaternion							_rotation;
+		Math::QXvec3								_scale;
+		Math::QXvec3								_forward;
+		Math::QXvec3								_up;
 
-			std::list<Transform3D*>						_childs;
+		Math::QXmat4								_trs;
+		Math::QXmat4								_trsLocal;
 
-			Quantix::Core::DataStructure::GameObject3D* _gameObject;
+		std::list<Transform3D*>						_childs;
 
-			Space										_space;
-			QXbool										_globalHasChanged;
+		Quantix::Core::DataStructure::GameObject3D* _gameObject;
 
-		#pragma endregion
-			
-		#pragma region Functions
-			
-			/**
-			 * @brief Update the TRS of the Transform
-			 */
-			void	UpdateTRS() noexcept;
+		Space										_space;
+		QXbool										_globalHasChanged;
 
-			/**
-			 * @brief Update the Local TRS of the Transform
-			 *
-			 * @param parentTransform
-			 */
-			void	UpdateTRSLocal(const Transform3D* parentTransform) noexcept;
+#pragma endregion
 
-			/**
-			 * @brief Update the Global Transform of the Transform
-			 *
-			 */
-			void	UpdateGlobalTransform() noexcept;
+#pragma region Functions
+
+		/**
+		 * @brief Update the TRS of the Transform
+		 */
+		void	UpdateTRS() noexcept;
+
+		/**
+		 * @brief Update the Local TRS of the Transform
+		 *
+		 * @param parentTransform
+		 */
+		void	UpdateTRSLocal(const Transform3D* parentTransform) noexcept;
+
+		/**
+		 * @brief Update the Global Transform of the Transform
+		 *
+		 */
+		void	UpdateGlobalTransform() noexcept;
 
 #pragma endregion
 
@@ -363,17 +363,9 @@ namespace Quantix::Physic
 		 */
 		QXbool										FindTransform(Transform3D* toFind) noexcept;
 
-		#pragma endregion
+#pragma endregion
 
-		#pragma region Operators
-
-		/**
-		* @brief Operator = for 3D transforms
-		*
-		* @param t Transform to copy
-		* @return Transform3D& Reference to the current transform
-		*/
-		Transform3D&	operator=(const Transform3D& t) noexcept;
+#pragma region Operators
 
 		/**
 		* @brief Operator = for 3D transforms
@@ -381,11 +373,19 @@ namespace Quantix::Physic
 		* @param t Transform to copy
 		* @return Transform3D& Reference to the current transform
 		*/
-		Transform3D&	operator=(Transform3D&& t) noexcept;
+		Transform3D& operator=(const Transform3D& t) noexcept;
 
-		#pragma endregion
+		/**
+		* @brief Operator = for 3D transforms
+		*
+		* @param t Transform to copy
+		* @return Transform3D& Reference to the current transform
+		*/
+		Transform3D& operator=(Transform3D&& t) noexcept;
 
-		#pragma endregion
+#pragma endregion
+
+#pragma endregion
 
 	};
 }

@@ -84,6 +84,14 @@ namespace Quantix::Core::Render::PostProcess
 
 		#pragma region Functions
 
+		/**
+		 * @brief Render effect on screen
+		 * 
+		 * @param info App info
+		 * @param sceneTexture Texture for the scene
+		 * @param otherTexture Unused
+		 * @param FBO FBO to use
+		 */
 		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
 
 		#pragma endregion
