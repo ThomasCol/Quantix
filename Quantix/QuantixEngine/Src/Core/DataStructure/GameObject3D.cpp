@@ -98,6 +98,10 @@ namespace Quantix::Core::DataStructure
 			lights.push_back(*light);
 		}
 
+		Components::SoundEmitter* emitter{ GetComponent<Components::SoundEmitter>() };
+		if (emitter)
+			emitter->UpdateAttributes();
+
 		if (isPlaying)
 		{
 			if (_toUpdate)

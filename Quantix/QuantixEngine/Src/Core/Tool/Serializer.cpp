@@ -56,7 +56,9 @@ namespace Quantix::Core::Tool
 		writer.String("name");
 		writer.String(scene->GetName().c_str());
 
-		SerializeRecursive(scene->GetRoot()->GetTransform(), 0, writer);
+		QXbool isDeformable = false;
+
+		SerializeRecursive(scene->GetRoot()->GetTransform(), 0, writer, isDeformable);
 
 		writer.EndObject();
 		writer.EndObject();
@@ -232,7 +234,8 @@ namespace Quantix::Core::Tool
 		writer.EndObject();
 	}
 
-	void Serializer::SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept
+	void Serializer::SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		QXbool isDeformable) noexcept
 	{
 		writer.String("GameObject" + std::to_string(index));
 		writer.StartObject();
@@ -242,8 +245,6 @@ namespace Quantix::Core::Tool
 		writer.Uint((QXuint)transform->GetObject()->GetLayer());
 		WriteTransform(transform, writer);
 
-		QXbool is_deformable = false;
-
 		writer.String("Components");
 		writer.StartArray();
 		for (QXsizei i = 0; i < transform->GetObject()->GetComponents().size(); ++i)
@@ -251,7 +252,7 @@ namespace Quantix::Core::Tool
 			writer.StartObject();
 			auto comp = transform->GetObject()->GetComponents()[i];
 			if (comp->get_type().get_name() == "DeformableMesh")
-				is_deformable = true;
+				isDeformable = true;
 			if (transform->GetObject()->GetComponents()[i] != nullptr)
 			{
 				rttr::type t = transform->GetObject()->GetComponents()[i]->get_type();
@@ -261,27 +262,21 @@ namespace Quantix::Core::Tool
 		}
 		writer.EndArray();
 
-		if (is_deformable)
-		{
-			writer.String("Childs");
-			writer.StartArray();
-			writer.EndArray();
-			writer.EndObject();
-			return;
-		}
-
 		writer.String("Childs");
 		writer.StartArray();
 		QXuint idx = 0;
 		for (auto it = transform->GetChilds().begin(); it != transform->GetChilds().end(); ++it)
 		{
 			writer.StartObject();
-			SerializeRecursive((*it), idx, writer);
+			SerializeRecursive((*it), idx, writer, isDeformable);
 			writer.EndObject();
+			if (isDeformable)
+				break;
 			idx++;
 		}
 		writer.EndArray();
 		writer.EndObject();
+		isDeformable = false;
 	}
 
 	void Serializer::WriteComponent(rttr::instance comp, rttr::type type, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept

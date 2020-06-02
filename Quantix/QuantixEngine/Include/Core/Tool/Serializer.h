@@ -83,7 +83,7 @@ namespace Quantix::Core::Tool
 		 * @param index Index of the object
 		 * @param writer Writer for write in file
 		 */
-		void SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept;
+		void SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer, QXbool isDeformable) noexcept;
 
 		/**
 		 * @brief Write a component in file
