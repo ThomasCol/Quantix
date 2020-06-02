@@ -112,13 +112,13 @@ namespace Quantix::Core::Components::Behaviours
 		//GAMEOBJECT
 		Core::DataStructure::GameObject3D* cube = _scene->AddGameObject("Generated Cube " + std::to_string(_cubes.size() + 1));
 		cube->SetTransformValue(_gameobject->GetGlobalPosition(), _gameobject->GetGlobalRotation(), _gameobject->GetGlobalScale());
-
 		cube->SetLayer(Core::DataStructure::Layer::SELECTABLE);
 
 		//MESH
 		Core::Components::Mesh* mesh = cube->AddComponent<Core::Components::Mesh>();
 		mesh->Init(cube);
 		_manager->CreateMesh(mesh, "media/Mesh/cube.obj");
+		mesh->SetMaterial(_manager->CreateMaterial("media/Material/Cube.mat"));
 
 		//CUBE COLLIDER
 		Core::Components::CubeCollider* collider = cube->AddComponent<Core::Components::CubeCollider>();
