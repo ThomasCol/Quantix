@@ -39,7 +39,7 @@ namespace Quantix::Core::Components
 		_isEnable = true;
 	}
 
-	void DeformableMesh::Generate(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager)
+	void DeformableMesh::Generate(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager, QXbool fromLoad)
 	{
 		Core::DataStructure::GameObject3D* gameobject = (Core::DataStructure::GameObject3D*)_object;
 
@@ -89,7 +89,7 @@ namespace Quantix::Core::Components
 			}
 		}
 
-		CreateCube(scene, manager);
+		CreateCube(scene, manager, fromLoad);
 	}
 
 	void DeformableMesh::MoveCube(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager) noexcept
@@ -130,7 +130,7 @@ namespace Quantix::Core::Components
 		}
 	}
 
-	void DeformableMesh::CreateCube(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager) noexcept
+	void DeformableMesh::CreateCube(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager, QXbool fromLoad) noexcept
 	{
 		Physic::PhysicHandler* handler = Physic::PhysicHandler::GetInstance();
 		Core::DataStructure::GameObject3D* gameobject = (Core::DataStructure::GameObject3D*)_object;
@@ -147,7 +147,8 @@ namespace Quantix::Core::Components
 
 						// Add Comp
 						gameobjects[i][j][k]->SetLocalScale(cubeSize);
-						AddComponent(gameobjects[i][j][k], manager);
+						if (!fromLoad)
+							AddComponent(gameobjects[i][j][k], manager);
 					}
 					else
 					{

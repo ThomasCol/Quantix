@@ -370,7 +370,7 @@ namespace Quantix::Core::Render
 	}
 	
 	void Renderer::RenderShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,
-		std::vector<Core::Components::Light>& lights)
+		std::vector<Core::Components::Light>& lights) noexcept
 	{
 		if (lights.size() >= 2)
 		{
@@ -419,7 +419,7 @@ namespace Quantix::Core::Render
 	}
 
 	void Renderer::RenderPointLightsShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,
-		std::vector<Core::Components::Light>& lights)
+		std::vector<Core::Components::Light>& lights) noexcept
 	{
 		Math::QXmat4 views[] = {
 			Math::QXmat4::CreateLookAtMatrix(lights[1].position, lights[1].position + Math::QXvec3{1, 0, 0}, {0, -1, 0}),
@@ -472,7 +472,7 @@ namespace Quantix::Core::Render
 		_omniShadowProgram->Unuse();
 	}
 
-	void Renderer::RenderColliders(std::vector<Components::ICollider*>& colliders)
+	void Renderer::RenderColliders(std::vector<Components::ICollider*>& colliders) noexcept
 	{
 		_wireFrameProgram->Use();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -519,7 +519,7 @@ namespace Quantix::Core::Render
 		glActiveTexture(GL_TEXTURE0);
 	}
 
-	void Renderer::SendUniformBuffer(std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam)
+	void Renderer::SendUniformBuffer(std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept
 	{
 		QXuint	light_size = (QXuint)lights.size();
 

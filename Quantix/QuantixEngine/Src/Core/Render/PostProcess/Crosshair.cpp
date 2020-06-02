@@ -4,7 +4,7 @@
 
 namespace Quantix::Core::Render::PostProcess
 {
-	Crosshair::Crosshair(Resources::ShaderProgram* crosshairProgram, Platform::AppInfo& info, Resources::Texture* texture):
+	Crosshair::Crosshair(Resources::ShaderProgram* crosshairProgram, Platform::AppInfo& info, Resources::Texture* texture) noexcept :
 		PostProcessEffect(crosshairProgram, nullptr),
 		_crosshairTex { texture }
 	{

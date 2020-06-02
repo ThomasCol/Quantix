@@ -4,17 +4,17 @@
 
 namespace Quantix::Core::Threading
 {
-	TaskSystem::TaskSystem() :
+	TaskSystem::TaskSystem() noexcept :
 		_threadNumber{ std::thread::hardware_concurrency() }
 	{
 		_threadPool = new Task[_threadNumber];
 	}
 
-	TaskSystem::~TaskSystem()
+	TaskSystem::~TaskSystem() noexcept
 	{
 	}
 
-	void TaskSystem::Destroy()
+	void TaskSystem::Destroy() 
 	{
 		TaskSystem* syst = GetInstance();
 		for (size_t i = 0; i < syst->_threadNumber; i++)
@@ -25,7 +25,7 @@ namespace Quantix::Core::Threading
 		delete[] syst->_threadPool;
 	}
 
-	void TaskSystem::Update()
+	void TaskSystem::Update() 
 	{
 		TaskSystem* tasks = GetInstance();
 		if (tasks->_tasks.empty())

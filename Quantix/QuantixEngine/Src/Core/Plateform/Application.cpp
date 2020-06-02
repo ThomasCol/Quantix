@@ -10,10 +10,9 @@
 
 namespace Quantix::Core::Platform
 {
-	Application::Application(QXuint width, QXuint height) :
+	Application::Application(QXuint width, QXuint height) noexcept :
 		info{ width, height },
 		renderer { info, manager },
-		sceneManager {},
 		scene {new Resources::Scene()}
 	{
 		stbi_set_flip_vertically_on_load(true);
@@ -30,7 +29,7 @@ namespace Quantix::Core::Platform
 	}
 
 	void Application::Update(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
-		std::vector<Components::Light>& lights, QXbool isPlaying)
+		std::vector<Components::Light>& lights, QXbool isPlaying) noexcept
 	{
 		Threading::TaskSystem::GetInstance()->Update();
 		manager.UpdateResourcesState();

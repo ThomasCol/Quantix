@@ -10,7 +10,7 @@ RTTR_PLUGIN_REGISTRATION
 namespace Quantix::Core::Render::PostProcess
 {
 
-	ToneMapping::ToneMapping(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) :
+	ToneMapping::ToneMapping(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) noexcept :
 		PostProcessEffect(toneMappingProg, model)
 	{
         name = "Tone Mapping";

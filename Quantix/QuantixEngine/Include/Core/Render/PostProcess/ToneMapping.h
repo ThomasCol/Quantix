@@ -27,7 +27,7 @@ namespace Quantix::Core::Render::PostProcess
 		#pragma endregion
 
 	public:
-		#pragma Region Constructors
+		#pragma region Constructors
 
 		/**
 		 * @brief Construct a new Tone Mapping object

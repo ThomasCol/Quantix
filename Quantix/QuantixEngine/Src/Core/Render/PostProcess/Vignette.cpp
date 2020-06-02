@@ -11,7 +11,7 @@ RTTR_PLUGIN_REGISTRATION
 namespace Quantix::Core::Render::PostProcess
 {
 
-    Vignette::Vignette(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) :
+    Vignette::Vignette(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) noexcept :
         PostProcessEffect(toneMappingProg, model)
     {
         name = "Vignette";

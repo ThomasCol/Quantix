@@ -237,7 +237,6 @@
     <ClCompile Include="Src\Core\DataStructure\GameObject3D.cpp" />
     <ClCompile Include="Src\Core\DataStructure\ResourcesManager.cpp" />
     <ClCompile Include="Src\Core\Components\Camera.cpp" />
-    <ClCompile Include="Src\Core\DataStructure\SceneManager.cpp" />
     <ClCompile Include="Src\Core\dllmain.cpp" />
     <ClCompile Include="Src\Core\Components\Light.cpp" />
     <ClCompile Include="Src\Core\Plateform\Application.cpp" />

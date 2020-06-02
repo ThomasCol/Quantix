@@ -9,7 +9,7 @@ RTTR_PLUGIN_REGISTRATION
 
 namespace Quantix::Core::Render::PostProcess
 {
-	FilmGrain::FilmGrain(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) :
+	FilmGrain::FilmGrain(Resources::ShaderProgram* toneMappingProg, Resources::Model* model, Platform::AppInfo& info) noexcept :
 		PostProcessEffect(toneMappingProg, model)
 	{
         name = "FilmGrain";

@@ -10,7 +10,7 @@
 
 namespace Quantix::Core::Tool
 {
-	QXbool Serializer::Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager* manager)
+	QXbool Serializer::Deserialize(const QXstring& path, Resources::Scene* scene, DataStructure::ResourcesManager* manager) noexcept
 	{
 		std::ifstream stream(path, std::ios::ate);
 		if (!stream.is_open())
@@ -46,7 +46,7 @@ namespace Quantix::Core::Tool
 		return true;
 	}
 
-	QXstring Serializer::Serialize(Resources::Scene* scene)
+	QXstring Serializer::Serialize(Resources::Scene* scene) noexcept
 	{
 		rapidjson::StringBuffer sb;
 		rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
@@ -64,7 +64,7 @@ namespace Quantix::Core::Tool
 		return sb.GetString();
 	}
 
-	void Serializer::DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, DataStructure::GameObject3D* parent, DataStructure::ResourcesManager* manager)
+	void Serializer::DeserializeRecursive(Resources::Scene* scene, QXint index, rapidjson::Value& val, DataStructure::GameObject3D* parent, DataStructure::ResourcesManager* manager) noexcept
 	{
 		rapidjson::Value::MemberIterator ret = val.FindMember("GameObject" + std::to_string(index));
 
@@ -89,7 +89,7 @@ namespace Quantix::Core::Tool
 			DeserializeRecursive(scene, i, childs[i], object, manager);
 	}
 
-	void Serializer::ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager* manager)
+	void Serializer::ReadComponent(DataStructure::GameObject3D* object, rapidjson::Value& val, DataStructure::ResourcesManager* manager) noexcept
 	{
 		rttr::array_range componentsAvailable = rttr::type::get<Quantix::Core::DataStructure::Component>().get_derived_classes();
 		rapidjson::Value& val2 = val.GetObject().MemberBegin()[0].value;
@@ -107,7 +107,7 @@ namespace Quantix::Core::Tool
 				}
 				else if (type == rttr::type::get<Core::Components::DeformableMesh>() || type.get_raw_type() == rttr::type::get<Core::Components::DeformableMesh>())
 				{
-					type.invoke("Generate", comp, {_currScene, manager});
+					type.invoke("Generate", comp, {_currScene, manager, QX_TRUE});
 				}
 				for (QXsizei i = 0; i < val2.MemberCount(); ++i)
 				{
@@ -121,7 +121,7 @@ namespace Quantix::Core::Tool
 		}
 	}
 
-	void Serializer::ReadInstance(rttr::instance inst, rttr::type type, rttr::property currentProp, rapidjson::Value& value, DataStructure::ResourcesManager* manager)
+	void Serializer::ReadInstance(rttr::instance inst, rttr::type type, rttr::property currentProp, rapidjson::Value& value, DataStructure::ResourcesManager* manager) noexcept
 	{
 		if (type == rttr::type::get<QXbool>())
 		{
@@ -194,7 +194,7 @@ namespace Quantix::Core::Tool
 		}
 	}
 
-	void Serializer::WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	void Serializer::WriteTransform(Physic::Transform3D* transform, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept
 	{
 		writer.String("Transform");
 		writer.StartObject();
@@ -204,7 +204,7 @@ namespace Quantix::Core::Tool
 		writer.EndObject();
 	}
 
-	void Serializer::WriteVec3(const QXstring& name, const Math::QXvec3& vec, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	void Serializer::WriteVec3(const QXstring& name, const Math::QXvec3& vec, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept
 	{
 		writer.String(name);
 		writer.StartObject();
@@ -217,7 +217,7 @@ namespace Quantix::Core::Tool
 		writer.EndObject();
 	}
 
-	void Serializer::WriteQuat(const QXstring& name, Math::QXquaternion& quat, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	void Serializer::WriteQuat(const QXstring& name, Math::QXquaternion& quat, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept
 	{
 		writer.String(name);
 		writer.StartObject();
@@ -232,7 +232,7 @@ namespace Quantix::Core::Tool
 		writer.EndObject();
 	}
 
-	void Serializer::SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	void Serializer::SerializeRecursive(Physic::Transform3D* transform, QXint index, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept
 	{
 		writer.String("GameObject" + std::to_string(index));
 		writer.StartObject();
@@ -278,7 +278,7 @@ namespace Quantix::Core::Tool
 		writer.EndObject();
 	}
 
-	void Serializer::WriteComponent(rttr::instance comp, rttr::type type, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	void Serializer::WriteComponent(rttr::instance comp, rttr::type type, rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept
 	{
 		QXstring name;
 		if (type.is_pointer())
@@ -304,7 +304,7 @@ namespace Quantix::Core::Tool
 	}
 
 	void Serializer::WriteInstance(rttr::instance inst, rttr::property currentProp, rttr::type type,
-		rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+		rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) noexcept
 	{
 		if (type == rttr::type::get<QXbool>())
 		{
@@ -369,7 +369,7 @@ namespace Quantix::Core::Tool
 		}
 	}
 
-	void Serializer::ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val)
+	void Serializer::ReadTransform(Physic::Transform3D* transform, rapidjson::Value& val) noexcept
 	{
 		transform->SetPosition(ReadVec3(val.FindMember("position")->value));
 
@@ -378,7 +378,7 @@ namespace Quantix::Core::Tool
 		transform->SetScale(ReadVec3(val.FindMember("scale")->value));
 	}
 
-	Math::QXvec3 Serializer::ReadVec3(rapidjson::Value& val)
+	Math::QXvec3 Serializer::ReadVec3(rapidjson::Value& val) noexcept
 	{
 		Math::QXvec3 vec;
 		vec.x = (QXfloat)val.FindMember("x")->value.GetDouble();
@@ -388,7 +388,7 @@ namespace Quantix::Core::Tool
 		return vec;
 	}
 
-	Math::QXquaternion Serializer::ReadQuat(rapidjson::Value& val)
+	Math::QXquaternion Serializer::ReadQuat(rapidjson::Value& val) noexcept
 	{
 		Math::QXquaternion quat;
 		quat.v.x = (QXfloat)val.FindMember("x")->value.GetDouble();

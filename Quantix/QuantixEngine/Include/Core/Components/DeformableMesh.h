@@ -85,10 +85,10 @@ namespace Quantix::Core::Components
 		 * 
 		 * @param scene Current scene
 		 */
-		void Generate(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager);
+		void Generate(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager, QXbool fromLoad = false);
 
 		void MoveCube(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager) noexcept;
-		void CreateCube(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager) noexcept;
+		void CreateCube(Resources::Scene* scene, Core::DataStructure::ResourcesManager* manager, QXbool fromLoad) noexcept;
 
 		/**
 		 * @brief addComponent for the deformableMesh during Generation
