@@ -7,7 +7,8 @@ RTTR_PLUGIN_REGISTRATION
 		.constructor<>()
 		.constructor<Quantix::Core::DataStructure::GameComponent*>()
 		.constructor<const Quantix::Gameplay::Killzone&>()
-		.constructor<Quantix::Gameplay::Killzone&&>();
+		.constructor<Quantix::Gameplay::Killzone&&>()
+		.property("RespawnPosition", &Quantix::Gameplay::Killzone::positionToRespawnController);
 }
 
 namespace Quantix::Gameplay

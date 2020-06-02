@@ -216,6 +216,12 @@ void	Editor::CameraUpdateEditor()
 
 void	Editor::MovePlayerController()
 {
+	if (_mainCamera->_controller->needSpawn)
+	{
+		_mainCamera->_controller->SetPosition(_mainCamera->_controller->spawnPos);
+		_mainCamera->_controller->needSpawn = false;
+	}
+
 	Math::QXvec3 dir = _mainCamera->GetDir();
 	dir.y = 0.f;
 	dir = dir.Normalize();

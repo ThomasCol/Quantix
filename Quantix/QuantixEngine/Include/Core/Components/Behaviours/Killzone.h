@@ -10,6 +10,8 @@ namespace Quantix::Gameplay
 	{
 	public:
 
+		Math::QXvec3 positionToRespawnController{ Math::QXvec3(0,0,0) };
+
 		/**
 		 * @brief Construct a new Killzone object
 		 * 

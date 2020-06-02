@@ -8,6 +8,8 @@
 
 #include "Core/DataStructure/GameObject3D.h"
 #include "Core/Components/Behaviours/Bumper.h"
+#include "Core/Components/Behaviours/Killzone.h"
+#include "Core/Components/CharacterController.h"
 
 namespace Quantix::Physic
 {
@@ -20,18 +22,22 @@ namespace Quantix::Physic
 		 */
 		virtual void							onShapeHit(const physx::PxControllerShapeHit& hit) 
 		{
-			Core::DataStructure::GameObject3D* object = ((Core::DataStructure::GameObject3D*)hit.actor->userData);
-			if (object) 
+			Core::DataStructure::GameObject3D* other = ((Core::DataStructure::GameObject3D*)hit.actor->userData);
+			if (other)
 			{
-				Gameplay::Bumper* bumper = object->GetComponent<Gameplay::Bumper>();
+				Gameplay::Bumper* bumper = other->GetComponent<Gameplay::Bumper>();
 				if (bumper)
 				{
-					bumper->OnTrigger(object, ((Core::DataStructure::GameObject3D*)hit.controller->getUserData()));
+					bumper->OnTrigger(other, ((Core::DataStructure::GameObject3D*)hit.controller->getUserData()));
 				}
-				if (object->GetLayer() == Quantix::Core::DataStructure::Layer::KILLZONE)
+				if (other->GetLayer() == Quantix::Core::DataStructure::Layer::KILLZONE)
 				{
-					Core::DataStructure::GameObject3D* object = ((Core::DataStructure::GameObject3D*)hit.controller->getUserData());
-					object->Destroy();
+
+					Core::DataStructure::GameObject3D* controllerGO = ((Core::DataStructure::GameObject3D*)hit.controller->getUserData());
+					Math::QXvec3 SpawnPos = other->GetComponent<Gameplay::Killzone>()->positionToRespawnController;
+
+					controllerGO->GetComponent<Core::Components::CharacterController>()->needSpawn = true;
+					controllerGO->GetComponent<Core::Components::CharacterController>()->spawnPos = SpawnPos;
 				}
 			}
 		};

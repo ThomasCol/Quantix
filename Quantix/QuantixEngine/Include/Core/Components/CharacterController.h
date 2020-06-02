@@ -17,6 +17,9 @@ namespace Quantix::Core::Components
 
 		Math::QXvec3 _velocity;
 
+		QXbool needSpawn = false;
+		Math::QXvec3 spawnPos;
+
 		/**
 		 * @brief Construct a new Character Controller object
 		 */
