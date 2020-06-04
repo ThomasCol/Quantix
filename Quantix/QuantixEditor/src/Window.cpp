@@ -34,7 +34,6 @@ namespace Quantix::Core::Platform
 			throw std::runtime_error("Failed to create Window");
 
 		glfwMakeContextCurrent(_window);
-		glfwSetWindowSizeCallback(_window, Resize);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -49,7 +48,7 @@ namespace Quantix::Core::Platform
 		printf("GL_VENDOR: %s\n", glGetString(GL_VENDOR));
 		printf("GL_RENDERER: %s\n", glGetString(GL_RENDERER));
 
-		glfwSetWindowUserPointer(_window, this);
+		glfwSetWindowUserPointer(_window, reinterpret_cast<void*>(this));
 
 		Window* my_window = (Window*)glfwGetWindowUserPointer(_window);
 	}
@@ -71,12 +70,11 @@ namespace Quantix::Core::Platform
 			throw std::runtime_error("Failed to create Window");
 
 		glfwMakeContextCurrent(_window);
-		glfwSetWindowSizeCallback(_window, Resize);
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			throw std::runtime_error("Failed to init openGL");
 		}
-		glfwSetWindowUserPointer(_window, this);
+		glfwSetWindowUserPointer(_window, reinterpret_cast<void*>(this));
 
 		Window* my_window = (Window*)glfwGetWindowUserPointer(_window);
 
@@ -94,13 +92,13 @@ namespace Quantix::Core::Platform
 
 	void Window::Resize(GLFWwindow* window, QXint width, QXint height) noexcept
 	{
-		void* pointer = glfwGetWindowUserPointer(window);
-		Window* my_window = (Window*)glfwGetWindowUserPointer(window);
+		_width = width;
+		_height = height;
 
-		my_window->_width = width;
-		my_window->_height = height;
+		_event.Raise(window, width, height);
 
 		glViewport(0, 0, width, height);
+
 	}
 
 	void Window::Refresh(AppInfo& info) noexcept
@@ -110,6 +108,13 @@ namespace Quantix::Core::Platform
 		info.currentTime = glfwGetTime();
 		info.deltaTime = info.currentTime - info.prevTime;
 		info.prevTime = info.currentTime;
+
+		QXint width, height;
+
+		glfwGetFramebufferSize(_window, &width, &height);
+
+		if (width != _width || height != _height)
+			Resize(_window, width, height);
 	}
 
 #pragma endregion

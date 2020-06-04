@@ -342,6 +342,7 @@ namespace Quantix::Core::DataStructure
 		fread(&material->diffuse, sizeof(Math::QXvec3), 1, file);
 		fread(&material->specular, sizeof(Math::QXvec3), 1, file);
 		fread(&material->shininess, sizeof(QXfloat), 1, file);
+		fread(&material->tile, sizeof(Math::QXvec2), 1, file);
 
 		fread(&char_count, sizeof(QXsizei), 1, file);
 		diffuse_path.resize(char_count);
@@ -398,6 +399,7 @@ namespace Quantix::Core::DataStructure
 		fwrite(&material->diffuse, sizeof(Math::QXvec3), 1, file);
 		fwrite(&material->specular, sizeof(Math::QXvec3), 1, file);
 		fwrite(&material->shininess, sizeof(QXfloat), 1, file);
+		fwrite(&material->tile, sizeof(Math::QXvec2), 1, file);
 
 		const Texture* diffuse = material->GetDiffuseTexture();
 		const Texture* emissive = material->GetEmissiveTexture();

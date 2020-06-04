@@ -9,6 +9,7 @@
 
 #include <Type.h>
 #include <Core/Platform/AppInfo.h>
+#include <Core/Event/Event.h>
 
 namespace Quantix::Core::Platform
 {
@@ -21,6 +22,8 @@ namespace Quantix::Core::Platform
 		QXuint								_width;
 		QXuint								_height;
 
+		Event::Event<GLFWwindow*, QXuint, QXuint>		_event;
+
 #pragma endregion
 
 #pragma region Functions
@@ -32,7 +35,7 @@ namespace Quantix::Core::Platform
 		 * @param width New width
 		 * @param height New height
 		 */
-		static void	Resize(GLFWwindow* window, QXint width, QXint height) noexcept;
+		void	Resize(GLFWwindow* window, QXint width, QXint height) noexcept;
 
 #pragma endregion
 
@@ -106,6 +109,8 @@ namespace Quantix::Core::Platform
 		 * @return GLFWwindow* 
 		 */
 		inline GLFWwindow* GetWindow() const { return _window; };
+
+		inline Event::Event<GLFWwindow*, QXuint, QXuint>& GetEvent() { return _event; }
 
 #pragma endregion
 

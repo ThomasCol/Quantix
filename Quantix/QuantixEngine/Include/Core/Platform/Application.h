@@ -60,6 +60,8 @@ namespace Quantix::Core::Platform
 		void Update(std::vector<Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders,
 			std::vector<Components::Light>& lights, QXbool isPlaying = false) noexcept;
 
+		void Resize(GLFWwindow* window, QXuint width, QXuint height);
+
 		#pragma endregion
 	};
 }

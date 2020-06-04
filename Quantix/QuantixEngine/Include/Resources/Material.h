@@ -21,6 +21,7 @@ namespace Quantix::Resources
 
 		QXstring		_path;
 
+
 #pragma endregion
 
 	public:
@@ -31,6 +32,7 @@ namespace Quantix::Resources
 		Math::QXvec3	specular{ 1, 1, 1 };
 
 		QXfloat			shininess = 0;
+		Math::QXvec2	tile;
 
 		QXbool			isTransparent = false;
 

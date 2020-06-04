@@ -22,7 +22,7 @@ namespace Quantix::Core::Render::PostProcess
 		_bloomProgram {bloomProgram}
 	{
         name = "Bloom";
-        Init(info);
+        Init(info.width, info.height);
 
         QXuint VBO;
         // Gen unit quad
@@ -56,7 +56,7 @@ namespace Quantix::Core::Render::PostProcess
         glBindVertexArray(0);
 	}
 
-	void Bloom::Init(Platform::AppInfo& info) noexcept
+	void Bloom::Init(QXuint width, QXuint height) noexcept
 	{
         QXuint FBO[2];
         glGenFramebuffers(2, FBO);
@@ -68,7 +68,7 @@ namespace Quantix::Core::Render::PostProcess
             glBindFramebuffer(GL_FRAMEBUFFER, FBO[i]);
             glBindTexture(GL_TEXTURE_2D, ColorTexture[i]);
             glTexImage2D(
-                GL_TEXTURE_2D, 0, GL_RGB16F, info.width, info.height, 0, GL_RGB, GL_FLOAT, NULL
+                GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, NULL
             );
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -94,7 +94,7 @@ namespace Quantix::Core::Render::PostProcess
         QXuint texture;
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, info.width, info.height, 0, GL_RGBA, GL_FLOAT, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -105,7 +105,7 @@ namespace Quantix::Core::Render::PostProcess
         glGenRenderbuffers(1, &depth_stencil_renderbuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, depth_stencil_renderbuffer);
         glObjectLabel(GL_RENDERBUFFER, depth_stencil_renderbuffer, -1, "DepthStencilRenderbuffer");
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, info.width, info.height);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 
         // Setup attachements
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_stencil_renderbuffer);
@@ -188,5 +188,10 @@ namespace Quantix::Core::Render::PostProcess
             glBindTexture(GL_TEXTURE_2D, 0);
             glActiveTexture(GL_TEXTURE0);
         }
+    }
+
+    void Bloom::Resize(QXuint width, QXuint height)
+    {
+        Init(width, height);
     }
 }

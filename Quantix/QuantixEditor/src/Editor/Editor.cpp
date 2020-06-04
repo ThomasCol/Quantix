@@ -60,6 +60,9 @@ Editor::Editor(QXuint width, QXuint height)  noexcept :
 	_app->renderer.CreateRenderFramebuffer(width, height, _sceneBuffer);
 	_app->renderer.CreateRenderFramebuffer(width, height, _gameBuffer);
 
+	_win.GetEvent().AddFunc(&Quantix::Core::Platform::Application::Resize, _app, _win.GetWindow(), 8, 10);
+
+
 	InitImg();
 }
 
@@ -113,8 +116,6 @@ void Editor::InitImg() noexcept
 
 void Editor::Init() noexcept
 {
-	glfwSetWindowUserPointer(_win.GetWindow(), _mouseInput);
-
 	//Init Editor
 	InitEditor();
 }

@@ -698,7 +698,7 @@ QXbool Inspector::CheckPrimitiveType(rttr::instance inst, rttr::property current
 	else if (type == rttr::type::get<Math::QXvec2>())
 	{
 		Math::QXvec2 value = currentProp.get_value(inst).get_value<Math::QXvec2>();
-		ImGui::DragFloat2(currentProp.get_name().to_string().c_str(), value.e);
+		ImGui::Text(currentProp.get_name().to_string().c_str()); ImGui::SameLine(165.f); ImGui::DragFloat2("", value.e);
 		currentProp.set_value(inst, value);
 		return QX_TRUE;
 	}

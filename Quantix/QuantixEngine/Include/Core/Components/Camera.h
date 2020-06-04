@@ -10,7 +10,7 @@
 
 #define SPEED (3.f)
 #define SPEEDJUMP (25.F)
-#define SPEEDFREECAM (5.f)
+#define SPEEDFREECAM (10.f)
 
 namespace Quantix::Core::Components
 {
