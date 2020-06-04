@@ -266,6 +266,18 @@ namespace Quantix::Core::Render
 	{
 		START_PROFILING("draw");
 
+		static QXuint count = 0;
+
+		if (_needResize)
+		{
+			count++;
+			ResizeFrameBuffer(info.width, info.height, buffer);
+			if (count > 1)
+			{
+				_needResize = false;
+			}
+		}
+
 		std::sort(mesh.begin(), mesh.end(), [](const Components::Mesh* a, const Components::Mesh* b) {
 			return a->key < b->key;
 			});
@@ -367,6 +379,60 @@ namespace Quantix::Core::Render
 		STOP_PROFILING("draw");
 
 		return buffer.texture[0];
+	}
+
+	void Renderer::Resize(QXuint width, QXuint height)
+	{
+		_needResize = true;
+
+		((PostProcess::Bloom*)_effects[1])->Resize(width, height);
+	}
+
+	void Renderer::ResizeFrameBuffer(QXuint width, QXuint height, RenderFramebuffer& FBO)
+	{
+		QXint previous_framebuffer;
+		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_framebuffer);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO.FBO);
+
+		// Create texture that will be used as color attachment
+		QXuint texture[2];
+		glGenTextures(2, texture);
+
+		for (QXsizei i = 0; i < 2; ++i)
+		{
+			glBindTexture(GL_TEXTURE_2D, texture[i]);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + (GLenum)i, GL_TEXTURE_2D, texture[i], 0);
+		}
+
+		GLuint depth_stencil_renderbuffer;
+		glGenRenderbuffers(1, &depth_stencil_renderbuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, depth_stencil_renderbuffer);
+		glObjectLabel(GL_RENDERBUFFER, depth_stencil_renderbuffer, -1, "DepthStencilRenderbuffer");
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+
+		// Setup attachements
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_stencil_renderbuffer);
+
+		QXuint draw_attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+		glDrawBuffers(2, draw_attachments);
+
+		GLenum framebuffer_status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if (framebuffer_status != GL_FRAMEBUFFER_COMPLETE)
+		{
+			LOG(ERROR, std::string("framebuffer failed to complete (0x%x)\n", framebuffer_status));
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
+
+		FBO.texture[0] = texture[0];
+		FBO.texture[1] = texture[1];
+		FBO.depthBuffer = depth_stencil_renderbuffer;
 	}
 	
 	void Renderer::RenderShadows(std::vector<Core::Components::Mesh*>& meshes, Quantix::Core::Platform::AppInfo& info,

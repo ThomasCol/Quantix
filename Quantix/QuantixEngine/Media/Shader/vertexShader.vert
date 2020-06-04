@@ -12,6 +12,8 @@ out vec4 fragPosLightSpace;
 
 uniform mat4 TRS;
 
+uniform vec2 tile;
+
 layout (std140, binding = 0) uniform ViewProj
 {
 	mat4 view;
@@ -31,7 +33,10 @@ void 	main()
 	/* set pos of fragment */
 	gl_Position = proj * view * TRS * vec4(position, 1.0);
 
-	UV = uv;
+	if (tile.x < 1 || tile.y < 1)
+		UV = uv;
+	else
+		UV = uv * tile;
 
 	outNormal = mat3(transpose(inverse(TRS))) * normal;
 

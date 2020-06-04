@@ -35,7 +35,7 @@ namespace Quantix::Core::Render::PostProcess
 		 * 
 		 * @param info app info
 		 */
-		void Init(Platform::AppInfo& info) noexcept;
+		void Init(QXuint width, QXuint height) noexcept;
 
 		#pragma endregion
 
@@ -71,6 +71,8 @@ namespace Quantix::Core::Render::PostProcess
 		 * @param FBO FBO tu use
 		 */
 		void Render(Platform::AppInfo& info, QXuint sceneTexture, QXuint otherTexture, QXuint FBO) noexcept override;
+
+		void Resize(QXuint width, QXuint height);
 
 		#pragma endregion
 

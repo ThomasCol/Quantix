@@ -41,11 +41,11 @@ namespace Quantix::Core::Event
 			return *this;
 		}
 
-		/*template<typename FuncType, typename ... Args>
+		template<typename FuncType, typename ... Args>
 		void AddFunc(FuncType&& func, Args&& ... vars) noexcept
 		{
-			_functions.emplace(std::bind(std::forward<FuncType>(func), std::forward<Args>(vars)...));
-		}*/
+			_functions.push_back(std::bind(std::forward<FuncType>(func), std::forward<Args>(vars)...));
+		}
 
 		inline Event& operator-=(std::function<void(Args...)> func)
 		{

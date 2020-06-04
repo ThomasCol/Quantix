@@ -373,7 +373,7 @@
                                     "layer": 0,
                                     "Transform": {
                                         "position": {
-                                            "x": 4.496081352233887,
+                                            "x": 3.5282907485961916,
                                             "y": -0.9983599185943604,
                                             "z": 11.49278736114502
                                         },
@@ -384,7 +384,7 @@
                                             "w": 1.0
                                         },
                                         "scale": {
-                                            "x": 15.0,
+                                            "x": 13.0,
                                             "y": 3.0,
                                             "z": 8.0
                                         }
@@ -421,7 +421,7 @@
                                                 "Trigger Shape": false,
                                                 "Visualization Shape": false,
                                                 "HalfExtent": {
-                                                    "x": 7.5,
+                                                    "x": 6.5,
                                                     "y": 1.5,
                                                     "z": 4.0
                                                 }
@@ -1205,8 +1205,8 @@
                                     "layer": 8,
                                     "Transform": {
                                         "position": {
-                                            "x": 13.542078018188477,
-                                            "y": -1.272771954536438,
+                                            "x": 12.510246276855469,
+                                            "y": -2.5109410285949709,
                                             "z": 11.458009719848633
                                         },
                                         "rotation": {
@@ -1256,7 +1256,7 @@
                                                 "Trigger Shape": false,
                                                 "Visualization Shape": false,
                                                 "HalfExtent": {
-                                                    "x": 1.0,
+                                                    "x": 2.0,
                                                     "y": 0.5,
                                                     "z": 3.5
                                                 }
@@ -3540,7 +3540,7 @@
                                         "rotation": {
                                             "x": 0.0,
                                             "y": 1.0,
-                                            "z": -0.0,
+                                            "z": 0.0,
                                             "w": 0.0
                                         },
                                         "scale": {
@@ -3583,6 +3583,22 @@
                                             "Camera": {
                                                 "Enable": true
                                             }
+                                        },
+                                        {
+                                            "SoundListener": {
+                                                "Enable": true
+                                            }
+                                        },
+                                        {
+                                            "SoundEmitter": {
+                                                "Enable": true,
+                                                "Sound": "./media/Sounds/EK2-Remanence.mp3",
+                                                "classFMOD::ChannelGroup": {},
+                                                "Mode": "QX_2D",
+                                                "Volume": 0.0,
+                                                "Loop": true,
+                                                "On Awake": true
+                                            }
                                         }
                                     ],
                                     "Childs": [
@@ -3624,345 +3640,6 @@
                                 }
                             }
                         ]
-                    }
-                },
-                {
-                    "GameObject3": {
-                        "name": "Generated Cube 1",
-                        "layer": 4,
-                        "Transform": {
-                            "position": {
-                                "x": 18.365999221801759,
-                                "y": 7.354593753814697,
-                                "z": 13.944999694824219
-                            },
-                            "rotation": {
-                                "x": -0.0,
-                                "y": -0.0,
-                                "z": -0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 1.0,
-                                "y": 1.0,
-                                "z": 1.0
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/Cube.mat"
-                                }
-                            },
-                            {
-                                "CubeCollider": {
-                                    "Enable": true,
-                                    "ToRender": true,
-                                    "Local Position": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Local Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "MyGroup": "Crab",
-                                    "PawnGroup": true,
-                                    "MineGroup": true,
-                                    "CrabGroup": true,
-                                    "Query Shape": true,
-                                    "Simulation Shape": true,
-                                    "Trigger Shape": false,
-                                    "Visualization Shape": false,
-                                    "HalfExtent": {
-                                        "x": 0.5,
-                                        "y": 0.5,
-                                        "z": 0.5
-                                    }
-                                }
-                            },
-                            {
-                                "Rigidbody": {
-                                    "Enable": true,
-                                    "Mass": 1.0,
-                                    "LinearVelocity": {
-                                        "x": 0.0,
-                                        "y": -4.0,
-                                        "z": 0.0
-                                    },
-                                    "AngularVelocity": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Position": {
-                                        "x": 18.365999221801759,
-                                        "y": 7.354593753814697,
-                                        "z": 13.944999694824219
-                                    },
-                                    "Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "DisableGravity": false,
-                                    "DisableSimulation": false,
-                                    "Visualisation": false,
-                                    "Kinematic": false,
-                                    "CCD": false,
-                                    "CCDFriction": false,
-                                    "SpeculativeCCD": false,
-                                    "RetainAcceleration": false,
-                                    "KinematicQueries": false,
-                                    "PoseIntPreview": false,
-                                    "CCDMaxImpulse": false,
-                                    "Position X": false,
-                                    "Position Y": false,
-                                    "Position Z": false,
-                                    "Rotation X": false,
-                                    "Rotation Y": false,
-                                    "Rotation Z": false
-                                }
-                            },
-                            {
-                                "Cube": {
-                                    "Enable": true
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject4": {
-                        "name": "Generated Cube 1",
-                        "layer": 4,
-                        "Transform": {
-                            "position": {
-                                "x": 10.994999885559082,
-                                "y": 20.237592697143556,
-                                "z": 18.023000717163087
-                            },
-                            "rotation": {
-                                "x": -0.0,
-                                "y": -0.0,
-                                "z": -0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 1.0,
-                                "y": 1.0,
-                                "z": 1.0
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/Cube.mat"
-                                }
-                            },
-                            {
-                                "CubeCollider": {
-                                    "Enable": true,
-                                    "ToRender": true,
-                                    "Local Position": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Local Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "MyGroup": "Crab",
-                                    "PawnGroup": true,
-                                    "MineGroup": true,
-                                    "CrabGroup": true,
-                                    "Query Shape": true,
-                                    "Simulation Shape": true,
-                                    "Trigger Shape": false,
-                                    "Visualization Shape": false,
-                                    "HalfExtent": {
-                                        "x": 0.5,
-                                        "y": 0.5,
-                                        "z": 0.5
-                                    }
-                                }
-                            },
-                            {
-                                "Rigidbody": {
-                                    "Enable": true,
-                                    "Mass": 1.0,
-                                    "LinearVelocity": {
-                                        "x": 0.0,
-                                        "y": -4.0,
-                                        "z": 0.0
-                                    },
-                                    "AngularVelocity": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Position": {
-                                        "x": 10.994999885559082,
-                                        "y": 20.237592697143556,
-                                        "z": 18.023000717163087
-                                    },
-                                    "Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "DisableGravity": false,
-                                    "DisableSimulation": false,
-                                    "Visualisation": false,
-                                    "Kinematic": false,
-                                    "CCD": false,
-                                    "CCDFriction": false,
-                                    "SpeculativeCCD": false,
-                                    "RetainAcceleration": false,
-                                    "KinematicQueries": false,
-                                    "PoseIntPreview": false,
-                                    "CCDMaxImpulse": false,
-                                    "Position X": false,
-                                    "Position Y": false,
-                                    "Position Z": false,
-                                    "Rotation X": false,
-                                    "Rotation Y": false,
-                                    "Rotation Z": false
-                                }
-                            },
-                            {
-                                "Cube": {
-                                    "Enable": true
-                                }
-                            }
-                        ],
-                        "Childs": []
-                    }
-                },
-                {
-                    "GameObject5": {
-                        "name": "Generated Cube 1",
-                        "layer": 4,
-                        "Transform": {
-                            "position": {
-                                "x": 31.985000610351564,
-                                "y": 20.160593032836915,
-                                "z": 42.992000579833987
-                            },
-                            "rotation": {
-                                "x": -0.0,
-                                "y": -0.0,
-                                "z": -0.0,
-                                "w": 1.0
-                            },
-                            "scale": {
-                                "x": 1.0,
-                                "y": 1.0,
-                                "z": 1.0
-                            }
-                        },
-                        "Components": [
-                            {
-                                "Mesh": {
-                                    "Enable": true,
-                                    "Model": "media/Mesh/cube.obj",
-                                    "Material": "media/Material/Cube.mat"
-                                }
-                            },
-                            {
-                                "CubeCollider": {
-                                    "Enable": true,
-                                    "ToRender": true,
-                                    "Local Position": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Local Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "MyGroup": "Crab",
-                                    "PawnGroup": true,
-                                    "MineGroup": true,
-                                    "CrabGroup": true,
-                                    "Query Shape": true,
-                                    "Simulation Shape": true,
-                                    "Trigger Shape": false,
-                                    "Visualization Shape": false,
-                                    "HalfExtent": {
-                                        "x": 0.5,
-                                        "y": 0.5,
-                                        "z": 0.5
-                                    }
-                                }
-                            },
-                            {
-                                "Rigidbody": {
-                                    "Enable": true,
-                                    "Mass": 1.0,
-                                    "LinearVelocity": {
-                                        "x": 0.0,
-                                        "y": -4.0,
-                                        "z": 0.0
-                                    },
-                                    "AngularVelocity": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0
-                                    },
-                                    "Position": {
-                                        "x": 31.985000610351564,
-                                        "y": 20.160593032836915,
-                                        "z": 42.992000579833987
-                                    },
-                                    "Rotation": {
-                                        "x": 0.0,
-                                        "y": 0.0,
-                                        "z": 0.0,
-                                        "w": 1.0
-                                    },
-                                    "DisableGravity": false,
-                                    "DisableSimulation": false,
-                                    "Visualisation": false,
-                                    "Kinematic": false,
-                                    "CCD": false,
-                                    "CCDFriction": false,
-                                    "SpeculativeCCD": false,
-                                    "RetainAcceleration": false,
-                                    "KinematicQueries": false,
-                                    "PoseIntPreview": false,
-                                    "CCDMaxImpulse": false,
-                                    "Position X": false,
-                                    "Position Y": false,
-                                    "Position Z": false,
-                                    "Rotation X": false,
-                                    "Rotation Y": false,
-                                    "Rotation Z": false
-                                }
-                            },
-                            {
-                                "Cube": {
-                                    "Enable": true
-                                }
-                            }
-                        ],
-                        "Childs": []
                     }
                 }
             ]

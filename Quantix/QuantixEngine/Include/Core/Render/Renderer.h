@@ -17,10 +17,10 @@ namespace Quantix::Core::DataStructure
 
 namespace Quantix::Core::Render
 {
-    class QUANTIX_API Renderer
-    {
+	class QUANTIX_API Renderer
+	{
 	private:
-		#pragma region Attributes
+#pragma region Attributes
 
 		Framebuffer 					_uniShadowBuffer;
 		Framebuffer 					_omniShadowBuffer;
@@ -33,15 +33,17 @@ namespace Quantix::Core::Render
 
 		std::vector<PostProcess::PostProcessEffect*>	_effects;
 
-		Resources::ShaderProgram* 		_wireFrameProgram;
-		Resources::ShaderProgram* 		_uniShadowProgram;
-		Resources::ShaderProgram* 		_omniShadowProgram;
+		Resources::ShaderProgram* _wireFrameProgram;
+		Resources::ShaderProgram* _uniShadowProgram;
+		Resources::ShaderProgram* _omniShadowProgram;
 
-		Resources::Model* 				_cube;
-		Resources::Model* 				_sphere;
-		Resources::Model* 				_caps;
+		Resources::Model* _cube;
+		Resources::Model* _sphere;
+		Resources::Model* _caps;
 
 		QXfloat							_farPlane;
+
+		QXbool							_needResize { false };
 
 		#pragma endregion
 
@@ -110,6 +112,8 @@ namespace Quantix::Core::Render
 		 * @param cam camera to send
 		 */
 		void SendUniformBuffer(std::vector<Core::Components::Light>& lights, Core::Platform::AppInfo& info, Components::Camera* cam) noexcept;
+
+		void ResizeFrameBuffer(QXuint width, QXuint height, RenderFramebuffer& FBO);
 
 		#pragma endregion
 
@@ -193,6 +197,8 @@ namespace Quantix::Core::Render
 		 */
 		QXuint Draw(std::vector<Core::Components::Mesh*>& meshes, std::vector<Components::ICollider*>& colliders, std::vector<Core::Components::Light>& lights,
 				Quantix::Core::Platform::AppInfo& info, Components::Camera* cam, RenderFramebuffer& buffer, bool displayColliders) noexcept;
+
+		void	Resize(QXuint width, QXuint height);
 
 		#pragma region Accessor
 

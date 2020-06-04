@@ -11,6 +11,7 @@ RTTR_PLUGIN_REGISTRATION
 	.property("diffuse", &Quantix::Resources::Material::diffuse)
 	.property("specular", &Quantix::Resources::Material::specular)
 	.property("shininess", &Quantix::Resources::Material::shininess)
+	.property("tile", &Quantix::Resources::Material::_tile)
 	.property("Diffuse", &Quantix::Resources::Material::GetDiffuseTexture, &Quantix::Resources::Material::SetDiffuseTexture)
 	.property("Emissive", &Quantix::Resources::Material::GetEmissiveTexture, &Quantix::Resources::Material::SetEmissiveTexture)
 	.method("SetChanged", &Quantix::Resources::Material::HasChanged)
@@ -52,6 +53,8 @@ namespace Quantix::Resources
 		SetFloat3("material.diffuse", diffuse.e);
 		SetFloat3("material.specular", specular.e);
 		SetFloat("material.shininess", shininess);
+
+		SetFloat2("tile", _tile.e);
 
 		if (isPointLight)
 		{

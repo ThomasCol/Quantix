@@ -57,4 +57,13 @@ namespace Quantix::Core::Platform
 
 		scene->CheckDestroy(info);
 	}
+
+	void Application::Resize(GLFWwindow* window, QXuint w, QXuint h)
+	{
+		QXint width, height;
+		glfwGetWindowSize(window, &width, &height);
+		info.width = width;
+		info.height = height;
+		renderer.Resize(width, height);
+	}
 }

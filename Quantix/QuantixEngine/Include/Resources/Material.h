@@ -21,6 +21,8 @@ namespace Quantix::Resources
 
 		QXstring		_path;
 
+		Math::QXvec2	_tile;
+
 #pragma endregion
 
 	public:
