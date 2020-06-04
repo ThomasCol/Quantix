@@ -373,7 +373,7 @@
                                     "layer": 0,
                                     "Transform": {
                                         "position": {
-                                            "x": 3.5282907485961916,
+                                            "x": 4.496081352233887,
                                             "y": -0.9983599185943604,
                                             "z": 11.49278736114502
                                         },
@@ -384,7 +384,7 @@
                                             "w": 1.0
                                         },
                                         "scale": {
-                                            "x": 13.0,
+                                            "x": 15.0,
                                             "y": 3.0,
                                             "z": 8.0
                                         }
@@ -421,7 +421,7 @@
                                                 "Trigger Shape": false,
                                                 "Visualization Shape": false,
                                                 "HalfExtent": {
-                                                    "x": 6.5,
+                                                    "x": 7.5,
                                                     "y": 1.5,
                                                     "z": 4.0
                                                 }
@@ -501,8 +501,8 @@
                                     "layer": 0,
                                     "Transform": {
                                         "position": {
-                                            "x": -3.497677803039551,
-                                            "y": 9.479999542236329,
+                                            "x": -3.456951856613159,
+                                            "y": 14.824068069458008,
                                             "z": 11.498129844665528
                                         },
                                         "rotation": {
@@ -513,7 +513,7 @@
                                         },
                                         "scale": {
                                             "x": 1.0,
-                                            "y": 23.9950008392334,
+                                            "y": 35.0,
                                             "z": 8.0
                                         }
                                     },
@@ -565,8 +565,8 @@
                                     "layer": 0,
                                     "Transform": {
                                         "position": {
-                                            "x": 4.001999855041504,
-                                            "y": 9.479999542236329,
+                                            "x": 4.054959774017334,
+                                            "y": 14.825291633605957,
                                             "z": 15.9943208694458
                                         },
                                         "rotation": {
@@ -577,7 +577,7 @@
                                         },
                                         "scale": {
                                             "x": 16.0,
-                                            "y": 23.9950008392334,
+                                            "y": 35.0,
                                             "z": 1.0
                                         }
                                     },
@@ -630,7 +630,7 @@
                                     "Transform": {
                                         "position": {
                                             "x": 20.381437301635743,
-                                            "y": 9.479999542236329,
+                                            "y": 14.861351013183594,
                                             "z": 11.482950210571289
                                         },
                                         "rotation": {
@@ -641,7 +641,7 @@
                                         },
                                         "scale": {
                                             "x": 1.0,
-                                            "y": 23.9950008392334,
+                                            "y": 35.0,
                                             "z": 8.0
                                         }
                                     },
@@ -694,7 +694,7 @@
                                     "Transform": {
                                         "position": {
                                             "x": 11.943079948425293,
-                                            "y": 9.479999542236329,
+                                            "y": 14.859115600585938,
                                             "z": 6.992992401123047
                                         },
                                         "rotation": {
@@ -705,7 +705,7 @@
                                         },
                                         "scale": {
                                             "x": 17.889999389648439,
-                                            "y": 23.9950008392334,
+                                            "y": 35.0,
                                             "z": 1.0
                                         }
                                     },
@@ -758,7 +758,7 @@
                                     "Transform": {
                                         "position": {
                                             "x": 17.887929916381837,
-                                            "y": 9.479999542236329,
+                                            "y": 14.853264808654786,
                                             "z": 15.968360900878907
                                         },
                                         "rotation": {
@@ -769,7 +769,7 @@
                                         },
                                         "scale": {
                                             "x": 6.0,
-                                            "y": 23.954999923706056,
+                                            "y": 35.0,
                                             "z": 1.0
                                         }
                                     },
@@ -1014,8 +1014,8 @@
                                     "Transform": {
                                         "position": {
                                             "x": 8.970327377319336,
-                                            "y": 16.468509674072267,
-                                            "z": 32.07011413574219
+                                            "y": 21.843503952026368,
+                                            "z": 32.11593246459961
                                         },
                                         "rotation": {
                                             "x": 0.0,
@@ -1025,8 +1025,8 @@
                                         },
                                         "scale": {
                                             "x": 1.0,
-                                            "y": 10.0,
-                                            "z": 31.0
+                                            "y": 21.0,
+                                            "z": 31.200000762939454
                                         }
                                     },
                                     "Components": [
@@ -1078,7 +1078,7 @@
                                     "Transform": {
                                         "position": {
                                             "x": 17.93552589416504,
-                                            "y": 16.4689998626709,
+                                            "y": 21.812856674194337,
                                             "z": 29.0
                                         },
                                         "rotation": {
@@ -1089,7 +1089,7 @@
                                         },
                                         "scale": {
                                             "x": 1.0,
-                                            "y": 10.0,
+                                            "y": 21.0,
                                             "z": 25.0
                                         }
                                     },
@@ -1142,7 +1142,7 @@
                                     "Transform": {
                                         "position": {
                                             "x": 25.934999465942384,
-                                            "y": 16.471853256225587,
+                                            "y": 21.806884765625,
                                             "z": 40.99057388305664
                                         },
                                         "rotation": {
@@ -1153,7 +1153,7 @@
                                         },
                                         "scale": {
                                             "x": 15.100000381469727,
-                                            "y": 10.0,
+                                            "y": 21.0,
                                             "z": 1.0
                                         }
                                     },
@@ -1205,8 +1205,8 @@
                                     "layer": 8,
                                     "Transform": {
                                         "position": {
-                                            "x": 12.510246276855469,
-                                            "y": -2.5109410285949709,
+                                            "x": 13.542078018188477,
+                                            "y": -1.272771954536438,
                                             "z": 11.458009719848633
                                         },
                                         "rotation": {
@@ -1256,7 +1256,7 @@
                                                 "Trigger Shape": false,
                                                 "Visualization Shape": false,
                                                 "HalfExtent": {
-                                                    "x": 2.0,
+                                                    "x": 1.0,
                                                     "y": 0.5,
                                                     "z": 3.5
                                                 }
@@ -1411,7 +1411,7 @@
                                     "Transform": {
                                         "position": {
                                             "x": 20.965234756469728,
-                                            "y": 16.469999313354493,
+                                            "y": 21.844999313354493,
                                             "z": 48.19688415527344
                                         },
                                         "rotation": {
@@ -1422,7 +1422,7 @@
                                         },
                                         "scale": {
                                             "x": 25.0,
-                                            "y": 10.0,
+                                            "y": 21.0,
                                             "z": 1.0
                                         }
                                     },
@@ -2417,7 +2417,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial281.mat"
+                                                                        "Material": "media/Material/DefaultMaterial1.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2451,7 +2451,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial282.mat"
+                                                                        "Material": "media/Material/DefaultMaterial2.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2485,7 +2485,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial283.mat"
+                                                                        "Material": "media/Material/DefaultMaterial3.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2519,7 +2519,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial284.mat"
+                                                                        "Material": "media/Material/DefaultMaterial4.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2553,7 +2553,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial285.mat"
+                                                                        "Material": "media/Material/DefaultMaterial5.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2587,7 +2587,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial286.mat"
+                                                                        "Material": "media/Material/DefaultMaterial6.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2621,7 +2621,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial287.mat"
+                                                                        "Material": "media/Material/DefaultMaterial7.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2655,7 +2655,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial288.mat"
+                                                                        "Material": "media/Material/DefaultMaterial8.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2724,7 +2724,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial290.mat"
+                                                                        "Material": "media/Material/DefaultMaterial9.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2792,7 +2792,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial292.mat"
+                                                                        "Material": "media/Material/DefaultMaterial10.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2860,7 +2860,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial294.mat"
+                                                                        "Material": "media/Material/DefaultMaterial11.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2894,7 +2894,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial295.mat"
+                                                                        "Material": "media/Material/DefaultMaterial12.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2928,7 +2928,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial296.mat"
+                                                                        "Material": "media/Material/DefaultMaterial13.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2962,7 +2962,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial297.mat"
+                                                                        "Material": "media/Material/DefaultMaterial14.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -2996,7 +2996,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial298.mat"
+                                                                        "Material": "media/Material/DefaultMaterial15.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -3065,7 +3065,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial300.mat"
+                                                                        "Material": "media/Material/DefaultMaterial16.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -3133,7 +3133,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial302.mat"
+                                                                        "Material": "media/Material/DefaultMaterial17.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -3201,7 +3201,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial304.mat"
+                                                                        "Material": "media/Material/DefaultMaterial18.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -3235,7 +3235,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial305.mat"
+                                                                        "Material": "media/Material/DefaultMaterial19.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -3269,7 +3269,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial306.mat"
+                                                                        "Material": "media/Material/DefaultMaterial20.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -3303,7 +3303,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial307.mat"
+                                                                        "Material": "media/Material/DefaultMaterial21.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -3337,7 +3337,7 @@
                                                                     "Mesh": {
                                                                         "Enable": true,
                                                                         "Model": "media/Mesh/cube.obj",
-                                                                        "Material": "media/Material/DefaultMaterial308.mat"
+                                                                        "Material": "media/Material/DefaultMaterial22.mat"
                                                                     }
                                                                 }
                                                             ],
@@ -3499,6 +3499,271 @@
                                         }
                                     ]
                                 }
+                            },
+                            {
+                                "GameObject31": {
+                                    "name": "Roof",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 1.0,
+                                            "y": 1.0,
+                                            "z": 1.0
+                                        }
+                                    },
+                                    "Components": [],
+                                    "Childs": [
+                                        {
+                                            "GameObject0": {
+                                                "name": "Roof1",
+                                                "layer": 0,
+                                                "Transform": {
+                                                    "position": {
+                                                        "x": 0.0,
+                                                        "y": 21.502765655517579,
+                                                        "z": -0.4997001886367798
+                                                    },
+                                                    "rotation": {
+                                                        "x": 0.0,
+                                                        "y": 0.0,
+                                                        "z": 0.0,
+                                                        "w": 1.0
+                                                    },
+                                                    "scale": {
+                                                        "x": 6.0,
+                                                        "y": 0.10000000149011612,
+                                                        "z": 16.0
+                                                    }
+                                                },
+                                                "Components": [
+                                                    {
+                                                        "Mesh": {
+                                                            "Enable": true,
+                                                            "Model": "media/Mesh/cube.obj",
+                                                            "Material": "./media/Material/Wall.mat"
+                                                        }
+                                                    }
+                                                ],
+                                                "Childs": []
+                                            }
+                                        },
+                                        {
+                                            "GameObject1": {
+                                                "name": "Roof2",
+                                                "layer": 0,
+                                                "Transform": {
+                                                    "position": {
+                                                        "x": 8.47470760345459,
+                                                        "y": 32.364837646484378,
+                                                        "z": 11.512483596801758
+                                                    },
+                                                    "rotation": {
+                                                        "x": 0.0,
+                                                        "y": 0.0,
+                                                        "z": 0.0,
+                                                        "w": 1.0
+                                                    },
+                                                    "scale": {
+                                                        "x": 25.0,
+                                                        "y": 0.10000000149011612,
+                                                        "z": 10.0
+                                                    }
+                                                },
+                                                "Components": [
+                                                    {
+                                                        "Mesh": {
+                                                            "Enable": true,
+                                                            "Model": "media/Mesh/cube.obj",
+                                                            "Material": "./media/Material/Wall.mat"
+                                                        }
+                                                    }
+                                                ],
+                                                "Childs": []
+                                            }
+                                        },
+                                        {
+                                            "GameObject2": {
+                                                "name": "Roof3",
+                                                "layer": 0,
+                                                "Transform": {
+                                                    "position": {
+                                                        "x": 13.466280937194825,
+                                                        "y": 32.36328887939453,
+                                                        "z": 28.93781089782715
+                                                    },
+                                                    "rotation": {
+                                                        "x": 0.0,
+                                                        "y": 0.0,
+                                                        "z": 0.0,
+                                                        "w": 1.0
+                                                    },
+                                                    "scale": {
+                                                        "x": 10.0,
+                                                        "y": 0.10000000149011612,
+                                                        "z": 25.0
+                                                    }
+                                                },
+                                                "Components": [
+                                                    {
+                                                        "Mesh": {
+                                                            "Enable": true,
+                                                            "Model": "media/Mesh/cube.obj",
+                                                            "Material": "./media/Material/Wall.mat"
+                                                        }
+                                                    }
+                                                ],
+                                                "Childs": []
+                                            }
+                                        },
+                                        {
+                                            "GameObject3": {
+                                                "name": "Roof4",
+                                                "layer": 0,
+                                                "Transform": {
+                                                    "position": {
+                                                        "x": 20.9654483795166,
+                                                        "y": 32.3650016784668,
+                                                        "z": 44.59598922729492
+                                                    },
+                                                    "rotation": {
+                                                        "x": 0.0,
+                                                        "y": 0.0,
+                                                        "z": 0.0,
+                                                        "w": 1.0
+                                                    },
+                                                    "scale": {
+                                                        "x": 25.0,
+                                                        "y": 0.10000000149011612,
+                                                        "z": 8.199999809265137
+                                                    }
+                                                },
+                                                "Components": [
+                                                    {
+                                                        "Mesh": {
+                                                            "Enable": true,
+                                                            "Model": "media/Mesh/cube.obj",
+                                                            "Material": "./media/Material/Wall.mat"
+                                                        }
+                                                    }
+                                                ],
+                                                "Childs": []
+                                            }
+                                        },
+                                        {
+                                            "GameObject4": {
+                                                "name": "Roof5",
+                                                "layer": 0,
+                                                "Transform": {
+                                                    "position": {
+                                                        "x": 52.81013870239258,
+                                                        "y": 36.49661636352539,
+                                                        "z": 44.58305358886719
+                                                    },
+                                                    "rotation": {
+                                                        "x": 0.0,
+                                                        "y": 0.0,
+                                                        "z": 0.0,
+                                                        "w": 1.0
+                                                    },
+                                                    "scale": {
+                                                        "x": 39.0,
+                                                        "y": 0.10000000149011612,
+                                                        "z": 10.199999809265137
+                                                    }
+                                                },
+                                                "Components": [
+                                                    {
+                                                        "Mesh": {
+                                                            "Enable": true,
+                                                            "Model": "media/Mesh/cube.obj",
+                                                            "Material": "./media/Material/Wall.mat"
+                                                        }
+                                                    }
+                                                ],
+                                                "Childs": []
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "GameObject32": {
+                                    "name": "Wall17",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": -0.46992623805999758,
+                                            "y": 26.861825942993165,
+                                            "z": 6.99460506439209
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 7.0,
+                                            "y": 11.0,
+                                            "z": 1.0
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "./media/Material/Wall.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
+                            },
+                            {
+                                "GameObject33": {
+                                    "name": "Wall18",
+                                    "layer": 0,
+                                    "Transform": {
+                                        "position": {
+                                            "x": 33.249935150146487,
+                                            "y": 34.478126525878909,
+                                            "z": 44.60988235473633
+                                        },
+                                        "rotation": {
+                                            "x": 0.0,
+                                            "y": 0.0,
+                                            "z": 0.0,
+                                            "w": 1.0
+                                        },
+                                        "scale": {
+                                            "x": 0.20000000298023225,
+                                            "y": 4.150000095367432,
+                                            "z": 8.399999618530274
+                                        }
+                                    },
+                                    "Components": [
+                                        {
+                                            "Mesh": {
+                                                "Enable": true,
+                                                "Model": "media/Mesh/cube.obj",
+                                                "Material": "./media/Material/Wall.mat"
+                                            }
+                                        }
+                                    ],
+                                    "Childs": []
+                                }
                             }
                         ]
                     }
@@ -3540,7 +3805,7 @@
                                         "rotation": {
                                             "x": 0.0,
                                             "y": 1.0,
-                                            "z": 0.0,
+                                            "z": -0.0,
                                             "w": 0.0
                                         },
                                         "scale": {
@@ -3583,22 +3848,6 @@
                                             "Camera": {
                                                 "Enable": true
                                             }
-                                        },
-                                        {
-                                            "SoundListener": {
-                                                "Enable": true
-                                            }
-                                        },
-                                        {
-                                            "SoundEmitter": {
-                                                "Enable": true,
-                                                "Sound": "./media/Sounds/EK2-Remanence.mp3",
-                                                "classFMOD::ChannelGroup": {},
-                                                "Mode": "QX_2D",
-                                                "Volume": 0.0,
-                                                "Loop": true,
-                                                "On Awake": true
-                                            }
                                         }
                                     ],
                                     "Childs": [
@@ -3640,6 +3889,345 @@
                                 }
                             }
                         ]
+                    }
+                },
+                {
+                    "GameObject3": {
+                        "name": "Generated Cube 1",
+                        "layer": 4,
+                        "Transform": {
+                            "position": {
+                                "x": 18.365999221801759,
+                                "y": 7.354593753814697,
+                                "z": 13.944999694824219
+                            },
+                            "rotation": {
+                                "x": -0.0,
+                                "y": -0.0,
+                                "z": -0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Mesh": {
+                                    "Enable": true,
+                                    "Model": "media/Mesh/cube.obj",
+                                    "Material": "media/Material/Cube.mat"
+                                }
+                            },
+                            {
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "MyGroup": "Crab",
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                }
+                            },
+                            {
+                                "Rigidbody": {
+                                    "Enable": true,
+                                    "Mass": 1.0,
+                                    "LinearVelocity": {
+                                        "x": 0.0,
+                                        "y": -4.0,
+                                        "z": 0.0
+                                    },
+                                    "AngularVelocity": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Position": {
+                                        "x": 18.365999221801759,
+                                        "y": 7.354593753814697,
+                                        "z": 13.944999694824219
+                                    },
+                                    "Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "DisableGravity": false,
+                                    "DisableSimulation": false,
+                                    "Visualisation": false,
+                                    "Kinematic": false,
+                                    "CCD": false,
+                                    "CCDFriction": false,
+                                    "SpeculativeCCD": false,
+                                    "RetainAcceleration": false,
+                                    "KinematicQueries": false,
+                                    "PoseIntPreview": false,
+                                    "CCDMaxImpulse": false,
+                                    "Position X": false,
+                                    "Position Y": false,
+                                    "Position Z": false,
+                                    "Rotation X": false,
+                                    "Rotation Y": false,
+                                    "Rotation Z": false
+                                }
+                            },
+                            {
+                                "Cube": {
+                                    "Enable": true
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                },
+                {
+                    "GameObject4": {
+                        "name": "Generated Cube 1",
+                        "layer": 4,
+                        "Transform": {
+                            "position": {
+                                "x": 10.994999885559082,
+                                "y": 20.237592697143556,
+                                "z": 18.023000717163087
+                            },
+                            "rotation": {
+                                "x": -0.0,
+                                "y": -0.0,
+                                "z": -0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Mesh": {
+                                    "Enable": true,
+                                    "Model": "media/Mesh/cube.obj",
+                                    "Material": "media/Material/Cube.mat"
+                                }
+                            },
+                            {
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "MyGroup": "Crab",
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                }
+                            },
+                            {
+                                "Rigidbody": {
+                                    "Enable": true,
+                                    "Mass": 1.0,
+                                    "LinearVelocity": {
+                                        "x": 0.0,
+                                        "y": -4.0,
+                                        "z": 0.0
+                                    },
+                                    "AngularVelocity": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Position": {
+                                        "x": 10.994999885559082,
+                                        "y": 20.237592697143556,
+                                        "z": 18.023000717163087
+                                    },
+                                    "Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "DisableGravity": false,
+                                    "DisableSimulation": false,
+                                    "Visualisation": false,
+                                    "Kinematic": false,
+                                    "CCD": false,
+                                    "CCDFriction": false,
+                                    "SpeculativeCCD": false,
+                                    "RetainAcceleration": false,
+                                    "KinematicQueries": false,
+                                    "PoseIntPreview": false,
+                                    "CCDMaxImpulse": false,
+                                    "Position X": false,
+                                    "Position Y": false,
+                                    "Position Z": false,
+                                    "Rotation X": false,
+                                    "Rotation Y": false,
+                                    "Rotation Z": false
+                                }
+                            },
+                            {
+                                "Cube": {
+                                    "Enable": true
+                                }
+                            }
+                        ],
+                        "Childs": []
+                    }
+                },
+                {
+                    "GameObject5": {
+                        "name": "Generated Cube 1",
+                        "layer": 4,
+                        "Transform": {
+                            "position": {
+                                "x": 31.985000610351564,
+                                "y": 20.160593032836915,
+                                "z": 42.992000579833987
+                            },
+                            "rotation": {
+                                "x": -0.0,
+                                "y": -0.0,
+                                "z": -0.0,
+                                "w": 1.0
+                            },
+                            "scale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        },
+                        "Components": [
+                            {
+                                "Mesh": {
+                                    "Enable": true,
+                                    "Model": "media/Mesh/cube.obj",
+                                    "Material": "media/Material/Cube.mat"
+                                }
+                            },
+                            {
+                                "CubeCollider": {
+                                    "Enable": true,
+                                    "ToRender": true,
+                                    "Local Position": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Local Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "MyGroup": "Crab",
+                                    "PawnGroup": true,
+                                    "MineGroup": true,
+                                    "CrabGroup": true,
+                                    "Query Shape": true,
+                                    "Simulation Shape": true,
+                                    "Trigger Shape": false,
+                                    "Visualization Shape": false,
+                                    "HalfExtent": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                }
+                            },
+                            {
+                                "Rigidbody": {
+                                    "Enable": true,
+                                    "Mass": 1.0,
+                                    "LinearVelocity": {
+                                        "x": 0.0,
+                                        "y": -4.0,
+                                        "z": 0.0
+                                    },
+                                    "AngularVelocity": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "Position": {
+                                        "x": 31.985000610351564,
+                                        "y": 20.160593032836915,
+                                        "z": 42.992000579833987
+                                    },
+                                    "Rotation": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0,
+                                        "w": 1.0
+                                    },
+                                    "DisableGravity": false,
+                                    "DisableSimulation": false,
+                                    "Visualisation": false,
+                                    "Kinematic": false,
+                                    "CCD": false,
+                                    "CCDFriction": false,
+                                    "SpeculativeCCD": false,
+                                    "RetainAcceleration": false,
+                                    "KinematicQueries": false,
+                                    "PoseIntPreview": false,
+                                    "CCDMaxImpulse": false,
+                                    "Position X": false,
+                                    "Position Y": false,
+                                    "Position Z": false,
+                                    "Rotation X": false,
+                                    "Rotation Y": false,
+                                    "Rotation Z": false
+                                }
+                            },
+                            {
+                                "Cube": {
+                                    "Enable": true
+                                }
+                            }
+                        ],
+                        "Childs": []
                     }
                 }
             ]

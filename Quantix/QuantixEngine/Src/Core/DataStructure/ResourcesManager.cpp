@@ -1,10 +1,13 @@
 #include "Core/DataStructure/ResourcesManager.h"
 
 #include <istream>
+#include <filesystem>
 
 #include "Core/Debugger/Logger.h"
 #include "Core/Threading/TaskSystem.hpp"
 #include "Core/SoundCore.h"
+
+namespace fs = std::filesystem;
 
 namespace Quantix::Core::DataStructure
 {
@@ -114,22 +117,28 @@ namespace Quantix::Core::DataStructure
 
 	Material* ResourcesManager::CreateMaterial(const QXstring& filePath) noexcept
 	{
-		if (filePath == "")
-			return CreateDefaultMaterial();
+		QXstring path = filePath;
+		if (path == "")
+		{
+			if (!fs::exists("media/Material/DefaultMaterial0.mat"))
+				return CreateDefaultMaterial();
+			else
+				path = "media/Material/DefaultMaterial0.mat";
+		}
 	
-		auto it = _materials.find(filePath);
+		auto it = _materials.find(path);
 		if (it != _materials.end() && it->second != nullptr)
 		{
 			return it->second;
 		}
 
 		Material* material;
-		if (filePath.find(".fbx") != QXstring::npos || filePath.find(".FBX") != QXstring::npos)
-			material = LoadMaterial(filePath, QX_TRUE);
+		if (path.find(".fbx") != QXstring::npos || path.find(".FBX") != QXstring::npos)
+			material = LoadMaterial(path, QX_TRUE);
 		else
-			material = LoadMaterial(filePath);
+			material = LoadMaterial(path);
 
-		_materials[filePath] = material;
+		_materials[path] = material;
 
 		return material;
 	}

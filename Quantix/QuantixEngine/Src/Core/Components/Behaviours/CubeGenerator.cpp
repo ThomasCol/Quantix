@@ -75,30 +75,27 @@ namespace Quantix::Core::Components::Behaviours
 		}
 	}
 
-	void CubeGenerator::GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, Math::QXvec3 ambient, Math::QXvec3 diffuse, Math::QXvec3 specular) noexcept
+	void CubeGenerator::GenerateMesh(QXstring name, Math::QXvec3 pos, Math::QXvec3 scale, const QXstring& matPath) noexcept
 	{
 		Core::DataStructure::GameObject3D* go = _scene->AddGameObject(name, _gameobject);
 		go->SetTransformValue(pos, Math::QXquaternion(1.f, 0.f, 0.f, 0.f), scale);
 		//MESH
 		Core::Components::Mesh* mesh = go->AddComponent<Core::Components::Mesh>();
 		mesh->Init(go);
-		_manager->CreateMesh(mesh, "media/Mesh/cube.obj");
-		mesh->GetMaterial()->ambient = ambient;
-		mesh->GetMaterial()->diffuse = diffuse;
-		mesh->GetMaterial()->specular = specular;
+		_manager->CreateMesh(mesh, "media/Mesh/cube.obj", matPath);
 	}
 
 	void CubeGenerator::CreateGenerator() noexcept
 	{
-		GenerateMesh("TopCube", Math::QXvec3(0.f, 0.72f, 0.f), Math::QXvec3(3.f, 0.1f, 3.f), COLORTAMBIENT, COLORTDIFFUSE, COLORB);
-		GenerateMesh("BottomCube1", Math::QXvec3(0.f, -0.72f, -1.163f), Math::QXvec3(3.f, 0.1f, 0.7f), COLORB, COLORB, COLORB);
-		GenerateMesh("BottomCube2", Math::QXvec3(0.f, -0.72f, 1.163f), Math::QXvec3(3.f, 0.1f, 0.7f), COLORB, COLORB, COLORB);
-		GenerateMesh("BottomCube3", Math::QXvec3(-1.163f, -0.72f, 0.f), Math::QXvec3(0.7f, 0.1f, 3.f), COLORB, COLORB, COLORB);
-		GenerateMesh("BottomCube4", Math::QXvec3(1.163f, -0.72f, 0.f), Math::QXvec3(0.7f, 0.1f, 3.f), COLORB, COLORB, COLORB);
-		GenerateMesh("Plot1", Math::QXvec3(-1.38f, 0.f, 0.f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
-		GenerateMesh("Plot2", Math::QXvec3(1.38f, 0.f, 0.f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
-		GenerateMesh("Plot3", Math::QXvec3(0.f, 0.f, -1.38f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
-		GenerateMesh("Plot4", Math::QXvec3(0.f, 0.f, 1.38f), Math::QXvec3(0.2f, 1.5f, 0.2f), COLORPAMBIENT, COLORPDIFFUSE, COLORPSPECULAR);
+		GenerateMesh("TopCube", Math::QXvec3(0.f, 0.72f, 0.f), Math::QXvec3(3.f, 0.1f, 3.f), "media/Material/GeneratorTop.mat");
+		GenerateMesh("BottomCube1", Math::QXvec3(0.f, -0.72f, -1.163f), Math::QXvec3(3.f, 0.1f, 0.7f), "media/Material/GeneratorBottom.mat");
+		GenerateMesh("BottomCube2", Math::QXvec3(0.f, -0.72f, 1.163f), Math::QXvec3(3.f, 0.1f, 0.7f), "media/Material/GeneratorBottom.mat");
+		GenerateMesh("BottomCube3", Math::QXvec3(-1.163f, -0.72f, 0.f), Math::QXvec3(0.7f, 0.1f, 3.f), "media/Material/GeneratorBottom.mat");
+		GenerateMesh("BottomCube4", Math::QXvec3(1.163f, -0.72f, 0.f), Math::QXvec3(0.7f, 0.1f, 3.f), "media/Material/GeneratorBottom.mat");
+		GenerateMesh("Plot1", Math::QXvec3(-1.38f, 0.f, 0.f), Math::QXvec3(0.2f, 1.5f, 0.2f), "media/Material/Plot.mat");
+		GenerateMesh("Plot2", Math::QXvec3(1.38f, 0.f, 0.f), Math::QXvec3(0.2f, 1.5f, 0.2f), "media/Material/Plot.mat");
+		GenerateMesh("Plot3", Math::QXvec3(0.f, 0.f, -1.38f), Math::QXvec3(0.2f, 1.5f, 0.2f), "media/Material/Plot.mat");
+		GenerateMesh("Plot4", Math::QXvec3(0.f, 0.f, 1.38f), Math::QXvec3(0.2f, 1.5f, 0.2f), "media/Material/Plot.mat");
 	}
 
 	void CubeGenerator::SetSceneAndResourcesManager(Quantix::Resources::Scene* scene, Quantix::Core::DataStructure::ResourcesManager* rm)
